@@ -144,6 +144,30 @@ public class MapService {
         return hexagonSize;
     }
 
+    public int getMiniHexSize() {
+        return miniHexSize;
+    }
+
+    public int getMiniMapMargin() {
+        return miniMapMargin;
+    }
+
+    public int getMiniMapWidth() {
+        return miniMapWidth;
+    }
+
+    public int getMiniMapHeight() {
+        return miniMapHeight;
+    }
+
+    public int getMiniMapX() {
+        return miniMapX;
+    }
+
+    public int getMiniMapY() {
+        return miniMapY;
+    }
+
     public void firstInit() {
         this.limitI = 250;
         this.limitJ = 250;
@@ -158,7 +182,7 @@ public class MapService {
         this.mapWidth = Gdx.graphics.getWidth() - 80f;
         this.mapHeight = Gdx.graphics.getHeight() - 120f;
         this.maxI = (int) this.mapWidth / (this.gapX);
-        this.maxJ = (int) this.mapHeight / (this.gapY); // TODO verifier si this.hexagonSize est pas mieux
+        this.maxJ = (int) this.mapHeight / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
         this.startI = (int) (this.limitI - this.maxI) / 2;
         this.startJ = (int) (this.limitJ - this.maxJ) / 2;
 
@@ -330,10 +354,44 @@ public class MapService {
         }
     }
 
+    public void updateMiniMap(int x, int y, Pixmap drawingMapPixmap) {
+        x = x - miniMapX - miniMapMargin;
+        y = y - miniMapY - miniMapMargin;
+        // calcul des coordonnées du coin gauche du rectangle de sélection
+        //x = (int) x - miniMapWidth / 2;
+        //y = (int) y - miniMapHeight / 2;
+        // TODO capper !!
+
+        // calcul de j
+        int j = (int) y / miniHexSize;
+        int i=0;
+        // calcul de i en tenant compte de j%2
+        if(j % 2 == 0) {
+            i = (int) ((x + miniHexSize/2) / miniHexSize);
+        }
+        else {
+            i = (int) x / miniHexSize;
+        }
+
+        if (i < 0) {
+             i = 0;
+        }
+        else if (i >= this.limitI - this.maxI) {
+            i = this.limitI - this.maxI - 1;
+        }
+        if (j < 0) {
+            j = 0;
+        }
+        else if (j >= this.limitJ - this.maxJ) {
+            j = this.limitJ - this.maxJ - 1;
+        }
+        this.startI = i;
+        this.startJ = j;
+        // dessin du rectangle (faire méthode ?)
+        //this.showMiniMap(drawingMapPixmap);
+    }
+
     public void showMiniMap(Pixmap drawingMapPixmap) {
-
-
-
         drawingMapPixmap.setColor(Color.BLACK);
         drawingMapPixmap.fillRectangle(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
 

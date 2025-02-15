@@ -164,8 +164,23 @@ public class EditMapScreen implements Screen, InputProcessor {
         //System.out.println("x : " + x + " / y : " + y);
 
         // tester si miniMap visible et clic dans minimap
-        if (x >= 0 && x <= mapWidth - margin &&
-            y >= 0 && y <= mapHeight - margin && !this.isMiniMapVisible) {
+        if(this.isMiniMapVisible) {
+            if( x > mapService.getMiniMapX()
+                && x < mapService.getMiniMapX() + mapService.getMiniMapWidth() - 2 * mapService.getMiniMapMargin()
+                && y > mapService.getMiniMapY()
+                && y < mapService.getMiniMapY() + mapService.getMiniMapHeight() - 2 * mapService.getMiniMapMargin()) {
+                System.out.println("clic in minimap");
+                mapService.updateMiniMap(x, y, drawingMapPixmap);
+                //mapService.showMiniMap(drawingMapPixmap);
+                //drawingTexture.draw(drawingMapPixmap, 0, 0);
+                redrawMap();
+                mapService.showMiniMap(drawingMapPixmap);
+                drawingTexture.draw(drawingMapPixmap, 0, 0);
+
+            }
+        }
+        else if (x >= 0 && x <= mapWidth - margin &&
+            y >= 0 && y <= mapHeight - margin) {
             System.out.println("clic in !!");
 
             int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
