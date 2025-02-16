@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -50,9 +51,37 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         stage.addActor(menuLabel);
 
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = this.font;
+        // Create a skin
+        Skin skin = new Skin();
+        skin.add("default-font", font);
 
+        // Create a texture for the button background
+        Pixmap pixmap = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.DARK_GRAY);
+        pixmap.fill();
+        pixmap.setColor(Color.BLACK); //Border Color
+        pixmap.drawRectangle(0, 0, 200, 50);
+        skin.add("button-up", new Texture(pixmap));
+        pixmap.dispose();
+
+        Pixmap pixmapHover = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
+        pixmapHover.setColor(Color.CORAL);
+        pixmapHover.fill();
+        pixmapHover.setColor(Color.BLACK); //Border Color
+        pixmapHover.drawRectangle(0, 0, 200, 50);
+        skin.add("button-hover", new Texture(pixmapHover));
+        pixmapHover.dispose();
+
+
+        // Configure a TextButtonStyle
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.newDrawable("button-up", Color.WHITE); //Up state
+        textButtonStyle.over = skin.newDrawable("button-hover", Color.ORANGE); //Hover State
+        textButtonStyle.font = skin.getFont("default-font");
+        textButtonStyle.fontColor = Color.WHITE;
+
+
+        // Create the button
         TextButton button = new TextButton("Back to Menu", textButtonStyle);
         button.setPosition(Gdx.graphics.getWidth() / 2f - button.getWidth() / 2f, 20);
 
@@ -160,7 +189,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
 
         int x = (int) (screenX - mapX - margin);
-        int y = (int) (screenY - mapY - margin);
+        int y = (int) (screenY - 45 - margin);
         //System.out.println("x : " + x + " / y : " + y);
 
         // tester si miniMap visible et clic dans minimap

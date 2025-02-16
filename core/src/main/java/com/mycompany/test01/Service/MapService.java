@@ -180,14 +180,15 @@ public class MapService {
         this.margin = 10;
 
         this.mapWidth = Gdx.graphics.getWidth() - 80f;
-        this.mapHeight = Gdx.graphics.getHeight() - 120f;
-        this.maxI = (int) this.mapWidth / (this.gapX);
-        this.maxJ = (int) this.mapHeight / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
+        this.mapHeight = Gdx.graphics.getHeight() - 210f;
+        this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
+        this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
         this.startI = (int) (this.limitI - this.maxI) / 2;
         this.startJ = (int) (this.limitJ - this.maxJ) / 2;
 
         this.mapX = Gdx.graphics.getWidth() / 2f - this.mapWidth / 2f;
-        this.mapY = Gdx.graphics.getHeight() / 2f - this.mapHeight / 2f;
+        //this.mapY = Gdx.graphics.getHeight() / 2f - this.mapHeight / 2f;
+        this.mapY = 160f;
 
         this.miniHexSize = 2;
         this.miniMapMargin = 10;
@@ -360,7 +361,6 @@ public class MapService {
         // calcul des coordonnées du coin gauche du rectangle de sélection
         //x = (int) x - miniMapWidth / 2;
         //y = (int) y - miniMapHeight / 2;
-        // TODO capper !!
 
         // calcul de j
         int j = (int) y / miniHexSize;
@@ -373,6 +373,7 @@ public class MapService {
             i = (int) x / miniHexSize;
         }
 
+        /*
         if (i < 0) {
              i = 0;
         }
@@ -385,8 +386,13 @@ public class MapService {
         else if (j >= this.limitJ - this.maxJ) {
             j = this.limitJ - this.maxJ - 1;
         }
-        this.startI = i;
-        this.startJ = j;
+        */
+
+        // 'cappage'
+        this.startI = i < 0 ? 0 : i >= this.limitI - this.maxI ? this.limitI - this.maxI - 1 : i;
+        this.startJ = j < 0 ? 0 : j >= this.limitJ - this.maxJ ? this.limitJ - this.maxJ - 1 : j;
+        //this.startI = i;
+        //this.startJ = j;
         // dessin du rectangle (faire méthode ?)
         //this.showMiniMap(drawingMapPixmap);
     }

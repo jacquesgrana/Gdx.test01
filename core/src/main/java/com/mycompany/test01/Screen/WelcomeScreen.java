@@ -2,9 +2,13 @@ package com.mycompany.test01.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -23,8 +27,34 @@ public class WelcomeScreen implements Screen {
         Gdx.input.setInputProcessor(this.stage);
 
         this.font = new BitmapFont();
-        TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.font = this.font;
+        // Create a skin
+        Skin skin = new Skin();
+        skin.add("default-font", font);
+
+        // Create a texture for the button background
+        Pixmap pixmap = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.DARK_GRAY);
+        pixmap.fill();
+        pixmap.setColor(Color.BLACK); //Border Color
+        pixmap.drawRectangle(0, 0, 200, 50);
+        skin.add("button-up", new Texture(pixmap));
+        pixmap.dispose();
+
+        Pixmap pixmapHover = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
+        pixmapHover.setColor(Color.CORAL);
+        pixmapHover.fill();
+        pixmapHover.setColor(Color.BLACK); //Border Color
+        pixmapHover.drawRectangle(0, 0, 200, 50);
+        skin.add("button-hover", new Texture(pixmapHover));
+        pixmapHover.dispose();
+
+
+        // Configure a TextButtonStyle
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.newDrawable("button-up", Color.WHITE); //Up state
+        textButtonStyle.over = skin.newDrawable("button-hover", Color.ORANGE); //Hover State
+        textButtonStyle.font = skin.getFont("default-font");
+        textButtonStyle.fontColor = Color.WHITE;
 
         TextButton button = new TextButton("Menu", textButtonStyle);
         button.setPosition(Gdx.graphics.getWidth() / 2f - button.getWidth() / 2f,
