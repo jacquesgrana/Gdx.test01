@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.mycompany.test01.Service.MapService;
+import com.mycompany.test01.Util.GraphicUtil;
 
 public class EditMapScreen implements Screen, InputProcessor {
     final Main game;
@@ -227,7 +228,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
                 Hexagon clickedHexagon = mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ());
                 System.out.println("hex terrain : " + clickedHexagon.getCategory());
-                mapService.renderHex( i + mapService.getStartI(), j + mapService.getStartJ(), Color.RED, drawingMapPixmap);
+                mapService.renderHex( i + mapService.getStartI(), j + mapService.getStartJ(), GraphicUtil.redTexture, drawingMapPixmap);
                 drawingTexture.draw(drawingMapPixmap, 0, 0);
             }
 
@@ -236,7 +237,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 if(neighbours[k] != null) {
                     int ii = neighbours[k].getX();
                     int jj = neighbours[k].getY();
-                    mapService.renderHex( ii, jj, Color.ORANGE, drawingMapPixmap);
+                    mapService.renderHex( ii, jj, GraphicUtil.orangeTexture, drawingMapPixmap);
                     drawingTexture.draw(drawingMapPixmap, 0, 0);
                 }
             }

@@ -3,9 +3,11 @@ package com.mycompany.test01.Service;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Hexagon;
 import com.mycompany.test01.Enum.HexagonCategory;
+import com.mycompany.test01.Util.GraphicUtil;
 
 public class MapService {
     private static MapService instance = null;
@@ -349,8 +351,11 @@ public class MapService {
                 */
                 int x = getXFromIJ(i, j);
                 int y = getYFromJ(j);
-                Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
-                drawHexagon(drawingPixmap, x, y, hexagonSize, hexColor, Color.BLACK);
+                //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
+                // faire méthode dans enum ou GraphicUtil qui renvoie la texture en fonction du terrain
+                Texture textureGrass = hexesArray.get(i + startI).get(j + startJ).getTextureFromCategory();
+
+                drawHexagon(drawingPixmap, x, y, hexagonSize, textureGrass, Color.BLACK);
             }
         }
     }
@@ -435,7 +440,7 @@ public class MapService {
         //drawingMapPixmap.drawLine(rectX + selectRectWidth, rectY, rectX + selectRectWidth, rectY + selectRectHeight);
     }
 
-    public void renderHex(int hexI, int hexJ, Color color, Pixmap pixmap) {
+    public void renderHex(int hexI, int hexJ, Texture texture, Pixmap pixmap) {
         // Calculer les coordonnées du centre de l'hexagone
         /*
         int centerX = (hexI - startI) * gapX + gapX / 2 + 10; // Ajouter la marge de 10
@@ -447,9 +452,66 @@ public class MapService {
         int centerX = getXFromIJ(hexI - startI, hexJ - startJ);
         int centerY = getYFromJ(hexJ - startJ);
         // Dessiner l'hexagone avec la couleur spécifiée
-        drawHexagon(pixmap, centerX, centerY, hexagonSize, color, Color.BLACK);
+        //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
+        drawHexagon(pixmap, centerX, centerY, hexagonSize, texture, Color.BLACK);
     }
+    /*
+     * Draws a textured hexagon onto the provided Pixmap.
+     *
+     * @param pixmap       The Pixmap to draw on.
+     * @param centerX      The x-coordinate of the hexagon's center.
+     * @param centerY      The y-coordinate of the hexagon's center.
+     * @param size         The size (radius) of the hexagon.
+     * @param texture      The texture to fill the hexagon with.  Must be non-null
+     * @param borderColor  The color of the hexagon's border.
+     */
 
+
+    public void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Texture texture, Color borderColor) {
+        int[] xPoints = new int[6];
+        int[] yPoints = new int[6];
+
+        for (int i = 0; i < 6; i++) {
+            double angle = 2 * Math.PI / 6 * (i + 0.5);
+            xPoints[i] = (int) (centerX + size * Math.cos(angle));
+            yPoints[i] = (int) (centerY + size * Math.sin(angle));
+        }
+
+        // Fill with texture
+        pixmap.setColor(Color.WHITE); // Important: set to white for texture drawing
+
+        //Get the pixel data from the texture
+        Pixmap texturePixmap = textureToPixmap(texture);
+
+        if (texturePixmap != null) {
+            for (int y = centerY - size; y <= centerY + size; y++) {
+                for (int x = centerX - size; x <= centerX + size; x++) {
+                    if (isInsideHexagon(x, y, xPoints, yPoints)) {
+                        // Sample the texture
+                        int textureX = (int) (((x - (centerX - size)) / (double) (2 * size)) * texturePixmap.getWidth());
+                        int textureY = (int) (((y - (centerY - size)) / (double) (2 * size)) * texturePixmap.getHeight());
+
+                        //Adjust textureX and textureY in case they are out of bounds
+                        textureX = Math.max(0, Math.min(textureX, texturePixmap.getWidth() - 1));
+                        textureY = Math.max(0, Math.min(textureY, texturePixmap.getHeight() - 1));
+
+                        int pixelColor = texturePixmap.getPixel(textureX, textureY);
+                        pixmap.drawPixel(x, y, pixelColor);
+                    }
+                }
+            }
+            texturePixmap.dispose();
+        }
+
+
+        // Contour
+        pixmap.setColor(borderColor);
+        for (int i = 0; i < 6; i++) {
+            int j = (i + 1) % 6;
+            pixmap.drawLine(xPoints[i], yPoints[i], xPoints[j], yPoints[j]);
+        }
+    }
+    /*
     public void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Color fillColor, Color borderColor) {
         int[] xPoints = new int[6];
         int[] yPoints = new int[6];
@@ -476,6 +538,14 @@ public class MapService {
             int j = (i + 1) % 6;
             pixmap.drawLine(xPoints[i], yPoints[i], xPoints[j], yPoints[j]);
         }
+    }*/
+
+    public Pixmap textureToPixmap(Texture texture) {
+        if (!texture.getTextureData().isPrepared()) {
+            texture.getTextureData().prepare();
+        }
+        Pixmap pixmap = texture.getTextureData().consumePixmap();
+        return pixmap;
     }
 
     private boolean isInsideHexagon(int x, int y, int[] xPoints, int[] yPoints) {
