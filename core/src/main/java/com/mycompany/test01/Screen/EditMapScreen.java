@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mycompany.test01.Common.LargeButtonWrapper;
 import com.mycompany.test01.Entity.Hexagon;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -52,55 +53,27 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         stage.addActor(menuLabel);
 
-        // Create a skin
-        Skin skin = new Skin();
-        skin.add("default-font", font);
+        LargeButtonWrapper buttonWrapper = new LargeButtonWrapper(
+            "Back to Menu",
+            font,
+            (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
+            20);
 
-        // Create a texture for the button background
-        Pixmap pixmap = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.DARK_GRAY);
-        pixmap.fill();
-        pixmap.setColor(Color.BLACK); //Border Color
-        pixmap.drawRectangle(0, 0, 200, 50);
-        skin.add("button-up", new Texture(pixmap));
-        pixmap.dispose();
-
-        Pixmap pixmapHover = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
-        pixmapHover.setColor(Color.CORAL);
-        pixmapHover.fill();
-        pixmapHover.setColor(Color.BLACK); //Border Color
-        pixmapHover.drawRectangle(0, 0, 200, 50);
-        skin.add("button-hover", new Texture(pixmapHover));
-        pixmapHover.dispose();
-
-
-        // Configure a TextButtonStyle
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("button-up", Color.WHITE); //Up state
-        textButtonStyle.over = skin.newDrawable("button-hover", Color.ORANGE); //Hover State
-        textButtonStyle.font = skin.getFont("default-font");
-        textButtonStyle.fontColor = Color.WHITE;
-
-
-        // Create the button
-        TextButton button = new TextButton("Back to Menu", textButtonStyle);
-        button.setPosition(Gdx.graphics.getWidth() / 2f - button.getWidth() / 2f, 20);
-
-        button.addListener(new ClickListener() {
+        buttonWrapper.getButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MenuScreen(game));
             }
         });
 
-        stage.addActor(button);
+        stage.addActor(buttonWrapper.getButton());
         //mapService.updateMapSize();
 
         drawingMapPixmap = new Pixmap((int) mapService.getMapWidth(),(int) mapService.getMapHeight(), Pixmap.Format.RGBA8888);
         drawingMapPixmap.setColor(Color.DARK_GRAY);
         drawingMapPixmap.fill();
 
-        mapService.drawMap(mapService.getHexesArray(), drawingMapPixmap);
+        mapService.drawMap(drawingMapPixmap);
 
         drawingTexture = new Texture(drawingMapPixmap);
 
@@ -118,7 +91,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         drawingMapPixmap.fill();
 
         // Redraw the map to the pixmap
-        mapService.drawMap(mapService.getHexesArray(), drawingMapPixmap);
+        mapService.drawMap(drawingMapPixmap);
 
         // Create a new texture from the pixmap
         drawingTexture = new Texture(drawingMapPixmap);

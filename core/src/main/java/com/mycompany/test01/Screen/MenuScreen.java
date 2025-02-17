@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mycompany.test01.Common.LargeButtonWrapper;
 import com.mycompany.test01.Main;
 
 public class MenuScreen implements Screen {
@@ -36,47 +37,20 @@ public class MenuScreen implements Screen {
 
         stage.addActor(menuLabel);
 
-        // Create a skin
-        Skin skin = new Skin();
-        skin.add("default-font", font);
+        LargeButtonWrapper buttonWrapper = new LargeButtonWrapper(
+            "Edit Map",
+            font,
+            (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
+            (int) (Gdx.graphics.getHeight() / 2f - 50 / 2f));
 
-        // Create a texture for the button background
-        Pixmap pixmap = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.DARK_GRAY);
-        pixmap.fill();
-        pixmap.setColor(Color.BLACK); //Border Color
-        pixmap.drawRectangle(0, 0, 200, 50);
-        skin.add("button-up", new Texture(pixmap));
-        pixmap.dispose();
-
-        Pixmap pixmapHover = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
-        pixmapHover.setColor(Color.CORAL);
-        pixmapHover.fill();
-        pixmapHover.setColor(Color.BLACK); //Border Color
-        pixmapHover.drawRectangle(0, 0, 200, 50);
-        skin.add("button-hover", new Texture(pixmapHover));
-        pixmapHover.dispose();
-
-
-        // Configure a TextButtonStyle
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("button-up", Color.WHITE); //Up state
-        textButtonStyle.over = skin.newDrawable("button-hover", Color.ORANGE); //Hover State
-        textButtonStyle.font = skin.getFont("default-font");
-        textButtonStyle.fontColor = Color.WHITE;
-
-        TextButton button = new TextButton("Edit Map", textButtonStyle);
-        button.setPosition( Gdx.graphics.getWidth() / 2f - button.getWidth() / 2f,
-             Gdx.graphics.getHeight() / 2f - button.getHeight() / 2f);
-
-        button.addListener(new ClickListener() {
+        buttonWrapper.getButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new EditMapScreen(game));
             }
         });
 
-        stage.addActor(button);
+        stage.addActor(buttonWrapper.getButton());
     }
 
     @Override

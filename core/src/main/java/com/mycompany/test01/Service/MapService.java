@@ -338,8 +338,7 @@ public class MapService {
         return toReturn;
     }
 
-    public void drawMap(Array<Array<Hexagon>> hexesArray,
-                        Pixmap drawingPixmap
+    public void drawMap(Pixmap drawingPixmap
                         ) {
         // Dessiner les hexagones
         for(int i=0; i < maxI; i++) {
@@ -353,9 +352,9 @@ public class MapService {
                 int y = getYFromJ(j);
                 //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
                 // faire méthode dans enum ou GraphicUtil qui renvoie la texture en fonction du terrain
-                Texture textureGrass = hexesArray.get(i + startI).get(j + startJ).getTextureFromCategory();
+                Texture texture = this.hexesArray.get(i + startI).get(j + startJ).getTextureFromCategory();
 
-                drawHexagon(drawingPixmap, x, y, hexagonSize, textureGrass, Color.BLACK);
+                drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
             }
         }
     }
