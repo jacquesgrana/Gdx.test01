@@ -5,5 +5,11 @@ public enum EditMapMode {
     TERRAIN,
     RIVER,
     ROAD,
-    MISC
+    MISC;
+
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

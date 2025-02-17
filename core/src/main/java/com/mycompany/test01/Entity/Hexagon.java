@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Util.GraphicUtil;
 
+// TODO changer category en terrain ??
 public class Hexagon {
     private int x;
     private int y;

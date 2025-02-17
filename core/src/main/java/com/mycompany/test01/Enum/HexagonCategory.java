@@ -15,4 +15,9 @@ public enum HexagonCategory {
         else return  HexagonCategory.SWAMP;
         //return HexagonCategory.SAND;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

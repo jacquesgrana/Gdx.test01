@@ -213,6 +213,7 @@ public class MapService {
         return this.gapY * j + this.hexagonSize + this.margin;
     }
 
+    // TODO effets de bord sur limitI et limit J !!
     public Hexagon[] getNeighborhoodHexes(int i, int j) {
         Hexagon[] toReturn = new Hexagon[6];
         for (int k=0; k<6; k++) {
@@ -228,7 +229,7 @@ public class MapService {
                         }
                         break;
                     case 1 :
-                        if(i+1 < this.maxI && j-1 >= 0) {
+                        if(i+1+this.startI < this.limitI && j-1 >= 0) {
                             Hexagon northEast = this.hexesArray.get(i+1+this.startI).get(j-1+this.startJ);
                             toReturn[k] = northEast;
                         }
@@ -246,7 +247,7 @@ public class MapService {
                         }
                         break;
                     case 3 :
-                        if(i+1 < this.maxI) {
+                        if(i+1+this.startI < this.limitI) {
                             Hexagon east = this.hexesArray.get(i+1+this.startI).get(j+this.startJ);
                             toReturn[k] = east;
                         }
@@ -255,7 +256,7 @@ public class MapService {
                         }
                         break;
                     case 4 :
-                        if(j+1 < this.maxJ) {
+                        if(j+1+this.startJ < this.limitJ) {
                             Hexagon southWest = this.hexesArray.get(i+this.startI).get(j+1+this.startJ);
                             toReturn[k] = southWest;
                         }
@@ -264,7 +265,7 @@ public class MapService {
                         }
                         break;
                     case 5 :
-                        if(i+1 < this.maxI && j+1 < this.maxJ) {
+                        if(i+1+this.startI < this.limitI && j+1+this.startJ < this.limitJ) {
                             Hexagon southEast = this.hexesArray.get(i+1+this.startI).get(j+1+this.startJ);
                             toReturn[k] = southEast;
                         }
@@ -304,7 +305,7 @@ public class MapService {
                         }
                         break;
                     case 3 :
-                        if(i+1 < this.maxI) {
+                        if(i+1+this.startI < this.limitI) {
                             Hexagon east = this.hexesArray.get(i+1+this.startI).get(j+this.startJ);
                             toReturn[k] = east;
                         }
@@ -313,7 +314,7 @@ public class MapService {
                         }
                         break;
                     case 4 :
-                        if(i-1 >= 0 && j+1 < this.maxJ) {
+                        if(i-1 >= 0 && j+1+this.startJ < this.limitJ) {
                             Hexagon southWest = this.hexesArray.get(i-1+this.startI).get(j+1+this.startJ);
                             toReturn[k] = southWest;
                         }
@@ -322,7 +323,7 @@ public class MapService {
                         }
                         break;
                     case 5 :
-                        if(j+1 < this.maxJ) {
+                        if(j+1+this.startJ < this.limitJ) {
                             Hexagon southEast = this.hexesArray.get(i+this.startI).get(j+1+this.startJ);
                             toReturn[k] = southEast;
                         }

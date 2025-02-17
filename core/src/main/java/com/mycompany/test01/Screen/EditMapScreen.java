@@ -33,7 +33,7 @@ public class EditMapScreen implements Screen, InputProcessor {
     final MapService mapService;
     private boolean isMiniMapVisible = false;
     private EditMapMode mode;
-    private Label modeLabel;
+    private final Label modeLabel;
 
     public EditMapScreen(Main game) {
         this.mode = EditMapMode.NO_ACTION;
@@ -263,34 +263,47 @@ public class EditMapScreen implements Screen, InputProcessor {
             y >= 0 && y <= mapHeight - margin) {
             System.out.println("clic in !!");
 
-            int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
-            System.out.println("j : " + j);
-            int i = 0;
-            if(j % 2 == 0) {
-                i = (int) (x - mapService.getGapX() / 2) / mapService.getGapX();
-            }
-            else {
-                i = (int) x / mapService.getGapX();
-            }
-            //int i = (int) x / mapService.getGapX();
-            System.out.println("i : " + i);
+            if(this.mode == EditMapMode.NO_ACTION) {
+                int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
+                System.out.println("j : " + j);
+                int i = 0;
+                if(j % 2 == 0) {
+                    i = (int) (x - mapService.getGapX() / 2) / mapService.getGapX();
+                }
+                else {
+                    i = (int) x / mapService.getGapX();
+                }
+                //int i = (int) x / mapService.getGapX();
+                System.out.println("i : " + i);
 
-            if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
-                Hexagon clickedHexagon = mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ());
-                System.out.println("hex terrain : " + clickedHexagon.getCategory());
-                mapService.renderHex( i + mapService.getStartI(), j + mapService.getStartJ(), GraphicUtil.redTexture, drawingMapPixmap);
-                drawingTexture.draw(drawingMapPixmap, 0, 0);
-            }
-
-            Hexagon[] neighbours = mapService.getNeighborhoodHexes(i, j);
-            for(int k=0; k<6; k++) {
-                if(neighbours[k] != null) {
-                    int ii = neighbours[k].getX();
-                    int jj = neighbours[k].getY();
-                    mapService.renderHex( ii, jj, GraphicUtil.orangeTexture, drawingMapPixmap);
+                if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
+                    Hexagon clickedHexagon = mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ());
+                    System.out.println("hex terrain : " + clickedHexagon.getCategory());
+                    mapService.renderHex( i + mapService.getStartI(), j + mapService.getStartJ(), GraphicUtil.redTexture, drawingMapPixmap);
                     drawingTexture.draw(drawingMapPixmap, 0, 0);
                 }
+
+                Hexagon[] neighbours = mapService.getNeighborhoodHexes(i, j);
+                for(int k=0; k<6; k++) {
+                    if(neighbours[k] != null) {
+                        int ii = neighbours[k].getX();
+                        int jj = neighbours[k].getY();
+                        if (ii - mapService.getStartI() >= 0 &&
+                            ii - mapService.getStartI() < mapService.getMaxI() &&
+                            jj - mapService.getStartJ() >= 0 &&
+                            jj - mapService.getStartJ() < mapService.getMaxJ()
+                        ) {
+                            mapService.renderHex( ii, jj, GraphicUtil.orangeTexture, drawingMapPixmap);
+                            drawingTexture.draw(drawingMapPixmap, 0, 0);
+                        }
+
+                    }
+                }
             }
+            else if(this.mode == EditMapMode.TERRAIN) {
+                // modifier modePanel selon this.mode -> faire méthode qui affiche les boutons des terrain (category)
+            }
+
 
 
             return true; // Indique que l'événement a été traité
