@@ -11,12 +11,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mycompany.test01.Common.LargeButtonWrapper;
+import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Entity.Hexagon;
+import com.mycompany.test01.Enum.EditMapMode;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,8 +32,11 @@ public class EditMapScreen implements Screen, InputProcessor {
     private Texture drawingTexture = null;
     final MapService mapService;
     private boolean isMiniMapVisible = false;
+    private EditMapMode mode;
+    private Label modeLabel;
 
     public EditMapScreen(Main game) {
+        this.mode = EditMapMode.NO_ACTION;
         this.mapService = MapService.getInstance();
         this.mapService.init();
         //mapService.updateMapSize();
@@ -53,21 +55,96 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         stage.addActor(menuLabel);
 
-        LargeButtonWrapper buttonWrapper = new LargeButtonWrapper(
+        ButtonWrapper buttonBackWrapper = new ButtonWrapper(
             "Back to Menu",
             font,
             (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
-            20);
+            20, 200, 50);
 
-        buttonWrapper.getButton().addListener(new ClickListener() {
+        buttonBackWrapper.getButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MenuScreen(game));
             }
         });
 
-        stage.addActor(buttonWrapper.getButton());
-        //mapService.updateMapSize();
+        stage.addActor(buttonBackWrapper.getButton());
+
+        // label "selected mode :"
+        this.modeLabel = new Label("Edit Mode : " + this.mode, labelStyle);
+        this.modeLabel.setPosition(50, 130);
+        stage.addActor(this.modeLabel);
+
+        // boutons mode : "no-action", "terrain", "road", "river"
+        ButtonWrapper buttonModeNoActionWrapper = new ButtonWrapper(
+            "No Action",
+            font,
+            50, 80, 160, 40);
+        EditMapScreen that = this;
+        buttonModeNoActionWrapper.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                that.mode = EditMapMode.NO_ACTION;
+                that.modeLabel.setText("Edit Mode : NO_ACTION");
+            }
+        });
+        stage.addActor(buttonModeNoActionWrapper.getButton());
+
+        ButtonWrapper buttonModeTerrainWrapper = new ButtonWrapper(
+            "Terrain",
+            font,
+            50 + 10 + 160, 80, 160, 40);
+        //EditMapScreen that = this;
+        buttonModeTerrainWrapper.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                that.mode = EditMapMode.TERRAIN;
+                that.modeLabel.setText("Edit Mode : TERRAIN");
+            }
+        });
+        stage.addActor(buttonModeTerrainWrapper.getButton());
+
+        ButtonWrapper buttonModeRiverWrapper = new ButtonWrapper(
+            "River",
+            font,
+            50 + 2 * (10 + 160), 80, 160, 40);
+        //EditMapScreen that = this;
+        buttonModeRiverWrapper.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                that.mode = EditMapMode.RIVER;
+                that.modeLabel.setText("Edit Mode : RIVER");
+            }
+        });
+        stage.addActor(buttonModeRiverWrapper.getButton());
+
+        ButtonWrapper buttonModeRoadWrapper = new ButtonWrapper(
+            "Road",
+            font,
+            50 + 3 * (10 + 160), 80, 160, 40);
+        //EditMapScreen that = this;
+        buttonModeRoadWrapper.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                that.mode = EditMapMode.ROAD;
+                that.modeLabel.setText("Edit Mode : ROAD");
+            }
+        });
+        stage.addActor(buttonModeRoadWrapper.getButton());
+
+        ButtonWrapper buttonModeMiscWrapper = new ButtonWrapper(
+            "Misc",
+            font,
+            50 + 4 * (10 + 160), 80, 160, 40);
+        //EditMapScreen that = this;
+        buttonModeMiscWrapper.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                that.mode = EditMapMode.MISC;
+                that.modeLabel.setText("Edit Mode : MISC");
+            }
+        });
+        stage.addActor(buttonModeMiscWrapper.getButton());
 
         drawingMapPixmap = new Pixmap((int) mapService.getMapWidth(),(int) mapService.getMapHeight(), Pixmap.Format.RGBA8888);
         drawingMapPixmap.setColor(Color.DARK_GRAY);

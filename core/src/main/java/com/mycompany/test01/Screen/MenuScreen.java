@@ -2,20 +2,15 @@ package com.mycompany.test01.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mycompany.test01.Common.LargeButtonWrapper;
+import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Main;
 
 public class MenuScreen implements Screen {
@@ -37,11 +32,12 @@ public class MenuScreen implements Screen {
 
         stage.addActor(menuLabel);
 
-        LargeButtonWrapper buttonWrapper = new LargeButtonWrapper(
+        ButtonWrapper buttonWrapper = new ButtonWrapper(
             "Edit Map",
             font,
             (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
-            (int) (Gdx.graphics.getHeight() / 2f - 50 / 2f));
+            (int) (Gdx.graphics.getHeight() / 2f - 50 / 2f),
+            200, 50);
 
         buttonWrapper.getButton().addListener(new ClickListener() {
             @Override

@@ -1,6 +1,5 @@
 package com.mycompany.test01.Common;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,33 +7,29 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import java.awt.*;
-
-public class LargeButtonWrapper {
-    private TextButton button;
-    public LargeButtonWrapper(String text, BitmapFont font, int posX, int posY) {
-
+public class ButtonWrapper {
+    private final TextButton button;
+    public ButtonWrapper(String text, BitmapFont font, int posX, int posY, int width, int height) {
         // Create a skin
         Skin skin = new Skin();
         skin.add("default-font", font);
 
         // Create a texture for the button background
-        Pixmap pixmap = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.DARK_GRAY);
         pixmap.fill();
         pixmap.setColor(Color.BLACK); //Border Color
-        pixmap.drawRectangle(0, 0, 200, 50);
+        pixmap.drawRectangle(0, 0, width, height);
         skin.add("button-up", new Texture(pixmap));
         pixmap.dispose();
 
-        Pixmap pixmapHover = new Pixmap(200, 50, Pixmap.Format.RGBA8888);
+        Pixmap pixmapHover = new Pixmap(width, height, Pixmap.Format.RGBA8888);
         pixmapHover.setColor(Color.CORAL);
         pixmapHover.fill();
         pixmapHover.setColor(Color.BLACK); //Border Color
-        pixmapHover.drawRectangle(0, 0, 200, 50);
+        pixmapHover.drawRectangle(0, 0, width, height);
         skin.add("button-hover", new Texture(pixmapHover));
         pixmapHover.dispose();
-
 
         // Configure a TextButtonStyle
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -43,7 +38,7 @@ public class LargeButtonWrapper {
         textButtonStyle.font = skin.getFont("default-font");
         textButtonStyle.fontColor = Color.WHITE;
 
-        this.button = new TextButton("Edit Map", textButtonStyle);
+        this.button = new TextButton(text, textButtonStyle);
         //button.setPosition( Gdx.graphics.getWidth() / 2f - button.getWidth() / 2f,
         /*
         button.setPosition( Gdx.graphics.getWidth() / 2f - button.getWidth() / 2f,
