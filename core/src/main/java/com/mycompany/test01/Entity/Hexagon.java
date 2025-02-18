@@ -41,6 +41,7 @@ public class Hexagon {
         this.category = category;
     }
 
+
     public Color getColorFromCategory() {
         Color toReturn = null;
         switch (this.category) {

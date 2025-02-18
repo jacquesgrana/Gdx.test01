@@ -7,15 +7,18 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Entity.Hexagon;
 import com.mycompany.test01.Enum.EditMapMode;
+import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,6 +37,10 @@ public class EditMapScreen implements Screen, InputProcessor {
     private boolean isMiniMapVisible = false;
     private EditMapMode mode;
     private final Label modeLabel;
+    private Label selectedTerrainLabel;
+    private final Table terrainButtonPanel;  // Panel to hold the terrain buttons
+    private final Skin skin; //Skin for UI elements
+    private HexagonCategory selectedTerrain = HexagonCategory.GRASS;
 
     public EditMapScreen(Main game) {
         this.mode = EditMapMode.NO_ACTION;
@@ -46,7 +53,8 @@ public class EditMapScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
 
         this.font = new BitmapFont();
-
+        this.skin = createDefaultSkin();
+        //this.selectedTerrainPanel = null;
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
         Label menuLabel = new Label("Edit Map", labelStyle);
@@ -86,6 +94,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.NO_ACTION;
                 that.modeLabel.setText("Edit Mode : NO_ACTION");
+                hideTerrainButtonPanel();
             }
         });
         stage.addActor(buttonModeNoActionWrapper.getButton());
@@ -100,6 +109,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.TERRAIN;
                 that.modeLabel.setText("Edit Mode : TERRAIN");
+                showTerrainButtonPanel(); // Show the terrain panel when in terrain mode
             }
         });
         stage.addActor(buttonModeTerrainWrapper.getButton());
@@ -114,6 +124,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.RIVER;
                 that.modeLabel.setText("Edit Mode : RIVER");
+                hideTerrainButtonPanel();
             }
         });
         stage.addActor(buttonModeRiverWrapper.getButton());
@@ -128,6 +139,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.ROAD;
                 that.modeLabel.setText("Edit Mode : ROAD");
+                hideTerrainButtonPanel();
             }
         });
         stage.addActor(buttonModeRoadWrapper.getButton());
@@ -142,6 +154,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.MISC;
                 that.modeLabel.setText("Edit Mode : MISC");
+                hideTerrainButtonPanel();
             }
         });
         stage.addActor(buttonModeMiscWrapper.getButton());
@@ -154,7 +167,8 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         drawingTexture = new Texture(drawingMapPixmap);
 
-
+        terrainButtonPanel = createTerrainButtonPanel();
+        terrainButtonPanel.setVisible(false); // Initially hidden
     }
 
     private void redrawMap() {
@@ -196,6 +210,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         batch.dispose();
         drawingMapPixmap.dispose();
         drawingTexture.dispose();
+        skin.dispose();
     }
 
     @Override
@@ -264,6 +279,8 @@ public class EditMapScreen implements Screen, InputProcessor {
             System.out.println("clic in !!");
 
             if(this.mode == EditMapMode.NO_ACTION) {
+                // TODO factoriser !!
+
                 int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
                 System.out.println("j : " + j);
                 int i = 0;
@@ -301,51 +318,29 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
             }
             else if(this.mode == EditMapMode.TERRAIN) {
-                // modifier modePanel selon this.mode -> faire méthode qui affiche les boutons des terrain (category)
+                // TODO factoriser
+                int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
+                System.out.println("j : " + j);
+                int i = 0;
+                if(j % 2 == 0) {
+                    i = (int) (x - mapService.getGapX() / 2) / mapService.getGapX();
+                }
+                else {
+                    i = (int) x / mapService.getGapX();
+                }
+                //int i = (int) x / mapService.getGapX();
+                System.out.println("i : " + i);
+
+                if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
+                    if(mapService.getHexesArray().get(i+mapService.getStartI()).get(j+mapService.getStartJ()).getCategory() != this.selectedTerrain) {
+                        mapService.getHexesArray().get(i+mapService.getStartI()).get(j+mapService.getStartJ()).setCategory(this.selectedTerrain);
+                    }
+                    redrawMap();
+                }
             }
-
-
 
             return true; // Indique que l'événement a été traité
 
-            // Le clic est dans la zone de la Pixmap
-            //float localX = worldCoords.x - mapX; // Soustraire la marge de 10
-            //float localY = mapService.getMapHeight() - (worldCoords.y - mapY); // Soustraire la marge de 10
-
-            /*
-
-            // Calculer quelle tuile hexagonale a été cliquée
-            int hexX = (int) (localX / mapService.getGapX());
-            int hexY = (int) (localY / mapService.getGapY());
-
-            // Ajuster pour le décalage une ligne sur deux
-            if (hexY % 2 == 0) {
-                hexX = (int) ((localX + mapService.getGapX() / 2f) / mapService.getGapX());
-            }
-
-            // Ajouter le décalage de départ
-            hexX += mapService.getStartI();
-            hexY += mapService.getStartJ();
-
-            // Vérifier si l'hexagone cliqué est dans les limites de la carte
-            if (hexX >= 0 && hexX < mapService.getLimitI() && hexY >= 0 && hexY < mapService.getLimitJ()) {
-                System.out.println("Tuile hexagonale cliquée : (" + hexX + ", " + hexY + ")");
-
-                // Ajouter ici la logique pour interagir avec l'hexagone cliqué
-                // Par exemple :
-                Hexagon clickedHexagon = mapService.getHexesArray().get(hexX).get(hexY);
-
-                System.out.println("hex terrain : " + clickedHexagon.getCategory());
-                // Dessiner un hexagone rouge au bon endroit
-                mapService.renderHex(hexX, hexY, Color.RED, drawingPixmap);
-
-                // Mettre à jour la texture pour refléter les modifications du Pixmap
-                drawingTexture.draw(drawingPixmap, 0, 0);
-
-
-
-                return true; // Indique que l'événement a été traité
-            }*/
         }
 
         // Si le clic n'est pas sur la carte, déléguer à Stage
@@ -389,23 +384,32 @@ public class EditMapScreen implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         int delta = 2;
-        System.out.println("keycode : " + keycode);
+        //System.out.println("keycode : " + keycode);
         switch (keycode) {
             case Input.Keys.LEFT:
-                mapService.setStartI(mapService.getStartI() + delta);
-                redrawMap();
+                if(!this.isMiniMapVisible) {
+                    mapService.setStartI(mapService.getStartI() + delta);
+                    redrawMap();
+                }
+
                 break;
             case Input.Keys.RIGHT:
-                mapService.setStartI(mapService.getStartI() - delta);
-                redrawMap();
+                if(!this.isMiniMapVisible) {
+                    mapService.setStartI(mapService.getStartI() - delta);
+                    redrawMap();
+                }
                 break;
             case Input.Keys.UP:
-                mapService.setStartJ(mapService.getStartJ() + delta);
-                redrawMap();
+                if(!this.isMiniMapVisible) {
+                    mapService.setStartJ(mapService.getStartJ() + delta);
+                    redrawMap();
+                }
                 break;
             case Input.Keys.DOWN:
+                if(!this.isMiniMapVisible) {
                 mapService.setStartJ(mapService.getStartJ() - delta);
                 redrawMap();
+                }
                 break;
             case 74: // 'm/M'
                 this.isMiniMapVisible = !this.isMiniMapVisible;
@@ -443,6 +447,101 @@ public class EditMapScreen implements Screen, InputProcessor {
     @Override
     public boolean scrolled(float amountX, float amountY) {
         return false;
+    }
+
+    private Table createTerrainButtonPanel() {
+        Table panel = new Table();
+        // Ajouter l'image de la texture
+        Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
+        Image terrainImage = new Image(terrainTexture);
+        terrainImage.setSize(90, 30);
+        panel.defaults().pad(5);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
+        this.selectedTerrainLabel = new Label("Selected Terrain : " + this.selectedTerrain.toString(), labelStyle);
+        //this.selectedTerrainLabel.setPosition(50, 150);
+         // Add some padding around the buttons
+        panel.add(this.selectedTerrainLabel).colspan(4);
+        panel.row();
+        // Define the terrain types (you can load these from a file or configuration)
+        HexagonCategory[] terrainTypes = {HexagonCategory.FOREST,
+        HexagonCategory.GRASS,
+        HexagonCategory.SAND,
+        HexagonCategory.SWAMP};
+        EditMapScreen that = this;
+        // Create buttons for each terrain type
+        for (HexagonCategory terrainType : terrainTypes) {
+            TextButton button = new TextButton(terrainType.toString(), skin);
+
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Handle the terrain selection
+                    System.out.println("Selected terrain: " + terrainType.toString());
+                    // You would likely set a "selectedTerrain" variable here
+                    // and use it in the touchDown method to apply the terrain.
+                    selectedTerrain = terrainType;
+                    selectedTerrainLabel.setText("Selected Terrain : " + terrainType.toString());
+                    // ajouter update affichage miniature du selectedTerrain
+                    terrainImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromTerrain(that.selectedTerrain))));
+                }
+            });
+            panel.add(button);
+        }
+        panel.row(); // New row for each button (for vertical layout)
+
+        // Ajouter l'image de la texture
+        /*
+        Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
+        Image terrainImage = new Image(terrainTexture);
+        terrainImage.setSize(90, 30);*/
+        panel.add(terrainImage).colspan(4).width(90).height(30);
+        panel.row();
+
+
+        // Position the panel in the bottom-right corner
+        panel.setPosition(Gdx.graphics.getWidth() - 220f, 100f);
+        return panel;
+    }
+
+
+    private void showTerrainButtonPanel() {
+        if (terrainButtonPanel.getParent() == null) {
+            stage.addActor(terrainButtonPanel);
+        }
+        terrainButtonPanel.setVisible(true);
+    }
+
+    private void hideTerrainButtonPanel() {
+        terrainButtonPanel.setVisible(false);
+    }
+
+    private Skin createDefaultSkin() {
+        Skin skin = new Skin();
+
+        // Generate a default font
+        BitmapFont font = new BitmapFont();
+        skin.add("default-font", font);
+
+        // Create a texture for the button background
+        Pixmap pixmap = new Pixmap(80, 30, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.DARK_GRAY);
+        pixmap.fill();
+        // Draw a 1-pixel black border
+        pixmap.setColor(Color.BLACK);
+        pixmap.drawRectangle(0, 0, (int) pixmap.getWidth(), (int) pixmap.getHeight());
+        skin.add("button", new Texture(pixmap));
+
+        pixmap.dispose(); // Dispose of the Pixmap!
+
+        // Configure a TextButtonStyle
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.newDrawable("button", Color.WHITE);
+        textButtonStyle.down = skin.newDrawable("button", Color.LIGHT_GRAY);
+        textButtonStyle.font = skin.getFont("default-font");
+        skin.add("default", textButtonStyle);
+
+        return skin;
     }
 
 }
