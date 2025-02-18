@@ -11,6 +11,7 @@ public class GraphicUtil {
     public static Texture forestTexture = loadTextureFromFile("texture/texture-forest.png");
     public static Texture sandTexture = loadTextureFromFile("texture/texture-sand.png");
     public static Texture swampTexture = loadTextureFromFile("texture/texture-swamp.png");
+    public static Texture waterTexture = loadTextureFromFile("texture/texture-water.png");
     public static Texture redTexture = loadTextureFromFile("texture/texture-red.png");
     public static Texture orangeTexture = loadTextureFromFile("texture/texture-orange.png");
 
@@ -43,6 +44,8 @@ public class GraphicUtil {
                 return sandTexture;
             case SWAMP:
                 return swampTexture;
+            case WATER:
+                return waterTexture;
         }
         return redTexture;
     }

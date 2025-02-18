@@ -4,7 +4,8 @@ public enum HexagonCategory {
     GRASS,
     FOREST,
     SWAMP,
-    SAND;
+    SAND,
+    WATER;
 
 
     static public HexagonCategory getRandomCategory() {
@@ -12,6 +13,7 @@ public enum HexagonCategory {
         if(random <= 0.5f) return HexagonCategory.GRASS;
         else if(random > 0.5f && random <= 0.75f) return HexagonCategory.FOREST;
         else if(random > 0.75f && random <= 0.8625f) return HexagonCategory.SAND;
+        else if(random > 0.8625f && random <= 0.95f) return HexagonCategory.WATER;
         else return  HexagonCategory.SWAMP;
         //return HexagonCategory.SAND;
     }

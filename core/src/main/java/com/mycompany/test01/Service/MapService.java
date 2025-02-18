@@ -70,6 +70,7 @@ public class MapService {
     }
 
     public void setStartI(int startI) {
+        if(startI%2 != 0) startI--;
         if(startI > this.limitI - this.maxI) {
             this.startI = this.limitI - this.maxI;
         }
@@ -87,6 +88,7 @@ public class MapService {
     }
 
     public void setStartJ(int startJ) {
+        if(startJ%2 != 0) startJ--;
         if(startJ > this.limitJ - this.maxJ) {
             this.startJ = this.limitJ - this.maxJ;
         }
@@ -378,24 +380,16 @@ public class MapService {
             i = (int) x / miniHexSize;
         }
 
-        /*
-        if (i < 0) {
-             i = 0;
-        }
-        else if (i >= this.limitI - this.maxI) {
-            i = this.limitI - this.maxI - 1;
-        }
-        if (j < 0) {
-            j = 0;
-        }
-        else if (j >= this.limitJ - this.maxJ) {
-            j = this.limitJ - this.maxJ - 1;
-        }
-        */
-
         // 'cappage'
+
+        //if(this.startI%2 != 0) this.startI -= 1;
+        //if(this.startJ%2 != 0) this.startJ -= 1;
+
         this.startI = i < 0 ? 0 : i >= this.limitI - this.maxI ? this.limitI - this.maxI - 1 : i;
         this.startJ = j < 0 ? 0 : j >= this.limitJ - this.maxJ ? this.limitJ - this.maxJ - 1 : j;
+        // utiliser des valeurs paires
+        this.startI -= this.startI%2;
+        this.startJ -= this.startJ%2;
         //this.startI = i;
         //this.startJ = j;
         // dessin du rectangle (faire méthode ?)

@@ -461,13 +461,14 @@ public class EditMapScreen implements Screen, InputProcessor {
         this.selectedTerrainLabel = new Label("Selected Terrain : " + this.selectedTerrain.toString(), labelStyle);
         //this.selectedTerrainLabel.setPosition(50, 150);
          // Add some padding around the buttons
-        panel.add(this.selectedTerrainLabel).colspan(4);
+        panel.add(this.selectedTerrainLabel).colspan(5);
         panel.row();
         // Define the terrain types (you can load these from a file or configuration)
         HexagonCategory[] terrainTypes = {HexagonCategory.FOREST,
         HexagonCategory.GRASS,
         HexagonCategory.SAND,
-        HexagonCategory.SWAMP};
+        HexagonCategory.SWAMP,
+        HexagonCategory.WATER};
         EditMapScreen that = this;
         // Create buttons for each terrain type
         for (HexagonCategory terrainType : terrainTypes) {
@@ -495,12 +496,12 @@ public class EditMapScreen implements Screen, InputProcessor {
         Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
         Image terrainImage = new Image(terrainTexture);
         terrainImage.setSize(90, 30);*/
-        panel.add(terrainImage).colspan(4).width(90).height(30);
+        panel.add(terrainImage).colspan(5).width(90).height(30);
         panel.row();
 
 
         // Position the panel in the bottom-right corner
-        panel.setPosition(Gdx.graphics.getWidth() - 220f, 100f);
+        panel.setPosition(Gdx.graphics.getWidth() - 270f, 100f);
         return panel;
     }
 

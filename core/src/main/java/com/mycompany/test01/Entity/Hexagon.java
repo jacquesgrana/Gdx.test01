@@ -57,6 +57,9 @@ public class Hexagon {
             case SAND:
                 toReturn = Color.YELLOW;
                 break;
+            case WATER:
+                toReturn = Color.BLUE;
+                break;
         }
         return toReturn;
     }
@@ -76,6 +79,8 @@ public class Hexagon {
             case SAND:
                 toReturn = GraphicUtil.sandTexture;
                 break;
+            case WATER:
+                toReturn = GraphicUtil.waterTexture;
         }
         return toReturn;
     }
