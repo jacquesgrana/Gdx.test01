@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Entity.Hexagon;
 import com.mycompany.test01.Enum.EditMapMode;
+import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -38,9 +39,14 @@ public class EditMapScreen implements Screen, InputProcessor {
     private EditMapMode mode;
     private final Label modeLabel;
     private Label selectedTerrainLabel;
+    private Label selectedFortificationLabel;
     private final Table terrainButtonPanel;  // Panel to hold the terrain buttons
+    //fortificationButtonPanel
+    private final Table fortificationButtonPanel;  // Panel to hold the terrain buttons
+
     private final Skin skin; //Skin for UI elements
     private HexagonCategory selectedTerrain = HexagonCategory.GRASS;
+    private FortificationCategory selectedFortification = FortificationCategory.NO_FORTIFICATION;
 
     public EditMapScreen(Main game) {
         this.mode = EditMapMode.NO_ACTION;
@@ -53,7 +59,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
 
         this.font = new BitmapFont();
-        this.skin = createDefaultSkin();
+        this.skin = GraphicUtil.getButtonSkin(80, 30);
         //this.selectedTerrainPanel = null;
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
@@ -95,6 +101,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.mode = EditMapMode.NO_ACTION;
                 that.modeLabel.setText("Edit Mode : NO_ACTION");
                 hideTerrainButtonPanel();
+                hideFortificationButtonPanel();
             }
         });
         stage.addActor(buttonModeNoActionWrapper.getButton());
@@ -109,7 +116,8 @@ public class EditMapScreen implements Screen, InputProcessor {
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.TERRAIN;
                 that.modeLabel.setText("Edit Mode : TERRAIN");
-                showTerrainButtonPanel(); // Show the terrain panel when in terrain mode
+                hideFortificationButtonPanel();// Show the terrain panel when in terrain mode
+                showTerrainButtonPanel();
             }
         });
         stage.addActor(buttonModeTerrainWrapper.getButton());
@@ -125,6 +133,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.mode = EditMapMode.RIVER;
                 that.modeLabel.setText("Edit Mode : RIVER");
                 hideTerrainButtonPanel();
+                hideFortificationButtonPanel();
             }
         });
         stage.addActor(buttonModeRiverWrapper.getButton());
@@ -140,14 +149,31 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.mode = EditMapMode.ROAD;
                 that.modeLabel.setText("Edit Mode : ROAD");
                 hideTerrainButtonPanel();
+                hideFortificationButtonPanel();
             }
         });
         stage.addActor(buttonModeRoadWrapper.getButton());
 
+        ButtonWrapper buttonModeFortificationWrapper = new ButtonWrapper(
+            "Fortification",
+            font,
+            50 + 4 * (10 + 160), 80, 160, 40);
+        //EditMapScreen that = this;
+        buttonModeFortificationWrapper.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                that.mode = EditMapMode.FORTIFICATION;
+                that.modeLabel.setText("Edit Mode : FORTIFICATION");
+                hideTerrainButtonPanel();
+                showFortificationButtonPanel();
+            }
+        });
+        stage.addActor(buttonModeFortificationWrapper.getButton());
+
         ButtonWrapper buttonModeMiscWrapper = new ButtonWrapper(
             "Misc",
             font,
-            50 + 4 * (10 + 160), 80, 160, 40);
+            50 + 5 * (10 + 160), 80, 160, 40);
         //EditMapScreen that = this;
         buttonModeMiscWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -168,6 +194,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         drawingTexture = new Texture(drawingMapPixmap);
 
         terrainButtonPanel = createTerrainButtonPanel();
+        fortificationButtonPanel = createFortificationButtonPanel();
         terrainButtonPanel.setVisible(false); // Initially hidden
     }
 
@@ -505,6 +532,47 @@ public class EditMapScreen implements Screen, InputProcessor {
         return panel;
     }
 
+    private Table createFortificationButtonPanel() {
+        Table panel = new Table();
+        panel.defaults().pad(5);
+
+        //Texture fortificationTexture = GraphicUtil.getTextureFromFortification(this.selectedFortification);
+        Image fortificationImage = new Image();
+        fortificationImage.setSize(64, 64);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
+        this.selectedFortificationLabel = new Label("Selected Fortification : " + selectedFortification.toString(), labelStyle);
+        panel.add(this.selectedFortificationLabel).colspan(5);
+        panel.row();
+
+        FortificationCategory[] fortificationTypes = {
+            FortificationCategory.NO_FORTIFICATION,
+            FortificationCategory.CONCRETE_LIGHT,
+            FortificationCategory.CONCRETE_MEDIUM,
+            FortificationCategory.CONCRETE_HEAVY
+        };
+        EditMapScreen that = this;
+        Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+        for (FortificationCategory fortificationType : fortificationTypes) {
+            TextButton button = new TextButton(fortificationType.toString(), buttonSkin);
+
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("Selected fortification: " + fortificationType.toString());
+                    selectedFortification = fortificationType;
+                    selectedFortificationLabel.setText("Selected Fortification : " + fortificationType.toString());
+                    fortificationImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromFortification(selectedFortification))));
+                }
+            });
+            panel.add(button);
+        }
+
+        panel.row();
+        panel.add(fortificationImage).colspan(5).width(64).height(64);
+        panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
+        return panel;
+    }
 
     private void showTerrainButtonPanel() {
         if (terrainButtonPanel.getParent() == null) {
@@ -517,6 +585,18 @@ public class EditMapScreen implements Screen, InputProcessor {
         terrainButtonPanel.setVisible(false);
     }
 
+    private void showFortificationButtonPanel() {
+        if (fortificationButtonPanel.getParent() == null) {
+            stage.addActor(fortificationButtonPanel);
+        }
+        fortificationButtonPanel.setVisible(true);
+    }
+
+    private void hideFortificationButtonPanel() {
+        fortificationButtonPanel.setVisible(false);
+    }
+
+    /*
     private Skin createDefaultSkin() {
         Skin skin = new Skin();
 
@@ -543,6 +623,6 @@ public class EditMapScreen implements Screen, InputProcessor {
         skin.add("default", textButtonStyle);
 
         return skin;
-    }
+    }*/
 
 }

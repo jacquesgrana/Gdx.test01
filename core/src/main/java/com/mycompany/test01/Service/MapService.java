@@ -381,10 +381,8 @@ public class MapService {
         }
 
         // 'cappage'
-
-        //if(this.startI%2 != 0) this.startI -= 1;
-        //if(this.startJ%2 != 0) this.startJ -= 1;
-
+        // TODO modifier le calcul pour que le rectangle de sélection soit centré sur le clic
+        // TODO ajouter la moitié de MaxI et MaxJ ?
         this.startI = i < 0 ? 0 : i >= this.limitI - this.maxI ? this.limitI - this.maxI - 1 : i;
         this.startJ = j < 0 ? 0 : j >= this.limitJ - this.maxJ ? this.limitJ - this.maxJ - 1 : j;
         // utiliser des valeurs paires
