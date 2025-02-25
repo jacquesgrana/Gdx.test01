@@ -309,6 +309,7 @@ public class EditMapScreen implements Screen, InputProcessor {
 
                 // TODO factoriser !!
 
+                /*
                 int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
                 System.out.println("j : " + j);
                 int i = 0;
@@ -317,7 +318,9 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
                 else {
                     i = (int) x / mapService.getGapX();
-                }
+                }*/
+                int i = mapService.getIFromXY(x, y);
+                int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
                 System.out.println("i : " + i);
 
@@ -347,6 +350,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             }
             else if(this.mode == EditMapMode.TERRAIN) {
                 // TODO factoriser
+                /*
                 int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
                 System.out.println("j : " + j);
                 int i = 0;
@@ -355,7 +359,9 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
                 else {
                     i = (int) x / mapService.getGapX();
-                }
+                }*/
+                int i = mapService.getIFromXY(x, y);
+                int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
                 System.out.println("i : " + i);
 
@@ -368,6 +374,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             }
             else if(this.mode == EditMapMode.FORTIFICATION) {
                 // TODO factoriser
+                /*
                 int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
                 System.out.println("j : " + j);
                 int i = 0;
@@ -376,7 +383,9 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
                 else {
                     i = (int) x / mapService.getGapX();
-                }
+                }*/
+                int i = mapService.getIFromXY(x, y);
+                int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
                 System.out.println("i : " + i);
 
