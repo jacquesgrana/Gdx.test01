@@ -118,4 +118,11 @@ public class GraphicUtil {
 
         return skin;
     }
+
+    public static Pixmap textureToPixmap(Texture texture) {
+        if (!texture.getTextureData().isPrepared()) {
+            texture.getTextureData().prepare();
+        }
+        return texture.getTextureData().consumePixmap();
+    }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Hexagon;
+import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Util.GraphicUtil;
 
@@ -46,7 +47,10 @@ public class MapService {
         for (int i = 0; i < limitI; i++) {
             Array<Hexagon> row = new Array<Hexagon>(limitJ);
             for (int j = 0; j < limitJ; j++) {
-                Hexagon hexagon = new Hexagon(i, j, HexagonCategory.getRandomCategory()); // Créer un nouvel objet de type Hexagon
+                Hexagon hexagon = new Hexagon(i, j,
+                    HexagonCategory.getRandomCategory(),
+                    FortificationCategory.getRandomFortification());
+                // Créer un nouvel objet de type Hexagon
                 row.add(hexagon);
             }
             this.hexesArray.add(row);
@@ -358,6 +362,12 @@ public class MapService {
                 Texture texture = this.hexesArray.get(i + startI).get(j + startJ).getTextureFromCategory();
 
                 drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
+                if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION) {
+                    drawFortification(
+                        drawingPixmap,
+                        x, y,hexagonSize,
+                        GraphicUtil.getTextureFromFortification(this.hexesArray.get(i + startI).get(j + startJ).getFortification()));
+                }
             }
         }
     }
@@ -501,6 +511,36 @@ public class MapService {
         for (int i = 0; i < 6; i++) {
             int j = (i + 1) % 6;
             pixmap.drawLine(xPoints[i], yPoints[i], xPoints[j], yPoints[j]);
+        }
+    }
+
+    public static void drawFortification(
+        Pixmap drawingPixmap,
+        int x, int y, int hexagonSize,
+        Texture fortifTexture) {
+
+        // Check for null texture to avoid NullPointerException
+        if (fortifTexture == null) {
+            System.err.println("Error: fortifTexture is null.  Cannot draw fortification.");
+            return; // Exit the method if the texture is null
+        }
+
+        // Get the pixel data from the texture
+        Pixmap texturePixmap = GraphicUtil.textureToPixmap(fortifTexture);
+
+        if (texturePixmap != null) {
+            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
+            drawingPixmap.drawPixmap(
+                texturePixmap, // Source Pixmap
+                0, 0,            // Source X,Y (top-left of source)
+                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
+                x - hexagonSize/2, y - hexagonSize/2,            // Dest X,Y (top-left of destination)
+                hexagonSize, hexagonSize    // Dest width & height (scaling)
+            );
+
+            texturePixmap.dispose();
+        } else {
+            System.err.println("Error: Could not convert fortifTexture to Pixmap.");
         }
     }
     /*
