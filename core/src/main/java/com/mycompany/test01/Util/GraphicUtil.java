@@ -25,6 +25,8 @@ public class GraphicUtil {
     public static Texture fortifConcreteMediumTexture = loadTextureFromFile("texture/fortification/texture-fortif-concrete-medium.png");
     public static Texture fortifConcreteHeavyTexture = loadTextureFromFile("texture/fortification/texture-fortif-concrete-heavy.png");
 
+    public static Texture fortifWoodLightTexture = loadTextureFromFile("texture/fortification/texture-fortif-wood-light.png");
+    public static Texture fortifWoodMediumTexture = loadTextureFromFile("texture/fortification/texture-fortif-wood-medium.png");
 
     /**
      * Creates a Texture from an image file located in the assets' folder.
@@ -63,6 +65,10 @@ public class GraphicUtil {
 
     public static Texture getTextureFromFortification(FortificationCategory fortification) {
         switch (fortification) {
+            case WOOD_LIGHT:
+                return fortifWoodLightTexture;
+            case WOOD_MEDIUM:
+                return fortifWoodMediumTexture;
             case CONCRETE_LIGHT:
                 return fortifConcreteLightTexture;
             case CONCRETE_MEDIUM:

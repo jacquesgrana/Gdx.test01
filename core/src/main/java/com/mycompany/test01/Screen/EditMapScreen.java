@@ -481,7 +481,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         // Ajouter l'image de la texture
         Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
         Image terrainImage = new Image(terrainTexture);
-        terrainImage.setSize(90, 30);
+        terrainImage.setSize(64, 64);
         panel.defaults().pad(5);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
@@ -523,12 +523,12 @@ public class EditMapScreen implements Screen, InputProcessor {
         Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
         Image terrainImage = new Image(terrainTexture);
         terrainImage.setSize(90, 30);*/
-        panel.add(terrainImage).colspan(5).width(90).height(30);
+        panel.add(terrainImage).colspan(5).width(64).height(64);
         panel.row();
 
 
         // Position the panel in the bottom-right corner
-        panel.setPosition(Gdx.graphics.getWidth() - 270f, 100f);
+        panel.setPosition(Gdx.graphics.getWidth() - 270f, 80f);
         return panel;
     }
 
@@ -538,7 +538,7 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         //Texture fortificationTexture = GraphicUtil.getTextureFromFortification(this.selectedFortification);
         Image fortificationImage = new Image();
-        fortificationImage.setSize(64, 64);
+        fortificationImage.setSize(32, 32);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
         this.selectedFortificationLabel = new Label("Selected Fortification : " + selectedFortification.toString(), labelStyle);
@@ -547,12 +547,15 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         FortificationCategory[] fortificationTypes = {
             FortificationCategory.NO_FORTIFICATION,
+            FortificationCategory.WOOD_LIGHT,
+            FortificationCategory.WOOD_MEDIUM,
             FortificationCategory.CONCRETE_LIGHT,
             FortificationCategory.CONCRETE_MEDIUM,
             FortificationCategory.CONCRETE_HEAVY
         };
         EditMapScreen that = this;
         Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+        int count = 1;
         for (FortificationCategory fortificationType : fortificationTypes) {
             TextButton button = new TextButton(fortificationType.toString(), buttonSkin);
 
@@ -566,10 +569,13 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
             });
             panel.add(button);
+            if(count == 3) panel.row();
+            count++;
+
         }
 
         panel.row();
-        panel.add(fortificationImage).colspan(5).width(64).height(64);
+        panel.add(fortificationImage).colspan(5).width(32).height(32);
         panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
         return panel;
     }
