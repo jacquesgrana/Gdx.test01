@@ -20,6 +20,7 @@ import com.mycompany.test01.Entity.Hexagon;
 import com.mycompany.test01.Enum.EditMapMode;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
+import com.mycompany.test01.Enum.RoadCategory;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,13 +41,17 @@ public class EditMapScreen implements Screen, InputProcessor {
     private final Label modeLabel;
     private Label selectedTerrainLabel;
     private Label selectedFortificationLabel;
+    private Label selectedRoadLabel;
     private final Table terrainButtonPanel;  // Panel to hold the terrain buttons
     //fortificationButtonPanel
     private final Table fortificationButtonPanel;  // Panel to hold the terrain buttons
+    private final Table roadButtonPanel;  // Panel to hold the terrain buttons
 
     private final Skin skin; //Skin for UI elements
     private HexagonCategory selectedTerrain = HexagonCategory.GRASS;
     private FortificationCategory selectedFortification = FortificationCategory.NO_FORTIFICATION;
+    private RoadCategory selectedRoad = RoadCategory.NO_ROAD;
+
 
     public EditMapScreen(Main game) {
         this.mode = EditMapMode.NO_ACTION;
@@ -102,6 +107,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.modeLabel.setText("Edit Mode : NO_ACTION");
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
+                hideRoadButtonPanel();
+                redrawMap();
             }
         });
         stage.addActor(buttonModeNoActionWrapper.getButton());
@@ -117,7 +124,9 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.mode = EditMapMode.TERRAIN;
                 that.modeLabel.setText("Edit Mode : TERRAIN");
                 hideFortificationButtonPanel();// Show the terrain panel when in terrain mode
+                hideRoadButtonPanel();
                 showTerrainButtonPanel();
+                redrawMap();
             }
         });
         stage.addActor(buttonModeTerrainWrapper.getButton());
@@ -134,6 +143,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.modeLabel.setText("Edit Mode : RIVER");
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
+                hideRoadButtonPanel();
+                redrawMap();
             }
         });
         stage.addActor(buttonModeRiverWrapper.getButton());
@@ -150,6 +161,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.modeLabel.setText("Edit Mode : ROAD");
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
+                showRoadButtonPanel();
+                redrawMap();
             }
         });
         stage.addActor(buttonModeRoadWrapper.getButton());
@@ -165,7 +178,9 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.mode = EditMapMode.FORTIFICATION;
                 that.modeLabel.setText("Edit Mode : FORTIFICATION");
                 hideTerrainButtonPanel();
+                hideRoadButtonPanel();
                 showFortificationButtonPanel();
+                redrawMap();
             }
         });
         stage.addActor(buttonModeFortificationWrapper.getButton());
@@ -181,6 +196,9 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.mode = EditMapMode.MISC;
                 that.modeLabel.setText("Edit Mode : MISC");
                 hideTerrainButtonPanel();
+                hideFortificationButtonPanel();
+                hideRoadButtonPanel();
+                redrawMap();
             }
         });
         stage.addActor(buttonModeMiscWrapper.getButton());
@@ -189,13 +207,16 @@ public class EditMapScreen implements Screen, InputProcessor {
         drawingMapPixmap.setColor(Color.DARK_GRAY);
         drawingMapPixmap.fill();
 
-        mapService.drawMap(drawingMapPixmap);
+        mapService.drawMap(drawingMapPixmap, mode);
 
         drawingTexture = new Texture(drawingMapPixmap);
 
         terrainButtonPanel = createTerrainButtonPanel();
         fortificationButtonPanel = createFortificationButtonPanel();
+        roadButtonPanel = createRoadButtonPanel();
+
         terrainButtonPanel.setVisible(false); // Initially hidden
+        fortificationButtonPanel.setVisible(false);
     }
 
     private void redrawMap() {
@@ -209,7 +230,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         drawingMapPixmap.fill();
 
         // Redraw the map to the pixmap
-        mapService.drawMap(drawingMapPixmap);
+        mapService.drawMap(drawingMapPixmap, mode);
 
         // Create a new texture from the pixmap
         drawingTexture = new Texture(drawingMapPixmap);
@@ -556,7 +577,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    System.out.println("Selected fortification: " + fortificationType.toString());
+                    System.out.println("Selected fortification : " + fortificationType.toString());
                     selectedFortification = fortificationType;
                     selectedFortificationLabel.setText("Selected Fortification : " + fortificationType.toString());
                     fortificationImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromFortification(selectedFortification))));
@@ -570,6 +591,47 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         panel.row();
         panel.add(fortificationImage).colspan(5).width(32).height(32);
+        panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
+        return panel;
+    }
+
+    private Table createRoadButtonPanel() {
+        Table panel = new Table();
+        panel.defaults().pad(5);
+
+        Image roadImage = new Image();
+        roadImage.setSize(32, 32);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
+        this.selectedRoadLabel = new Label("Selected Road : " + selectedRoad.toString(), labelStyle);
+        panel.add(this.selectedRoadLabel).colspan(5);
+        panel.row();
+
+        RoadCategory[] roadCategories = {
+            RoadCategory.NO_ROAD,
+            RoadCategory.PATHWAY,
+            RoadCategory.ROADWAY,
+            RoadCategory.RAILWAY
+        };
+        EditMapScreen that = this;
+        Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+
+        for (RoadCategory roadCategory : roadCategories) {
+            TextButton button = new TextButton(roadCategory.toString(), buttonSkin);
+
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    //System.out.println("Selected fortification: " + fortificationType.toString());
+                    selectedRoad = roadCategory;
+                    selectedRoadLabel.setText("Selected Road : " + roadCategory.toString());
+                    roadImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromRoad(32, 32, 3, selectedRoad))));
+                }
+            });
+            panel.add(button);
+        }
+        panel.row();
+        panel.add(roadImage).colspan(5).width(32).height(32);
         panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
         return panel;
     }
@@ -594,6 +656,17 @@ public class EditMapScreen implements Screen, InputProcessor {
 
     private void hideFortificationButtonPanel() {
         fortificationButtonPanel.setVisible(false);
+    }
+
+    private void showRoadButtonPanel() {
+        if (roadButtonPanel.getParent() == null) {
+            stage.addActor(roadButtonPanel);
+        }
+        roadButtonPanel.setVisible(true);
+    }
+
+    private void hideRoadButtonPanel() {
+        roadButtonPanel.setVisible(false);
     }
 
     /*

@@ -12,12 +12,14 @@ public class Hexagon {
     private int y;
     private HexagonCategory category;
     private FortificationCategory fortification;
+    private RoadEdges roads;
 
     public Hexagon(int x, int y, HexagonCategory category, FortificationCategory fortification) {
         this.x = x;
         this.y = y;
         this.category = category;
         this.fortification = fortification;
+        this.roads = new RoadEdges();
     }
 
     public int getX() {
@@ -52,48 +54,4 @@ public class Hexagon {
         this.fortification = fortification;
     }
 
-    /*
-    public Color getColorFromCategory() {
-        Color toReturn = Color.WHITE;
-        switch (this.category) {
-            case GRASS:
-                toReturn = Color.LIME;
-                break;
-            case FOREST:
-                toReturn = Color.FOREST;
-                break;
-            case SWAMP:
-                toReturn = Color.PURPLE;
-                break;
-            case SAND:
-                toReturn = Color.YELLOW;
-                break;
-            case WATER:
-                toReturn = Color.BLUE;
-                break;
-        }
-        return toReturn;
-    }*/
-
-    /*
-    public Texture getTextureFromCategory() {
-        Texture toReturn = GraphicUtil.grassTexture;
-        switch (this.category) {
-            case GRASS:
-                toReturn = GraphicUtil.grassTexture;
-                break;
-            case FOREST:
-                toReturn = GraphicUtil.forestTexture;
-                break;
-            case SWAMP:
-                toReturn = GraphicUtil.swampTexture;
-                break;
-            case SAND:
-                toReturn = GraphicUtil.sandTexture;
-                break;
-            case WATER:
-                toReturn = GraphicUtil.waterTexture;
-        }
-        return toReturn;
-    }*/
 }

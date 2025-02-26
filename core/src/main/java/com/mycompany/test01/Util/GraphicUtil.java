@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
+import com.mycompany.test01.Enum.RoadCategory;
 
 public class GraphicUtil {
 
@@ -146,5 +147,58 @@ public class GraphicUtil {
                 break;
         }
         return toReturn;
+    }
+
+    /**
+     * Creates a Texture containing a horizontal line with variable thickness and color.
+     *
+     * @param width         The width of the texture (and the length of the line).
+     * @param height        The height of the texture.  The line will be centered vertically.
+     * @param lineThickness The thickness of the horizontal line (in pixels).
+     * @return A Texture object containing the horizontal line.  The caller is responsible for disposing of the Texture.
+     * @throws IllegalArgumentException if width, height, or lineThickness are invalid.
+     */
+    public static Texture getTextureFromRoad(int width, int height,
+                                             int lineThickness, RoadCategory roadCategory) {
+        // Validate parameters
+        if (width <= 0 || height <= 0 || lineThickness <= 0) {
+            throw new IllegalArgumentException("Width, height, and lineThickness must be positive.");
+        }
+        Color lineColor = Color.BLUE;
+        switch(roadCategory) {
+        case PATHWAY:
+            lineColor = Color.BROWN;
+            break;
+        case ROADWAY:
+            lineColor = Color.LIGHT_GRAY;
+            break;
+        case RAILWAY:
+            lineColor = Color.BLACK;
+            break;
+        case NO_ROAD:
+            return GraphicUtil.getEmptyTexture();
+        }
+
+        // Create Pixmap
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+
+        // Set background color to light gray
+        pixmap.setColor(Color.DARK_GRAY);
+        pixmap.fill();  // Fill the entire Pixmap with light gray
+
+        // Calculate line Y position (center the line)
+        int lineY = (height / 2) - (lineThickness / 2);
+
+        // Set color and draw the line
+        pixmap.setColor(lineColor);
+        pixmap.fillRectangle(0, lineY, width, lineThickness);
+
+        // Create Texture from Pixmap
+        Texture texture = new Texture(pixmap);
+
+        // Dispose of Pixmap (texture has a copy now)
+        pixmap.dispose();
+
+        return texture;
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Hexagon;
+import com.mycompany.test01.Enum.EditMapMode;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Util.GraphicUtil;
@@ -47,9 +48,12 @@ public class MapService {
         for (int i = 0; i < limitI; i++) {
             Array<Hexagon> row = new Array<Hexagon>(limitJ);
             for (int j = 0; j < limitJ; j++) {
+                HexagonCategory terrainCategory = HexagonCategory.getRandomCategory();
+                FortificationCategory fortificationCategory = terrainCategory != HexagonCategory.WATER
+                    ? FortificationCategory.getRandomFortification() : FortificationCategory.NO_FORTIFICATION;
                 Hexagon hexagon = new Hexagon(i, j,
-                    HexagonCategory.getRandomCategory(),
-                    FortificationCategory.getRandomFortification());
+                    terrainCategory,
+                    fortificationCategory);
                 // Créer un nouvel objet de type Hexagon
                 row.add(hexagon);
             }
@@ -177,8 +181,8 @@ public class MapService {
     }
 
     public void firstInit() {
-        this.limitI = 250;
-        this.limitJ = 250;
+        this.limitI = 100;
+        this.limitJ = 100;
     }
 
     public void init() {
@@ -235,10 +239,10 @@ public class MapService {
     public int getJFromY(int y) {
         return (int) ((y - this.hexagonSize * 0.5) / (this.hexagonSize * 1.5));
     }
-
     // TODO effets de bord sur limitI et limit J !!
     public Hexagon[] getNeighborhoodHexes(int i, int j) {
         Hexagon[] toReturn = new Hexagon[6];
+        // TODO ajouter startI et startJ pour la borne 0 des tests ??
         for (int k=0; k<6; k++) {
             if(j % 2 == 0) {
                 switch (k) {
@@ -362,8 +366,7 @@ public class MapService {
         return toReturn;
     }
 
-    public void drawMap(Pixmap drawingPixmap
-                        ) {
+    public void drawMap(Pixmap drawingPixmap, EditMapMode mapMode) {
         // Dessiner les hexagones
         for(int i=0; i < maxI; i++) {
             for (int j=0; j < maxJ; j++) {
@@ -379,12 +382,23 @@ public class MapService {
                 Texture texture = GraphicUtil.getTextureFromTerrain(this.hexesArray.get(i + startI).get(j + startJ).getCategory());
 
                 drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
-                if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION) {
+
+                if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION
+                && mapMode == EditMapMode.FORTIFICATION) {
                     drawFortification(
                         drawingPixmap,
-                        x, y,hexagonSize,
+                        x, y, hexagonSize,
                         GraphicUtil.getTextureFromFortification(this.hexesArray.get(i + startI).get(j + startJ).getFortification()));
                 }
+
+                // dessin des segments de routes de l'hex
+                // boucle de 0 à 5
+                    // si isPathway
+                        // dessin du bon (en fonction de k) segment de route avec le pattern 'pathway'
+                    // si isRoadway
+                        // dessin du bon (en fonction de k) segment de route avec le pattern 'roadway'
+                    // si isRailway
+                        // dessin du bon (en fonction de k) segment de route avec le pattern 'railway'
             }
         }
     }
