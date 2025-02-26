@@ -38,8 +38,8 @@ public class GraphicUtil {
      */
     public static Texture loadTextureFromFile(String filePath) {
         try {
-            Texture texture = new Texture(Gdx.files.internal(filePath));
-            return texture;
+            return new Texture(Gdx.files.internal(filePath));
+            //return texture;
         } catch (Exception e) {
             System.err.println("Error loading texture from file: " + filePath);
             e.printStackTrace();  // Print the stack trace for debugging
@@ -124,5 +124,27 @@ public class GraphicUtil {
             texture.getTextureData().prepare();
         }
         return texture.getTextureData().consumePixmap();
+    }
+
+    public static Color getColorFromTerrain(HexagonCategory category) {
+        Color toReturn = Color.WHITE;
+        switch (category) {
+            case GRASS:
+                toReturn = Color.LIME;
+                break;
+            case FOREST:
+                toReturn = Color.FOREST;
+                break;
+            case SWAMP:
+                toReturn = Color.PURPLE;
+                break;
+            case SAND:
+                toReturn = Color.YELLOW;
+                break;
+            case WATER:
+                toReturn = Color.BLUE;
+                break;
+        }
+        return toReturn;
     }
 }

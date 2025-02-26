@@ -306,19 +306,6 @@ public class EditMapScreen implements Screen, InputProcessor {
             System.out.println("clic in !!");
 
             if(this.mode == EditMapMode.NO_ACTION) {
-
-                // TODO factoriser !!
-
-                /*
-                int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
-                System.out.println("j : " + j);
-                int i = 0;
-                if(j % 2 == 0) {
-                    i = (int) (x - mapService.getGapX() / 2) / mapService.getGapX();
-                }
-                else {
-                    i = (int) x / mapService.getGapX();
-                }*/
                 int i = mapService.getIFromXY(x, y);
                 int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
@@ -349,23 +336,13 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
             }
             else if(this.mode == EditMapMode.TERRAIN) {
-                // TODO factoriser
-                /*
-                int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
-                System.out.println("j : " + j);
-                int i = 0;
-                if(j % 2 == 0) {
-                    i = (int) (x - mapService.getGapX() / 2) / mapService.getGapX();
-                }
-                else {
-                    i = (int) x / mapService.getGapX();
-                }*/
                 int i = mapService.getIFromXY(x, y);
                 int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
                 System.out.println("i : " + i);
 
-                if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
+                //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
+                if(mapService.isClickInMap(i, j)) {
                     if(mapService.getHexesArray().get(i+mapService.getStartI()).get(j+mapService.getStartJ()).getCategory() != this.selectedTerrain) {
                         mapService.getHexesArray().get(i+mapService.getStartI()).get(j+mapService.getStartJ()).setCategory(this.selectedTerrain);
                     }
@@ -373,34 +350,20 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
             }
             else if(this.mode == EditMapMode.FORTIFICATION) {
-                // TODO factoriser
-                /*
-                int j = (int) ((y - hexagonSize * 0.5) / (hexagonSize * 1.5));
-                System.out.println("j : " + j);
-                int i = 0;
-                if(j % 2 == 0) {
-                    i = (int) (x - mapService.getGapX() / 2) / mapService.getGapX();
-                }
-                else {
-                    i = (int) x / mapService.getGapX();
-                }*/
                 int i = mapService.getIFromXY(x, y);
                 int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
                 System.out.println("i : " + i);
-
-                if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
+                //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
+                if(mapService.isClickInMap(i, j)) {
                     if(mapService.getHexesArray().get(i+mapService.getStartI()).get(j+mapService.getStartJ()).getFortification() != this.selectedFortification) {
                         mapService.getHexesArray().get(i+mapService.getStartI()).get(j+mapService.getStartJ()).setFortification(this.selectedFortification);
                     }
                     redrawMap();
                 }
             }
-
             return true; // Indique que l'événement a été traité
-
         }
-
         // Si le clic n'est pas sur la carte, déléguer à Stage
         return stage.touchDown(screenX, screenY, pointer, button);
     }

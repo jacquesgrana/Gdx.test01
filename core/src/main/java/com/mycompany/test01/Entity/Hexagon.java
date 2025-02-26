@@ -52,8 +52,9 @@ public class Hexagon {
         this.fortification = fortification;
     }
 
+    /*
     public Color getColorFromCategory() {
-        Color toReturn = null;
+        Color toReturn = Color.WHITE;
         switch (this.category) {
             case GRASS:
                 toReturn = Color.LIME;
@@ -72,8 +73,9 @@ public class Hexagon {
                 break;
         }
         return toReturn;
-    }
+    }*/
 
+    /*
     public Texture getTextureFromCategory() {
         Texture toReturn = GraphicUtil.grassTexture;
         switch (this.category) {
@@ -93,5 +95,5 @@ public class Hexagon {
                 toReturn = GraphicUtil.waterTexture;
         }
         return toReturn;
-    }
+    }*/
 }

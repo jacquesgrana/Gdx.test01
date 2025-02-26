@@ -376,7 +376,7 @@ public class MapService {
                 int y = getYFromJ(j);
                 //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
                 // faire méthode dans enum ou GraphicUtil qui renvoie la texture en fonction du terrain
-                Texture texture = this.hexesArray.get(i + startI).get(j + startJ).getTextureFromCategory();
+                Texture texture = GraphicUtil.getTextureFromTerrain(this.hexesArray.get(i + startI).get(j + startJ).getCategory());
 
                 drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
                 if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION) {
@@ -428,7 +428,7 @@ public class MapService {
         // dessin de la miniMap
         for(int i=0; i<this.limitI; i++) {
             for(int j=0; j<this.limitJ; j++) {
-                Color fillColor = this.hexesArray.get(i).get(j).getColorFromCategory();
+                Color fillColor = GraphicUtil.getColorFromTerrain(this.hexesArray.get(i).get(j).getCategory());
                 drawingMapPixmap.setColor(fillColor);
 
 
@@ -474,7 +474,7 @@ public class MapService {
         //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
         drawHexagon(pixmap, centerX, centerY, hexagonSize, texture, Color.BLACK);
     }
-    /*
+    /**
      * Draws a textured hexagon onto the provided Pixmap.
      *
      * @param pixmap       The Pixmap to draw on.
@@ -484,8 +484,6 @@ public class MapService {
      * @param texture      The texture to fill the hexagon with.  Must be non-null
      * @param borderColor  The color of the hexagon's border.
      */
-
-
     public void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Texture texture, Color borderColor) {
         int[] xPoints = new int[6];
         int[] yPoints = new int[6];
@@ -500,7 +498,7 @@ public class MapService {
         pixmap.setColor(Color.WHITE); // Important: set to white for texture drawing
 
         //Get the pixel data from the texture
-        Pixmap texturePixmap = textureToPixmap(texture);
+        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
 
         if (texturePixmap != null) {
             for (int y = centerY - size; y <= centerY + size; y++) {
@@ -560,41 +558,14 @@ public class MapService {
             System.err.println("Error: Could not convert fortifTexture to Pixmap.");
         }
     }
-    /*
-    public void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Color fillColor, Color borderColor) {
-        int[] xPoints = new int[6];
-        int[] yPoints = new int[6];
 
-        for (int i = 0; i < 6; i++) {
-            double angle = 2 * Math.PI / 6 * (i + 0.5);
-            xPoints[i] = (int) (centerX + size * Math.cos(angle));
-            yPoints[i] = (int) (centerY + size * Math.sin(angle));
+    public boolean isClickInMap(int i, int j) {
+        if(i >= 0 && i < this.maxI && j >= 0 && j < this.maxJ) {
+            return true;
         }
-
-        // Remplissage
-        pixmap.setColor(fillColor);
-        for (int y = centerY - size; y <= centerY + size; y++) {
-            for (int x = centerX - size; x <= centerX + size; x++) {
-                if (isInsideHexagon(x, y, xPoints, yPoints)) {
-                    pixmap.drawPixel(x, y);
-                }
-            }
+        else {
+            return false;
         }
-
-        // Contour
-        pixmap.setColor(borderColor);
-        for (int i = 0; i < 6; i++) {
-            int j = (i + 1) % 6;
-            pixmap.drawLine(xPoints[i], yPoints[i], xPoints[j], yPoints[j]);
-        }
-    }*/
-
-    public Pixmap textureToPixmap(Texture texture) {
-        if (!texture.getTextureData().isPrepared()) {
-            texture.getTextureData().prepare();
-        }
-        Pixmap pixmap = texture.getTextureData().consumePixmap();
-        return pixmap;
     }
 
     private boolean isInsideHexagon(int x, int y, int[] xPoints, int[] yPoints) {
