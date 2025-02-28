@@ -84,8 +84,8 @@ public class MapService {
 
     public void setStartI(int startI) {
         if(startI%2 != 0) startI--;
-        if(startI > this.limitI - this.maxI) {
-            this.startI = this.limitI - this.maxI;
+        if(startI > this.limitI - this.maxI - 1) {
+            this.startI = this.limitI - this.maxI - 1;
         }
         else if (startI < 0) {
             this.startI = 0;
@@ -102,8 +102,8 @@ public class MapService {
 
     public void setStartJ(int startJ) {
         if(startJ%2 != 0) startJ--;
-        if(startJ > this.limitJ - this.maxJ) {
-            this.startJ = this.limitJ - this.maxJ;
+        if(startJ > this.limitJ - this.maxJ - 1) {
+            this.startJ = this.limitJ - this.maxJ - 1;
         }
         else if (startJ < 0) {
             this.startJ = 0;
@@ -217,8 +217,9 @@ public class MapService {
         this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
         this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
         this.startI = (int) (this.limitI - this.maxI) / 2;
+        this.startI = this.startI > 0 ? this.startI - this.startI % 2 : 0;
         this.startJ = (int) (this.limitJ - this.maxJ) / 2;
-
+        this.startJ = this.limitJ > 0 ? this.startJ - this.startJ % 2 : 0;
         this.mapX = Gdx.graphics.getWidth() / 2f - this.mapWidth / 2f;
         //this.mapY = Gdx.graphics.getHeight() / 2f - this.mapHeight / 2f;
         this.mapY = 160f;

@@ -412,17 +412,17 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
 
                 /*
-                 * si 1e clic (clic et roadDrawFlag à "EMPTY" ou "SECOND_CLIC_DONE")
+                 * si 1e click (click et roadDrawFlag à "EMPTY" ou "SECOND_CLICK_DONE")
                  *          -> set le roadStartHex (null a l'init) sur l'hex cliqué
-                 *          -> set roadDrawFlag à "FIRST_CLIC_DONE" (3 valeurs : "EMPTY" "FIRST_CLIC_DONE" "SECOND_CLIC_DONE")
+                 *          -> set roadDrawFlag à "FIRST_CLICK_DONE" (3 valeurs : "EMPTY" "FIRST_CLICK_DONE" "SECOND_CLICK_DONE")
                  *          -> provoque le dessin de l'hex cliqué et de ses voisins dans renderMap
-                 * si 2e clic (clic et roadDrawFlag à "FIRST_CLIC_DONE") sur un hex voisin
+                 * si 2e click (click et roadDrawFlag à "FIRST_CLICK_DONE") sur un hex voisin
                  *          -> extraire k (indice du tableau des hex voisins
                  *              qui indique quel hex est ciblé : NW-NE-W-E-SW-SE) dans le tableau des hex voisins
                  *          -> set le roadStartHex sur hex cliqué
                  *          -> set les routes pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
                  *          -> redessine la carte
-                 *          -> set roadDrawFlag à "SECOND_CLIC_DONE"
+                 *          -> set roadDrawFlag à "SECOND_CLICK_DONE"
                  *
                  * prévoir bouton pour raz et set roadDrawFlag à "EMPTY" et vider roadStartHex et le tableau des voisins et redessiner la carte
                  *
