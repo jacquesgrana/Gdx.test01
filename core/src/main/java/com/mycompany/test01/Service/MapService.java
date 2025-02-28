@@ -34,6 +34,11 @@ public class MapService {
     private int miniMapX;
     private int miniMapY;
 
+    //roadStartHex
+    //roadStartHexNeighbours
+    private Hexagon roadStartHex;
+    private Hexagon[] roadStartHexNeighbours;
+
     public MapService() {}
 
     public static MapService getInstance() {
@@ -180,6 +185,22 @@ public class MapService {
         return miniMapY;
     }
 
+    public Hexagon getRoadStartHex() {
+        return roadStartHex;
+    }
+
+    public Hexagon[] getRoadStartHexNeighbours() {
+        return roadStartHexNeighbours;
+    }
+
+    public void setRoadStartHexNeighbours(Hexagon[] roadStartHexNeighbours) {
+        this.roadStartHexNeighbours = roadStartHexNeighbours;
+    }
+
+    public void setRoadStartHex(Hexagon roadStartHex) {
+        this.roadStartHex = roadStartHex;
+    }
+
     public void firstInit() {
         this.limitI = 100;
         this.limitJ = 100;
@@ -209,6 +230,9 @@ public class MapService {
         this.miniMapHeight = this.limitJ * miniHexSize + 2 * miniMapMargin;
         this.miniMapX = (int) this.mapWidth - miniMapWidth;
         this.miniMapY = (int) this.mapHeight - miniMapHeight;
+
+        this.roadStartHex = null;
+        this.roadStartHexNeighbours = new Hexagon[6];
     }
 
     public int getXFromIJ(int i, int j) {
@@ -240,14 +264,21 @@ public class MapService {
         return (int) ((y - this.hexagonSize * 0.5) / (this.hexagonSize * 1.5));
     }
     // TODO effets de bord sur limitI et limit J !!
+
+    /**
+     *
+     * @param i : indice venant de l'affichage, sans prise en compte de startI
+     * @param j: indice venant de l'affichage, sans prise en compte de startJ
+     * @return tableau des hex voisins si dans les limites (0>= <limitI et 0>= <limitJ) (hex null si hors de la carte)
+     */
     public Hexagon[] getNeighborhoodHexes(int i, int j) {
         Hexagon[] toReturn = new Hexagon[6];
         // TODO ajouter startI et startJ pour la borne 0 des tests ??
         for (int k=0; k<6; k++) {
             if(j % 2 == 0) {
                 switch (k) {
-                    case 0 :
-                        if(j-1 >= 0) {
+                    case 0 : //NW
+                        if(j-1+this.startJ >= 0) {
                             Hexagon northWest = this.hexesArray.get(i+this.startI).get(j-1+this.startJ);
                             toReturn[k] = northWest;
                         }
@@ -255,8 +286,8 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 1 :
-                        if(i+1+this.startI < this.limitI && j-1 >= 0) {
+                    case 1 : //NE
+                        if(i+1+this.startI < this.limitI && j-1+this.startJ >= 0) {
                             Hexagon northEast = this.hexesArray.get(i+1+this.startI).get(j-1+this.startJ);
                             toReturn[k] = northEast;
                         }
@@ -264,8 +295,8 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 2 :
-                        if(i-1 >= 0) {
+                    case 2 : //W
+                        if(i-1+this.startI >= 0) {
                             Hexagon west = this.hexesArray.get(i-1+this.startI).get(j+this.startJ);
                             toReturn[k] = west;
                         }
@@ -273,7 +304,7 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 3 :
+                    case 3 : //E
                         if(i+1+this.startI < this.limitI) {
                             Hexagon east = this.hexesArray.get(i+1+this.startI).get(j+this.startJ);
                             toReturn[k] = east;
@@ -282,7 +313,7 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 4 :
+                    case 4 : //SW
                         if(j+1+this.startJ < this.limitJ) {
                             Hexagon southWest = this.hexesArray.get(i+this.startI).get(j+1+this.startJ);
                             toReturn[k] = southWest;
@@ -291,7 +322,7 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 5 :
+                    case 5 : //SE
                         if(i+1+this.startI < this.limitI && j+1+this.startJ < this.limitJ) {
                             Hexagon southEast = this.hexesArray.get(i+1+this.startI).get(j+1+this.startJ);
                             toReturn[k] = southEast;
@@ -304,8 +335,8 @@ public class MapService {
             }
             else {
                 switch (k) {
-                    case 0 :
-                        if(i-1 >= 0 && j-1 >= 0) {
+                    case 0 : //NW
+                        if(i-1+this.startI >= 0 && j-1+this.startJ >= 0) {
                             Hexagon northWest = this.hexesArray.get(i-1+this.startI).get(j-1+this.startJ);
                             toReturn[k] = northWest;
                         }
@@ -313,8 +344,8 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 1 :
-                        if(j-1 >= 0) {
+                    case 1 : //NE
+                        if(j-1+this.startJ >= 0) {
                             Hexagon northEast = this.hexesArray.get(i+this.startI).get(j-1+this.startJ);
                             toReturn[k] = northEast;
                         }
@@ -322,8 +353,8 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 2 :
-                        if(i-1 >= 0) {
+                    case 2 : //W
+                        if(i-1+this.startI >= 0) {
                             Hexagon west = this.hexesArray.get(i-1+this.startI).get(j+this.startJ);
                             toReturn[k] = west;
                         }
@@ -331,7 +362,7 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 3 :
+                    case 3 : //E
                         if(i+1+this.startI < this.limitI) {
                             Hexagon east = this.hexesArray.get(i+1+this.startI).get(j+this.startJ);
                             toReturn[k] = east;
@@ -340,8 +371,8 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 4 :
-                        if(i-1 >= 0 && j+1+this.startJ < this.limitJ) {
+                    case 4 : //SW
+                        if(i-1+this.startI >= 0 && j+1+this.startJ < this.limitJ) {
                             Hexagon southWest = this.hexesArray.get(i-1+this.startI).get(j+1+this.startJ);
                             toReturn[k] = southWest;
                         }
@@ -349,7 +380,7 @@ public class MapService {
                             toReturn[k] = null;
                         }
                         break;
-                    case 5 :
+                    case 5 : //SE
                         if(j+1+this.startJ < this.limitJ) {
                             Hexagon southEast = this.hexesArray.get(i+this.startI).get(j+1+this.startJ);
                             toReturn[k] = southEast;
@@ -379,9 +410,26 @@ public class MapService {
                 int y = getYFromJ(j);
                 //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
                 // faire méthode dans enum ou GraphicUtil qui renvoie la texture en fonction du terrain
+
                 Texture texture = GraphicUtil.getTextureFromTerrain(this.hexesArray.get(i + startI).get(j + startJ).getCategory());
 
+                if(roadStartHex != null) {
+                    // TODO set texture à rouge si roadStartHex et orange si dans roadStartHexNeighbours
+                    if(i + startI == roadStartHex.getX() && j + startJ == roadStartHex.getY()) texture = GraphicUtil.redTexture;
+                    boolean isInRoadStartNeighbours = false;
+                    for(int k=0; k<6; k++) {
+                        if (i + startI == roadStartHexNeighbours[k].getX() && j + startJ == roadStartHexNeighbours[k].getY()
+                        && this.hexesArray.get(i + startI).get(j + startJ).getCategory() != HexagonCategory.WATER) {
+                            isInRoadStartNeighbours = true;
+                        }
+                    }
+                    if(isInRoadStartNeighbours) texture = GraphicUtil.orangeTexture;
+                }
+
+
+
                 drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
+                //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
                 if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION
                 && mapMode == EditMapMode.FORTIFICATION) {
@@ -471,6 +519,26 @@ public class MapService {
         //drawingMapPixmap.drawLine(rectX, rectY + selectRectHeight, rectX + selectRectWidth, rectY + selectRectHeight);
         //drawingMapPixmap.drawLine(rectX, rectY, rectX, rectY + selectRectHeight);
         //drawingMapPixmap.drawLine(rectX + selectRectWidth, rectY, rectX + selectRectWidth, rectY + selectRectHeight);
+    }
+
+    public void renderNeighbours(Texture drawingTexture, Pixmap drawingMapPixmap) {
+        for(int k=0; k<6; k++) {
+            if(this.roadStartHexNeighbours[k] != null
+                && hexesArray.get(this.roadStartHexNeighbours[k].getX()).get(this.roadStartHexNeighbours[k].getY()).getCategory() != HexagonCategory.WATER) {
+                int ii = this.roadStartHexNeighbours[k].getX();
+                int jj = this.roadStartHexNeighbours[k].getY();
+                // n'affiche que ls hexs de la zone affichée dans la carte
+                if (ii - startI >= 0 &&
+                    ii - startI < maxI &&
+                    jj - startJ >= 0 &&
+                    jj - startJ < maxJ
+                ) {
+                    renderHex( ii, jj, GraphicUtil.orangeTexture, drawingMapPixmap);
+                }
+
+            }
+        }
+        drawingTexture.draw(drawingMapPixmap, 0, 0);
     }
 
     public void renderHex(int hexI, int hexJ, Texture texture, Pixmap pixmap) {

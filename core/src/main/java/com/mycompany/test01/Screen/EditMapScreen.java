@@ -104,7 +104,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.NO_ACTION;
-                that.modeLabel.setText("Edit Mode : NO_ACTION");
+                that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
@@ -122,7 +122,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.TERRAIN;
-                that.modeLabel.setText("Edit Mode : TERRAIN");
+                that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideFortificationButtonPanel();// Show the terrain panel when in terrain mode
                 hideRoadButtonPanel();
                 showTerrainButtonPanel();
@@ -140,7 +140,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.RIVER;
-                that.modeLabel.setText("Edit Mode : RIVER");
+                that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
@@ -158,7 +158,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.ROAD;
-                that.modeLabel.setText("Edit Mode : ROAD");
+                that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 showRoadButtonPanel();
@@ -176,7 +176,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.FORTIFICATION;
-                that.modeLabel.setText("Edit Mode : FORTIFICATION");
+                that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideTerrainButtonPanel();
                 hideRoadButtonPanel();
                 showFortificationButtonPanel();
@@ -194,7 +194,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 that.mode = EditMapMode.MISC;
-                that.modeLabel.setText("Edit Mode : MISC");
+                that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
@@ -217,6 +217,7 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         terrainButtonPanel.setVisible(false); // Initially hidden
         fortificationButtonPanel.setVisible(false);
+        roadButtonPanel.setVisible(false);
     }
 
     private void redrawMap() {
@@ -264,12 +265,9 @@ public class EditMapScreen implements Screen, InputProcessor {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        /*
-        this.mapService.setMapWidth(width - 80f);
-        this.mapService.setMapHeight(height - 120f);
-        this.mapService.init();
-        this.redrawMap();
-        */
+        //this.mapService.firstInit();
+        //this.mapService.init();
+        //this.redrawMap();
     }
 
     @Override
@@ -383,6 +381,53 @@ public class EditMapScreen implements Screen, InputProcessor {
                     redrawMap();
                 }
             }
+            else if(this.mode == EditMapMode.ROAD) {
+                redrawMap();
+                int i = mapService.getIFromXY(x, y);
+                int j = mapService.getJFromY(y);
+                //Hexagon clickedHexagon = null; // TODO transformer en variable globale : roadStartHex
+                //Hexagon[] neighboursForRoad = null; // TODO transformer en variable globale : roadStartHexNeighbours
+                if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
+
+                    //System.out.println("hex terrain : " + clickedHexagon.getCategory());
+                    if(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
+                        mapService.setRoadStartHex(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()));
+
+                        mapService.setRoadStartHex(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()));
+
+                        //mapService.renderHex( mapService.getRoadStartHex().getX(), mapService.getRoadStartHex().getY(), GraphicUtil.redTexture, drawingMapPixmap);
+                        //drawingTexture.draw(drawingMapPixmap, 0, 0);
+
+                        mapService.setRoadStartHexNeighbours(mapService.getNeighborhoodHexes(i, j));
+                        redrawMap();
+
+                        //neighboursForRoad = mapService.getNeighborhoodHexes(i, j);
+
+                       // mapService.renderNeighbours(drawingTexture, drawingMapPixmap);
+                    }
+                    else {
+                        mapService.setRoadStartHex(null);
+                        redrawMap();
+                    }
+                }
+
+                /*
+                 * si 1e clic (clic et roadDrawFlag à "EMPTY" ou "SECOND_CLIC_DONE")
+                 *          -> set le roadStartHex (null a l'init) sur l'hex cliqué
+                 *          -> set roadDrawFlag à "FIRST_CLIC_DONE" (3 valeurs : "EMPTY" "FIRST_CLIC_DONE" "SECOND_CLIC_DONE")
+                 *          -> provoque le dessin de l'hex cliqué et de ses voisins dans renderMap
+                 * si 2e clic (clic et roadDrawFlag à "FIRST_CLIC_DONE") sur un hex voisin
+                 *          -> extraire k (indice du tableau des hex voisins
+                 *              qui indique quel hex est ciblé : NW-NE-W-E-SW-SE) dans le tableau des hex voisins
+                 *          -> set le roadStartHex sur hex cliqué
+                 *          -> set les routes pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
+                 *          -> redessine la carte
+                 *          -> set roadDrawFlag à "SECOND_CLIC_DONE"
+                 *
+                 * prévoir bouton pour raz et set roadDrawFlag à "EMPTY" et vider roadStartHex et le tableau des voisins et redessiner la carte
+                 *
+                 */
+            }
             return true; // Indique que l'événement a été traité
         }
         // Si le clic n'est pas sur la carte, déléguer à Stage
@@ -449,8 +494,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 break;
             case Input.Keys.DOWN:
                 if(!this.isMiniMapVisible) {
-                mapService.setStartJ(mapService.getStartJ() - delta);
-                redrawMap();
+                    mapService.setStartJ(mapService.getStartJ() - delta);
+                    redrawMap();
                 }
                 break;
             case 74: // 'm/M'

@@ -1,12 +1,33 @@
 package com.mycompany.test01.Enum;
 
 public enum HexagonCategory {
-    GRASS,
-    FOREST,
-    SWAMP,
-    SAND,
-    WATER;
+    GRASS("Grass" , 1.0f, 0.8f),
+    FOREST("Forest", 0.6f, 0.25f),
+    SWAMP("Swamp", 0.4f, 0.2f),
+    SAND("Sand", 0.75f, 0.5f),
+    WATER("Water", 0.0f, 0.0f);
 
+    private final String name;
+    private final float costLeg;
+    private final float costVehicle;
+
+    HexagonCategory(String name, float costLeg, float costVehicle) {
+        this.name = name;
+        this.costLeg = costLeg;
+        this.costVehicle = costVehicle;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getCostLeg() {
+        return costLeg;
+    }
+
+    public float getCostVehicle() {
+        return costVehicle;
+    }
 
     static public HexagonCategory getRandomCategory() {
         float random = (float) Math.random();
@@ -20,6 +41,6 @@ public enum HexagonCategory {
 
     @Override
     public String toString() {
-        return super.toString();
+        return this.name;
     }
 }

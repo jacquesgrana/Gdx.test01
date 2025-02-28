@@ -1,12 +1,28 @@
 package com.mycompany.test01.Enum;
 
 public enum FortificationCategory {
-    NO_FORTIFICATION,
-    WOOD_LIGHT,
-    WOOD_MEDIUM,
-    CONCRETE_LIGHT,
-    CONCRETE_MEDIUM,
-    CONCRETE_HEAVY;
+    NO_FORTIFICATION ("No Fortification", 0.0f),
+    WOOD_LIGHT ("Wood Light", 1.5f),
+    WOOD_MEDIUM ("Wood Medium", 2.0f),
+    CONCRETE_LIGHT ("Concrete Light", 2.5f),
+    CONCRETE_MEDIUM ("Concrete Medium", 3.0f),
+    CONCRETE_HEAVY("Concrete Heavy", 3.5f);
+
+    private final String name;
+    private final float level;
+
+    FortificationCategory(String name, float level) {
+        this.name = name;
+        this.level = level;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getLevel() {
+        return level;
+    }
 
     static public FortificationCategory getRandomFortification() {
         float random = (float) Math.random();
@@ -21,6 +37,6 @@ public enum FortificationCategory {
 
     @Override
     public String toString() {
-        return super.toString();
+        return this.name;
     }
 }

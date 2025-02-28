@@ -14,6 +14,9 @@ public class Hexagon {
     private FortificationCategory fortification;
     private RoadEdges roads;
 
+    public Hexagon() {
+    }
+
     public Hexagon(int x, int y, HexagonCategory category, FortificationCategory fortification) {
         this.x = x;
         this.y = y;
