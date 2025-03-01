@@ -251,7 +251,7 @@ public class MapService {
 
     public int getIFromXY(int x, int y) {
         int j = (int) ((y - this.hexagonSize * 0.5) / (this.hexagonSize * 1.5));
-        System.out.println("j : " + j);
+        //System.out.println("j : " + j);
         int i = 0;
         if(j % 2 == 0) {
             i = (int) (x - this.gapX / 2) / this.gapX;

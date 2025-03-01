@@ -1,10 +1,10 @@
 package com.mycompany.test01.Entity;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
-import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Enum.RiverCategory;
+
+import java.util.Arrays;
 
 // TODO changer category en terrain ??
 public class Hexagon {
@@ -13,9 +13,11 @@ public class Hexagon {
     private HexagonCategory category;
     private FortificationCategory fortification;
     private RoadEdges roads;
+    private RiverCategory[] rivers;
 
+    /*
     public Hexagon() {
-    }
+    }*/
 
     public Hexagon(int x, int y, HexagonCategory category, FortificationCategory fortification) {
         this.x = x;
@@ -23,6 +25,8 @@ public class Hexagon {
         this.category = category;
         this.fortification = fortification;
         this.roads = new RoadEdges();
+        this.rivers = new RiverCategory[6];
+        Arrays.fill(this.rivers, RiverCategory.NO_RIVER);
     }
 
     public int getX() {
@@ -63,5 +67,13 @@ public class Hexagon {
 
     public void setRoads(RoadEdges roads) {
         this.roads = roads;
+    }
+
+    public RiverCategory[] getRivers() {
+        return rivers;
+    }
+
+    public void setRivers(RiverCategory[] rivers) {
+        this.rivers = rivers;
     }
 }

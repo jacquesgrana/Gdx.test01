@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
+import com.mycompany.test01.Enum.RiverCategory;
 import com.mycompany.test01.Enum.RoadCategory;
 
 public class GraphicUtil {
@@ -179,7 +180,7 @@ public class GraphicUtil {
      * @return A Texture object containing the horizontal line.  The caller is responsible for disposing of the Texture.
      * @throws IllegalArgumentException if width, height, or lineThickness are invalid.
      */
-    public static Texture getTextureFromRoad(int width, int height,
+    public static Texture getTextureFromRoadForButton(int width, int height,
                                              int lineThickness, RoadCategory roadCategory) {
         // Validate parameters
         if (width <= 0 || height <= 0 || lineThickness <= 0) {
@@ -198,6 +199,52 @@ public class GraphicUtil {
             break;
         case NO_ROAD:
             return GraphicUtil.getEmptyTexture();
+        }
+
+        // Create Pixmap
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+
+        // Set background color to light gray
+        pixmap.setColor(Color.DARK_GRAY);
+        pixmap.fill();  // Fill the entire Pixmap with light gray
+
+        // Calculate line Y position (center the line)
+        int lineY = (height / 2) - (lineThickness / 2);
+
+        // Set color and draw the line
+        pixmap.setColor(lineColor);
+        pixmap.fillRectangle(0, lineY, width, lineThickness);
+
+        // Create Texture from Pixmap
+        Texture texture = new Texture(pixmap);
+
+        // Dispose of Pixmap (texture has a copy now)
+        pixmap.dispose();
+
+        return texture;
+    }
+
+    public static Texture getTextureFromRiverForButton(int width, int height,
+                                                RiverCategory riverCategory)
+    {
+        // Validate parameters
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("Width, height, and lineThickness must be positive.");
+        }
+        int lineThickness = 1;
+        Color lineColor = Color.BLUE;
+        switch(riverCategory) {
+            case NARROW:
+                lineThickness = 2;
+                break;
+            case MEDIUM:
+                lineThickness = 4;
+                break;
+            case WIDE:
+                lineThickness = 6;
+                break;
+            case NO_RIVER:
+                return GraphicUtil.getEmptyTexture();
         }
 
         // Create Pixmap

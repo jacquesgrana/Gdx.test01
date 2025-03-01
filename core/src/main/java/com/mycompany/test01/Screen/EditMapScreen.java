@@ -39,15 +39,17 @@ public class EditMapScreen implements Screen, InputProcessor {
     private Label selectedTerrainLabel;
     private Label selectedFortificationLabel;
     private Label selectedRoadLabel;
-    private final Table terrainButtonPanel;  // Panel to hold the terrain buttons
-    //fortificationButtonPanel
-    private final Table fortificationButtonPanel;  // Panel to hold the terrain buttons
-    private final Table roadButtonPanel;  // Panel to hold the terrain buttons
+    private Label selectedRiverLabel;
+    private final Table terrainButtonPanel;
+    private final Table fortificationButtonPanel;
+    private final Table roadButtonPanel;
+    private final Table riverButtonPanel;
 
     private final Skin skin; //Skin for UI elements
     private HexagonCategory selectedTerrain = HexagonCategory.GRASS;
     private FortificationCategory selectedFortification = FortificationCategory.NO_FORTIFICATION;
     private RoadCategory selectedRoad = RoadCategory.NO_ROAD;
+    private RiverCategory selectedRiver = RiverCategory.NO_RIVER;
 
     private RoadDrawFlagCategory roadDrawFlag = RoadDrawFlagCategory.EMPTY;
 
@@ -106,7 +108,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
-                mapService.setRoadStartHex(null);
+                hideRiverButtonPanel();
+                that.mapService.setRoadStartHex(null);
                 redrawMap();
             }
         });
@@ -124,8 +127,10 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideFortificationButtonPanel();// Show the terrain panel when in terrain mode
                 hideRoadButtonPanel();
+                hideRiverButtonPanel();
+
                 showTerrainButtonPanel();
-                mapService.setRoadStartHex(null);
+                that.mapService.setRoadStartHex(null);
 
                 redrawMap();
             }
@@ -145,7 +150,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
-                mapService.setRoadStartHex(null);
+                showRiverButtonPanel();
+                that.mapService.setRoadStartHex(null);
 
                 redrawMap();
             }
@@ -164,9 +170,11 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
+                hideRiverButtonPanel();
+
                 showRoadButtonPanel();
-                mapService.setRoadStartHex(null);
-                
+                that.mapService.setRoadStartHex(null);
+
                 redrawMap();
             }
         });
@@ -184,8 +192,10 @@ public class EditMapScreen implements Screen, InputProcessor {
                 that.modeLabel.setText("Edit Mode : " + that.mode.toString());
                 hideTerrainButtonPanel();
                 hideRoadButtonPanel();
+                hideRiverButtonPanel();
+
                 showFortificationButtonPanel();
-                mapService.setRoadStartHex(null);
+                that.mapService.setRoadStartHex(null);
 
                 redrawMap();
             }
@@ -193,7 +203,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         stage.addActor(buttonModeFortificationWrapper.getButton());
 
         ButtonWrapper buttonModeMiscWrapper = new ButtonWrapper(
-            "Misc",
+            "Miscellaneous",
             font,
             50 + 5 * (10 + 160), 80, 160, 40);
         //EditMapScreen that = this;
@@ -205,7 +215,9 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
-                mapService.setRoadStartHex(null);
+                hideRiverButtonPanel();
+
+                that.mapService.setRoadStartHex(null);
 
                 redrawMap();
             }
@@ -223,10 +235,12 @@ public class EditMapScreen implements Screen, InputProcessor {
         terrainButtonPanel = createTerrainButtonPanel();
         fortificationButtonPanel = createFortificationButtonPanel();
         roadButtonPanel = createRoadButtonPanel();
+        riverButtonPanel = createRiverButtonPanel();
 
         terrainButtonPanel.setVisible(false); // Initially hidden
         fortificationButtonPanel.setVisible(false);
         roadButtonPanel.setVisible(false);
+        riverButtonPanel.setVisible(false);
     }
 
     private void redrawMap() {
@@ -319,7 +333,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 && x < mapService.getMiniMapX() + mapService.getMiniMapWidth() - 2 * mapService.getMiniMapMargin()
                 && y > mapService.getMiniMapY()
                 && y < mapService.getMiniMapY() + mapService.getMiniMapHeight() - 2 * mapService.getMiniMapMargin()) {
-                System.out.println("clic in minimap");
+                //System.out.println("clic in minimap");
                 mapService.updateMiniMap(x, y, drawingMapPixmap);
                 //mapService.showMiniMap(drawingMapPixmap);
                 //drawingTexture.draw(drawingMapPixmap, 0, 0);
@@ -331,17 +345,17 @@ public class EditMapScreen implements Screen, InputProcessor {
         }
         else if (x >= 0 && x <= mapWidth - margin &&
             y >= 0 && y <= mapHeight - margin) {
-            System.out.println("clic in !!");
+            //System.out.println("clic in !!");
 
             if(this.mode == EditMapMode.NO_ACTION) {
                 int i = mapService.getIFromXY(x, y);
                 int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
-                System.out.println("i : " + i);
+                //System.out.println("i : " + i);
 
                 if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
                     Hexagon clickedHexagon = mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ());
-                    System.out.println("hex terrain : " + clickedHexagon.getCategory());
+                    //System.out.println("hex terrain : " + clickedHexagon.getCategory());
                     mapService.renderHex( i + mapService.getStartI(), j + mapService.getStartJ(), GraphicUtil.redTexture, drawingMapPixmap);
                     drawingTexture.draw(drawingMapPixmap, 0, 0);
                 }
@@ -367,7 +381,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 int i = mapService.getIFromXY(x, y);
                 int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
-                System.out.println("i : " + i);
+                //System.out.println("i : " + i);
 
                 //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
                 if(mapService.isClickInMap(i, j)) {
@@ -381,7 +395,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 int i = mapService.getIFromXY(x, y);
                 int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
-                System.out.println("i : " + i);
+                //System.out.println("i : " + i);
                 //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
                 if(mapService.isClickInMap(i, j)) {
                     if(mapService.getHexesArray().get(i+mapService.getStartI()).get(j+mapService.getStartJ()).getFortification() != this.selectedFortification) {
@@ -525,9 +539,9 @@ public class EditMapScreen implements Screen, InputProcessor {
                 break;
             case 74: // 'm/M'
                 this.isMiniMapVisible = !this.isMiniMapVisible;
-                System.out.println("isMiniMapVisible : " + this.isMiniMapVisible);
+                //System.out.println("isMiniMapVisible : " + this.isMiniMapVisible);
                 if(this.isMiniMapVisible) {
-                    System.out.println("Showing miniMap");
+                    //System.out.println("Showing miniMap");
                     mapService.showMiniMap(drawingMapPixmap);
                     drawingTexture.draw(drawingMapPixmap, 0, 0);
                 }
@@ -536,7 +550,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
                 break;
             default:
-                System.out.println("Autre touche appuyée");
+                //System.out.println("Autre touche appuyée");
         }
         return true; // Retourne true pour indiquer que l'événement a été traité
     }
@@ -590,7 +604,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     // Handle the terrain selection
-                    System.out.println("Selected terrain: " + terrainType.toString());
+                    //System.out.println("Selected terrain: " + terrainType.toString());
                     // You would likely set a "selectedTerrain" variable here
                     // and use it in the touchDown method to apply the terrain.
                     selectedTerrain = terrainType;
@@ -647,7 +661,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    System.out.println("Selected fortification : " + fortificationType.toString());
+                    //System.out.println("Selected fortification : " + fortificationType.toString());
                     selectedFortification = fortificationType;
                     selectedFortificationLabel.setText("Selected Fortification : " + fortificationType.toString());
                     fortificationImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromFortification(selectedFortification))));
@@ -695,13 +709,55 @@ public class EditMapScreen implements Screen, InputProcessor {
                     //System.out.println("Selected fortification: " + fortificationType.toString());
                     selectedRoad = roadCategory;
                     selectedRoadLabel.setText("Selected Road : " + roadCategory.toString());
-                    roadImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromRoad(32, 32, 3, selectedRoad))));
+                    roadImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromRoadForButton(32, 32, 3, selectedRoad))));
                 }
             });
             panel.add(button);
         }
         panel.row();
         panel.add(roadImage).colspan(5).width(32).height(32);
+        panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
+        return panel;
+    }
+
+    private Table createRiverButtonPanel() {
+        Table panel = new Table();
+        panel.defaults().pad(5);
+
+        Image riverImage = new Image();
+        riverImage.setSize(32, 32);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
+        this.selectedRiverLabel = new Label("Selected River : " + selectedRiver.toString(), labelStyle);
+        panel.add(this.selectedRiverLabel).colspan(5);
+        panel.row();
+
+        RiverCategory[] riverCategories = {
+            RiverCategory.NO_RIVER,
+            RiverCategory.NARROW,
+            RiverCategory.MEDIUM,
+            RiverCategory.WIDE
+        };
+        EditMapScreen that = this;
+        Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+
+        for (RiverCategory riverCategory : riverCategories) {
+            TextButton button = new TextButton(riverCategory.toString(), buttonSkin);
+
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    //System.out.println("Selected fortification: " + fortificationType.toString());
+                    selectedRiver = riverCategory;
+                    selectedRiverLabel.setText("Selected River : " + riverCategory.toString());
+                    riverImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromRiverForButton(32, 32, selectedRiver))));
+                }
+            });
+            panel.add(button);
+        }
+
+        panel.row();
+        panel.add(riverImage).colspan(5).width(32).height(32);
         panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
         return panel;
     }
@@ -737,6 +793,17 @@ public class EditMapScreen implements Screen, InputProcessor {
 
     private void hideRoadButtonPanel() {
         roadButtonPanel.setVisible(false);
+    }
+
+    private void showRiverButtonPanel() {
+        if (riverButtonPanel.getParent() == null) {
+            stage.addActor(riverButtonPanel);
+        }
+        riverButtonPanel.setVisible(true);
+    }
+
+    private void hideRiverButtonPanel() {
+        riverButtonPanel.setVisible(false);
     }
 
     /*
