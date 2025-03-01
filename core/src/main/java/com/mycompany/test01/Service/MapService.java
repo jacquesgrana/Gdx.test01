@@ -472,9 +472,10 @@ public class MapService {
     private void drawRoadSegment(Pixmap drawingPixmap, int i, int j, RoadCategory roadCategory, int k) {
         int x = getXFromIJ(i, j);
         int y = getYFromJ(j);
-        Texture texture = null;
+        Texture texture = getRoadTextureFromRoadCatAndK(roadCategory, k);
         //texture = GraphicUtil.railwayESETexture;
 
+        /*
         // TODO factoriser !!!!
         switch (roadCategory) {
             case PATHWAY:
@@ -547,6 +548,7 @@ public class MapService {
                 texture = GraphicUtil.getEmptyTexture();
                 break;
         }
+        */
 
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
 
@@ -562,6 +564,82 @@ public class MapService {
 
             texturePixmap.dispose();
         }
+    }
+
+    private Texture getRoadTextureFromRoadCatAndK(RoadCategory roadCategory, int k) {
+        Texture texture = GraphicUtil.getEmptyTexture();;
+        switch (roadCategory) {
+            case PATHWAY:
+                switch (k) {
+                    case 0:
+                        texture = GraphicUtil.pathway0NWTexture;
+                        break;
+                    case 1:
+                        texture = GraphicUtil.pathway1NETexture;
+                        break;
+                    case 2:
+                        texture = GraphicUtil.pathway2WTexture;
+                        break;
+                    case 3:
+                        texture = GraphicUtil.pathway3ETexture;
+                        break;
+                    case 4:
+                        texture = GraphicUtil.pathway4SWTexture;
+                        break;
+                    case 5:
+                        texture = GraphicUtil.pathway5SETexture;
+                        break;
+                }
+                break;
+            case ROADWAY:
+                switch (k) {
+                    case 0:
+                        texture = GraphicUtil.roadway0NWTexture;
+                        break;
+                    case 1:
+                        texture = GraphicUtil.roadway1NETexture;
+                        break;
+                    case 2:
+                        texture = GraphicUtil.roadway2WTexture;
+                        break;
+                    case 3:
+                        texture = GraphicUtil.roadway3ETexture;
+                        break;
+                    case 4:
+                        texture = GraphicUtil.roadway4SWTexture;
+                        break;
+                    case 5:
+                        texture = GraphicUtil.roadway5SETexture;
+                        break;
+                }
+                break;
+            case RAILWAY:
+                switch (k) {
+                    case 0:
+                        texture = GraphicUtil.railway0NWTexture;
+                        break;
+                    case 1:
+                        texture = GraphicUtil.railway1NETexture;
+                        break;
+                    case 2:
+                        texture = GraphicUtil.railway2WTexture;
+                        break;
+                    case 3:
+                        texture = GraphicUtil.railway3ETexture;
+                        break;
+                    case 4:
+                        texture = GraphicUtil.railway4SWTexture;
+                        break;
+                    case 5:
+                        texture = GraphicUtil.railway5SETexture;
+                        break;
+                }
+                break;
+            default:
+                texture = GraphicUtil.getEmptyTexture();
+                break;
+        }
+        return texture;
     }
 
     public void updateMiniMap(int x, int y, Pixmap drawingMapPixmap) {

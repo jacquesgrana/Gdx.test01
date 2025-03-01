@@ -106,6 +106,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
+                mapService.setRoadStartHex(null);
                 redrawMap();
             }
         });
@@ -124,6 +125,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideFortificationButtonPanel();// Show the terrain panel when in terrain mode
                 hideRoadButtonPanel();
                 showTerrainButtonPanel();
+                mapService.setRoadStartHex(null);
+
                 redrawMap();
             }
         });
@@ -142,6 +145,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
+                mapService.setRoadStartHex(null);
+
                 redrawMap();
             }
         });
@@ -160,6 +165,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 showRoadButtonPanel();
+                mapService.setRoadStartHex(null);
+                
                 redrawMap();
             }
         });
@@ -178,6 +185,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideRoadButtonPanel();
                 showFortificationButtonPanel();
+                mapService.setRoadStartHex(null);
+
                 redrawMap();
             }
         });
@@ -196,6 +205,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
+                mapService.setRoadStartHex(null);
+
                 redrawMap();
             }
         });
