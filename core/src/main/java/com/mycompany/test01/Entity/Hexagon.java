@@ -57,4 +57,11 @@ public class Hexagon {
         this.fortification = fortification;
     }
 
+    public RoadEdges getRoads() {
+        return roads;
+    }
+
+    public void setRoads(RoadEdges roads) {
+        this.roads = roads;
+    }
 }

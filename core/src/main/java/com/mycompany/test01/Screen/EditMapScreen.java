@@ -17,10 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Entity.Hexagon;
-import com.mycompany.test01.Enum.EditMapMode;
-import com.mycompany.test01.Enum.FortificationCategory;
-import com.mycompany.test01.Enum.HexagonCategory;
-import com.mycompany.test01.Enum.RoadCategory;
+import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -52,6 +49,7 @@ public class EditMapScreen implements Screen, InputProcessor {
     private FortificationCategory selectedFortification = FortificationCategory.NO_FORTIFICATION;
     private RoadCategory selectedRoad = RoadCategory.NO_ROAD;
 
+    private RoadDrawFlagCategory roadDrawFlag = RoadDrawFlagCategory.EMPTY;
 
     public EditMapScreen(Main game) {
         this.mode = EditMapMode.NO_ACTION;
@@ -391,19 +389,35 @@ public class EditMapScreen implements Screen, InputProcessor {
 
                     //System.out.println("hex terrain : " + clickedHexagon.getCategory());
                     if(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
-                        mapService.setRoadStartHex(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()));
+                        //System.out.println("old roadDrawFlag : " + roadDrawFlag.toString());
 
-                        mapService.setRoadStartHex(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()));
+                        if(roadDrawFlag == RoadDrawFlagCategory.EMPTY || roadDrawFlag == RoadDrawFlagCategory.SECOND_CLICK_DONE) {
+                            mapService.setRoadStartHex(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()));
 
-                        //mapService.renderHex( mapService.getRoadStartHex().getX(), mapService.getRoadStartHex().getY(), GraphicUtil.redTexture, drawingMapPixmap);
-                        //drawingTexture.draw(drawingMapPixmap, 0, 0);
+                            //mapService.renderHex( mapService.getRoadStartHex().getX(), mapService.getRoadStartHex().getY(), GraphicUtil.redTexture, drawingMapPixmap);
+                            //drawingTexture.draw(drawingMapPixmap, 0, 0);
 
-                        mapService.setRoadStartHexNeighbours(mapService.getNeighborhoodHexes(i, j));
-                        redrawMap();
+                            mapService.setRoadStartHexNeighbours(mapService.getNeighborhoodHexes(i, j));
+                            redrawMap();
 
-                        //neighboursForRoad = mapService.getNeighborhoodHexes(i, j);
+                            roadDrawFlag = RoadDrawFlagCategory.FIRST_CLICK_DONE;
+                            //neighboursForRoad = mapService.getNeighborhoodHexes(i, j);
 
-                       // mapService.renderNeighbours(drawingTexture, drawingMapPixmap);
+                            // mapService.renderNeighbours(drawingTexture, drawingMapPixmap);
+                        }
+                        else if(roadDrawFlag == RoadDrawFlagCategory.FIRST_CLICK_DONE && mapService.isInNeighbours(i, j)) {
+                            Hexagon startHex = mapService.getRoadStartHex();
+                            Hexagon endHex = mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ());
+                            // -> set les routes pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
+                            int k = mapService.getKFromRoadNeighbours(endHex);
+                            mapService.setRoadForHexes(startHex, endHex, selectedRoad, k);
+                            mapService.setRoadStartHex(endHex);
+                            mapService.setRoadStartHexNeighbours(mapService.getNeighborhoodHexes(i, j));
+
+                            redrawMap();
+                            roadDrawFlag = RoadDrawFlagCategory.SECOND_CLICK_DONE;
+                        }
+                        //System.out.println("new roadDrawFlag : " + roadDrawFlag.toString());
                     }
                     else {
                         mapService.setRoadStartHex(null);
@@ -424,7 +438,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                  *          -> redessine la carte
                  *          -> set roadDrawFlag à "SECOND_CLICK_DONE"
                  *
-                 * prévoir bouton pour raz et set roadDrawFlag à "EMPTY" et vider roadStartHex et le tableau des voisins et redessiner la carte
+                 * TODO prévoir bouton pour raz et set roadDrawFlag à "EMPTY" et vider roadStartHex et le tableau des voisins et redessiner la carte
                  *
                  */
             }

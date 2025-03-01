@@ -29,6 +29,27 @@ public class GraphicUtil {
     public static Texture fortifWoodLightTexture = loadTextureFromFile("texture/fortification/texture-fortif-wood-light.png");
     public static Texture fortifWoodMediumTexture = loadTextureFromFile("texture/fortification/texture-fortif-wood-medium.png");
 
+    public static Texture pathway0NWTexture = loadTextureFromFile("texture/road/pathway/texture-0-nw-pathway.png");
+    public static Texture pathway1NETexture = loadTextureFromFile("texture/road/pathway/texture-1-ne-pathway.png");
+    public static Texture pathway2WTexture = loadTextureFromFile("texture/road/pathway/texture-2-w-pathway.png");
+    public static Texture pathway3ETexture = loadTextureFromFile("texture/road/pathway/texture-3-e-pathway.png");
+    public static Texture pathway4SWTexture = loadTextureFromFile("texture/road/pathway/texture-4-sw-pathway.png");
+    public static Texture pathway5SETexture = loadTextureFromFile("texture/road/pathway/texture-5-se-pathway.png");
+
+    public static Texture roadway0NWTexture = loadTextureFromFile("texture/road/roadway/texture-0-nw-roadway.png");
+    public static Texture roadway1NETexture = loadTextureFromFile("texture/road/roadway/texture-1-ne-roadway.png");
+    public static Texture roadway2WTexture = loadTextureFromFile("texture/road/roadway/texture-2-w-roadway.png");
+    public static Texture roadway3ETexture = loadTextureFromFile("texture/road/roadway/texture-3-e-roadway.png");
+    public static Texture roadway4SWTexture = loadTextureFromFile("texture/road/roadway/texture-4-sw-roadway.png");
+    public static Texture roadway5SETexture = loadTextureFromFile("texture/road/roadway/texture-5-se-roadway.png");
+
+    public static Texture railway0NWTexture = loadTextureFromFile("texture/road/railway/texture-0-nw-railway.png");
+    public static Texture railway1NETexture = loadTextureFromFile("texture/road/railway/texture-1-ne-railway.png");
+    public static Texture railway2WTexture = loadTextureFromFile("texture/road/railway/texture-2-w-railway.png");
+    public static Texture railway3ETexture = loadTextureFromFile("texture/road/railway/texture-3-e-railway.png");
+    public static Texture railway4SWTexture = loadTextureFromFile("texture/road/railway/texture-4-sw-railway.png");
+    public static Texture railway5SETexture = loadTextureFromFile("texture/road/railway/texture-5-se-railway.png");
+
     /**
      * Creates a Texture from an image file located in the assets' folder.
      *

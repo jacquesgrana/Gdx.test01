@@ -9,6 +9,7 @@ import com.mycompany.test01.Entity.Hexagon;
 import com.mycompany.test01.Enum.EditMapMode;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
+import com.mycompany.test01.Enum.RoadCategory;
 import com.mycompany.test01.Util.GraphicUtil;
 
 public class MapService {
@@ -432,14 +433,6 @@ public class MapService {
                 drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
-                if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION
-                && mapMode == EditMapMode.FORTIFICATION) {
-                    drawFortification(
-                        drawingPixmap,
-                        x, y, hexagonSize,
-                        GraphicUtil.getTextureFromFortification(this.hexesArray.get(i + startI).get(j + startJ).getFortification()));
-                }
-
                 // dessin des segments de routes de l'hex
                 // boucle de 0 à 5
                     // si isPathway
@@ -448,7 +441,126 @@ public class MapService {
                         // dessin du bon (en fonction de k) segment de route avec le pattern 'roadway'
                     // si isRailway
                         // dessin du bon (en fonction de k) segment de route avec le pattern 'railway'
+
+                if(mapMode == EditMapMode.ROAD || mapMode == EditMapMode.NO_ACTION) {
+                    for(int k=0; k<6; k++) {
+                        if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
+                            drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
+                        }
+                        if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isRoadway()) {
+                            drawRoadSegment(drawingPixmap, i, j, RoadCategory.ROADWAY, k);
+                        }
+                        if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isRailway()) {
+                            drawRoadSegment(drawingPixmap, i, j, RoadCategory.RAILWAY, k);
+                        }
+                    }
+                }
+
+
+                if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION
+                && (mapMode == EditMapMode.FORTIFICATION || mapMode == EditMapMode.NO_ACTION)) {
+                    drawFortification(
+                        drawingPixmap,
+                        x, y, hexagonSize,
+                        GraphicUtil.getTextureFromFortification(this.hexesArray.get(i + startI).get(j + startJ).getFortification()));
+                }
+
             }
+        }
+    }
+
+    private void drawRoadSegment(Pixmap drawingPixmap, int i, int j, RoadCategory roadCategory, int k) {
+        int x = getXFromIJ(i, j);
+        int y = getYFromJ(j);
+        Texture texture = null;
+        //texture = GraphicUtil.railwayESETexture;
+
+        // TODO factoriser !!!!
+        switch (roadCategory) {
+            case PATHWAY:
+                switch (k) {
+                    case 0:
+                        texture = GraphicUtil.pathway0NWTexture;
+                        break;
+                    case 1:
+                        texture = GraphicUtil.pathway1NETexture;
+                        break;
+                    case 2:
+                        texture = GraphicUtil.pathway2WTexture;
+                        break;
+                    case 3:
+                        texture = GraphicUtil.pathway3ETexture;
+                        break;
+                    case 4:
+                        texture = GraphicUtil.pathway4SWTexture;
+                        break;
+                    case 5:
+                        texture = GraphicUtil.pathway5SETexture;
+                        break;
+                }
+                break;
+            case ROADWAY:
+                switch (k) {
+                    case 0:
+                        texture = GraphicUtil.roadway0NWTexture;
+                        break;
+                    case 1:
+                        texture = GraphicUtil.roadway1NETexture;
+                        break;
+                    case 2:
+                        texture = GraphicUtil.roadway2WTexture;
+                        break;
+                    case 3:
+                        texture = GraphicUtil.roadway3ETexture;
+                        break;
+                    case 4:
+                        texture = GraphicUtil.roadway4SWTexture;
+                        break;
+                    case 5:
+                        texture = GraphicUtil.roadway5SETexture;
+                        break;
+                }
+                break;
+            case RAILWAY:
+                switch (k) {
+                    case 0:
+                        texture = GraphicUtil.railway0NWTexture;
+                        break;
+                    case 1:
+                        texture = GraphicUtil.railway1NETexture;
+                        break;
+                    case 2:
+                        texture = GraphicUtil.railway2WTexture;
+                        break;
+                    case 3:
+                        texture = GraphicUtil.railway3ETexture;
+                        break;
+                    case 4:
+                        texture = GraphicUtil.railway4SWTexture;
+                        break;
+                    case 5:
+                        texture = GraphicUtil.railway5SETexture;
+                        break;
+                }
+                break;
+            default:
+                texture = GraphicUtil.getEmptyTexture();
+                break;
+        }
+
+        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
+
+        if (texturePixmap != null) {
+            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
+            drawingPixmap.drawPixmap(
+                texturePixmap, // Source Pixmap
+                0, 0,            // Source X,Y (top-left of source)
+                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
+                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
+                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+            );
+
+            texturePixmap.dispose();
         }
     }
 
@@ -660,5 +772,70 @@ public class MapService {
             }
         }
         return inside;
+    }
+
+    public boolean isInNeighbours(int i, int j) {
+        if(this.roadStartHex != null) {
+            for(int k=0; k<6; k++) {
+                if(this.roadStartHexNeighbours[k] != null
+                    && this.roadStartHexNeighbours[k].getX() == i + this.startI
+                    &&  this.roadStartHexNeighbours[k].getY() == j + startJ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public int getKFromRoadNeighbours(Hexagon hex) {
+        if(this.roadStartHex != null) {
+            for(int k=0; k<6; k++) {
+                if(this.roadStartHexNeighbours[k] != null
+                    && this.roadStartHexNeighbours[k].getX() == hex.getX()
+                    &&  this.roadStartHexNeighbours[k].getY() == hex.getY()) {
+                    return k;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public void setRoadForHexes(Hexagon startHex, Hexagon endHex, RoadCategory selectedRoad, int k) {
+        //startHex.getRoads().getEdges()
+        int iStart = startHex.getX();
+        int jStart = startHex.getY();
+        int iEnd = endHex.getX();
+        int jEnd = endHex.getY();
+        int l = 5 - k;
+        switch(selectedRoad) {
+            case NO_ROAD:
+                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setPathway(false);
+                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setRoadway(false);
+                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setRailway(false);
+                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setPathway(false);
+                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setRoadway(false);
+                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setRailway(false);
+                break;
+            case PATHWAY:
+                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setPathway(true);
+                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setPathway(true);
+                break;
+            case ROADWAY:
+                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setRoadway(true);
+                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setRoadway(true);
+                break;
+            case RAILWAY:
+                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setRailway(true);
+                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setRailway(true);
+                break;
+        }
+        /*
+        0 : NW / SE : 5
+        1 : NE / SW : 4
+        2 : W / E : 3
+        3 : E / W : 2
+        4 : SW / NE: 1
+        5 : SE / NW : 0
+        */
     }
 }
