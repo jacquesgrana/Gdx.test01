@@ -51,6 +51,27 @@ public class GraphicUtil {
     public static Texture railway4SWTexture = loadTextureFromFile("texture/road/railway/texture-4-sw-railway.png");
     public static Texture railway5SETexture = loadTextureFromFile("texture/road/railway/texture-5-se-railway.png");
 
+    public static Texture riverNarrow0NWTexture = loadTextureFromFile("texture/river/narrow/texture-0-nw-narrow.png");
+    public static Texture riverNarrow1NETexture = loadTextureFromFile("texture/river/narrow/texture-1-ne-narrow.png");
+    public static Texture riverNarrow2WTexture = loadTextureFromFile("texture/river/narrow/texture-2-w-narrow.png");
+    public static Texture riverNarrow3ETexture = loadTextureFromFile("texture/river/narrow/texture-3-e-narrow.png");
+    public static Texture riverNarrow4SWTexture = loadTextureFromFile("texture/river/narrow/texture-4-sw-narrow.png");
+    public static Texture riverNarrow5SETexture = loadTextureFromFile("texture/river/narrow/texture-5-se-narrow.png");
+
+    public static Texture riverMedium0NWTexture = loadTextureFromFile("texture/river/medium/texture-0-nw-medium.png");
+    public static Texture riverMedium1NETexture = loadTextureFromFile("texture/river/medium/texture-1-ne-medium.png");
+    public static Texture riverMedium2WTexture = loadTextureFromFile("texture/river/medium/texture-2-w-medium.png");
+    public static Texture riverMedium3ETexture = loadTextureFromFile("texture/river/medium/texture-3-e-medium.png");
+    public static Texture riverMedium4SWTexture = loadTextureFromFile("texture/river/medium/texture-4-sw-medium.png");
+    public static Texture riverMedium5SETexture = loadTextureFromFile("texture/river/medium/texture-5-se-medium.png");
+
+    public static Texture riverWide0NWTexture = loadTextureFromFile("texture/river/wide/texture-0-nw-wide.png");
+    public static Texture riverWide1NETexture = loadTextureFromFile("texture/river/wide/texture-1-ne-wide.png");
+    public static Texture riverWide2WTexture = loadTextureFromFile("texture/river/wide/texture-2-w-wide.png");
+    public static Texture riverWide3ETexture = loadTextureFromFile("texture/river/wide/texture-3-e-wide.png");
+    public static Texture riverWide4SWTexture = loadTextureFromFile("texture/river/wide/texture-4-sw-wide.png");
+    public static Texture riverWide5SETexture = loadTextureFromFile("texture/river/wide/texture-5-se-wide.png");
+
     /**
      * Creates a Texture from an image file located in the assets' folder.
      *

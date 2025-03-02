@@ -52,6 +52,8 @@ public class EditMapScreen implements Screen, InputProcessor {
     private RiverCategory selectedRiver = RiverCategory.NO_RIVER;
 
     private RoadDrawFlagCategory roadDrawFlag = RoadDrawFlagCategory.EMPTY;
+    private RiverDrawFlagCategory riverDrawFlag = RiverDrawFlagCategory.EMPTY;
+
 
     public EditMapScreen(Main game) {
         this.mode = EditMapMode.NO_ACTION;
@@ -110,6 +112,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
                 that.mapService.setRoadStartHex(null);
+                that.mapService.setRiverStartHex(null);
                 redrawMap();
             }
         });
@@ -131,6 +134,7 @@ public class EditMapScreen implements Screen, InputProcessor {
 
                 showTerrainButtonPanel();
                 that.mapService.setRoadStartHex(null);
+                that.mapService.setRiverStartHex(null);
 
                 redrawMap();
             }
@@ -152,6 +156,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideRoadButtonPanel();
                 showRiverButtonPanel();
                 that.mapService.setRoadStartHex(null);
+                that.mapService.setRiverStartHex(null);
 
                 redrawMap();
             }
@@ -174,6 +179,7 @@ public class EditMapScreen implements Screen, InputProcessor {
 
                 showRoadButtonPanel();
                 that.mapService.setRoadStartHex(null);
+                that.mapService.setRiverStartHex(null);
 
                 redrawMap();
             }
@@ -196,6 +202,7 @@ public class EditMapScreen implements Screen, InputProcessor {
 
                 showFortificationButtonPanel();
                 that.mapService.setRoadStartHex(null);
+                that.mapService.setRiverStartHex(null);
 
                 redrawMap();
             }
@@ -218,6 +225,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideRiverButtonPanel();
 
                 that.mapService.setRoadStartHex(null);
+                that.mapService.setRiverStartHex(null);
 
                 redrawMap();
             }
@@ -325,6 +333,9 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         int x = (int) (screenX - mapX - margin);
         int y = (int) (screenY - 45 - margin);
+
+        int i = mapService.getIFromXY(x, y);
+        int j = mapService.getJFromY(y);
         //System.out.println("x : " + x + " / y : " + y);
 
         // tester si miniMap visible et clic dans minimap
@@ -348,8 +359,8 @@ public class EditMapScreen implements Screen, InputProcessor {
             //System.out.println("clic in !!");
 
             if(this.mode == EditMapMode.NO_ACTION) {
-                int i = mapService.getIFromXY(x, y);
-                int j = mapService.getJFromY(y);
+                //int i = mapService.getIFromXY(x, y);
+                //int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
                 //System.out.println("i : " + i);
 
@@ -378,8 +389,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
             }
             else if(this.mode == EditMapMode.TERRAIN) {
-                int i = mapService.getIFromXY(x, y);
-                int j = mapService.getJFromY(y);
+                //int i = mapService.getIFromXY(x, y);
+                //int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
                 //System.out.println("i : " + i);
 
@@ -392,8 +403,8 @@ public class EditMapScreen implements Screen, InputProcessor {
                 }
             }
             else if(this.mode == EditMapMode.FORTIFICATION) {
-                int i = mapService.getIFromXY(x, y);
-                int j = mapService.getJFromY(y);
+                //int i = mapService.getIFromXY(x, y);
+                //int j = mapService.getJFromY(y);
                 //int i = (int) x / mapService.getGapX();
                 //System.out.println("i : " + i);
                 //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
@@ -406,8 +417,8 @@ public class EditMapScreen implements Screen, InputProcessor {
             }
             else if(this.mode == EditMapMode.ROAD) {
                 redrawMap();
-                int i = mapService.getIFromXY(x, y);
-                int j = mapService.getJFromY(y);
+                //int i = mapService.getIFromXY(x, y);
+                //int j = mapService.getJFromY(y);
                 //Hexagon clickedHexagon = null; // TODO transformer en variable globale : roadStartHex
                 //Hexagon[] neighboursForRoad = null; // TODO transformer en variable globale : roadStartHexNeighbours
                 if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
@@ -419,18 +430,13 @@ public class EditMapScreen implements Screen, InputProcessor {
                         if(roadDrawFlag == RoadDrawFlagCategory.EMPTY || roadDrawFlag == RoadDrawFlagCategory.SECOND_CLICK_DONE) {
                             mapService.setRoadStartHex(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()));
 
-                            //mapService.renderHex( mapService.getRoadStartHex().getX(), mapService.getRoadStartHex().getY(), GraphicUtil.redTexture, drawingMapPixmap);
-                            //drawingTexture.draw(drawingMapPixmap, 0, 0);
-
                             mapService.setRoadStartHexNeighbours(mapService.getNeighborhoodHexes(i, j));
                             redrawMap();
 
                             roadDrawFlag = RoadDrawFlagCategory.FIRST_CLICK_DONE;
-                            //neighboursForRoad = mapService.getNeighborhoodHexes(i, j);
 
-                            // mapService.renderNeighbours(drawingTexture, drawingMapPixmap);
                         }
-                        else if(roadDrawFlag == RoadDrawFlagCategory.FIRST_CLICK_DONE && mapService.isInNeighbours(i, j)) {
+                        else if(roadDrawFlag == RoadDrawFlagCategory.FIRST_CLICK_DONE && mapService.isInNeighboursByMode(i, j, EditMapMode.ROAD)) {
                             Hexagon startHex = mapService.getRoadStartHex();
                             Hexagon endHex = mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ());
                             // -> set les routes pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
@@ -449,24 +455,50 @@ public class EditMapScreen implements Screen, InputProcessor {
                         redrawMap();
                     }
                 }
-
-                /*
-                 * si 1e click (click et roadDrawFlag à "EMPTY" ou "SECOND_CLICK_DONE")
-                 *          -> set le roadStartHex (null a l'init) sur l'hex cliqué
-                 *          -> set roadDrawFlag à "FIRST_CLICK_DONE" (3 valeurs : "EMPTY" "FIRST_CLICK_DONE" "SECOND_CLICK_DONE")
-                 *          -> provoque le dessin de l'hex cliqué et de ses voisins dans renderMap
-                 * si 2e click (click et roadDrawFlag à "FIRST_CLICK_DONE") sur un hex voisin
-                 *          -> extraire k (indice du tableau des hex voisins
-                 *              qui indique quel hex est ciblé : NW-NE-W-E-SW-SE) dans le tableau des hex voisins
-                 *          -> set le roadStartHex sur hex cliqué
-                 *          -> set les routes pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
-                 *          -> redessine la carte
-                 *          -> set roadDrawFlag à "SECOND_CLICK_DONE"
-                 *
-                 * TODO prévoir bouton pour raz et set roadDrawFlag à "EMPTY" et vider roadStartHex et le tableau des voisins et redessiner la carte
-                 *
-                 */
+                // TODO prévoir bouton pour raz et set roadDrawFlag à "EMPTY" et vider roadStartHex et le tableau des voisins et redessiner la carte
             }
+            else if(this.mode == EditMapMode.RIVER) {
+                //System.out.println("clic mode river");
+                redrawMap();
+                if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
+                    //System.out.println("clic mode river indices ok");
+
+                    if(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
+                        //System.out.println("clic mode river indices ok pas water");
+
+                        if(riverDrawFlag == RiverDrawFlagCategory.EMPTY || riverDrawFlag == RiverDrawFlagCategory.SECOND_CLICK_DONE) {
+                            //System.out.println("old river flag : " + riverDrawFlag.toString());
+
+                            mapService.setRiverStartHex(mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ()));
+                            mapService.setRiverStartHexNeighbours(mapService.getNeighborhoodHexes(i, j));
+                            redrawMap();
+                            riverDrawFlag = RiverDrawFlagCategory.FIRST_CLICK_DONE;
+                            //System.out.println("new river flag : " + riverDrawFlag.toString());
+
+                        }
+                        else if(riverDrawFlag == RiverDrawFlagCategory.FIRST_CLICK_DONE && mapService.isInNeighboursByMode(i, j, EditMapMode.RIVER)) {
+                            //System.out.println("old river flag : " + riverDrawFlag.toString());
+                            Hexagon startHex = mapService.getRiverStartHex();
+                            Hexagon endHex = mapService.getHexesArray().get(i + mapService.getStartI()).get(j + mapService.getStartJ());
+                            // -> set les rivers pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
+                            int k = mapService.getKFromRiverNeighbours(endHex);
+                            mapService.setRiverForHexes(startHex, endHex, selectedRiver, k);
+                            mapService.setRiverStartHex(endHex);
+                            mapService.setRiverStartHexNeighbours(mapService.getNeighborhoodHexes(i, j));
+
+                            redrawMap();
+                            riverDrawFlag = RiverDrawFlagCategory.SECOND_CLICK_DONE;
+                            //System.out.println("new river flag : " + riverDrawFlag.toString());
+
+                        }
+                    }
+                    else {
+                        mapService.setRiverStartHex(null);
+                        redrawMap();
+                    }
+                }
+            }
+
             return true; // Indique que l'événement a été traité
         }
         // Si le clic n'est pas sur la carte, déléguer à Stage

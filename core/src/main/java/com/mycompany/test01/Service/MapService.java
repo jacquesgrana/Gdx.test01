@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Hexagon;
-import com.mycompany.test01.Enum.EditMapMode;
-import com.mycompany.test01.Enum.FortificationCategory;
-import com.mycompany.test01.Enum.HexagonCategory;
-import com.mycompany.test01.Enum.RoadCategory;
+import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
 
 public class MapService {
@@ -39,6 +36,9 @@ public class MapService {
     //roadStartHexNeighbours
     private Hexagon roadStartHex;
     private Hexagon[] roadStartHexNeighbours;
+
+    private Hexagon riverStartHex;
+    private Hexagon[] riverStartHexNeighbours;
 
     public MapService() {}
 
@@ -202,6 +202,22 @@ public class MapService {
         this.roadStartHex = roadStartHex;
     }
 
+    public Hexagon getRiverStartHex() {
+        return riverStartHex;
+    }
+
+    public void setRiverStartHex(Hexagon riverStartHex) {
+        this.riverStartHex = riverStartHex;
+    }
+
+    public Hexagon[] getRiverStartHexNeighbours() {
+        return riverStartHexNeighbours;
+    }
+
+    public void setRiverStartHexNeighbours(Hexagon[] riverStartHexNeighbours) {
+        this.riverStartHexNeighbours = riverStartHexNeighbours;
+    }
+
     public void firstInit() {
         this.limitI = 100;
         this.limitJ = 100;
@@ -235,6 +251,9 @@ public class MapService {
 
         this.roadStartHex = null;
         this.roadStartHexNeighbours = new Hexagon[6];
+
+        this.riverStartHex = null;
+        this.riverStartHexNeighbours = new Hexagon[6];
     }
 
     public int getXFromIJ(int i, int j) {
@@ -415,8 +434,8 @@ public class MapService {
 
                 Texture texture = GraphicUtil.getTextureFromTerrain(this.hexesArray.get(i + startI).get(j + startJ).getCategory());
 
+                // dessine l'hex actif et ses voisins dans le mode Road
                 if(roadStartHex != null) {
-                    // TODO set texture à rouge si roadStartHex et orange si dans roadStartHexNeighbours
                     if(i + startI == roadStartHex.getX() && j + startJ == roadStartHex.getY()) texture = GraphicUtil.redTexture;
                     boolean isInRoadStartNeighbours = false;
                     for(int k=0; k<6; k++) {
@@ -428,20 +447,32 @@ public class MapService {
                     if(isInRoadStartNeighbours) texture = GraphicUtil.orangeTexture;
                 }
 
-
+                // dessine l'hex actif et ses voisins dans le mode River
+                if(riverStartHex != null) {
+                    if(i + startI == riverStartHex.getX() && j + startJ == riverStartHex.getY()) texture = GraphicUtil.redTexture;
+                    boolean isInRiverStartNeighbours = false;
+                    for(int k=0; k<6; k++) {
+                        if (i + startI == riverStartHexNeighbours[k].getX() && j + startJ == riverStartHexNeighbours[k].getY()
+                            && this.hexesArray.get(i + startI).get(j + startJ).getCategory() != HexagonCategory.WATER) {
+                            isInRiverStartNeighbours = true;
+                        }
+                    }
+                    if(isInRiverStartNeighbours) texture = GraphicUtil.orangeTexture;
+                }
 
                 drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
-                // dessin des segments de routes de l'hex
-                // boucle de 0 à 5
-                    // si isPathway
-                        // dessin du bon (en fonction de k) segment de route avec le pattern 'pathway'
-                    // si isRoadway
-                        // dessin du bon (en fonction de k) segment de route avec le pattern 'roadway'
-                    // si isRailway
-                        // dessin du bon (en fonction de k) segment de route avec le pattern 'railway'
+                // dessin des rivières
+                if(mapMode == EditMapMode.RIVER || mapMode == EditMapMode.NO_ACTION) {
+                    for (int k = 0; k < 6; k++) {
+                        if(this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k] != RiverCategory.NO_RIVER) {
+                            drawRiverSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k], k);
+                        }
+                    }
+                }
 
+                // dessin des routes
                 if(mapMode == EditMapMode.ROAD || mapMode == EditMapMode.NO_ACTION) {
                     for(int k=0; k<6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
@@ -473,10 +504,45 @@ public class MapService {
         int x = getXFromIJ(i, j);
         int y = getYFromJ(j);
         Texture texture = getRoadTextureFromRoadCatAndK(roadCategory, k);
-        //texture = GraphicUtil.railwayESETexture;
+        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
 
-        /*
-        // TODO factoriser !!!!
+        if (texturePixmap != null) {
+            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
+            drawingPixmap.drawPixmap(
+                texturePixmap, // Source Pixmap
+                0, 0,            // Source X,Y (top-left of source)
+                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
+                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
+                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+            );
+
+            texturePixmap.dispose();
+        }
+        texture.dispose();
+    }
+
+    private void drawRiverSide(Pixmap drawingPixmap, int i, int j, RiverCategory riverCategory, int k) {
+        int x = getXFromIJ(i, j);
+        int y = getYFromJ(j);
+        Texture texture = getRiverTextureFromRiverCatAndK(riverCategory, k);
+        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
+        if (texturePixmap != null) {
+            drawingPixmap.drawPixmap(
+                texturePixmap, // Source Pixmap
+                0, 0,            // Source X,Y (top-left of source)
+                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
+                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
+                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+            );
+            texturePixmap.dispose();
+        }
+        texture.dispose();
+
+    }
+
+    // TODO mettre dans GraphicUtil
+    private Texture getRoadTextureFromRoadCatAndK(RoadCategory roadCategory, int k) {
+        Texture texture = GraphicUtil.getEmptyTexture();;
         switch (roadCategory) {
             case PATHWAY:
                 switch (k) {
@@ -548,90 +614,77 @@ public class MapService {
                 texture = GraphicUtil.getEmptyTexture();
                 break;
         }
-        */
-
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        if (texturePixmap != null) {
-            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
-                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
-            );
-
-            texturePixmap.dispose();
-        }
+        return texture;
     }
 
-    private Texture getRoadTextureFromRoadCatAndK(RoadCategory roadCategory, int k) {
-        Texture texture = GraphicUtil.getEmptyTexture();;
-        switch (roadCategory) {
-            case PATHWAY:
+    // TODO mettre dans GraphicUtil
+    private Texture getRiverTextureFromRiverCatAndK(RiverCategory riverCategory, int k) {
+        Texture texture = GraphicUtil.getEmptyTexture();
+
+        switch(riverCategory) {
+            case NARROW:
                 switch (k) {
                     case 0:
-                        texture = GraphicUtil.pathway0NWTexture;
+                        texture = GraphicUtil.riverNarrow0NWTexture;
                         break;
                     case 1:
-                        texture = GraphicUtil.pathway1NETexture;
+                        texture = GraphicUtil.riverNarrow1NETexture;
                         break;
                     case 2:
-                        texture = GraphicUtil.pathway2WTexture;
+                        texture = GraphicUtil.riverNarrow2WTexture;
                         break;
                     case 3:
-                        texture = GraphicUtil.pathway3ETexture;
+                        texture = GraphicUtil.riverNarrow3ETexture;
                         break;
                     case 4:
-                        texture = GraphicUtil.pathway4SWTexture;
+                        texture = GraphicUtil.riverNarrow4SWTexture;
                         break;
                     case 5:
-                        texture = GraphicUtil.pathway5SETexture;
+                        texture = GraphicUtil.riverNarrow5SETexture;
                         break;
                 }
                 break;
-            case ROADWAY:
+            case MEDIUM:
                 switch (k) {
                     case 0:
-                        texture = GraphicUtil.roadway0NWTexture;
+                        texture = GraphicUtil.riverMedium0NWTexture;
                         break;
                     case 1:
-                        texture = GraphicUtil.roadway1NETexture;
+                        texture = GraphicUtil.riverMedium1NETexture;
                         break;
                     case 2:
-                        texture = GraphicUtil.roadway2WTexture;
+                        texture = GraphicUtil.riverMedium2WTexture;
                         break;
                     case 3:
-                        texture = GraphicUtil.roadway3ETexture;
+                        texture = GraphicUtil.riverMedium3ETexture;
                         break;
                     case 4:
-                        texture = GraphicUtil.roadway4SWTexture;
+                        texture = GraphicUtil.riverMedium4SWTexture;
                         break;
                     case 5:
-                        texture = GraphicUtil.roadway5SETexture;
+                        texture = GraphicUtil.riverMedium5SETexture;
                         break;
                 }
                 break;
-            case RAILWAY:
+            case WIDE:
                 switch (k) {
                     case 0:
-                        texture = GraphicUtil.railway0NWTexture;
+                        texture = GraphicUtil.riverWide0NWTexture;
                         break;
                     case 1:
-                        texture = GraphicUtil.railway1NETexture;
+                        texture = GraphicUtil.riverWide1NETexture;
                         break;
                     case 2:
-                        texture = GraphicUtil.railway2WTexture;
+                        texture = GraphicUtil.riverWide2WTexture;
                         break;
                     case 3:
-                        texture = GraphicUtil.railway3ETexture;
+                        texture = GraphicUtil.riverWide3ETexture;
                         break;
                     case 4:
-                        texture = GraphicUtil.railway4SWTexture;
+                        texture = GraphicUtil.riverWide4SWTexture;
                         break;
                     case 5:
-                        texture = GraphicUtil.railway5SETexture;
+                        texture = GraphicUtil.riverWide5SETexture;
                         break;
                 }
                 break;
@@ -712,6 +765,7 @@ public class MapService {
         //drawingMapPixmap.drawLine(rectX + selectRectWidth, rectY, rectX + selectRectWidth, rectY + selectRectHeight);
     }
 
+    /*
     public void renderNeighbours(Texture drawingTexture, Pixmap drawingMapPixmap) {
         for(int k=0; k<6; k++) {
             if(this.roadStartHexNeighbours[k] != null
@@ -730,7 +784,7 @@ public class MapService {
             }
         }
         drawingTexture.draw(drawingMapPixmap, 0, 0);
-    }
+    }*/
 
     public void renderHex(int hexI, int hexJ, Texture texture, Pixmap pixmap) {
         // Calculer les coordonnées du centre de l'hexagone
@@ -852,16 +906,31 @@ public class MapService {
         return inside;
     }
 
-    public boolean isInNeighbours(int i, int j) {
-        if(this.roadStartHex != null) {
+    public boolean isInNeighboursByMode(int i, int j, EditMapMode mode) {
+        //if(this.roadStartHex != null) {
             for(int k=0; k<6; k++) {
-                if(this.roadStartHexNeighbours[k] != null
-                    && this.roadStartHexNeighbours[k].getX() == i + this.startI
-                    &&  this.roadStartHexNeighbours[k].getY() == j + startJ) {
-                    return true;
+                switch(mode) {
+                    case ROAD:
+                        if(this.roadStartHex != null
+                            && this.roadStartHexNeighbours[k] != null
+                            && this.roadStartHexNeighbours[k].getX() == i + this.startI
+                            &&  this.roadStartHexNeighbours[k].getY() == j + startJ) {
+                            return true;
+                        }
+                        break;
+                    case RIVER:
+                        //System.out.println("k : " + k);
+                        if(this.riverStartHex != null
+                            && this.riverStartHexNeighbours[k] != null
+                            && this.riverStartHexNeighbours[k].getX() == i + this.startI
+                            &&  this.riverStartHexNeighbours[k].getY() == j + startJ) {
+                            return true;
+                        }
+                        break;
                 }
+
             }
-        }
+        //}
         return false;
     }
 
@@ -877,6 +946,20 @@ public class MapService {
         }
         return -1;
     }
+
+    public int getKFromRiverNeighbours(Hexagon hex) {
+        if(this.riverStartHex != null) {
+            for(int k=0; k<6; k++) {
+                if(this.riverStartHexNeighbours[k] != null
+                    && this.riverStartHexNeighbours[k].getX() == hex.getX()
+                    &&  this.riverStartHexNeighbours[k].getY() == hex.getY()) {
+                    return k;
+                }
+            }
+        }
+        return -1;
+    }
+
 
     public void setRoadForHexes(Hexagon startHex, Hexagon endHex, RoadCategory selectedRoad, int k) {
         //startHex.getRoads().getEdges()
@@ -915,5 +998,33 @@ public class MapService {
         4 : SW / NE: 1
         5 : SE / NW : 0
         */
+    }
+
+
+    public void setRiverForHexes(Hexagon startHex, Hexagon endHex, RiverCategory selectedRiver, int k) {
+        //startHex.getRoads().getEdges()
+        int iStart = startHex.getX();
+        int jStart = startHex.getY();
+        int iEnd = endHex.getX();
+        int jEnd = endHex.getY();
+        int l = 5 - k;
+        switch(selectedRiver) {
+            case NO_RIVER:
+                this.hexesArray.get(iStart).get(jStart).getRivers()[k] = RiverCategory.NO_RIVER;
+                this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.NO_RIVER;
+                break;
+            case NARROW:
+                this.hexesArray.get(iStart).get(jStart).getRivers()[k] = RiverCategory.NARROW;
+                this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.NARROW;
+                break;
+            case MEDIUM:
+                this.hexesArray.get(iStart).get(jStart).getRivers()[k] = RiverCategory.MEDIUM;
+                this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.MEDIUM;
+                break;
+            case WIDE:
+                this.hexesArray.get(iStart).get(jStart).getRivers()[k] = RiverCategory.WIDE;
+                this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.WIDE;
+                break;
+        }
     }
 }
