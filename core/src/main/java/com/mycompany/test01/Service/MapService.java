@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Hexagon;
+import com.mycompany.test01.Entity.MapData;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
 
@@ -60,6 +61,29 @@ public class MapService {
                 Hexagon hexagon = new Hexagon(i, j,
                     terrainCategory,
                     fortificationCategory);
+                /*
+                for (int k = 0; k < 6; k++) {
+                    hexagon.getRoads().getEdges()[k].setRailway(false);
+                }
+                */
+
+                // Créer un nouvel objet de type Hexagon
+                row.add(hexagon);
+            }
+            this.hexesArray.add(row);
+        }
+    }
+
+    public void resetMap() {
+        this.hexesArray = new Array<Array<Hexagon>>(limitI);
+        for (int i = 0; i < limitI; i++) {
+            Array<Hexagon> row = new Array<Hexagon>(limitJ);
+            for (int j = 0; j < limitJ; j++) {
+
+
+                Hexagon hexagon = new Hexagon(i, j,
+                    HexagonCategory.GRASS,
+                    FortificationCategory.NO_FORTIFICATION);
                 // Créer un nouvel objet de type Hexagon
                 row.add(hexagon);
             }
@@ -464,7 +488,7 @@ public class MapService {
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
                 // dessin des rivières
-                if(mapMode == EditMapMode.RIVER || mapMode == EditMapMode.NO_ACTION) {
+                if(mapMode == EditMapMode.RIVER || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.NO_ACTION) {
                     for (int k = 0; k < 6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k] != RiverCategory.NO_RIVER) {
                             drawRiverSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k], k);
@@ -473,7 +497,7 @@ public class MapService {
                 }
 
                 // dessin des routes
-                if(mapMode == EditMapMode.ROAD || mapMode == EditMapMode.NO_ACTION) {
+                if(mapMode == EditMapMode.ROAD || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.NO_ACTION) {
                     for(int k=0; k<6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
                             drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
@@ -486,7 +510,6 @@ public class MapService {
                         }
                     }
                 }
-
 
                 if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION
                 && (mapMode == EditMapMode.FORTIFICATION || mapMode == EditMapMode.NO_ACTION)) {
@@ -1026,5 +1049,24 @@ public class MapService {
                 this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.WIDE;
                 break;
         }
+    }
+
+    public MapData getMapData() {
+        return new MapData("test", this.limitI, this.limitJ, this.hexesArray);
+    }
+
+    public void SetMapData(MapData mapData) {
+        limitI = mapData.getLimitI();
+        limitJ = mapData.getLimitJ();
+        hexesArray = new Array<>();
+        this.hexesArray = new Array<Array<Hexagon>>(limitI);
+        for (int i = 0; i < limitI; i++) {
+            Array<Hexagon> row = new Array<Hexagon>(limitJ);
+            for (int j = 0; j < limitJ; j++) {
+                row.add(mapData.getDataTab()[i][j]);
+            }
+            this.hexesArray.add(row);
+        }
+        init();
     }
 }

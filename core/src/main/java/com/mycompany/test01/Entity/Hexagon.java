@@ -15,9 +15,9 @@ public class Hexagon {
     private RoadEdges roads;
     private RiverCategory[] rivers;
 
-    /*
+
     public Hexagon() {
-    }*/
+    }
 
     public Hexagon(int x, int y, HexagonCategory category, FortificationCategory fortification) {
         this.x = x;

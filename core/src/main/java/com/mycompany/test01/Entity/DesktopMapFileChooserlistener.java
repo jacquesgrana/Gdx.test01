@@ -1,0 +1,42 @@
+package com.mycompany.test01.Entity;
+
+import com.badlogic.gdx.files.FileHandle;
+import com.mycompany.test01.Interface.FileChooser;
+import com.mycompany.test01.Interface.FileChooserListener;
+import com.mycompany.test01.Service.FileService;
+import com.mycompany.test01.Service.MapService;
+
+import java.util.Objects;
+
+public class DesktopMapFileChooserlistener implements FileChooserListener {
+
+    private MapService mapService;
+    private FileService fileService;
+
+    public DesktopMapFileChooserlistener() {
+        mapService = MapService.getInstance();
+        fileService = FileService.getInstance();
+    }
+
+    @Override
+    public void selected(FileHandle file, String mode) {
+        //System.out.println("test !! : file name : " + file.name());
+        //System.out.println("test !! : file path : " + file.path());
+        //System.out.println("mode : " + mode);
+        if(Objects.equals(mode, "LOAD")) {
+            MapData mapData = fileService.loadMapData(file.path()); // TODO modifier la méthode du service
+            mapService.SetMapData(mapData);
+            //mapService.drawMap();
+        }
+        else if(Objects.equals(mode, "SAVE")) {
+            MapData mapData = mapService.getMapData();
+            fileService.saveMapData(mapData, file.path());
+        }
+
+    }
+
+    @Override
+    public void cancellation() {
+
+    }
+}

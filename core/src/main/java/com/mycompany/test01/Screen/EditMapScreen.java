@@ -22,6 +22,7 @@ import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
+import com.mycompany.test01.Service.FileService;
 import com.mycompany.test01.Service.MapService;
 import com.mycompany.test01.Util.GraphicUtil;
 
@@ -33,6 +34,7 @@ public class EditMapScreen implements Screen, InputProcessor {
     private Pixmap drawingMapPixmap;
     private Texture drawingTexture = null;
     final MapService mapService;
+    final FileService fileService;
     private boolean isMiniMapVisible = false;
     private EditMapMode mode;
     private final Label modeLabel;
@@ -44,6 +46,7 @@ public class EditMapScreen implements Screen, InputProcessor {
     private final Table fortificationButtonPanel;
     private final Table roadButtonPanel;
     private final Table riverButtonPanel;
+    private final Table miscButtonPanel;
 
     private final Skin skin; //Skin for UI elements
     private HexagonCategory selectedTerrain = HexagonCategory.GRASS;
@@ -54,11 +57,11 @@ public class EditMapScreen implements Screen, InputProcessor {
     private RoadDrawFlagCategory roadDrawFlag = RoadDrawFlagCategory.EMPTY;
     private RiverDrawFlagCategory riverDrawFlag = RiverDrawFlagCategory.EMPTY;
 
-
     public EditMapScreen(Main game) {
         this.mode = EditMapMode.NO_ACTION;
         this.mapService = MapService.getInstance();
         this.mapService.init();
+        this.fileService = FileService.getInstance();
         //mapService.updateMapSize();
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -111,6 +114,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
+                hideMiscButtonPanel();
                 that.mapService.setRoadStartHex(null);
                 that.mapService.setRiverStartHex(null);
                 redrawMap();
@@ -131,7 +135,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideFortificationButtonPanel();// Show the terrain panel when in terrain mode
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
-
+                hideMiscButtonPanel();
                 showTerrainButtonPanel();
                 that.mapService.setRoadStartHex(null);
                 that.mapService.setRiverStartHex(null);
@@ -154,6 +158,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
+                hideMiscButtonPanel();
                 showRiverButtonPanel();
                 that.mapService.setRoadStartHex(null);
                 that.mapService.setRiverStartHex(null);
@@ -176,7 +181,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideFortificationButtonPanel();
                 hideRiverButtonPanel();
-
+                hideMiscButtonPanel();
                 showRoadButtonPanel();
                 that.mapService.setRoadStartHex(null);
                 that.mapService.setRiverStartHex(null);
@@ -199,7 +204,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideTerrainButtonPanel();
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
-
+                hideMiscButtonPanel();
                 showFortificationButtonPanel();
                 that.mapService.setRoadStartHex(null);
                 that.mapService.setRiverStartHex(null);
@@ -223,7 +228,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
-
+                showMiscButtonPanel();
                 that.mapService.setRoadStartHex(null);
                 that.mapService.setRiverStartHex(null);
 
@@ -244,11 +249,13 @@ public class EditMapScreen implements Screen, InputProcessor {
         fortificationButtonPanel = createFortificationButtonPanel();
         roadButtonPanel = createRoadButtonPanel();
         riverButtonPanel = createRiverButtonPanel();
+        miscButtonPanel = createMiscButtonPanel();
 
         terrainButtonPanel.setVisible(false); // Initially hidden
         fortificationButtonPanel.setVisible(false);
         roadButtonPanel.setVisible(false);
         riverButtonPanel.setVisible(false);
+        miscButtonPanel.setVisible(false);
     }
 
     private void redrawMap() {
@@ -794,6 +801,55 @@ public class EditMapScreen implements Screen, InputProcessor {
         return panel;
     }
 
+    private Table createMiscButtonPanel() {
+        Table panel = new Table();
+        panel.defaults().pad(5);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
+        this.selectedRiverLabel = new Label("Miscellaneous :", labelStyle);
+        panel.add(this.selectedRiverLabel).colspan(5);
+        panel.row();
+        Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+
+        TextButton buttonReset = new TextButton("Reset Map", buttonSkin);
+        buttonReset.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //System.out.println("clic reset");
+                mapService.resetMap();
+                redrawMap();
+            }
+        });
+        panel.add(buttonReset);
+
+        TextButton buttonSave = new TextButton("Save Map", buttonSkin);
+        buttonSave.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //System.out.println("clic save");
+                fileService.openSaveFileChooser();
+                redrawMap();
+            }
+        });
+        panel.add(buttonSave);
+
+        TextButton buttonLoad = new TextButton("Load Map", buttonSkin);
+        buttonLoad.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //System.out.println("clic load");
+                fileService.openLoadFileChooser();
+
+                redrawMap();
+            }
+        });
+        panel.add(buttonLoad);
+
+        panel.row();
+        panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
+        return panel;
+    }
+
     private void showTerrainButtonPanel() {
         if (terrainButtonPanel.getParent() == null) {
             stage.addActor(terrainButtonPanel);
@@ -836,6 +892,17 @@ public class EditMapScreen implements Screen, InputProcessor {
 
     private void hideRiverButtonPanel() {
         riverButtonPanel.setVisible(false);
+    }
+
+    private void showMiscButtonPanel() {
+        if (miscButtonPanel.getParent() == null) {
+            stage.addActor(miscButtonPanel);
+        }
+        miscButtonPanel.setVisible(true);
+    }
+
+    private void hideMiscButtonPanel() {
+        miscButtonPanel.setVisible(false);
     }
 
     /*
