@@ -3,21 +3,17 @@ package com.mycompany.test01.Service;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.mycompany.test01.Entity.DesktopFileChooser;
+import com.mycompany.test01.Entity.DesktopMapFileChooser;
 import com.mycompany.test01.Entity.DesktopMapFileChooserlistener;
 import com.mycompany.test01.Entity.MapData;
 import com.mycompany.test01.Interface.FileChooser;
-import com.mycompany.test01.Interface.FileChooserListener;
-
-import javax.swing.JFileChooser;
-import java.io.File;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 public class FileService {
     private static FileService instance = null;
 
-    private static final String GAME_DATA_FILE_PATH = "game_data/";
-    private static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
+    public static final String GAME_DATA_FILE_PATH = "game_data/";
+    public static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
     private final Json json;
     private final FileChooser fileChooser;
     //NativeFileChooser fileChooser;
@@ -25,7 +21,7 @@ public class FileService {
     public FileService() {
         json = new Json();
         //NativeFileChooser fileChooser = new NativeFileChooser();
-        fileChooser = new DesktopFileChooser(); // Utilisez une implémentation spécifique à la plateforme
+        fileChooser = new DesktopMapFileChooser(); // Utilisez une implémentation spécifique à la plateforme
     }
 
     public static FileService getInstance() {
@@ -36,16 +32,25 @@ public class FileService {
     }
 
     public void openLoadFileChooser() {
+        checkOrInitDirs();
         DesktopMapFileChooserlistener fileChooserlistener = new DesktopMapFileChooserlistener();
-        fileChooser.openLoadFileChooser(fileChooserlistener);
+        fileChooser.openLoadFileChooser(fileChooserlistener, MAP_FILE_PATH);
     }
 
     public void openSaveFileChooser() {
+        checkOrInitDirs();
         DesktopMapFileChooserlistener fileChooserlistener = new DesktopMapFileChooserlistener();
-        fileChooser.openSaveFileChooser(fileChooserlistener);
+        fileChooser.openSaveFileChooser(fileChooserlistener, MAP_FILE_PATH);
     }
 
-    public void saveMapData(MapData data, String filePath) { //GameData data,
+    private void checkOrInitDirs() {
+        FileHandle dataDir = Gdx.files.local(GAME_DATA_FILE_PATH);
+        if(!dataDir.exists()) dataDir.mkdirs();
+        FileHandle mapDir = Gdx.files.local(MAP_FILE_PATH);
+        if(!mapDir.exists()) mapDir.mkdirs();
+    }
+
+    public void saveMapData(MapData data, String filePath) { //GameData data, String filePath
         //FileHandle file = Gdx.files.local(MAP_FILE_PATH + fileName + ".json");
         FileHandle file = Gdx.files.absolute(filePath);
         /*
@@ -58,7 +63,7 @@ public class FileService {
         file.writeString(jsonString, false);
     }
 
-    public MapData loadMapData(String filePath) {
+    public MapData loadMapData(String filePath) { //String filePath
         //FileHandle file = Gdx.files.local(MAP_FILE_PATH + fileName + ".json");
         FileHandle file = Gdx.files.absolute(filePath);
 

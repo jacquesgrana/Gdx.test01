@@ -25,12 +25,16 @@ public class DesktopMapFileChooserlistener implements FileChooserListener {
         //System.out.println("mode : " + mode);
         if(Objects.equals(mode, "LOAD")) {
             MapData mapData = fileService.loadMapData(file.path()); // TODO modifier la méthode du service
+            //MapData mapData = fileService.loadMapData(file.path()); // TODO modifier la méthode du service
+
             mapService.SetMapData(mapData);
             //mapService.drawMap();
         }
         else if(Objects.equals(mode, "SAVE")) {
             MapData mapData = mapService.getMapData();
             fileService.saveMapData(mapData, file.path());
+            //fileService.saveMapData(mapData, file.path());
+
         }
 
     }
