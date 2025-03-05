@@ -20,6 +20,7 @@ public class GraphicUtil {
     public static Texture sandTexture = loadTextureFromFile("texture/terrain/texture-sand.png");
     public static Texture swampTexture = loadTextureFromFile("texture/terrain/texture-swamp.png");
     public static Texture waterTexture = loadTextureFromFile("texture/terrain/texture-water.png");
+    public static Texture cityLightTexture = loadTextureFromFile("texture/terrain/texture-city-light.png");
     public static Texture redTexture = loadTextureFromFile("texture/terrain/texture-red.png");
     public static Texture orangeTexture = loadTextureFromFile("texture/terrain/texture-orange.png");
 
@@ -103,6 +104,8 @@ public class GraphicUtil {
                 return swampTexture;
             case WATER:
                 return waterTexture;
+            case CITY_LIGHT:
+                return cityLightTexture;
         }
         return redTexture;
     }
@@ -187,6 +190,9 @@ public class GraphicUtil {
                 break;
             case WATER:
                 toReturn = Color.BLUE;
+                break;
+            case CITY_LIGHT:
+                toReturn = Color.LIGHT_GRAY;
                 break;
         }
         return toReturn;
