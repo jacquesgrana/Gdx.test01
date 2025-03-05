@@ -620,13 +620,13 @@ public class EditMapScreen implements Screen, InputProcessor {
         Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
         Image terrainImage = new Image(terrainTexture);
         terrainImage.setSize(64, 64);
-        panel.defaults().pad(6);
+        panel.defaults().pad(7);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
         this.selectedTerrainLabel = new Label("Selected Terrain : " + this.selectedTerrain.toString(), labelStyle);
         //this.selectedTerrainLabel.setPosition(50, 150);
          // Add some padding around the buttons
-        panel.add(this.selectedTerrainLabel).colspan(6);
+        panel.add(this.selectedTerrainLabel).colspan(7);
         panel.row();
         // Define the terrain types (you can load these from a file or configuration)
         HexagonCategory[] terrainTypes = {HexagonCategory.FOREST,
@@ -634,7 +634,8 @@ public class EditMapScreen implements Screen, InputProcessor {
         HexagonCategory.SAND,
         HexagonCategory.SWAMP,
         HexagonCategory.WATER,
-        HexagonCategory.CITY_LIGHT};
+        HexagonCategory.CITY_LIGHT,
+        HexagonCategory.CITY_DENSE};
         EditMapScreen that = this;
         // Create buttons for each terrain type
         for (HexagonCategory terrainType : terrainTypes) {
@@ -662,12 +663,12 @@ public class EditMapScreen implements Screen, InputProcessor {
         Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
         Image terrainImage = new Image(terrainTexture);
         terrainImage.setSize(90, 30);*/
-        panel.add(terrainImage).colspan(6).width(64).height(64);
+        panel.add(terrainImage).colspan(7).width(64).height(64);
         panel.row();
 
 
         // Position the panel in the bottom-right corner
-        panel.setPosition(Gdx.graphics.getWidth() - 320f, 80f);
+        panel.setPosition(Gdx.graphics.getWidth() - 420f, 80f);
         return panel;
     }
 

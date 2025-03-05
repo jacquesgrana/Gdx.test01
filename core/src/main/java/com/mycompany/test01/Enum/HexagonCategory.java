@@ -6,7 +6,8 @@ public enum HexagonCategory {
     SWAMP("Swamp", 0.4f, 0.2f),
     SAND("Sand", 0.75f, 0.5f),
     WATER("Water", 0.0f, 0.0f),
-    CITY_LIGHT("City Light", 0.9f, 0.7f);
+    CITY_LIGHT("City Light", 0.9f, 0.7f),
+    CITY_DENSE("City Dense", 0.8f, 0.6f);
 
     private final String name;
     private final float costLeg;
@@ -37,6 +38,7 @@ public enum HexagonCategory {
         else if(random > 0.75f && random <= 0.8625f) return HexagonCategory.SAND;
         else if(random > 0.8625f && random <= 0.95f) return HexagonCategory.WATER;
         else if(random > 0.9f && random <= 0.975f) return HexagonCategory.CITY_LIGHT;
+        else if(random > 0.975f && random <= 0.9825f) return HexagonCategory.CITY_DENSE;
         else return  HexagonCategory.SWAMP;
         //return HexagonCategory.SAND;
     }

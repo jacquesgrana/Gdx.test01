@@ -21,6 +21,8 @@ public class GraphicUtil {
     public static Texture swampTexture = loadTextureFromFile("texture/terrain/texture-swamp.png");
     public static Texture waterTexture = loadTextureFromFile("texture/terrain/texture-water.png");
     public static Texture cityLightTexture = loadTextureFromFile("texture/terrain/texture-city-light.png");
+    public static Texture cityDenseTexture = loadTextureFromFile("texture/terrain/texture-city-dense.png");
+
     public static Texture redTexture = loadTextureFromFile("texture/terrain/texture-red.png");
     public static Texture orangeTexture = loadTextureFromFile("texture/terrain/texture-orange.png");
 
@@ -106,6 +108,8 @@ public class GraphicUtil {
                 return waterTexture;
             case CITY_LIGHT:
                 return cityLightTexture;
+            case CITY_DENSE:
+                return cityDenseTexture;
         }
         return redTexture;
     }
@@ -194,6 +198,8 @@ public class GraphicUtil {
             case CITY_LIGHT:
                 toReturn = Color.LIGHT_GRAY;
                 break;
+            case CITY_DENSE:
+                toReturn = Color.DARK_GRAY;
         }
         return toReturn;
     }
