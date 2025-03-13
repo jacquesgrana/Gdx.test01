@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Enum.RiverCategory;
@@ -167,6 +168,26 @@ public class GraphicUtil {
         textButtonStyle.font = skin.getFont("default-font");
         skin.add("default", textButtonStyle);
 
+        return skin;
+    }
+
+    public static Skin getUnitTreeSkin() {
+        Skin skin = new Skin();
+        BitmapFont font = new BitmapFont();
+        skin.add("default-font", font);
+        skin.add("default-color", Color.WHITE);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        skin.add("white", new Texture(pixmap));
+        pixmap.dispose();
+
+        // Créer les styles nécessaires pour Tree
+        Tree.TreeStyle treeStyle = new Tree.TreeStyle();
+        treeStyle.plus = skin.newDrawable("white", Color.BLACK);
+        treeStyle.minus = skin.newDrawable("white", Color.GRAY);
+        treeStyle.selection = skin.newDrawable("white", Color.BLUE);
+        skin.add("default", treeStyle);
         return skin;
     }
 

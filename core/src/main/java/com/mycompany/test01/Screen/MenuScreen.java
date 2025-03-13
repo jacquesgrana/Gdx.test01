@@ -32,21 +32,37 @@ public class MenuScreen implements Screen {
 
         stage.addActor(menuLabel);
 
-        ButtonWrapper buttonWrapper = new ButtonWrapper(
+        ButtonWrapper buttonWrapperEditMap = new ButtonWrapper(
             "Edit Map",
             font,
             (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
-            (int) (Gdx.graphics.getHeight() / 2f - 50 / 2f),
+            (int) ((Gdx.graphics.getHeight() / 2f) - 25f),
             200, 50);
 
-        buttonWrapper.getButton().addListener(new ClickListener() {
+        buttonWrapperEditMap.getButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new EditMapScreen(game));
             }
         });
 
-        stage.addActor(buttonWrapper.getButton());
+        stage.addActor(buttonWrapperEditMap.getButton());
+
+        ButtonWrapper buttonWrapperEditArmy = new ButtonWrapper(
+            "Edit Army",
+            font,
+            (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
+            (int) ((Gdx.graphics.getHeight() / 2f) - 95f),
+            200, 50);
+
+        buttonWrapperEditArmy.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new EditArmyScreen(game));
+            }
+        });
+
+        stage.addActor(buttonWrapperEditArmy.getButton());
     }
 
     @Override
