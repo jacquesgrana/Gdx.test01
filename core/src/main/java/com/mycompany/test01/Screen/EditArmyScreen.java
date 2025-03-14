@@ -3,20 +3,14 @@ package com.mycompany.test01.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
@@ -29,6 +23,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     final Main game;
     private Stage stage;
     private BitmapFont font;
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
+
     private Tree<UnitNode, String> tree;
     //private Skin skin;
 
@@ -43,6 +39,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     public EditArmyScreen(Main game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
+        shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
 
         //this.skin = GraphicUtil.getButtonSkin(10, 10);
@@ -71,6 +68,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         });
 
         stage.addActor(buttonBackWrapper.getButton());
+
+        /*
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.rect(50, 50, 200, 150);
+        shapeRenderer.end();*/
+
+        //stage.addActor(shapeRenderer);
 
         /*
         this.skin = new Skin();
@@ -140,6 +145,65 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
     }
 
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(GraphicUtil.backgroundColorDark.r,
+            GraphicUtil.backgroundColorDark.g,
+            GraphicUtil.backgroundColorDark.b,
+            GraphicUtil.backgroundColorDark.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        float spacing = 50f;
+        float rectWidth = (Gdx.graphics.getWidth() - 4f * spacing) / 3f;
+        float rectHeight = Gdx.graphics.getHeight() - 150f;
+        float x1 = spacing;
+        float x2 = 2f * spacing + rectWidth;
+        float x3 = 3f * spacing + 2f * rectWidth;
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(GraphicUtil.backgroundColorMedium);
+        shapeRenderer.rect(x1, 100f, rectWidth, rectHeight);
+        shapeRenderer.rect(x2, 100f, rectWidth, rectHeight);
+        //shapeRenderer.setColor(GraphicUtil.backgroundColorLight);
+        shapeRenderer.rect(x3, 100f, rectWidth, rectHeight);
+        shapeRenderer.end();
+
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
+
+    }
+
+    @Override
+    public void resize(int i, int i1) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        font.dispose();
+        shapeRenderer.dispose();
+    }
 
     @Override
     public boolean keyDown(int i) {
@@ -186,45 +250,4 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         return false;
     }
 
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-
-    }
-
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-        font.dispose();
-    }
 }

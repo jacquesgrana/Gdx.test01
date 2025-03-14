@@ -76,6 +76,13 @@ public class GraphicUtil {
     public static Texture riverWide4SWTexture = loadTextureFromFile("texture/river/wide/texture-4-sw-wide.png");
     public static Texture riverWide5SETexture = loadTextureFromFile("texture/river/wide/texture-5-se-wide.png");
 
+    public static Color backgroundColorDark = new Color(0.1f, 0.1f, 0.12f, 1);
+    public static Color backgroundColorMedium = new Color(0.15f, 0.15f, 0.18f, 1);
+    public static Color backgroundColorLight = new Color(0.2f, 0.2f, 0.25f, 1);
+
+    public static Color buttonColorMedium = new Color( 0.25f, 0.25f, 0.31f, 1);
+    public static Color buttonHoverColorMedium = new Color(0.85f, 0.25f, 0.25f, 1);
+    public static Color buttonBorderColorDark = new Color(0.05f, 0.05f, 0.06f, 1);
     /**
      * Creates a Texture from an image file located in the assets' folder.
      *
@@ -152,19 +159,27 @@ public class GraphicUtil {
         // Create a texture for the button background
         // 80 / 30
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.DARK_GRAY);
+        pixmap.setColor(GraphicUtil.buttonColorMedium);
         pixmap.fill();
         // Draw a 1-pixel black border
-        pixmap.setColor(Color.BLACK);
+        pixmap.setColor(GraphicUtil.buttonBorderColorDark);
         pixmap.drawRectangle(0, 0, (int) pixmap.getWidth(), (int) pixmap.getHeight());
         skin.add("button", new Texture(pixmap));
-
         pixmap.dispose(); // Dispose of the Pixmap!
+
+        Pixmap pixmapHover = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        pixmapHover.setColor(GraphicUtil.buttonHoverColorMedium);
+        pixmapHover.fill();
+        pixmapHover.setColor(GraphicUtil.buttonBorderColorDark); //Border Color
+        pixmapHover.drawRectangle(0, 0, width, height);
+        skin.add("button-hover", new Texture(pixmapHover));
+        pixmapHover.dispose();
+
 
         // Configure a TextButtonStyle
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = skin.newDrawable("button", Color.WHITE);
-        textButtonStyle.down = skin.newDrawable("button", Color.LIGHT_GRAY);
+        textButtonStyle.down = skin.newDrawable("button", GraphicUtil.buttonHoverColorMedium);
         textButtonStyle.font = skin.getFont("default-font");
         skin.add("default", textButtonStyle);
 

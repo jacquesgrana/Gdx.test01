@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Main;
+import com.mycompany.test01.Util.GraphicUtil;
 
 public class MenuScreen implements Screen {
     private Main game;
@@ -67,7 +68,10 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
+        Gdx.gl.glClearColor(GraphicUtil.backgroundColorDark.r,
+            GraphicUtil.backgroundColorDark.g,
+            GraphicUtil.backgroundColorDark.b,
+            GraphicUtil.backgroundColorDark.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));

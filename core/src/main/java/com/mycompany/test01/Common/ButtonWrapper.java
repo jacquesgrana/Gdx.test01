@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.mycompany.test01.Util.GraphicUtil;
 
 public class ButtonWrapper {
     private final TextButton button;
@@ -16,17 +17,17 @@ public class ButtonWrapper {
 
         // Create a texture for the button background
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.DARK_GRAY);
+        pixmap.setColor(GraphicUtil.buttonColorMedium);
         pixmap.fill();
-        pixmap.setColor(Color.BLACK); //Border Color
+        pixmap.setColor(GraphicUtil.buttonBorderColorDark); //Border Color
         pixmap.drawRectangle(0, 0, width, height);
         skin.add("button-up", new Texture(pixmap));
         pixmap.dispose();
 
         Pixmap pixmapHover = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        pixmapHover.setColor(Color.CORAL);
+        pixmapHover.setColor(GraphicUtil.buttonHoverColorMedium);
         pixmapHover.fill();
-        pixmapHover.setColor(Color.BLACK); //Border Color
+        pixmapHover.setColor(GraphicUtil.buttonBorderColorDark); //Border Color
         pixmapHover.drawRectangle(0, 0, width, height);
         skin.add("button-hover", new Texture(pixmapHover));
         pixmapHover.dispose();
@@ -34,7 +35,7 @@ public class ButtonWrapper {
         // Configure a TextButtonStyle
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = skin.newDrawable("button-up", Color.WHITE); //Up state
-        textButtonStyle.over = skin.newDrawable("button-hover", Color.ORANGE); //Hover State
+        textButtonStyle.over = skin.newDrawable("button-hover", GraphicUtil.buttonHoverColorMedium); //Hover State
         textButtonStyle.font = skin.getFont("default-font");
         textButtonStyle.fontColor = Color.WHITE;
 
