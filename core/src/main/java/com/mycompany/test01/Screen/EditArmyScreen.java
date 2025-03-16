@@ -16,12 +16,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.Unit;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
+import com.mycompany.test01.Interface.Element;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
 
@@ -134,10 +136,34 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group01.setId(1);
         group01.setName("group 01");
 
-        Unit unit01 = new Unit(2, "unit 01");
-        Unit unit02 = new Unit(3, "unit 02");
-        Unit unit03 = new Unit(4, "unit 03");
+        UnitGroup group02 = new UnitGroup();
+        group02.setId(2);
+        group02.setName("group 02");
 
+        Unit unit01 = new Unit(3, "unit 01");
+        Unit unit02 = new Unit(4, "unit 02");
+        Unit unit03 = new Unit(5, "unit 03");
+        Unit unit04 = new Unit(6, "unit 04");
+        Unit unit05 = new Unit(7, "unit 05");
+
+        //OrderedSet<Element> units = new OrderedSet<>();
+
+        rootGroup.addUnit(group01);
+        rootGroup.addUnit(unit01);
+        rootGroup.addUnit(unit02);
+        group01.addUnit(group02);
+        group01.addUnit(unit03);
+        group02.addUnit(unit04);
+        group02.addUnit(unit05);
+
+        //units.add(rootGroup);
+
+        tree.add(GraphicUtil.createTreeFromGroup(rootGroup));
+        tree.expandAll();
+
+        stage.addActor(tree);
+
+        /*
         UnitNode rootNode = new UnitNode(rootGroup);
         UnitNode group01Node = new UnitNode(group01);
         UnitNode unit01Node = new UnitNode(unit01);
@@ -151,6 +177,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group01Node.add(unit03Node);
 
         tree.expandAll();
+
+        stage.addActor(tree);
+*/
+
 
         /*
         final UnitNode moo1 = new UnitNode("moo1 (add to moo2)");
@@ -190,8 +220,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
                 if (node != null) node.remove();
             }
         });
-        */
         stage.addActor(tree);
+
+        */
 
     }
 

@@ -5,13 +5,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mycompany.test01.Common.UnitNode;
+import com.mycompany.test01.Entity.Unit.Unit;
+import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Enum.RiverCategory;
 import com.mycompany.test01.Enum.RoadCategory;
+import com.mycompany.test01.Interface.Element;
 
 public class GraphicUtil {
 
@@ -339,4 +345,71 @@ public class GraphicUtil {
 
         return texture;
     }
+
+    public static UnitNode createTreeFromGroup(UnitGroup group) {
+        // Créer un nœud pour le groupe actuel
+        UnitNode groupNode = new UnitNode(group);
+
+        // Parcourir les unités du groupe
+        for (Element element : group.getUnits()) {
+            if (element instanceof UnitGroup) {
+                // Si c'est un sous-groupe, appel récursif
+                UnitNode childGroupNode = createTreeFromGroup((UnitGroup) element);
+                groupNode.add(childGroupNode); // Ajouter le sous-groupe au nœud actuel
+                // ajouter listener
+                childGroupNode.getActor().addListener(new ClickListener() {
+                    public void clicked (InputEvent event, float x, float y) {
+                        System.out.println("clic group");
+                    }
+                });
+
+            } else if (element instanceof Unit) {
+                // Si c'est une unité, créer un nœud simple
+                UnitNode unitNode = new UnitNode((Unit) element);
+                groupNode.add(unitNode); // Ajouter l'unité au nœud actuel
+                // ajouter listener
+                unitNode.getActor().addListener(new ClickListener() {
+                    public void clicked (InputEvent event, float x, float y) {
+                        System.out.println("clic unit");
+                    }
+                });
+            }
+
+            /*
+            // ajouter listener
+            groupNode.getActor().addListener(new ClickListener() {
+                public void clicked (InputEvent event, float x, float y) {
+                    System.out.println("clic group");
+                }
+            });*/
+        }
+
+        return groupNode;
+    }
+
+    /*
+            moo1.getActor().addListener(new ClickListener() {
+            public void clicked (InputEvent event, float x, float y) {
+                System.out.println(moo1.getActor().getText() + ", " + moo1.getValue() + ", " + moo1.getValue().length());
+                UnitNode node = new UnitNode("added " + moo2.getChildren().size);
+                node.add(new UnitNode("1"));
+                node.add(new UnitNode("2"));
+                node.setExpanded(MathUtils.randomBoolean());
+                moo2.insert(MathUtils.randomBoolean() ? moo2.getChildren().size : MathUtils.random(0, moo2.getChildren().size), node);
+            }
+        });
+        moo2.getActor().addListener(new ClickListener() {
+            public void clicked (InputEvent event, float x, float y) {
+                moo2.getChildren().removeValue(moo3, true);
+                moo2.getChildren().add(moo3);
+                moo2.updateChildren();
+            }
+        });
+        moo5.getActor().addListener(new ClickListener() {
+            public void clicked (InputEvent event, float x, float y) {
+                UnitNode node = tree.findNode("moo4");
+                if (node != null) node.remove();
+            }
+        });
+     */
 }
