@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.UnitNode;
+import com.mycompany.test01.Entity.Unit.Unit;
+import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
 
@@ -115,6 +117,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         skin.add("default", treeStyle);
         */
         //this.skin = GraphicUtil.getUnitTreeSkin();
+
+
         this.tree = new Tree<>(GraphicUtil.getUnitTreeSkin());
 
         tree.setPadding(10);
@@ -122,6 +126,33 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
+        UnitGroup rootGroup = new UnitGroup();
+        rootGroup.setId(0);
+        rootGroup.setName("root group");
+
+        UnitGroup group01 = new UnitGroup();
+        group01.setId(1);
+        group01.setName("group 01");
+
+        Unit unit01 = new Unit(2, "unit 01");
+        Unit unit02 = new Unit(3, "unit 02");
+        Unit unit03 = new Unit(4, "unit 03");
+
+        UnitNode rootNode = new UnitNode(rootGroup);
+        UnitNode group01Node = new UnitNode(group01);
+        UnitNode unit01Node = new UnitNode(unit01);
+        UnitNode unit02Node = new UnitNode(unit02);
+        UnitNode unit03Node = new UnitNode(unit03);
+
+        tree.add(rootNode);
+        rootNode.add(group01Node);
+        rootNode.add(unit01Node);
+        rootNode.add(unit02Node);
+        group01Node.add(unit03Node);
+
+        tree.expandAll();
+
+        /*
         final UnitNode moo1 = new UnitNode("moo1 (add to moo2)");
         final UnitNode moo2 = new UnitNode("moo2 (moo3 to bottom)");
         final UnitNode moo3 = new UnitNode("moo3");
@@ -159,7 +190,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
                 if (node != null) node.remove();
             }
         });
-
+        */
         stage.addActor(tree);
 
     }
