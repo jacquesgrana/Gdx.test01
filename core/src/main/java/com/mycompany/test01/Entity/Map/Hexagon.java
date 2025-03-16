@@ -1,4 +1,4 @@
-package com.mycompany.test01.Entity;
+package com.mycompany.test01.Entity.Map;
 
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;

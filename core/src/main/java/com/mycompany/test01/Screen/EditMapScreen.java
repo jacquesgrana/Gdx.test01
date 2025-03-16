@@ -16,12 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
-import com.mycompany.test01.Entity.Hexagon;
+import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Color;
 import com.mycompany.test01.Service.FileService;
 import com.mycompany.test01.Service.MapService;
 import com.mycompany.test01.Util.GraphicUtil;
@@ -238,7 +237,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         stage.addActor(buttonModeMiscWrapper.getButton());
 
         drawingMapPixmap = new Pixmap((int) mapService.getMapWidth(),(int) mapService.getMapHeight(), Pixmap.Format.RGBA8888);
-        drawingMapPixmap.setColor(Color.DARK_GRAY);
+        drawingMapPixmap.setColor(GraphicUtil.backgroundColorMedium);
         drawingMapPixmap.fill();
 
         mapService.drawMap(drawingMapPixmap, mode);
@@ -265,7 +264,7 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         // Create a new pixmap
         drawingMapPixmap = new Pixmap((int) mapService.getMapWidth(),(int) mapService.getMapHeight(), Pixmap.Format.RGBA8888);
-        drawingMapPixmap.setColor(Color.DARK_GRAY);
+        drawingMapPixmap.setColor(GraphicUtil.backgroundColorMedium);
         drawingMapPixmap.fill();
 
         // Redraw the map to the pixmap

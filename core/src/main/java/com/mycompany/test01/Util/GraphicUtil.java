@@ -164,7 +164,7 @@ public class GraphicUtil {
         // Draw a 1-pixel black border
         pixmap.setColor(GraphicUtil.buttonBorderColorDark);
         pixmap.drawRectangle(0, 0, (int) pixmap.getWidth(), (int) pixmap.getHeight());
-        skin.add("button", new Texture(pixmap));
+        skin.add("button-up", new Texture(pixmap));
         pixmap.dispose(); // Dispose of the Pixmap!
 
         Pixmap pixmapHover = new Pixmap(width, height, Pixmap.Format.RGBA8888);
@@ -178,8 +178,9 @@ public class GraphicUtil {
 
         // Configure a TextButtonStyle
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("button", Color.WHITE);
-        textButtonStyle.down = skin.newDrawable("button", GraphicUtil.buttonHoverColorMedium);
+        textButtonStyle.up = skin.newDrawable("button-up", Color.WHITE);
+        textButtonStyle.over = skin.newDrawable("button-hover", GraphicUtil.buttonHoverColorMedium); //Hover State
+        textButtonStyle.down = skin.newDrawable("button-hover", GraphicUtil.buttonHoverColorMedium);
         textButtonStyle.font = skin.getFont("default-font");
         skin.add("default", textButtonStyle);
 

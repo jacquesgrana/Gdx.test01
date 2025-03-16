@@ -1,7 +1,7 @@
-package com.mycompany.test01.Entity;
+package com.mycompany.test01.Common;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.mycompany.test01.Interface.FileChooser;
+import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.FileChooserListener;
 import com.mycompany.test01.Service.FileService;
 import com.mycompany.test01.Service.MapService;

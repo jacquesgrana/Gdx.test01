@@ -1,4 +1,4 @@
-package com.mycompany.test01.Entity;
+package com.mycompany.test01.Common;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;

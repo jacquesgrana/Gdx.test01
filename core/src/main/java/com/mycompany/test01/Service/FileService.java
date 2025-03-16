@@ -3,9 +3,9 @@ package com.mycompany.test01.Service;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.mycompany.test01.Entity.DesktopMapFileChooser;
-import com.mycompany.test01.Entity.DesktopMapFileChooserlistener;
-import com.mycompany.test01.Entity.MapData;
+import com.mycompany.test01.Common.DesktopMapFileChooser;
+import com.mycompany.test01.Common.DesktopMapFileChooserlistener;
+import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.FileChooser;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 

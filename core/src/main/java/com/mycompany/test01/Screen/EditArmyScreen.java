@@ -4,17 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
-import com.mycompany.test01.Entity.UnitNode;
+import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
 
@@ -23,8 +28,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     final Main game;
     private Stage stage;
     private BitmapFont font;
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
-
+    //private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private final Table leftPanel, centerPanel, rightPanel;
     private Tree<UnitNode, String> tree;
     //private Skin skin;
 
@@ -39,13 +44,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     public EditArmyScreen(Main game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
-        shapeRenderer = new ShapeRenderer();
+        //shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
+        font = new BitmapFont();
+
+
 
         //this.skin = GraphicUtil.getButtonSkin(10, 10);
         //Tree<Label, String> tree = new Tree<>(skin);
 
-        font = new BitmapFont();
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
         Label menuLabel = new Label("Edit Army", labelStyle);
@@ -68,6 +75,18 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         });
 
         stage.addActor(buttonBackWrapper.getButton());
+
+        this.leftPanel = createPanel(0);
+        stage.addActor(leftPanel);
+        this.leftPanel.setVisible(true);
+
+        this.centerPanel = createPanel(1);
+        stage.addActor(centerPanel);
+        this.centerPanel.setVisible(true);
+
+        this.rightPanel = createPanel(2);
+        stage.addActor(rightPanel);
+        this.rightPanel.setVisible(true);
 
         /*
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -101,7 +120,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setPadding(10);
         tree.setIndentSpacing(25);
         tree.setIconSpacing(5, 0);
-        tree.setPosition(500, 500, 1);
+        tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
         final UnitNode moo1 = new UnitNode("moo1 (add to moo2)");
         final UnitNode moo2 = new UnitNode("moo2 (moo3 to bottom)");
@@ -145,6 +164,28 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
     }
 
+    private Table createPanel(int columnNumber) {
+        float spacing = 50f;
+        float columnCount = 3f;
+        float rectWidth = (Gdx.graphics.getWidth() - (columnCount + 1) * spacing) / columnCount;
+        float rectHeight = Gdx.graphics.getHeight() - 150f;
+        float x = spacing + columnNumber * (spacing + rectWidth);
+        Table panel = new Table();
+        panel.defaults().pad(3);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(GraphicUtil.backgroundColorMedium); // Choisissez la couleur que vous voulez
+        pixmap.fill();
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+        Drawable background = new TextureRegionDrawable(new TextureRegion(texture));
+        //texture.dispose();
+        //panel.setPosition(x, 100f);
+        panel.setBounds(x, 100f, rectWidth, rectHeight);
+        panel.setBackground(background);
+
+        return panel;
+    }
+
     @Override
     public void show() {
 
@@ -158,8 +199,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             GraphicUtil.backgroundColorDark.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        /*
         float spacing = 50f;
-        float rectWidth = (Gdx.graphics.getWidth() - 4f * spacing) / 3f;
+        float columnCount = 3f;
+        float rectWidth = (Gdx.graphics.getWidth() - (columnCount + 1) * spacing) / columnCount;
         float rectHeight = Gdx.graphics.getHeight() - 150f;
         float x1 = spacing;
         float x2 = 2f * spacing + rectWidth;
@@ -172,7 +215,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         //shapeRenderer.setColor(GraphicUtil.backgroundColorLight);
         shapeRenderer.rect(x3, 100f, rectWidth, rectHeight);
         shapeRenderer.end();
-
+        */
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 
@@ -202,7 +245,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     public void dispose() {
         stage.dispose();
         font.dispose();
-        shapeRenderer.dispose();
+        //shapeRenderer.dispose();
     }
 
     @Override

@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
-import com.mycompany.test01.Entity.Hexagon;
-import com.mycompany.test01.Entity.MapData;
+import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
 

@@ -35,7 +35,9 @@ public class ButtonWrapper {
         // Configure a TextButtonStyle
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = skin.newDrawable("button-up", Color.WHITE); //Up state
+        textButtonStyle.down = skin.newDrawable("button-hover", GraphicUtil.buttonHoverColorMedium);
         textButtonStyle.over = skin.newDrawable("button-hover", GraphicUtil.buttonHoverColorMedium); //Hover State
+
         textButtonStyle.font = skin.getFont("default-font");
         textButtonStyle.fontColor = Color.WHITE;
 

@@ -1,4 +1,4 @@
-package com.mycompany.test01.Entity;
+package com.mycompany.test01.Entity.Map;
 
 public class RoadEdge {
     private boolean pathway;
