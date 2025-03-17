@@ -359,7 +359,8 @@ public class GraphicUtil {
                 // ajouter listener
                 childGroupNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
-                        System.out.println("clic group");
+                        System.out.println("click on group");
+                        childGroupNode.setExpanded(!childGroupNode.isExpanded());
                     }
                 });
 
@@ -370,7 +371,7 @@ public class GraphicUtil {
                 // ajouter listener
                 unitNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
-                        System.out.println("clic unit");
+                        System.out.println("click on unit");
                     }
                 });
             }

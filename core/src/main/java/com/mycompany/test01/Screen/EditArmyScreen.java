@@ -21,6 +21,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.UnitNode;
+import com.mycompany.test01.Entity.Unit.FrontGroup;
+import com.mycompany.test01.Entity.Unit.InfantryUnit;
 import com.mycompany.test01.Entity.Unit.Unit;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Interface.Element;
@@ -128,23 +130,23 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        UnitGroup rootGroup = new UnitGroup();
+        UnitGroup rootGroup = new FrontGroup();
         rootGroup.setId(0);
         rootGroup.setName("root group");
 
-        UnitGroup group01 = new UnitGroup();
+        UnitGroup group01 = new FrontGroup();
         group01.setId(1);
         group01.setName("group 01");
 
-        UnitGroup group02 = new UnitGroup();
+        UnitGroup group02 = new FrontGroup();
         group02.setId(2);
         group02.setName("group 02");
 
-        Unit unit01 = new Unit(3, "unit 01");
-        Unit unit02 = new Unit(4, "unit 02");
-        Unit unit03 = new Unit(5, "unit 03");
-        Unit unit04 = new Unit(6, "unit 04");
-        Unit unit05 = new Unit(7, "unit 05");
+        Unit unit01 = new InfantryUnit(3, "unit 01");
+        Unit unit02 = new InfantryUnit(4, "unit 02");
+        Unit unit03 = new InfantryUnit(5, "unit 03");
+        Unit unit04 = new InfantryUnit(6, "unit 04");
+        Unit unit05 = new InfantryUnit(7, "unit 05");
 
         //OrderedSet<Element> units = new OrderedSet<>();
 
@@ -159,6 +161,13 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         //units.add(rootGroup);
 
         tree.add(GraphicUtil.createTreeFromGroup(rootGroup));
+        // ajouter listener
+        tree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
+            public void clicked (InputEvent event, float x, float y) {
+                System.out.println("click on root");
+                tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
+            }
+        });
         tree.expandAll();
 
         stage.addActor(tree);

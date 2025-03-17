@@ -4,7 +4,7 @@ import com.mycompany.test01.Interface.Element;
 
 import java.util.Objects;
 
-public class Unit implements Element {
+public abstract class Unit implements Element {
     private int id;
     private String name;
 

@@ -5,7 +5,7 @@ import com.mycompany.test01.Interface.Element;
 
 import java.util.Objects;
 
-public class UnitGroup implements Element {
+public abstract class UnitGroup implements Element {
     private int id;
     private String name;
     private OrderedSet<Element> units;
