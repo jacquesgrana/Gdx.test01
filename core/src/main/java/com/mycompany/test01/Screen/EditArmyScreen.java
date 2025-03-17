@@ -20,11 +20,9 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
+import com.mycompany.test01.Common.UnitFactory;
 import com.mycompany.test01.Common.UnitNode;
-import com.mycompany.test01.Entity.Unit.FrontGroup;
-import com.mycompany.test01.Entity.Unit.InfantryUnit;
-import com.mycompany.test01.Entity.Unit.Unit;
-import com.mycompany.test01.Entity.Unit.UnitGroup;
+import com.mycompany.test01.Entity.Unit.*;
 import com.mycompany.test01.Interface.Element;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
@@ -130,25 +128,16 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        UnitGroup rootGroup = new FrontGroup();
-        rootGroup.setId(0);
-        rootGroup.setName("root group");
+        FrontGroup rootGroup = UnitFactory.createFrontGroup(0, "front");
+        ArmyGroupGroup group01 = UnitFactory.createArmyGroupGroup(1, "army group 01");
+        ArmyGroup group02 = UnitFactory.createArmyGroup(2, "army 01");
 
-        UnitGroup group01 = new FrontGroup();
-        group01.setId(1);
-        group01.setName("group 01");
-
-        UnitGroup group02 = new FrontGroup();
-        group02.setId(2);
-        group02.setName("group 02");
-
-        Unit unit01 = new InfantryUnit(3, "unit 01");
-        Unit unit02 = new InfantryUnit(4, "unit 02");
-        Unit unit03 = new InfantryUnit(5, "unit 03");
-        Unit unit04 = new InfantryUnit(6, "unit 04");
-        Unit unit05 = new InfantryUnit(7, "unit 05");
-
-        //OrderedSet<Element> units = new OrderedSet<>();
+        InfantryUnit unit01 = UnitFactory.createInfantryUnit(3, "unit 01");
+        InfantryUnit unit02 = UnitFactory.createInfantryUnit(4, "unit 02");
+        InfantryUnit unit03 = UnitFactory.createInfantryUnit(5, "unit 03");
+        InfantryUnit unit04 = UnitFactory.createInfantryUnit(6, "unit 04");
+        InfantryUnit unit05 = UnitFactory.createInfantryUnit(7, "unit 05");
+            //OrderedSet<Element> units = new OrderedSet<>();
 
         rootGroup.addUnit(group01);
         rootGroup.addUnit(unit01);

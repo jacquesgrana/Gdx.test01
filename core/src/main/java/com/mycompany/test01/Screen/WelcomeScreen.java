@@ -28,7 +28,7 @@ public class WelcomeScreen implements Screen {
             "Menu",
             font,
             (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
-            (int) (Gdx.graphics.getHeight() / 2f - 50 / 2f),
+            (int) (Gdx.graphics.getHeight() / 2f - 50 / 2f + 20f),
             200, 50);
         buttonWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -76,6 +76,3 @@ public class WelcomeScreen implements Screen {
     @Override
     public void show() {}
 }
-
-
-

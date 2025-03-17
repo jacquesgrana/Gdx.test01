@@ -5,21 +5,23 @@ import com.mycompany.test01.Interface.Element;
 
 import java.util.Objects;
 
-public abstract class UnitGroup implements Element {
-    private int id;
-    private String name;
+public abstract class UnitGroup extends UnitElement { // implements Element
+    //private int id;
+    //private String name;
     private OrderedSet<Element> units;
 
     public UnitGroup() {
         this.units = new OrderedSet<>();
     }
 
-    public UnitGroup(int id, String name, OrderedSet<Element> units) {
-        this.id = id;
-        this.name = name;
-        this.units = units;
+    public UnitGroup(int id, String name) {
+        //this.id = id;
+        //this.name = name;
+        super(id, name);
+        this.units = new OrderedSet<>();
     }
 
+    /*
     @Override
     public int getId() {
         return id;
@@ -39,6 +41,8 @@ public abstract class UnitGroup implements Element {
     public void setName(String name) {
         this.name = name;
     }
+    */
+
 
     public void addUnit(Element element) {
         if(element != null) {
@@ -52,6 +56,7 @@ public abstract class UnitGroup implements Element {
         }
     }
 
+    /*
     @Override
     public boolean equals(Element element) {
         if (element == null) return false;
@@ -61,7 +66,7 @@ public abstract class UnitGroup implements Element {
     @Override
     public int hashCode() {
         return Objects.hash(this.id, this.name);
-    }
+    }*/
 
     public OrderedSet<Element> getUnits() {
         return units;

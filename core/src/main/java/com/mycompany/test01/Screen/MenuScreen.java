@@ -19,6 +19,11 @@ public class MenuScreen implements Screen {
     private Stage stage;
     private BitmapFont font;
 
+    private int buttonWidth = 200;
+    private int buttonHeight = 50;
+    private int spacing = 20;
+    private int buttonsCount = 3;
+
     public MenuScreen(Main game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
@@ -29,16 +34,18 @@ public class MenuScreen implements Screen {
 
         Label menuLabel = new Label("Game Menu", labelStyle);
         menuLabel.setPosition(Gdx.graphics.getWidth() / 2f - menuLabel.getWidth() / 2f,
-            Gdx.graphics.getHeight() - menuLabel.getHeight() - 20);
+            Gdx.graphics.getHeight() - menuLabel.getHeight() - spacing);
 
         stage.addActor(menuLabel);
+
+        int buttonsHeight = (buttonsCount - 1) * (buttonHeight + spacing) + buttonHeight;
 
         ButtonWrapper buttonWrapperEditMap = new ButtonWrapper(
             "Edit Map",
             font,
-            (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
-            (int) ((Gdx.graphics.getHeight() / 2f) - 25f),
-            200, 50);
+            (int) (Gdx.graphics.getWidth() / 2f - buttonWidth / 2f),
+            (int) (Gdx.graphics.getHeight() / 2f + buttonsHeight / 2f),
+            buttonWidth, buttonHeight);
 
         buttonWrapperEditMap.getButton().addListener(new ClickListener() {
             @Override
@@ -52,9 +59,9 @@ public class MenuScreen implements Screen {
         ButtonWrapper buttonWrapperEditArmy = new ButtonWrapper(
             "Edit Army",
             font,
-            (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
-            (int) ((Gdx.graphics.getHeight() / 2f) - 95f),
-            200, 50);
+            (int) (Gdx.graphics.getWidth() / 2f - buttonWidth / 2f),
+            (int) ((Gdx.graphics.getHeight() / 2f) - buttonHeight - spacing + buttonsHeight / 2f),
+            buttonWidth, buttonHeight);
 
         buttonWrapperEditArmy.getButton().addListener(new ClickListener() {
             @Override
@@ -64,6 +71,22 @@ public class MenuScreen implements Screen {
         });
 
         stage.addActor(buttonWrapperEditArmy.getButton());
+
+        ButtonWrapper buttonWrapperQuit = new ButtonWrapper(
+            "Quit Game",
+            font,
+            (int) (Gdx.graphics.getWidth() / 2f - buttonWidth / 2f),
+            (int) (Gdx.graphics.getHeight() / 2f - 2f * (buttonHeight + spacing) + buttonsHeight / 2f),
+            buttonWidth, buttonHeight);
+
+        buttonWrapperQuit.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+
+        stage.addActor(buttonWrapperQuit.getButton());
     }
 
     @Override
