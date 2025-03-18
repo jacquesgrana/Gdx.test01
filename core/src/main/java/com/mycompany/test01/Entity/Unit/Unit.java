@@ -1,5 +1,8 @@
 package com.mycompany.test01.Entity.Unit;
 
+import com.mycompany.test01.Enum.CountryEnum;
+import com.mycompany.test01.Enum.UnitTypeEnum;
+
 public abstract class Unit extends UnitElement {
     //private int id;
     //private String name;
@@ -7,10 +10,8 @@ public abstract class Unit extends UnitElement {
     public Unit() {
     }
 
-    public Unit(String name) {
-        //this.id = id;
-        //this.name = name;
-        super(name);
+    public Unit(String name, CountryEnum country, UnitTypeEnum type) {
+        super(name, country, type);
     }
 
     /*

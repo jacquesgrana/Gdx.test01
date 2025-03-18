@@ -1,6 +1,7 @@
 package com.mycompany.test01.Interface;
 
 import com.mycompany.test01.Entity.Unit.*;
+import com.mycompany.test01.Enum.CountryEnum;
 
 public interface UnitFactoryInterface {
     public InfantryUnit createInfantryUnit(String name);

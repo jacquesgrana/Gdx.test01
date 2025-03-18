@@ -7,7 +7,10 @@ import com.mycompany.test01.Util.GraphicUtil;
 
 public class UnitNode extends Tree.Node<UnitNode, ElementInterface, TextButton> {
     public UnitNode (ElementInterface unit) {
-        super(new TextButton(unit.getId() + " / " + unit.getName(), GraphicUtil.getButtonSkin(30,30)));
+        super(new TextButton(unit.getId() + " / "
+            + unit.getName() + " / "
+            + unit.getCountry().toString() + " / "
+            + unit.getType().toString(), GraphicUtil.getButtonSkin(30,30)));
         setValue(unit);
     }
 }
