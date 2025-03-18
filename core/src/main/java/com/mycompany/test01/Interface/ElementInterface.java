@@ -1,6 +1,6 @@
 package com.mycompany.test01.Interface;
 
-public interface Element {
+public interface ElementInterface {
     public int getId();
 
     public void setId(int id);
@@ -9,7 +9,7 @@ public interface Element {
 
     public void setName(String name);
 
-    public boolean equals(Element element);
+    public boolean equals(ElementInterface element);
 
     public int hashCode();
 }

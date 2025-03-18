@@ -5,7 +5,7 @@ public class ArmyGroup extends UnitGroup{
         super();
     }
 
-    public ArmyGroup(int id, String name) {
-        super(id, name);
+    public ArmyGroup(String name) {
+        super(name);
     }
 }

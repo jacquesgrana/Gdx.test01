@@ -2,16 +2,16 @@ package com.mycompany.test01.Common;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.mycompany.test01.Interface.FileChooser;
-import com.mycompany.test01.Interface.FileChooserListener;
+import com.mycompany.test01.Interface.FileChooserInterface;
+import com.mycompany.test01.Interface.FileChooserListenerInterface;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
-public class DesktopMapFileChooser implements FileChooser {
+public class DesktopMapFileChooser implements FileChooserInterface {
     @Override
-    public void openLoadFileChooser(FileChooserListener listener, String dirPath) {
+    public void openLoadFileChooser(FileChooserListenerInterface listener, String dirPath) {
         JFileChooser chooser = new JFileChooser();
         File defaultDirectory = new File(Gdx.files.local(dirPath).file().getAbsolutePath());
         chooser.setCurrentDirectory(defaultDirectory);
@@ -36,7 +36,7 @@ public class DesktopMapFileChooser implements FileChooser {
     }
 
     @Override
-    public void openSaveFileChooser(FileChooserListener listener, String dirPath) {
+    public void openSaveFileChooser(FileChooserListenerInterface listener, String dirPath) {
         JFileChooser chooser = new JFileChooser();
         File defaultDirectory = new File(Gdx.files.local(dirPath).file().getAbsolutePath());
         chooser.setCurrentDirectory(defaultDirectory);

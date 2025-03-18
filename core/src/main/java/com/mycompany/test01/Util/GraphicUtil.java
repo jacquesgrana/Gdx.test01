@@ -17,7 +17,7 @@ import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Enum.RiverCategory;
 import com.mycompany.test01.Enum.RoadCategory;
-import com.mycompany.test01.Interface.Element;
+import com.mycompany.test01.Interface.ElementInterface;
 
 public class GraphicUtil {
 
@@ -351,7 +351,7 @@ public class GraphicUtil {
         UnitNode groupNode = new UnitNode(group);
 
         // Parcourir les unités du groupe
-        for (Element element : group.getUnits()) {
+        for (ElementInterface element : group.getUnits()) {
             if (element instanceof UnitGroup) {
                 // Si c'est un sous-groupe, appel récursif
                 UnitNode childGroupNode = createTreeFromGroup((UnitGroup) element);

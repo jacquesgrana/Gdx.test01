@@ -6,7 +6,7 @@ public class FrontGroup extends UnitGroup {
         super();
     }
 
-    public FrontGroup(int id, String name) {
-        super(id, name);
+    public FrontGroup(String name) {
+        super(name);
     }
 }

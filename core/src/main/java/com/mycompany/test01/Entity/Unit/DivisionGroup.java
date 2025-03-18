@@ -5,7 +5,7 @@ public class DivisionGroup extends UnitGroup{
         super();
     }
 
-    public DivisionGroup(int id, String name) {
-        super(id, name);
+    public DivisionGroup(String name) {
+        super(name);
     }
 }

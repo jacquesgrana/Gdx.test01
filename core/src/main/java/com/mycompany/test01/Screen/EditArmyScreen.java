@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,14 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
-import com.mycompany.test01.Common.UnitFactory;
+import com.mycompany.test01.Factory.UnitRedCountryFactory;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.*;
-import com.mycompany.test01.Interface.Element;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
 
@@ -35,6 +32,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     //private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private final Table leftPanel, centerPanel, rightPanel;
     private Tree<UnitNode, String> tree;
+
+    private UnitRedCountryFactory unitRedCountryFactory;
     //private Skin skin;
 
     /*
@@ -46,6 +45,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     }
 */
     public EditArmyScreen(Main game) {
+        this.unitRedCountryFactory = new UnitRedCountryFactory();
         this.game = game;
         stage = new Stage(new ScreenViewport());
         //shapeRenderer = new ShapeRenderer();
@@ -128,15 +128,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        FrontGroup rootGroup = UnitFactory.createFrontGroup(0, "front");
-        ArmyGroupGroup group01 = UnitFactory.createArmyGroupGroup(1, "army group 01");
-        ArmyGroup group02 = UnitFactory.createArmyGroup(2, "army 01");
+        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front");
+        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01");
+        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01");
 
-        InfantryUnit unit01 = UnitFactory.createInfantryUnit(3, "unit 01");
-        InfantryUnit unit02 = UnitFactory.createInfantryUnit(4, "unit 02");
-        InfantryUnit unit03 = UnitFactory.createInfantryUnit(5, "unit 03");
-        InfantryUnit unit04 = UnitFactory.createInfantryUnit(6, "unit 04");
-        InfantryUnit unit05 = UnitFactory.createInfantryUnit(7, "unit 05");
+        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01");
+        InfantryUnit unit02 = unitRedCountryFactory.createInfantryUnit("unit 02");
+        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03");
+        InfantryUnit unit04 = unitRedCountryFactory.createInfantryUnit("unit 04");
+        InfantryUnit unit05 = unitRedCountryFactory.createInfantryUnit("unit 05");
             //OrderedSet<Element> units = new OrderedSet<>();
 
         rootGroup.addUnit(group01);

@@ -1,23 +1,21 @@
 package com.mycompany.test01.Entity.Unit;
 
 import com.badlogic.gdx.utils.OrderedSet;
-import com.mycompany.test01.Interface.Element;
-
-import java.util.Objects;
+import com.mycompany.test01.Interface.ElementInterface;
 
 public abstract class UnitGroup extends UnitElement { // implements Element
     //private int id;
     //private String name;
-    private OrderedSet<Element> units;
+    private OrderedSet<ElementInterface> units;
 
     public UnitGroup() {
         this.units = new OrderedSet<>();
     }
 
-    public UnitGroup(int id, String name) {
+    public UnitGroup(String name) {
         //this.id = id;
         //this.name = name;
-        super(id, name);
+        super(name);
         this.units = new OrderedSet<>();
     }
 
@@ -44,13 +42,13 @@ public abstract class UnitGroup extends UnitElement { // implements Element
     */
 
 
-    public void addUnit(Element element) {
+    public void addUnit(ElementInterface element) {
         if(element != null) {
             this.units.add(element);
         }
     }
 
-    public void removeUnit(Element element) {
+    public void removeUnit(ElementInterface element) {
         if(element != null && this.units.contains(element)) {
             this.units.remove(element);
         }
@@ -68,11 +66,11 @@ public abstract class UnitGroup extends UnitElement { // implements Element
         return Objects.hash(this.id, this.name);
     }*/
 
-    public OrderedSet<Element> getUnits() {
+    public OrderedSet<ElementInterface> getUnits() {
         return units;
     }
 
-    public void setUnits(OrderedSet<Element> units) {
+    public void setUnits(OrderedSet<ElementInterface> units) {
         this.units = units;
     }
 }

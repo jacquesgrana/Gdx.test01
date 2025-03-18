@@ -1,9 +1,5 @@
 package com.mycompany.test01.Entity.Unit;
 
-import com.mycompany.test01.Interface.Element;
-
-import java.util.Objects;
-
 public abstract class Unit extends UnitElement {
     //private int id;
     //private String name;
@@ -11,10 +7,10 @@ public abstract class Unit extends UnitElement {
     public Unit() {
     }
 
-    public Unit(int id, String name) {
+    public Unit(String name) {
         //this.id = id;
         //this.name = name;
-        super(id, name);
+        super(name);
     }
 
     /*
@@ -27,7 +23,7 @@ public abstract class Unit extends UnitElement {
     public int hashCode() {
         return Objects.hash(this.id, this.name);
     }
-    
+
      */
 
     /*

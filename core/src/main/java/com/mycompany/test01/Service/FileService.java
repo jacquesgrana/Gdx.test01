@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Json;
 import com.mycompany.test01.Common.DesktopMapFileChooser;
 import com.mycompany.test01.Common.DesktopMapFileChooserlistener;
 import com.mycompany.test01.Entity.Map.MapData;
-import com.mycompany.test01.Interface.FileChooser;
+import com.mycompany.test01.Interface.FileChooserInterface;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 public class FileService {
@@ -15,7 +15,7 @@ public class FileService {
     public static final String GAME_DATA_FILE_PATH = "game_data/";
     public static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
     private final Json json;
-    private final FileChooser fileChooser;
+    private final FileChooserInterface fileChooser;
     //NativeFileChooser fileChooser;
 
     public FileService() {
