@@ -149,7 +149,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         //units.add(rootGroup);
 
-        tree.add(GraphicUtil.createTreeFromGroup(rootGroup));
+        tree.add(GraphicUtil.createTreeFromGroup(rootGroup, this));
         // ajouter listener
         tree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
             public void clicked (InputEvent event, float x, float y) {
@@ -159,8 +159,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         });
         tree.expandAll();
 
-        stage.addActor(tree);
-
+        //stage.addActor(tree);
+        float rectWidth = (Gdx.graphics.getWidth() - (3 + 1) * 50f) / 3;
+        float rectHeight = Gdx.graphics.getHeight() - 150f;
+        tree.setBounds(0f, -20f, rectWidth, rectHeight);
+        this.leftPanel.addActor(tree);
         /*
         UnitNode rootNode = new UnitNode(rootGroup);
         UnitNode group01Node = new UnitNode(group01);
@@ -222,6 +225,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         */
 
+    }
+
+    public void displayUnitInfos(String name) {
+        System.out.println("appel displayUnitInfos : " + name);
     }
 
     private Table createPanel(int columnNumber) {

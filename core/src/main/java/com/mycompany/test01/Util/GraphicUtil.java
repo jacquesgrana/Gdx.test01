@@ -1,6 +1,7 @@
 package com.mycompany.test01.Util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,6 +19,7 @@ import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Enum.RiverCategory;
 import com.mycompany.test01.Enum.RoadCategory;
 import com.mycompany.test01.Interface.ElementInterface;
+import com.mycompany.test01.Screen.EditArmyScreen;
 
 public class GraphicUtil {
 
@@ -346,7 +348,7 @@ public class GraphicUtil {
         return texture;
     }
 
-    public static UnitNode createTreeFromGroup(UnitGroup group) {
+    public static UnitNode createTreeFromGroup(UnitGroup group, EditArmyScreen screen) {
         // Créer un nœud pour le groupe actuel
         UnitNode groupNode = new UnitNode(group);
 
@@ -354,12 +356,13 @@ public class GraphicUtil {
         for (ElementInterface element : group.getUnits()) {
             if (element instanceof UnitGroup) {
                 // Si c'est un sous-groupe, appel récursif
-                UnitNode childGroupNode = createTreeFromGroup((UnitGroup) element);
+                UnitNode childGroupNode = createTreeFromGroup((UnitGroup) element, screen);
                 groupNode.add(childGroupNode); // Ajouter le sous-groupe au nœud actuel
                 // ajouter listener
                 childGroupNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
                         System.out.println("click on group");
+                        screen.displayUnitInfos(element.getName());
                         childGroupNode.setExpanded(!childGroupNode.isExpanded());
                     }
                 });
@@ -372,6 +375,7 @@ public class GraphicUtil {
                 unitNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
                         System.out.println("click on unit");
+                        screen.displayUnitInfos(element.getName());
                     }
                 });
             }
