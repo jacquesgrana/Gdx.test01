@@ -33,6 +33,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private final Table leftPanel, centerPanel, rightPanel;
     private Tree<UnitNode, String> tree;
 
+    //private String selectedUnitName = "nothing selected";
+    private Label selectedArmyNameLabel;
+
+
     private UnitRedCountryFactory unitRedCountryFactory;
     //private Skin skin;
 
@@ -92,33 +96,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         stage.addActor(rightPanel);
         this.rightPanel.setVisible(true);
 
-        /*
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(50, 50, 200, 150);
-        shapeRenderer.end();*/
+        //Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
-        //stage.addActor(shapeRenderer);
-
-        /*
-        this.skin = new Skin();
-        BitmapFont font = new BitmapFont();
-        skin.add("default-font", font);
-        skin.add("default-color", Color.WHITE);
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-        pixmap.dispose();
-
-        // Créer les styles nécessaires pour Tree
-        Tree.TreeStyle treeStyle = new Tree.TreeStyle();
-        treeStyle.plus = skin.newDrawable("white", Color.BLACK);
-        treeStyle.minus = skin.newDrawable("white", Color.GRAY);
-        treeStyle.selection = skin.newDrawable("white", Color.BLUE);
-        skin.add("default", treeStyle);
-        */
-        //this.skin = GraphicUtil.getUnitTreeSkin();
+        selectedArmyNameLabel = new Label("nothing selected", labelStyle);
+        selectedArmyNameLabel.setPosition(20f, 20f);
+        this.centerPanel.addActor(selectedArmyNameLabel);
 
 
         this.tree = new Tree<>(GraphicUtil.getUnitTreeSkin());
@@ -164,72 +146,17 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         float rectHeight = Gdx.graphics.getHeight() - 150f;
         tree.setBounds(0f, -20f, rectWidth, rectHeight);
         this.leftPanel.addActor(tree);
-        /*
-        UnitNode rootNode = new UnitNode(rootGroup);
-        UnitNode group01Node = new UnitNode(group01);
-        UnitNode unit01Node = new UnitNode(unit01);
-        UnitNode unit02Node = new UnitNode(unit02);
-        UnitNode unit03Node = new UnitNode(unit03);
-
-        tree.add(rootNode);
-        rootNode.add(group01Node);
-        rootNode.add(unit01Node);
-        rootNode.add(unit02Node);
-        group01Node.add(unit03Node);
-
-        tree.expandAll();
-
-        stage.addActor(tree);
-*/
-
-
-        /*
-        final UnitNode moo1 = new UnitNode("moo1 (add to moo2)");
-        final UnitNode moo2 = new UnitNode("moo2 (moo3 to bottom)");
-        final UnitNode moo3 = new UnitNode("moo3");
-        final UnitNode moo4 = new UnitNode("moo4");
-        final UnitNode moo5 = new UnitNode("moo5 (remove moo4)");
-
-        tree.add(moo1);
-        tree.add(moo2);
-        moo2.add(moo3);
-        moo3.add(moo4);
-        tree.add(moo5);
-
-        tree.expandAll();
-
-        moo1.getActor().addListener(new ClickListener() {
-            public void clicked (InputEvent event, float x, float y) {
-                System.out.println(moo1.getActor().getText() + ", " + moo1.getValue() + ", " + moo1.getValue().length());
-                UnitNode node = new UnitNode("added " + moo2.getChildren().size);
-                node.add(new UnitNode("1"));
-                node.add(new UnitNode("2"));
-                node.setExpanded(MathUtils.randomBoolean());
-                moo2.insert(MathUtils.randomBoolean() ? moo2.getChildren().size : MathUtils.random(0, moo2.getChildren().size), node);
-            }
-        });
-        moo2.getActor().addListener(new ClickListener() {
-            public void clicked (InputEvent event, float x, float y) {
-                moo2.getChildren().removeValue(moo3, true);
-                moo2.getChildren().add(moo3);
-                moo2.updateChildren();
-            }
-        });
-        moo5.getActor().addListener(new ClickListener() {
-            public void clicked (InputEvent event, float x, float y) {
-                UnitNode node = tree.findNode("moo4");
-                if (node != null) node.remove();
-            }
-        });
-        stage.addActor(tree);
-
-        */
 
     }
 
     public void displayUnitInfos(String name) {
-        System.out.println("appel displayUnitInfos : " + name);
+        //this.selectedUnitName = name;
+        if (selectedArmyNameLabel != null) {
+            selectedArmyNameLabel.setText(name);
+        }
+        System.out.println("nom : " + name);
     }
+
 
     private Table createPanel(int columnNumber) {
         float spacing = 50f;

@@ -348,7 +348,7 @@ public class GraphicUtil {
         return texture;
     }
 
-    public static UnitNode createTreeFromGroup(UnitGroup group, EditArmyScreen screen) {
+    public static UnitNode createTreeFromGroup(UnitGroup group, Screen screen) {
         // Créer un nœud pour le groupe actuel
         UnitNode groupNode = new UnitNode(group);
 
@@ -361,8 +361,11 @@ public class GraphicUtil {
                 // ajouter listener
                 childGroupNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
-                        System.out.println("click on group");
-                        screen.displayUnitInfos(element.getName());
+                        //System.out.println("click on group");
+                        if (screen instanceof EditArmyScreen) {
+                            EditArmyScreen that = (EditArmyScreen) screen;
+                            that.displayUnitInfos(element.getName());
+                        }
                         childGroupNode.setExpanded(!childGroupNode.isExpanded());
                     }
                 });
@@ -374,8 +377,11 @@ public class GraphicUtil {
                 // ajouter listener
                 unitNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
-                        System.out.println("click on unit");
-                        screen.displayUnitInfos(element.getName());
+                        //System.out.println("click on unit");
+                        if (screen instanceof EditArmyScreen) {
+                            EditArmyScreen that = (EditArmyScreen) screen;
+                            that.displayUnitInfos(element.getName());
+                        }
                     }
                 });
             }
