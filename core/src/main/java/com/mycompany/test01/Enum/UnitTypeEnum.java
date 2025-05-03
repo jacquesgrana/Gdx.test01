@@ -12,6 +12,7 @@ public enum UnitTypeEnum {
     ANTI_AIR ("Anti Air"),
 
     INFANTRY ("Infantry"),
+    CAVALRY ("Cavalry"),
     ENGINEER ("Engineer"),
     CIVIL_ENGINEER ("Civil Engineer"),
     PARA ("Para troop"),
@@ -22,6 +23,7 @@ public enum UnitTypeEnum {
     MECHANISED_INF ("Mechanised Infantry"),
     MOTORISED_INF ("Motorised Infantry"),
     ASSAULT_GUN ("Assault Gun"),
+    MECHANISED_RECO ("Mechanised Reco"),
     MECHANISED_ENGINEER ("Mechanised Engineer"),
     MOTORISED_ENGINEER ("Motorised Engineer"),
     MOTORISED_LOGISTIC ("Motorised Logistic"),

@@ -20,6 +20,10 @@ public interface ElementInterface {
 
     public void setType(UnitTypeEnum type);
 
+    public boolean isElite();
+
+    public void setIsElite(boolean isElite);
+
     public boolean equals(ElementInterface element);
 
     public int hashCode();

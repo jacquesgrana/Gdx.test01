@@ -14,10 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.Unit;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
-import com.mycompany.test01.Enum.FortificationCategory;
-import com.mycompany.test01.Enum.HexagonCategory;
-import com.mycompany.test01.Enum.RiverCategory;
-import com.mycompany.test01.Enum.RoadCategory;
+import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Screen.EditArmyScreen;
 
@@ -83,6 +80,34 @@ public class GraphicUtil {
     public static Texture riverWide3ETexture = loadTextureFromFile("texture/river/wide/texture-3-e-wide.png");
     public static Texture riverWide4SWTexture = loadTextureFromFile("texture/river/wide/texture-4-sw-wide.png");
     public static Texture riverWide5SETexture = loadTextureFromFile("texture/river/wide/texture-5-se-wide.png");
+
+    public static Texture counterBgRedCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-red-country-01@4x.png");
+    public static Texture counterBgRedCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-red-country-02@4x.png");
+    public static Texture counterBgBlackCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-black-country-01@4x.png");
+    public static Texture counterBgBlackCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-black-country-02@4x.png");
+    public static Texture counterBgGreenCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-green-country-01@4x.png");
+    public static Texture counterBgGreenCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-green-country-02@4x.png");
+    public static Texture counterBgYellowCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-yellow-country-01@4x.png");
+    public static Texture counterBgYellowCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-yellow-country-02@4x.png");
+
+    public static Texture counterTypeIconHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-hq@4x.png");
+    public static Texture counterTypeIconArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-arti@4x.png");
+    public static Texture counterTypeIconInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-inf@4x.png");
+    public static Texture counterTypeIconTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-tank@4x.png");
+    public static Texture counterTypeIconParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-para@4x.png");
+    public static Texture counterTypeIconAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-anti-air@4x.png");
+    public static Texture counterTypeIconAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-anti-tank@4x.png");
+    public static Texture counterTypeIconCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-cav@4x.png");
+    public static Texture counterTypeIconEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-eng@4x.png");
+    public static Texture counterTypeIconMarTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-mar@4x.png");
+    public static Texture counterTypeIconMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-meca-inf@4x.png");
+    public static Texture counterTypeIconMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-meca-reco@4x.png");
+
+    public static Texture counterAddOnReg1_3Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-1-3@4x.png");
+    public static Texture counterAddOnReg2_3Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-2-3@4x.png");
+    public static Texture counterAddOnReg3_3Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-3-3@4x.png");
+    public static Texture counterAddOnCompTexture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-comp@4x.png");
+    public static Texture counterAddOnMotTexture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-mot@4x.png");
 
     public static Color backgroundColorDark = new Color(0.1f, 0.1f, 0.12f, 1);
     public static Color backgroundColorMedium = new Color(0.15f, 0.15f, 0.18f, 1);
@@ -352,6 +377,17 @@ public class GraphicUtil {
         // Créer un nœud pour le groupe actuel
         UnitNode groupNode = new UnitNode(group);
 
+        // ajouter listener
+        /*
+        EditArmyScreen that = (EditArmyScreen) screen;
+        groupNode.getActor().addListener(new ClickListener() {
+            public void clicked (InputEvent event, float x, float y) {
+                System.out.println("clic group");
+                that.displayUnitInfos(groupNode.getValue());
+                groupNode.setExpanded(!groupNode.isExpanded());
+            }
+        });*/
+
         // Parcourir les unités du groupe
         for (ElementInterface element : group.getUnits()) {
             if (element instanceof UnitGroup) {
@@ -364,7 +400,7 @@ public class GraphicUtil {
                         //System.out.println("click on group");
                         if (screen instanceof EditArmyScreen) {
                             EditArmyScreen that = (EditArmyScreen) screen;
-                            that.displayUnitInfos(element.getName());
+                            that.displayUnitInfos(element);
                         }
                         childGroupNode.setExpanded(!childGroupNode.isExpanded());
                     }
@@ -380,22 +416,132 @@ public class GraphicUtil {
                         //System.out.println("click on unit");
                         if (screen instanceof EditArmyScreen) {
                             EditArmyScreen that = (EditArmyScreen) screen;
-                            that.displayUnitInfos(element.getName());
+                            that.displayUnitInfos(element);
                         }
                     }
                 });
             }
 
-            /*
+
             // ajouter listener
             groupNode.getActor().addListener(new ClickListener() {
                 public void clicked (InputEvent event, float x, float y) {
-                    System.out.println("clic group");
+                    //System.out.println("clic group");
+                    EditArmyScreen that = (EditArmyScreen) screen;
+                    that.displayUnitInfos(groupNode.getValue());
+                    groupNode.setExpanded(!groupNode.isExpanded());
+
                 }
-            });*/
+            });
         }
 
         return groupNode;
+    }
+
+    public static Texture getCounterTextureFromUnit(ElementInterface unit) {
+        Texture toReturn = getEmptyTexture();
+        Texture background = getCountryTexture(unit);
+        Texture typeIcon = getUnitTypeTexture(unit);
+
+        // choix des addons en fonction de l'unité
+
+
+        return stackTextures(background, typeIcon);
+    }
+
+    public static Texture stackTextures(Texture background, Texture typeIcon) {
+        // todo : faire méthode stackTextures(background, typeIcon)
+        // empilement des textures
+        // On suppose que background et typeIcon sont de même taille
+        int width = background.getWidth();
+        int height = background.getHeight();
+
+        // Copier la texture de fond dans un pixmap
+        Pixmap pixmapBackground = textureToPixmap(background);
+        Pixmap pixmapTypeIcon = textureToPixmap(typeIcon);
+
+        // Attention : sécurité au cas où les icônes sont plus petites
+        int x = (width - pixmapTypeIcon.getWidth())/2;
+        int y = (height - pixmapTypeIcon.getHeight())/2;
+
+        // On "empile" l'icône sur le fond
+        pixmapBackground.drawPixmap(pixmapTypeIcon, x, y);
+
+        Texture toReturn = new Texture(pixmapBackground);
+
+        // Libérer la RAM du pixmap (pas nécessaire pour les textures LibGDX)
+        pixmapBackground.dispose();
+        pixmapTypeIcon.dispose();
+
+        // renvoi du résultat
+        return toReturn;
+    }
+
+    public static Texture getCountryTexture(ElementInterface unit) {
+        Texture toReturn = getEmptyTexture();
+        // choix du bg de l'unité en fonction du pays
+        switch (unit.getCountry()) {
+            case RED_COUNTRY:
+                toReturn = unit.isElite() ? counterBgRedCountry01Texture : counterBgRedCountry02Texture;
+                break;
+            case GREEN_COUNTRY:
+                toReturn = unit.isElite() ? counterBgGreenCountry01Texture : counterBgGreenCountry02Texture;
+                break;
+            case BLACK_COUNTRY:
+                toReturn = unit.isElite() ? counterBgBlackCountry01Texture : counterBgBlackCountry02Texture;
+            case YELLOW_COUNTRY:
+                toReturn = unit.isElite() ? counterBgYellowCountry01Texture : counterBgYellowCountry02Texture;
+                break;
+        }
+        return toReturn;
+    }
+
+    public static Texture getUnitTypeTexture(ElementInterface unit) {
+        Texture toReturn = getEmptyTexture();
+        // choix de l'icon du type en fonction du type
+        switch (unit.getType()) {
+            case ARTI:
+                toReturn = counterTypeIconArtTexture;
+                break;
+            case PARA:
+                toReturn = counterTypeIconParaTexture;
+                break;
+            case TANK:
+                toReturn = counterTypeIconTankTexture;
+                break;
+            case MARINE:
+                toReturn = counterTypeIconMarTexture;
+                break;
+            case ENGINEER:
+                toReturn = counterTypeIconEngTexture;
+                break;
+            case INFANTRY:
+                toReturn = counterTypeIconInfTexture;
+                break;
+            case ANTI_AIR:
+                toReturn = counterTypeIconAntiAirTexture;
+                break;
+            case ANTI_TANK:
+                toReturn = counterTypeIconAntiTankTexture;
+                break;
+            case CAVALRY:
+                toReturn = counterTypeIconCavTexture;
+                break;
+            case MECHANISED_INF:
+                toReturn = counterTypeIconMecaInfTexture;
+                break;
+            case MECHANISED_RECO:
+                toReturn = counterTypeIconMecaRecoTexture;
+                break;
+            case BRIGADE_HQ:
+            case DIVISION_HQ:
+            case ARMY_HQ:
+            case ARMY_GROUP_HQ:
+            case FRONT_HQ:
+                toReturn = counterTypeIconHQTexture;
+                break;
+        }
+        return toReturn;
     }
 
     /*

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -21,6 +22,7 @@ import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Factory.UnitRedCountryFactory;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.*;
+import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
 
@@ -34,7 +36,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private Tree<UnitNode, String> tree;
 
     //private String selectedUnitName = "nothing selected";
-    private Label selectedArmyNameLabel;
+    private Label selectedUnitNameLabel;
+    private Label selectedUnitTypeLabel;
+    private Image selectedUnitIcon;
 
 
     private UnitRedCountryFactory unitRedCountryFactory;
@@ -98,10 +102,21 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         //Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
-        selectedArmyNameLabel = new Label("nothing selected", labelStyle);
-        selectedArmyNameLabel.setPosition(20f, 20f);
-        this.centerPanel.addActor(selectedArmyNameLabel);
+        selectedUnitNameLabel = new Label("nothing selected", labelStyle);
+        selectedUnitNameLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitNameLabel.getHeight() - 20f);
+        this.centerPanel.addActor(selectedUnitNameLabel);
 
+
+        selectedUnitTypeLabel = new Label("nothing selected", labelStyle);
+        selectedUnitTypeLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 60f);
+        this.centerPanel.addActor(selectedUnitTypeLabel);
+
+        selectedUnitIcon = new Image(GraphicUtil.counterBgRedCountry01Texture);
+        selectedUnitIcon.setBounds(centerPanel.getWidth() - 64f - 20f,
+            centerPanel.getHeight() - 64f - 20f,
+            64f,
+            64f);
+        this.centerPanel.addActor(selectedUnitIcon);
 
         this.tree = new Tree<>(GraphicUtil.getUnitTreeSkin());
 
@@ -110,15 +125,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front");
-        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01");
-        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01");
+        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front", true);
+        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01", false);
+        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01", true);
 
-        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01");
-        InfantryUnit unit02 = unitRedCountryFactory.createInfantryUnit("unit 02");
-        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03");
-        InfantryUnit unit04 = unitRedCountryFactory.createInfantryUnit("unit 04");
-        InfantryUnit unit05 = unitRedCountryFactory.createInfantryUnit("unit 05");
+        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01", false);
+        InfantryUnit unit02 = unitRedCountryFactory.createInfantryUnit("unit 02", false);
+        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03", true);
+        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04", true);
+        TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05", false);
             //OrderedSet<Element> units = new OrderedSet<>();
 
         rootGroup.addUnit(group01);
@@ -133,12 +148,16 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         tree.add(GraphicUtil.createTreeFromGroup(rootGroup, this));
         // ajouter listener
+        /*
+        EditArmyScreen that = this;
         tree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
             public void clicked (InputEvent event, float x, float y) {
                 System.out.println("click on root");
+                that.displayUnitInfos(rootGroup);
                 tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
             }
         });
+        */
         tree.expandAll();
 
         //stage.addActor(tree);
@@ -149,12 +168,23 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
     }
 
-    public void displayUnitInfos(String name) {
+    public void displayUnitInfos(ElementInterface element) {
         //this.selectedUnitName = name;
-        if (selectedArmyNameLabel != null) {
-            selectedArmyNameLabel.setText(name);
+        if (selectedUnitNameLabel != null) {
+            selectedUnitNameLabel.setText("Unit Name : " + element.getName());
         }
-        System.out.println("nom : " + name);
+        if (selectedUnitTypeLabel != null) {
+            selectedUnitTypeLabel.setText("Unit Type : " + element.getType().toString());
+        }
+        // faire méthode qui génère la texture en fonction de l'element (unité)
+        Texture counterTexture = GraphicUtil.getCounterTextureFromUnit(element);
+        //System.out.println("texture : " + counterTexture);
+        if (selectedUnitIcon != null) {
+            selectedUnitIcon.setDrawable(new TextureRegionDrawable(counterTexture));
+        }
+
+
+        //System.out.println("nom : " + element.getName());
     }
 
 

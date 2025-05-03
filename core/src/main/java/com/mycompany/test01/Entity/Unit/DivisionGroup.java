@@ -8,7 +8,7 @@ public class DivisionGroup extends UnitGroup{
         super();
     }
 
-    public DivisionGroup(String name, CountryEnum country) {
-        super(name, country, UnitTypeEnum.DIVISION_HQ);
+    public DivisionGroup(String name, CountryEnum country, boolean isElite) {
+        super(name, country, UnitTypeEnum.DIVISION_HQ, isElite);
     }
 }

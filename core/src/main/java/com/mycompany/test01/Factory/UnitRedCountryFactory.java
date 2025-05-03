@@ -6,27 +6,43 @@ import com.mycompany.test01.Interface.UnitFactoryInterface;
 
 public class UnitRedCountryFactory implements UnitFactoryInterface {
 
-    public InfantryUnit createInfantryUnit(String name) {
-        return new InfantryUnit(name, CountryEnum.RED_COUNTRY);
+    @Override
+    public InfantryUnit createInfantryUnit(String name, boolean isElite) {
+        return new InfantryUnit(name, CountryEnum.RED_COUNTRY, isElite);
     }
 
-    public FrontGroup createFrontGroup(String name) {
-        return new FrontGroup(name, CountryEnum.RED_COUNTRY);
+    @Override
+    public ArtiUnit createArtiUnit(String name, boolean isElite) {
+        return new ArtiUnit(name, CountryEnum.RED_COUNTRY, isElite);
     }
 
-    public ArmyGroupGroup createArmyGroupGroup(String name) {
-        return new ArmyGroupGroup(name, CountryEnum.RED_COUNTRY);
+    @Override
+    public TankUnit createTankUnit(String name, boolean isElite) {
+        return new TankUnit(name, CountryEnum.RED_COUNTRY, isElite);
     }
 
-    public ArmyGroup createArmyGroup(String name) {
-        return new ArmyGroup(name, CountryEnum.RED_COUNTRY);
+    @Override
+    public FrontGroup createFrontGroup(String name, boolean isElite) {
+        return new FrontGroup(name, CountryEnum.RED_COUNTRY, isElite);
     }
 
-    public DivisionGroup createDivisionGroup(String name) {
-        return new DivisionGroup(name, CountryEnum.RED_COUNTRY);
+    @Override
+    public ArmyGroupGroup createArmyGroupGroup(String name, boolean isElite) {
+        return new ArmyGroupGroup(name, CountryEnum.RED_COUNTRY, isElite);
     }
 
-    public BrigadeGroup createBrigadeGroup(String name) {
-        return new BrigadeGroup(name, CountryEnum.RED_COUNTRY);
+    @Override
+    public ArmyGroup createArmyGroup(String name, boolean isElite) {
+        return new ArmyGroup(name, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    @Override
+    public DivisionGroup createDivisionGroup(String name, boolean isElite) {
+        return new DivisionGroup(name, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    @Override
+    public BrigadeGroup createBrigadeGroup(String name, boolean isElite) {
+        return new BrigadeGroup(name, CountryEnum.RED_COUNTRY, isElite);
     }
 }

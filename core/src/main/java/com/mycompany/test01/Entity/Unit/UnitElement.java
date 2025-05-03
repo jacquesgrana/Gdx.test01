@@ -6,26 +6,33 @@ import com.mycompany.test01.Interface.ElementInterface;
 
 import java.util.Objects;
 
+
+/*
+todo : ajouter booleen isElite + ajouter int regPosition (0 - 3) + ajouter booleen isCompany
+ */
 public abstract class UnitElement implements ElementInterface {
     private static int unitCounter = 0;
     protected int id;
     protected String name;
     protected CountryEnum country;
     protected UnitTypeEnum type;
+    protected boolean isElite;
 
     public UnitElement() {
         this.id = unitCounter;
         this.name = "";
         this.country = CountryEnum.NO_COUNTRY;
         this.type = UnitTypeEnum.NO_TYPE;
+        isElite = false;
         unitCounter++;
     }
 
-    public UnitElement(String name, CountryEnum country, UnitTypeEnum type) {
+    public UnitElement(String name, CountryEnum country, UnitTypeEnum type, boolean isElite) {
         this.id = unitCounter;
         this.name = name;
         this.country = country;
         this.type = type;
+        this.isElite = isElite;
         unitCounter++;
     }
 
@@ -77,6 +84,16 @@ public abstract class UnitElement implements ElementInterface {
     @Override
     public void setType(UnitTypeEnum type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean isElite() {
+        return this.isElite;
+    }
+
+    @Override
+    public void setIsElite(boolean isElite) {
+        this.isElite = isElite;
     }
 
     public static int getUnitCounter() {

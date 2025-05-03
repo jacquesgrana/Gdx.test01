@@ -9,7 +9,7 @@ public class FrontGroup extends UnitGroup {
         super();
     }
 
-    public FrontGroup(String name, CountryEnum country) {
-        super(name, country, UnitTypeEnum.FRONT_HQ);
+    public FrontGroup(String name, CountryEnum country, boolean isElite) {
+        super(name, country, UnitTypeEnum.FRONT_HQ, isElite);
     }
 }
