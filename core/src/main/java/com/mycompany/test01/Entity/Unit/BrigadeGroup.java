@@ -8,7 +8,7 @@ public class BrigadeGroup extends UnitGroup {
         super();
     }
 
-    public BrigadeGroup(String name, CountryEnum country, boolean isElite) {
-        super(name, country, UnitTypeEnum.BRIGADE_HQ, isElite);
+    public BrigadeGroup(String name, String acronym, CountryEnum country, boolean isElite) {
+        super(name, acronym, country, UnitTypeEnum.BRIGADE_HQ, isElite);
     }
 }

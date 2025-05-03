@@ -7,42 +7,72 @@ import com.mycompany.test01.Interface.UnitFactoryInterface;
 public class UnitRedCountryFactory implements UnitFactoryInterface {
 
     @Override
-    public InfantryUnit createInfantryUnit(String name, boolean isElite) {
-        return new InfantryUnit(name, CountryEnum.RED_COUNTRY, isElite);
+    public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite) {
+        return new InfantryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite) {
+        return new CavalryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }
 
     @Override
-    public ArtiUnit createArtiUnit(String name, boolean isElite) {
-        return new ArtiUnit(name, CountryEnum.RED_COUNTRY, isElite);
+    public ParaUnit createParaUnit(String name, String acronym, boolean isElite) {
+        return new ParaUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }
 
     @Override
-    public TankUnit createTankUnit(String name, boolean isElite) {
-        return new TankUnit(name, CountryEnum.RED_COUNTRY, isElite);
+    public MarineUnit createMarineUnit(String name, String acronym, boolean isElite) {
+        return new MarineUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }
 
     @Override
-    public FrontGroup createFrontGroup(String name, boolean isElite) {
-        return new FrontGroup(name, CountryEnum.RED_COUNTRY, isElite);
+    public EngineerUnit createEngineerUnit(String name, String acronym, boolean isElite) {
+        return new EngineerUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+
+    @Override
+    public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite) {
+        return new ArtiUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }
 
     @Override
-    public ArmyGroupGroup createArmyGroupGroup(String name, boolean isElite) {
-        return new ArmyGroupGroup(name, CountryEnum.RED_COUNTRY, isElite);
+    public TankUnit createTankUnit(String name, String acronym, boolean isElite) {
+        return new TankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }
 
     @Override
-    public ArmyGroup createArmyGroup(String name, boolean isElite) {
-        return new ArmyGroup(name, CountryEnum.RED_COUNTRY, isElite);
+    public AntiTankUnit createAntiTankUnit(String name, String acronym, boolean isElite) {
+        return new AntiTankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }
 
     @Override
-    public DivisionGroup createDivisionGroup(String name, boolean isElite) {
-        return new DivisionGroup(name, CountryEnum.RED_COUNTRY, isElite);
+    public AntiAirUnit createAntiAirUnit(String name, String acronym, boolean isElite) {
+        return new AntiAirUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }
 
     @Override
-    public BrigadeGroup createBrigadeGroup(String name, boolean isElite) {
-        return new BrigadeGroup(name, CountryEnum.RED_COUNTRY, isElite);
+    public FrontGroup createFrontGroup(String name, String acronym, boolean isElite) {
+        return new FrontGroup(name, acronym, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    @Override
+    public ArmyGroupGroup createArmyGroupGroup(String name, String acronym, boolean isElite) {
+        return new ArmyGroupGroup(name, acronym, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    @Override
+    public ArmyGroup createArmyGroup(String name, String acronym, boolean isElite) {
+        return new ArmyGroup(name, acronym, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    @Override
+    public DivisionGroup createDivisionGroup(String name, String acronym, boolean isElite) {
+        return new DivisionGroup(name, acronym, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    @Override
+    public BrigadeGroup createBrigadeGroup(String name, String acronym, boolean isElite) {
+        return new BrigadeGroup(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }
 }

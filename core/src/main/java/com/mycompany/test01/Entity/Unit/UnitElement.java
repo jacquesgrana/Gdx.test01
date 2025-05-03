@@ -14,6 +14,7 @@ public abstract class UnitElement implements ElementInterface {
     private static int unitCounter = 0;
     protected int id;
     protected String name;
+    protected String acronym;
     protected CountryEnum country;
     protected UnitTypeEnum type;
     protected boolean isElite;
@@ -21,15 +22,17 @@ public abstract class UnitElement implements ElementInterface {
     public UnitElement() {
         this.id = unitCounter;
         this.name = "";
+        this.acronym = "";
         this.country = CountryEnum.NO_COUNTRY;
         this.type = UnitTypeEnum.NO_TYPE;
         isElite = false;
         unitCounter++;
     }
 
-    public UnitElement(String name, CountryEnum country, UnitTypeEnum type, boolean isElite) {
+    public UnitElement(String name, String acronym, CountryEnum country, UnitTypeEnum type, boolean isElite) {
         this.id = unitCounter;
         this.name = name;
+        this.acronym = acronym;
         this.country = country;
         this.type = type;
         this.isElite = isElite;
@@ -64,6 +67,16 @@ public abstract class UnitElement implements ElementInterface {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getAcronym() {
+        return acronym;
+    }
+
+    @Override
+    public void setAcronym(String acronym) {
+        this.acronym = acronym;
     }
 
     @Override

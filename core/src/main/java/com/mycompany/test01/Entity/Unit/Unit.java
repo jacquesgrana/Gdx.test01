@@ -11,10 +11,11 @@ public abstract class Unit extends UnitElement {
     }
 
     public Unit(String name,
+                String acronym,
                 CountryEnum country,
                 UnitTypeEnum type,
                 boolean isElite) {
-        super(name, country, type, isElite);
+        super(name, acronym, country, type, isElite);
     }
 
     /*

@@ -10,6 +10,10 @@ public interface ElementInterface {
 
     public String getName();
 
+    public String getAcronym();
+
+    public void setAcronym(String acronym);
+
     public void setName(String name);
 
     public CountryEnum getCountry();

@@ -3,20 +3,27 @@ package com.mycompany.test01.Util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.Unit;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Screen.EditArmyScreen;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class GraphicUtil {
 
@@ -83,6 +90,8 @@ public class GraphicUtil {
 
     public static Texture counterBgRedCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-red-country-01@4x.png");
     public static Texture counterBgRedCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-red-country-02@4x.png");
+    public static Texture counterBgBlueCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-blue-country-01@4x.png");
+    public static Texture counterBgBlueCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-blue-country-02@4x.png");
     public static Texture counterBgBlackCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-black-country-01@4x.png");
     public static Texture counterBgBlackCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-black-country-02@4x.png");
     public static Texture counterBgGreenCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-green-country-01@4x.png");
@@ -422,7 +431,6 @@ public class GraphicUtil {
                 });
             }
 
-
             // ajouter listener
             groupNode.getActor().addListener(new ClickListener() {
                 public void clicked (InputEvent event, float x, float y) {
@@ -434,7 +442,6 @@ public class GraphicUtil {
                 }
             });
         }
-
         return groupNode;
     }
 
@@ -445,12 +452,15 @@ public class GraphicUtil {
 
         // choix des addons en fonction de l'unité
 
+        toReturn = stackTextures(background, typeIcon);
 
-        return stackTextures(background, typeIcon);
+        // Ajouter le texte de l'acronyme à la texture
+        //String acronym = unit.getAcronym();
+        //toReturn = drawTextOnTexture(toReturn, acronym);
+        return toReturn;
     }
 
     public static Texture stackTextures(Texture background, Texture typeIcon) {
-        // todo : faire méthode stackTextures(background, typeIcon)
         // empilement des textures
         // On suppose que background et typeIcon sont de même taille
         int width = background.getWidth();
@@ -477,12 +487,16 @@ public class GraphicUtil {
         return toReturn;
     }
 
+
     public static Texture getCountryTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         // choix du bg de l'unité en fonction du pays
         switch (unit.getCountry()) {
             case RED_COUNTRY:
                 toReturn = unit.isElite() ? counterBgRedCountry01Texture : counterBgRedCountry02Texture;
+                break;
+            case BLUE_COUNTRY:
+                toReturn = unit.isElite() ? counterBgBlueCountry01Texture : counterBgBlueCountry02Texture;
                 break;
             case GREEN_COUNTRY:
                 toReturn = unit.isElite() ? counterBgGreenCountry01Texture : counterBgGreenCountry02Texture;

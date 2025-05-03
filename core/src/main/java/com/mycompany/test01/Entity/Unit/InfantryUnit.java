@@ -5,7 +5,7 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class InfantryUnit extends Unit {
 
-    public InfantryUnit(String name, CountryEnum country, boolean isElite) {
-       super(name, country, UnitTypeEnum.INFANTRY, isElite);
+    public InfantryUnit(String name, String acronym, CountryEnum country, boolean isElite) {
+       super(name, acronym, country, UnitTypeEnum.INFANTRY, isElite);
     }
 }

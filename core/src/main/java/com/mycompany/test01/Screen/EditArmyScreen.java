@@ -36,9 +36,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private Tree<UnitNode, String> tree;
 
     //private String selectedUnitName = "nothing selected";
-    private Label selectedUnitNameLabel;
-    private Label selectedUnitTypeLabel;
-    private Image selectedUnitIcon;
+    private final Label selectedUnitNameLabel;
+    private final Label selectedUnitTypeLabel;
+    private final Label selectedUnitAcronymLabel;
+
+    private final Image selectedUnitIcon;
 
 
     private UnitRedCountryFactory unitRedCountryFactory;
@@ -111,6 +113,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         selectedUnitTypeLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 60f);
         this.centerPanel.addActor(selectedUnitTypeLabel);
 
+        selectedUnitAcronymLabel = new Label("nothing selected", labelStyle);
+        selectedUnitAcronymLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 100f);
+        this.centerPanel.addActor(selectedUnitAcronymLabel);
+
         selectedUnitIcon = new Image(GraphicUtil.counterBgRedCountry01Texture);
         selectedUnitIcon.setBounds(centerPanel.getWidth() - 64f - 20f,
             centerPanel.getHeight() - 64f - 20f,
@@ -125,16 +131,21 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front", true);
-        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01", false);
-        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01", true);
+        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true);
+        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false);
+        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true);
 
-        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01", false);
-        InfantryUnit unit02 = unitRedCountryFactory.createInfantryUnit("unit 02", false);
-        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03", true);
-        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04", true);
-        TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05", false);
+        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false);
+        CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false);
+        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true);
+        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true);
+        TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false);
+        AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false);
+        AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true);
             //OrderedSet<Element> units = new OrderedSet<>();
+        ParaUnit unit08 = unitRedCountryFactory.createParaUnit("unit 08", "501", true);
+        MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true);
+        EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false);
 
         rootGroup.addUnit(group01);
         rootGroup.addUnit(unit01);
@@ -143,6 +154,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group01.addUnit(unit03);
         group02.addUnit(unit04);
         group02.addUnit(unit05);
+        group02.addUnit(unit06);
+        group02.addUnit(unit07);
+        group02.addUnit(unit08);
+        group02.addUnit(unit09);
+        group01.addUnit(unit10);
+
 
         //units.add(rootGroup);
 
@@ -175,6 +192,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         }
         if (selectedUnitTypeLabel != null) {
             selectedUnitTypeLabel.setText("Unit Type : " + element.getType().toString());
+        }
+        //selectedUnitAcronymLabel
+        if (selectedUnitAcronymLabel != null) {
+            selectedUnitAcronymLabel.setText("Unit Acronym : " + element.getAcronym());
         }
         // faire méthode qui génère la texture en fonction de l'element (unité)
         Texture counterTexture = GraphicUtil.getCounterTextureFromUnit(element);
