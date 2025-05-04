@@ -2,12 +2,10 @@ package com.mycompany.test01.Util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -112,9 +110,10 @@ public class GraphicUtil {
     public static Texture counterTypeIconMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-meca-inf@4x.png");
     public static Texture counterTypeIconMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-meca-reco@4x.png");
 
-    public static Texture counterAddOnReg1_3Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-1-3@4x.png");
-    public static Texture counterAddOnReg2_3Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-2-3@4x.png");
-    public static Texture counterAddOnReg3_3Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-3-3@4x.png");
+    public static Texture counterAddOnReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-1-4@4x.png");
+    public static Texture counterAddOnReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-2-4@4x.png");
+    public static Texture counterAddOnReg3_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-3-4@4x.png");
+    public static Texture counterAddOnReg4_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-4-4@4x.png");
     public static Texture counterAddOnCompTexture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-comp@4x.png");
     public static Texture counterAddOnMotTexture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-mot@4x.png");
 
@@ -455,10 +454,49 @@ public class GraphicUtil {
         toReturn = stackTextures(background, typeIcon);
 
         // Ajouter le texte de l'acronyme à la texture
-        //String acronym = unit.getAcronym();
-        //toReturn = drawTextOnTexture(toReturn, acronym);
+        String acronym = unit.getAcronym();
+        toReturn = drawTextOnTexture(toReturn, acronym);
         return toReturn;
     }
+
+
+    public static Texture drawTextOnTexture(Texture input, String text) {
+        int width = input.getWidth(), height = input.getHeight();
+        FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
+        SpriteBatch batch = new SpriteBatch();
+
+        BitmapFont font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110.fnt"));
+        //BitmapFont font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-16.fnt"));
+
+        font.setColor(Color.BLACK);
+
+        OrthographicCamera camera = new OrthographicCamera(width, height);
+        camera.setToOrtho(true, width, height); // Camera "Y vers le bas" = sens UI classique
+        batch.setProjectionMatrix(camera.combined);
+
+        fbo.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        batch.begin();
+        batch.draw(input, 0, 0, width, height); // fond
+        GlyphLayout layout = new GlyphLayout(font, text);
+        float x = (width - layout.width) / 2f;
+        float y = (height + layout.height) / 2 - layout.height;
+        font.draw(batch, layout, x, y); // texte centré
+
+        batch.end();
+        fbo.end();
+
+        Texture t = fbo.getColorBufferTexture(); // ATTENTION texture retournée !
+        // tu ne la disopses pas maintenant si tu t’en resserras
+        font.dispose();
+        batch.dispose();
+        //fbo.dispose();
+        return t;
+    }
+
 
     public static Texture stackTextures(Texture background, Texture typeIcon) {
         // empilement des textures

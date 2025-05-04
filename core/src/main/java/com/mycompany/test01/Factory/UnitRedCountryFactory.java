@@ -42,6 +42,16 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
+    public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite) {
+        return new MecaInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    @Override
+    public MecaRecoUnit createMecaRecoUnit(String name, String acronym, boolean isElite) {
+        return new MecaRecoUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
+    }
+
+    @Override
     public AntiTankUnit createAntiTankUnit(String name, String acronym, boolean isElite) {
         return new AntiTankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite);
     }

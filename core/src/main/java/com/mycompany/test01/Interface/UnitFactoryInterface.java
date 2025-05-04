@@ -18,6 +18,10 @@ public interface UnitFactoryInterface {
 
     public TankUnit createTankUnit(String name, String acronym, boolean isElite);
 
+    public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite);
+
+    public MecaRecoUnit createMecaRecoUnit(String name, String acronym, boolean isElite);
+
     public AntiTankUnit createAntiTankUnit(String name, String acronym, boolean isElite);
 
     public AntiAirUnit createAntiAirUnit(String name, String acronym, boolean isElite);

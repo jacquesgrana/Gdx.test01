@@ -137,6 +137,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false);
         CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false);
+
+
+
         InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true);
         ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true);
         TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false);
@@ -145,20 +148,32 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             //OrderedSet<Element> units = new OrderedSet<>();
         ParaUnit unit08 = unitRedCountryFactory.createParaUnit("unit 08", "501", true);
         MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true);
+        MarineUnit unit13 = unitRedCountryFactory.createMarineUnit("unit 13", "17M", true);
+
         EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false);
+        MecaInfUnit unit11 = unitRedCountryFactory.createMecaInfUnit("unit11", "117", true);
+        MecaRecoUnit unit12 = unitRedCountryFactory.createMecaRecoUnit("unit12", "233", false);
 
         rootGroup.addUnit(group01);
         rootGroup.addUnit(unit01);
         rootGroup.addUnit(unit02);
+
         group01.addUnit(group02);
         group01.addUnit(unit03);
+
         group02.addUnit(unit04);
         group02.addUnit(unit05);
         group02.addUnit(unit06);
         group02.addUnit(unit07);
         group02.addUnit(unit08);
-        group02.addUnit(unit09);
-        group01.addUnit(unit10);
+
+        group02.addUnit(unit13);
+
+        group02.addUnit(unit10);
+        group02.addUnit(unit11);
+        group02.addUnit(unit12);
+        group02.addUnit(unit09); // !!!!!!!!!!!!!!!!!!! todo : résoudre bug expansion si addUnit après cette ligne
+
 
 
         //units.add(rootGroup);
