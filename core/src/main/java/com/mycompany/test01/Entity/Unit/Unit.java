@@ -14,8 +14,9 @@ public abstract class Unit extends UnitElement {
                 String acronym,
                 CountryEnum country,
                 UnitTypeEnum type,
-                boolean isElite) {
-        super(name, acronym, country, type, isElite);
+                boolean isElite,
+                boolean isMotorised) {
+        super(name, acronym, country, type, isElite, isMotorised);
     }
 
     /*

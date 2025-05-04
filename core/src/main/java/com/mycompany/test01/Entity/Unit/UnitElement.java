@@ -18,6 +18,7 @@ public abstract class UnitElement implements ElementInterface {
     protected CountryEnum country;
     protected UnitTypeEnum type;
     protected boolean isElite;
+    protected boolean isMotorised;
 
     public UnitElement() {
         this.id = unitCounter;
@@ -29,13 +30,21 @@ public abstract class UnitElement implements ElementInterface {
         unitCounter++;
     }
 
-    public UnitElement(String name, String acronym, CountryEnum country, UnitTypeEnum type, boolean isElite) {
+    public UnitElement(
+        String name,
+        String acronym,
+        CountryEnum country,
+        UnitTypeEnum type,
+        boolean isElite,
+        boolean isMotorised
+    ) {
         this.id = unitCounter;
         this.name = name;
         this.acronym = acronym;
         this.country = country;
         this.type = type;
         this.isElite = isElite;
+        this.isMotorised = isMotorised;
         unitCounter++;
     }
 
@@ -107,6 +116,16 @@ public abstract class UnitElement implements ElementInterface {
     @Override
     public void setIsElite(boolean isElite) {
         this.isElite = isElite;
+    }
+
+    @Override
+    public boolean isMotorised() {
+        return this.isMotorised;
+    }
+
+    @Override
+    public void setIsMotorised(boolean isMotorised) {
+        this.isMotorised = isMotorised;
     }
 
     public static int getUnitCounter() {

@@ -131,28 +131,28 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true);
-        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false);
-        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true);
+        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true, false);
+        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false);
+        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false);
 
-        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false);
-        CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false);
+        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, false);
+        CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false, false);
 
 
 
-        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true);
-        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true);
-        TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false);
-        AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false);
-        AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true);
+        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true, true);
+        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true, false);
+        TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false, false);
+        AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false, false);
+        AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true, false);
             //OrderedSet<Element> units = new OrderedSet<>();
-        ParaUnit unit08 = unitRedCountryFactory.createParaUnit("unit 08", "501", true);
-        MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true);
-        MarineUnit unit13 = unitRedCountryFactory.createMarineUnit("unit 13", "17M", true);
+        ParaUnit unit08 = unitRedCountryFactory.createParaUnit("unit 08", "501", true, false);
+        MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true, false);
+        MarineUnit unit13 = unitRedCountryFactory.createMarineUnit("unit 13", "17M", true, true);
 
-        EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false);
-        MecaInfUnit unit11 = unitRedCountryFactory.createMecaInfUnit("unit11", "117", true);
-        MecaRecoUnit unit12 = unitRedCountryFactory.createMecaRecoUnit("unit12", "233", false);
+        EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false, true);
+        MecaInfUnit unit11 = unitRedCountryFactory.createMecaInfUnit("unit11", "117", true, false);
+        MecaRecoUnit unit12 = unitRedCountryFactory.createMecaRecoUnit("unit12", "233", false, false);
 
         rootGroup.addUnit(group01);
         rootGroup.addUnit(unit01);
@@ -172,7 +172,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(unit10);
         group02.addUnit(unit11);
         group02.addUnit(unit12);
-        group02.addUnit(unit09); // !!!!!!!!!!!!!!!!!!! todo : résoudre bug expansion si addUnit après cette ligne
+        group02.addUnit(unit09); // !!!!!!!!!!!!!!!!!!! todo : résoudre bug de l'expansion si addUnit après cette ligne
 
 
 

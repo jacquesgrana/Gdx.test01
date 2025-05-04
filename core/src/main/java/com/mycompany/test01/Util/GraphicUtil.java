@@ -450,15 +450,15 @@ public class GraphicUtil {
         Texture typeIcon = getUnitTypeTexture(unit);
 
         // choix des addons en fonction de l'unité
+        Texture motorisedAddon = getMotorisedAddonTexture(unit);
 
-        toReturn = stackTextures(background, typeIcon);
+        toReturn = stackTextures(background, typeIcon, motorisedAddon);
 
         // Ajouter le texte de l'acronyme à la texture
         String acronym = unit.getAcronym();
         toReturn = drawTextOnTexture(toReturn, acronym);
         return toReturn;
     }
-
 
     public static Texture drawTextOnTexture(Texture input, String text) {
         int width = input.getWidth(), height = input.getHeight();
@@ -498,33 +498,49 @@ public class GraphicUtil {
     }
 
 
-    public static Texture stackTextures(Texture background, Texture typeIcon) {
-        // empilement des textures
-        // On suppose que background et typeIcon sont de même taille
+    public static Texture stackTextures(Texture background, Texture typeIcon, Texture motorisedAddon) {
+        // Empilement des textures
+        // On suppose que background, typeIcon et motorisedAddon sont de même taille
         int width = background.getWidth();
         int height = background.getHeight();
 
         // Copier la texture de fond dans un pixmap
         Pixmap pixmapBackground = textureToPixmap(background);
         Pixmap pixmapTypeIcon = textureToPixmap(typeIcon);
+        Pixmap pixmapMotorisedAddon = textureToPixmap(motorisedAddon);
 
-        // Attention : sécurité au cas où les icônes sont plus petites
-        int x = (width - pixmapTypeIcon.getWidth())/2;
-        int y = (height - pixmapTypeIcon.getHeight())/2;
+        // Vérification de la taille de pixmap pour l'icône
+        int xTypeIcon = (width - pixmapTypeIcon.getWidth()) / 2;
+        int yTypeIcon = (height - pixmapTypeIcon.getHeight()) / 2;
 
-        // On "empile" l'icône sur le fond
-        pixmapBackground.drawPixmap(pixmapTypeIcon, x, y);
+        // Empile l'icône type sur le fond
+        pixmapBackground.drawPixmap(pixmapTypeIcon, xTypeIcon, yTypeIcon);
 
+        // Vérification de la taille de pixmap pour motorisedAddon
+        int xMotorisedAddon = (width - pixmapMotorisedAddon.getWidth()) / 2;
+        int yMotorisedAddon = (height - pixmapMotorisedAddon.getHeight()) / 2;
+
+        // Empile motorisedAddon sur le fond
+        pixmapBackground.drawPixmap(pixmapMotorisedAddon, xMotorisedAddon, yMotorisedAddon);
+
+        // Création de la texture résultante
         Texture toReturn = new Texture(pixmapBackground);
 
-        // Libérer la RAM du pixmap (pas nécessaire pour les textures LibGDX)
-        pixmapBackground.dispose();
+        // Libération de la RAM des pixmaps    pixmapBackground.dispose();
         pixmapTypeIcon.dispose();
+        pixmapMotorisedAddon.dispose();
 
-        // renvoi du résultat
+        // Renvoi du résultat
         return toReturn;
     }
 
+    public static Texture getMotorisedAddonTexture(ElementInterface unit) {
+        Texture toReturn = getEmptyTexture();
+        if(unit.isMotorised()) {
+            toReturn = counterAddOnMotTexture;
+        }
+        return toReturn;
+    }
 
     public static Texture getCountryTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();

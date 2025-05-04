@@ -28,6 +28,10 @@ public interface ElementInterface {
 
     public void setIsElite(boolean isElite);
 
+    public boolean isMotorised();
+
+    public void setIsMotorised(boolean isMotorised);
+
     public boolean equals(ElementInterface element);
 
     public int hashCode();

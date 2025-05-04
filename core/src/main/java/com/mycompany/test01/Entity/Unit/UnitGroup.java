@@ -12,8 +12,8 @@ public abstract class UnitGroup extends UnitElement { // implements Element
         this.units = new OrderedSet<>();
     }
 
-    public UnitGroup(String name, String acronym, CountryEnum country, UnitTypeEnum type, boolean isElite) {
-        super(name, acronym, country, type, isElite);
+    public UnitGroup(String name, String acronym, CountryEnum country, UnitTypeEnum type, boolean isElite, boolean isMotorised) {
+        super(name, acronym, country, type, isElite, isMotorised);
         this.units = new OrderedSet<>();
     }
 
