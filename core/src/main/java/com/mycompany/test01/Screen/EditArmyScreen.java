@@ -135,24 +135,24 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false);
         ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false);
 
-        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, false);
-        CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false, false);
+        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, false, 2);
+        CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false, false, 1);
 
 
 
-        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true, true);
-        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true, false);
-        TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false, false);
-        AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false, false);
-        AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true, false);
+        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true, true, 3);
+        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true, false, 4);
+        TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false, false, 1);
+        AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false, false, 2);
+        AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true, false, 4);
             //OrderedSet<Element> units = new OrderedSet<>();
-        ParaUnit unit08 = unitRedCountryFactory.createParaUnit("unit 08", "501", true, false);
-        MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true, false);
-        MarineUnit unit13 = unitRedCountryFactory.createMarineUnit("unit 13", "17M", true, true);
+        ParaUnit unit08 = unitRedCountryFactory.createParaUnit("unit 08", "501", true, false, 3);
+        MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true, false, 1);
+        MarineUnit unit13 = unitRedCountryFactory.createMarineUnit("unit 13", "17M", true, true, 0);
 
-        EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false, true);
-        MecaInfUnit unit11 = unitRedCountryFactory.createMecaInfUnit("unit11", "117", true, false);
-        MecaRecoUnit unit12 = unitRedCountryFactory.createMecaRecoUnit("unit12", "233", false, false);
+        EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false, true, 0);
+        MecaInfUnit unit11 = unitRedCountryFactory.createMecaInfUnit("unit11", "117", true, false, 4);
+        MecaRecoUnit unit12 = unitRedCountryFactory.createMecaRecoUnit("unit12", "233", false, false, 0);
 
         rootGroup.addUnit(group01);
         rootGroup.addUnit(unit01);

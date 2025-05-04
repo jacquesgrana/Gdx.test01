@@ -451,8 +451,8 @@ public class GraphicUtil {
 
         // choix des addons en fonction de l'unité
         Texture motorisedAddon = getMotorisedAddonTexture(unit);
-
-        toReturn = stackTextures(background, typeIcon, motorisedAddon);
+        Texture regRankAddon = getRegRankAddonTexture(unit);
+        toReturn = stackTextures(background, typeIcon, motorisedAddon, regRankAddon);
 
         // Ajouter le texte de l'acronyme à la texture
         String acronym = unit.getAcronym();
@@ -498,7 +498,7 @@ public class GraphicUtil {
     }
 
 
-    public static Texture stackTextures(Texture background, Texture typeIcon, Texture motorisedAddon) {
+    public static Texture stackTextures(Texture background, Texture typeIcon, Texture motorisedAddon, Texture regRankAddon) {
         // Empilement des textures
         // On suppose que background, typeIcon et motorisedAddon sont de même taille
         int width = background.getWidth();
@@ -508,6 +508,8 @@ public class GraphicUtil {
         Pixmap pixmapBackground = textureToPixmap(background);
         Pixmap pixmapTypeIcon = textureToPixmap(typeIcon);
         Pixmap pixmapMotorisedAddon = textureToPixmap(motorisedAddon);
+        Pixmap pixmapRegRankAddon = textureToPixmap(regRankAddon);
+
 
         // Vérification de la taille de pixmap pour l'icône
         int xTypeIcon = (width - pixmapTypeIcon.getWidth()) / 2;
@@ -523,14 +525,42 @@ public class GraphicUtil {
         // Empile motorisedAddon sur le fond
         pixmapBackground.drawPixmap(pixmapMotorisedAddon, xMotorisedAddon, yMotorisedAddon);
 
+        //regRankAddon
+        int xRegRankAddon = (width - pixmapRegRankAddon.getWidth()) / 2;
+        int yRegRankAddon = (height - pixmapRegRankAddon.getHeight()) / 2;
+
+        // Empile motorisedAddon sur le fond
+        pixmapBackground.drawPixmap(pixmapRegRankAddon, xRegRankAddon, yRegRankAddon);
+
         // Création de la texture résultante
         Texture toReturn = new Texture(pixmapBackground);
 
-        // Libération de la RAM des pixmaps    pixmapBackground.dispose();
+        // Libération de la RAM des pixmaps
+        pixmapBackground.dispose();
         pixmapTypeIcon.dispose();
-        pixmapMotorisedAddon.dispose();
+        //if(!pixmapMotorisedAddon.equals(textureToPixmap(getEmptyTexture()))) pixmapMotorisedAddon.dispose();
+        //if(!pixmapRegRankAddon.equals(textureToPixmap(getEmptyTexture()))) pixmapRegRankAddon.dispose();
 
         // Renvoi du résultat
+        return toReturn;
+    }
+
+    public static Texture getRegRankAddonTexture(ElementInterface unit) {
+        Texture toReturn = getEmptyTexture();
+        switch(unit.getRegRank()) {
+            case 1:
+                toReturn = counterAddOnReg1_4Texture;
+                break;
+            case 2:
+                toReturn = counterAddOnReg2_4Texture;
+                break;
+            case 3:
+                toReturn = counterAddOnReg3_4Texture;
+                break;
+            case 4:
+                toReturn = counterAddOnReg4_4Texture;
+                break;
+        }
         return toReturn;
     }
 

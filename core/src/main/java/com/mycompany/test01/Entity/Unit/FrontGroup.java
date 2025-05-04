@@ -10,6 +10,6 @@ public class FrontGroup extends UnitGroup {
     }
 
     public FrontGroup(String name, String acronym, CountryEnum country, boolean isElite, boolean isMotorised) {
-        super(name, acronym, country, UnitTypeEnum.FRONT_HQ, isElite, isMotorised);
+        super(name, acronym, country, UnitTypeEnum.FRONT_HQ, isElite, isMotorised, 0);
     }
 }

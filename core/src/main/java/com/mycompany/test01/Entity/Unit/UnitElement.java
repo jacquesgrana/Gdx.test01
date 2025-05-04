@@ -19,6 +19,7 @@ public abstract class UnitElement implements ElementInterface {
     protected UnitTypeEnum type;
     protected boolean isElite;
     protected boolean isMotorised;
+    protected int regRank;
 
     public UnitElement() {
         this.id = unitCounter;
@@ -27,6 +28,8 @@ public abstract class UnitElement implements ElementInterface {
         this.country = CountryEnum.NO_COUNTRY;
         this.type = UnitTypeEnum.NO_TYPE;
         isElite = false;
+        isMotorised = false;
+        regRank = 0;
         unitCounter++;
     }
 
@@ -36,7 +39,8 @@ public abstract class UnitElement implements ElementInterface {
         CountryEnum country,
         UnitTypeEnum type,
         boolean isElite,
-        boolean isMotorised
+        boolean isMotorised,
+        int regRank
     ) {
         this.id = unitCounter;
         this.name = name;
@@ -45,6 +49,7 @@ public abstract class UnitElement implements ElementInterface {
         this.type = type;
         this.isElite = isElite;
         this.isMotorised = isMotorised;
+        this.regRank = regRank;
         unitCounter++;
     }
 
@@ -126,6 +131,16 @@ public abstract class UnitElement implements ElementInterface {
     @Override
     public void setIsMotorised(boolean isMotorised) {
         this.isMotorised = isMotorised;
+    }
+
+    @Override
+    public int getRegRank() {
+        return regRank;
+    }
+
+    @Override
+    public void setRegRank(int regRank) {
+        this.regRank = regRank;
     }
 
     public static int getUnitCounter() {

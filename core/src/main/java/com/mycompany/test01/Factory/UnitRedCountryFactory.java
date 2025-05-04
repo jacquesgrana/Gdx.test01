@@ -7,58 +7,59 @@ import com.mycompany.test01.Interface.UnitFactoryInterface;
 public class UnitRedCountryFactory implements UnitFactoryInterface {
 
     @Override
-    public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new InfantryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
-    }
-
-    public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new CavalryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new InfantryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override
-    public ParaUnit createParaUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new ParaUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new CavalryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override
-    public MarineUnit createMarineUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new MarineUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public ParaUnit createParaUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new ParaUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override
-    public EngineerUnit createEngineerUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new EngineerUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public MarineUnit createMarineUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new MarineUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
+    }
+
+    @Override
+    public EngineerUnit createEngineerUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new EngineerUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
 
     @Override
-    public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new ArtiUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new ArtiUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override
-    public TankUnit createTankUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new TankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public TankUnit createTankUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new TankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override
-    public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new MecaInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new MecaInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override
-    public MecaRecoUnit createMecaRecoUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new MecaRecoUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public MecaRecoUnit createMecaRecoUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new MecaRecoUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override
-    public AntiTankUnit createAntiTankUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new AntiTankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public AntiTankUnit createAntiTankUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new AntiTankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override
-    public AntiAirUnit createAntiAirUnit(String name, String acronym, boolean isElite, boolean isMotorised) {
-        return new AntiAirUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised);
+    public AntiAirUnit createAntiAirUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
+        return new AntiAirUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
     }
 
     @Override

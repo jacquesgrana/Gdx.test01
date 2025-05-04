@@ -32,6 +32,10 @@ public interface ElementInterface {
 
     public void setIsMotorised(boolean isMotorised);
 
+    public int getRegRank();
+
+    public void setRegRank(int regRank);
+
     public boolean equals(ElementInterface element);
 
     public int hashCode();
