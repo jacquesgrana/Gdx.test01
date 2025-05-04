@@ -114,6 +114,13 @@ public class GraphicUtil {
     public static Texture counterAddOnReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-2-4@4x.png");
     public static Texture counterAddOnReg3_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-3-4@4x.png");
     public static Texture counterAddOnReg4_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-4-4@4x.png");
+
+    public static Texture counterAddOnLevel1_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-1-5@4x.png");
+    public static Texture counterAddOnLevel2_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-2-5@4x.png");
+    public static Texture counterAddOnLevel3_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-3-5@4x.png");
+    public static Texture counterAddOnLevel4_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-4-5@4x.png");
+    public static Texture counterAddOnLevel5_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-5-5@4x.png");
+
     public static Texture counterAddOnCompTexture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-comp@4x.png");
     public static Texture counterAddOnMotTexture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-mot@4x.png");
 
@@ -452,7 +459,14 @@ public class GraphicUtil {
         // choix des addons en fonction de l'unité
         Texture motorisedAddon = getMotorisedAddonTexture(unit);
         Texture regRankAddon = getRegRankAddonTexture(unit);
-        toReturn = stackTextures(background, typeIcon, motorisedAddon, regRankAddon);
+        Texture levelAddon = getEmptyTexture();
+        if(unit instanceof UnitGroup) {
+            //UnitGroup group = (UnitGroup) unit;
+            System.out.println("unit group level : " + ((UnitGroup) unit).getLevel());
+            levelAddon = getLevelAddonTexture((UnitGroup) unit);
+        }
+
+        toReturn = stackTextures(background, typeIcon, motorisedAddon, regRankAddon, levelAddon);
 
         // Ajouter le texte de l'acronyme à la texture
         String acronym = unit.getAcronym();
@@ -498,7 +512,7 @@ public class GraphicUtil {
     }
 
 
-    public static Texture stackTextures(Texture background, Texture typeIcon, Texture motorisedAddon, Texture regRankAddon) {
+    public static Texture stackTextures(Texture background, Texture typeIcon, Texture motorisedAddon, Texture regRankAddon, Texture levelAddon) {
         // Empilement des textures
         // On suppose que background, typeIcon et motorisedAddon sont de même taille
         int width = background.getWidth();
@@ -509,7 +523,7 @@ public class GraphicUtil {
         Pixmap pixmapTypeIcon = textureToPixmap(typeIcon);
         Pixmap pixmapMotorisedAddon = textureToPixmap(motorisedAddon);
         Pixmap pixmapRegRankAddon = textureToPixmap(regRankAddon);
-
+        Pixmap pixmapLevelAddon = textureToPixmap(levelAddon);
 
         // Vérification de la taille de pixmap pour l'icône
         int xTypeIcon = (width - pixmapTypeIcon.getWidth()) / 2;
@@ -529,8 +543,12 @@ public class GraphicUtil {
         int xRegRankAddon = (width - pixmapRegRankAddon.getWidth()) / 2;
         int yRegRankAddon = (height - pixmapRegRankAddon.getHeight()) / 2;
 
-        // Empile motorisedAddon sur le fond
         pixmapBackground.drawPixmap(pixmapRegRankAddon, xRegRankAddon, yRegRankAddon);
+
+        int xLevelAddon = (width - pixmapLevelAddon.getWidth()) / 2;
+        int yLevelAddon = (height - pixmapLevelAddon.getHeight()) / 2;
+
+        pixmapBackground.drawPixmap(pixmapLevelAddon, xLevelAddon, yLevelAddon);
 
         // Création de la texture résultante
         Texture toReturn = new Texture(pixmapBackground);
@@ -542,6 +560,28 @@ public class GraphicUtil {
         //if(!pixmapRegRankAddon.equals(textureToPixmap(getEmptyTexture()))) pixmapRegRankAddon.dispose();
 
         // Renvoi du résultat
+        return toReturn;
+    }
+
+    public static Texture getLevelAddonTexture(UnitGroup group) {
+        Texture toReturn = getEmptyTexture();
+        switch (group.getLevel()) {
+            case 1 :
+            toReturn = counterAddOnLevel1_5Texture;
+            break;
+            case 2 :
+                toReturn = counterAddOnLevel2_5Texture;
+                break;
+            case 3 :
+                toReturn = counterAddOnLevel3_5Texture;
+                break;
+            case 4 :
+                toReturn = counterAddOnLevel4_5Texture;
+                break;
+            case 5 :
+                toReturn = counterAddOnLevel5_5Texture;
+                break;
+        }
         return toReturn;
     }
 
