@@ -28,9 +28,14 @@ public interface UnitFactoryInterface {
 
     public MecaRecoUnit createMecaRecoUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank);
 
-    public AntiTankUnit createAntiTankUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank);
+    public AntiTankUnit createAntiTankUnit(String name, String acronym, boolean isElite, int regRank);
 
-    public AntiAirUnit createAntiAirUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank);
+    public MotoAntiTankUnit createMotoAntiTankUnit(String name, String acronym, boolean isElite, int regRank);
+
+    public AntiAirUnit createAntiAirUnit(String name, String acronym, boolean isElite, int regRank);
+
+    public MotoAntiAirUnit createMotoAntiAirUnit(String name, String acronym, boolean isElite, int regRank);
+
 
     public FrontGroup createFrontGroup(String name, String acronym, boolean isElite, boolean isMotorised);
 
@@ -43,4 +48,9 @@ public interface UnitFactoryInterface {
     public BrigadeGroup createBrigadeGroup(String name, String acronym, boolean isElite, boolean isMotorised);
 
     public DivisionGroup createInfDivision(String name, String acronym);
+
+    public DivisionGroup createEliteInfDivision(String name, String acronym);
+
+    public DivisionGroup createMotoInfDivision(String name, String acronym);
+
 }

@@ -135,6 +135,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false);
         ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false);
 
+        /*
         InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, 2);
         CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false, false, 1);
 
@@ -143,8 +144,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true, 3);
         ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true, 4);
         TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false, false, 1);
-        AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false, false, 2);
-        AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true, false, 4);
+        AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false, 2);
+        AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true, 4);
             //OrderedSet<Element> units = new OrderedSet<>();
         ParaUnit unit08 = unitRedCountryFactory.createParaUnit("unit 08", "501", true, false, 3);
         MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true, false, 1);
@@ -180,13 +181,18 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(unit08);
 
         group02.addUnit(unit09);
+*/
+
+        rootGroup.addUnit(group01);
+        group01.addUnit(group02);
+        DivisionGroup elitIinfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
+        group02.addUnit(elitIinfDiv);
 
         DivisionGroup infDiv = unitRedCountryFactory.createInfDivision("455th div", "455");
-        rootGroup.addUnit(infDiv);
+        group02.addUnit(infDiv);
 
-
-
-
+        DivisionGroup motoInfDiv = unitRedCountryFactory.createMotoInfDivision("78th moto div", "78M");
+        group02.addUnit(motoInfDiv);
 
         //units.add(rootGroup);
 

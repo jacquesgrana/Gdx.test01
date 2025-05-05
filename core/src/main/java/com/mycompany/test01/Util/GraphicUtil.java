@@ -481,7 +481,9 @@ public class GraphicUtil {
         FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
         SpriteBatch batch = new SpriteBatch();
 
-        BitmapFont font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110.fnt"));
+        BitmapFont font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-++.fnt"));
+        //RobotoCondensed-Black-110-++.fnt
+        //RobotoCondensed-Black-110.fnt
         //BitmapFont font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-16.fnt"));
 
         font.setColor(Color.BLACK);
@@ -662,9 +664,11 @@ public class GraphicUtil {
                 toReturn = counterTypeIconInfTexture;
                 break;
             case ANTI_AIR:
+            case MOTORISED_ANTI_AIR:
                 toReturn = counterTypeIconAntiAirTexture;
                 break;
             case ANTI_TANK:
+            case MOTORISED_ANTI_TANK:
                 toReturn = counterTypeIconAntiTankTexture;
                 break;
             case CAVALRY:

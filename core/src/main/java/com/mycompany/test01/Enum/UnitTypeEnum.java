@@ -29,6 +29,9 @@ public enum UnitTypeEnum {
     MOTORISED_LOGISTIC ("Motorised Logistic"),
     MECHANISED_ARTI ("Mechanised Artillery"),
     MOTORISED_ARTI ("Motorised Artillery"),
+    MOTORISED_ANTI_TANK ("Motorised Anti Tank"),
+    MOTORISED_ANTI_AIR ("Motorised Anti Air"),
+
 
     NO_TYPE("No Type");
 
