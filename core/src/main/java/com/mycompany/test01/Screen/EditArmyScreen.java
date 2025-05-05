@@ -181,7 +181,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         group02.addUnit(unit09);
 
-
+        DivisionGroup infDiv = unitRedCountryFactory.createInfDivision("455th div", "455");
+        rootGroup.addUnit(infDiv);
 
 
 

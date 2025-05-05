@@ -41,4 +41,6 @@ public interface UnitFactoryInterface {
     public DivisionGroup createDivisionGroup(String name, String acronym, boolean isElite, boolean isMotorised);
 
     public BrigadeGroup createBrigadeGroup(String name, String acronym, boolean isElite, boolean isMotorised);
+
+    public DivisionGroup createInfDivision(String name, String acronym);
 }
