@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.Unit;
@@ -501,18 +502,31 @@ public class GraphicUtil {
         batch.draw(input, 0, 0, width, height); // fond
         GlyphLayout layout = new GlyphLayout(font, text);
         float x = (width - layout.width) / 2f;
-        float y = (height + layout.height) / 2 - layout.height;
+        float y = (height + layout.height) / 2 - layout.height - 5;
         font.draw(batch, layout, x, y); // texte centré
 
         batch.end();
         fbo.end();
 
-        Texture t = fbo.getColorBufferTexture(); // ATTENTION texture retournée !
-        // tu ne la disopses pas maintenant si tu t’en resserras
+        // Créer une copie de la texture du framebuffer
+        //Texture originalTexture = fbo.getColorBufferTexture();
+
+        // Méthode 1: Utiliser un Pixmap pour créer une copie
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        ByteBuffer buffer = BufferUtils.newByteBuffer(width * height * 4);
+        Gdx.gl.glBindFramebuffer(GL20.GL_FRAMEBUFFER, fbo.getFramebufferHandle());
+        Gdx.gl.glReadPixels(0, 0, width, height, GL20.GL_RGBA, GL20.GL_UNSIGNED_BYTE, buffer);
+        pixmap.getPixels().put(buffer);
+        pixmap.getPixels().position(0);
+        Texture textureCopy = new Texture(pixmap);
+
+        // Libérer les ressources
+        pixmap.dispose();
         font.dispose();
         batch.dispose();
-        //fbo.dispose();
-        return t;
+        fbo.dispose();
+
+        return textureCopy;
     }
 
 
