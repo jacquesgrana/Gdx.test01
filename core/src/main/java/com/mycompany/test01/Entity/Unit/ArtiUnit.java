@@ -5,7 +5,7 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class ArtiUnit extends Unit {
 
-    public ArtiUnit(String name, String acronym, CountryEnum country, boolean isElite, boolean isMotorised, int regRank) {
-        super(name, acronym, country, UnitTypeEnum.ARTI, isElite, isMotorised, regRank);
+    public ArtiUnit(String name, String acronym, CountryEnum country, boolean isElite, int regRank) {
+        super(name, acronym, country, UnitTypeEnum.ARTI, isElite, false, regRank);
     }
 }

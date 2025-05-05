@@ -7,8 +7,8 @@ import com.mycompany.test01.Interface.UnitFactoryInterface;
 public class UnitRedCountryFactory implements UnitFactoryInterface {
 
     @Override
-    public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
-        return new InfantryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
+    public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, int regRank) {
+        return new InfantryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, regRank);
     }
 
     @Override
@@ -27,14 +27,14 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public EngineerUnit createEngineerUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
-        return new EngineerUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
+    public EngineerUnit createEngineerUnit(String name, String acronym, boolean isElite, int regRank) {
+        return new EngineerUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, regRank);
     }
 
 
     @Override
-    public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
-        return new ArtiUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
+    public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, int regRank) {
+        return new ArtiUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite,  regRank);
     }
 
     @Override
@@ -45,6 +45,20 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     @Override
     public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite, boolean isMotorised, int regRank) {
         return new MecaInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, regRank);
+    }
+
+    @Override
+    public MotoInfUnit createMotoInfUnit(String name, String acronym, boolean isElite, int regRank) {
+        return new MotoInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, regRank);
+    }
+
+    public MotoEngineerUnit createMotoEngineerUnit(String name, String acronym, boolean isElite, int regRank) {
+        return new MotoEngineerUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, regRank);
+    }
+
+    @Override
+    public MotoArtiUnit createMotoArtiUnit(String name, String acronym, boolean isElite, int regRank) {
+        return new MotoArtiUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite,  regRank);
     }
 
     @Override

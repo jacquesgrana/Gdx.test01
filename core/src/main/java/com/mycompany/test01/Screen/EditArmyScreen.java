@@ -135,13 +135,13 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false);
         ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false);
 
-        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, false, 2);
+        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, 2);
         CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false, false, 1);
 
 
 
-        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true, true, 3);
-        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true, false, 4);
+        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true, 3);
+        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true, 4);
         TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false, false, 1);
         AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false, false, 2);
         AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true, false, 4);
@@ -150,9 +150,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true, false, 1);
         MarineUnit unit13 = unitRedCountryFactory.createMarineUnit("unit 13", "17M", true, true, 0);
 
-        EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false, true, 0);
+        EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false, 0);
         MecaInfUnit unit11 = unitRedCountryFactory.createMecaInfUnit("unit11", "117", true, false, 4);
         MecaRecoUnit unit12 = unitRedCountryFactory.createMecaRecoUnit("unit12", "233", false, false, 0);
+        MotoInfUnit unit14 = unitRedCountryFactory.createMotoInfUnit("unit14", "33G", true, 3);
+        MotoEngineerUnit unit15 = unitRedCountryFactory.createMotoEngineerUnit("unit15", "1102", false, 2);
+        MotoArtiUnit unit16 = unitRedCountryFactory.createMotoArtiUnit("unit16", "442", false, 2);
 
         rootGroup.addUnit(group01);
         rootGroup.addUnit(unit01);
@@ -160,6 +163,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         group01.addUnit(group02);
         group01.addUnit(unit03);
+        group01.addUnit(unit14);
+
+        group02.addUnit(unit10);
+        group02.addUnit(unit11);
+        group02.addUnit(unit12);
+        group02.addUnit(unit13);
+        group02.addUnit(unit15);
+        group02.addUnit(unit16);
+
 
         group02.addUnit(unit04);
         group02.addUnit(unit05);
@@ -167,12 +179,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(unit07);
         group02.addUnit(unit08);
 
-        group02.addUnit(unit13);
+        group02.addUnit(unit09);
 
-        group02.addUnit(unit10);
-        group02.addUnit(unit11);
-        group02.addUnit(unit12);
-        group02.addUnit(unit09); // !!!!!!!!!!!!!!!!!!! todo : résoudre bug de l'expansion si addUnit après cette ligne
+
+
+
 
 
 
@@ -180,7 +191,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         tree.add(GraphicUtil.createTreeFromGroup(rootGroup, this));
         // ajouter listener
-        /*
+
         EditArmyScreen that = this;
         tree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
             public void clicked (InputEvent event, float x, float y) {
@@ -189,7 +200,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
                 tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
             }
         });
-        */
+
         tree.expandAll();
 
         //stage.addActor(tree);

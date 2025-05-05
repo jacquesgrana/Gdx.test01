@@ -437,6 +437,7 @@ public class GraphicUtil {
                 });
             }
 
+            /*
             // ajouter listener
             groupNode.getActor().addListener(new ClickListener() {
                 public void clicked (InputEvent event, float x, float y) {
@@ -447,6 +448,7 @@ public class GraphicUtil {
 
                 }
             });
+            */
         }
         return groupNode;
     }
@@ -462,7 +464,7 @@ public class GraphicUtil {
         Texture levelAddon = getEmptyTexture();
         if(unit instanceof UnitGroup) {
             //UnitGroup group = (UnitGroup) unit;
-            System.out.println("unit group level : " + ((UnitGroup) unit).getLevel());
+            //System.out.println("unit group level : " + ((UnitGroup) unit).getLevel());
             levelAddon = getLevelAddonTexture((UnitGroup) unit);
         }
 
@@ -639,6 +641,7 @@ public class GraphicUtil {
         // choix de l'icon du type en fonction du type
         switch (unit.getType()) {
             case ARTI:
+            case MOTORISED_ARTI:
                 toReturn = counterTypeIconArtTexture;
                 break;
             case PARA:
@@ -651,9 +654,11 @@ public class GraphicUtil {
                 toReturn = counterTypeIconMarTexture;
                 break;
             case ENGINEER:
+            case MOTORISED_ENGINEER:
                 toReturn = counterTypeIconEngTexture;
                 break;
             case INFANTRY:
+            case MOTORISED_INF:
                 toReturn = counterTypeIconInfTexture;
                 break;
             case ANTI_AIR:
