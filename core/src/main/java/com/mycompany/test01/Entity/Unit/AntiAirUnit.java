@@ -10,8 +10,9 @@ public class AntiAirUnit extends Unit {
         String acronym,
         CountryEnum country,
         boolean isElite,
+        boolean isCompany,
         int regRank
         ) {
-        super(name, acronym, country, UnitTypeEnum.ANTI_AIR, isElite, false, regRank);
+        super(name, acronym, country, UnitTypeEnum.ANTI_AIR, isElite, false, isCompany, regRank);
     }
 }

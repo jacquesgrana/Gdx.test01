@@ -5,7 +5,14 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class MecaInfUnit extends Unit {
 
-    public MecaInfUnit(String name, String acronym, CountryEnum country, boolean isElite, boolean isMotorised, int regRank) {
-       super(name, acronym, country, UnitTypeEnum.MECHANISED_INF, isElite, isMotorised, regRank);
+    public MecaInfUnit(
+        String name,
+        String acronym,
+        CountryEnum country,
+        boolean isElite,
+        boolean isMotorised,
+        boolean isCompany,
+        int regRank) {
+       super(name, acronym, country, UnitTypeEnum.MECHANISED_INF, isElite, isMotorised, isCompany, regRank);
     }
 }

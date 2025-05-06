@@ -3,16 +3,16 @@ package com.mycompany.test01.Entity.Unit;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public class MotoEngineerUnit extends Unit {
+public class InfantryRecoCompanyUnit extends Unit {
 
-    public MotoEngineerUnit(
+    public InfantryRecoCompanyUnit(
         String name,
         String acronym,
         CountryEnum country,
         boolean isElite,
-        boolean isCompany,
+        boolean isMotorised,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.MOTORISED_ENGINEER, isElite, true, isCompany, regRank);
+       super(name, acronym, country, UnitTypeEnum.INFANTRY_RECO_COMPANY, isElite, isMotorised, true, regRank);
     }
 }

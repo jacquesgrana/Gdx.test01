@@ -462,6 +462,8 @@ public class GraphicUtil {
         // choix des addons en fonction de l'unité
         Texture motorisedAddon = getMotorisedAddonTexture(unit);
         Texture regRankAddon = getRegRankAddonTexture(unit);
+        Texture companyAddon = getCompanyAddonTexture(unit);
+
         Texture levelAddon = getEmptyTexture();
         if(unit instanceof UnitGroup) {
             //UnitGroup group = (UnitGroup) unit;
@@ -469,7 +471,7 @@ public class GraphicUtil {
             levelAddon = getLevelAddonTexture((UnitGroup) unit);
         }
 
-        toReturn = stackTextures(background, typeIcon, motorisedAddon, regRankAddon, levelAddon);
+        toReturn = stackTextures(background, typeIcon, motorisedAddon, regRankAddon, levelAddon, companyAddon);
 
         // Ajouter le texte de l'acronyme à la texture
         String acronym = unit.getAcronym();
@@ -530,9 +532,8 @@ public class GraphicUtil {
     }
 
 
-    public static Texture stackTextures(Texture background, Texture typeIcon, Texture motorisedAddon, Texture regRankAddon, Texture levelAddon) {
+    public static Texture stackTextures(Texture background, Texture typeIcon, Texture motorisedAddon, Texture regRankAddon, Texture levelAddon, Texture companyAddon) {
         // Empilement des textures
-        // On suppose que background, typeIcon et motorisedAddon sont de même taille
         int width = background.getWidth();
         int height = background.getHeight();
 
@@ -542,6 +543,7 @@ public class GraphicUtil {
         Pixmap pixmapMotorisedAddon = textureToPixmap(motorisedAddon);
         Pixmap pixmapRegRankAddon = textureToPixmap(regRankAddon);
         Pixmap pixmapLevelAddon = textureToPixmap(levelAddon);
+        Pixmap pixmapCompanyAddon = textureToPixmap(companyAddon);
 
         // Vérification de la taille de pixmap pour l'icône
         int xTypeIcon = (width - pixmapTypeIcon.getWidth()) / 2;
@@ -568,12 +570,18 @@ public class GraphicUtil {
 
         pixmapBackground.drawPixmap(pixmapLevelAddon, xLevelAddon, yLevelAddon);
 
+        int xCompanyAddon = (width - pixmapCompanyAddon.getWidth()) / 2;
+        int yCompanyAddon = (height - pixmapCompanyAddon.getHeight()) / 2;
+
+        pixmapBackground.drawPixmap(pixmapCompanyAddon, xCompanyAddon, yCompanyAddon);
+
         // Création de la texture résultante
         Texture toReturn = new Texture(pixmapBackground);
 
         // Libération de la RAM des pixmaps
         pixmapBackground.dispose();
         pixmapTypeIcon.dispose();
+        // todo : régler problème des dispose()
         //if(!pixmapMotorisedAddon.equals(textureToPixmap(getEmptyTexture()))) pixmapMotorisedAddon.dispose();
         //if(!pixmapRegRankAddon.equals(textureToPixmap(getEmptyTexture()))) pixmapRegRankAddon.dispose();
 
@@ -630,6 +638,14 @@ public class GraphicUtil {
         return toReturn;
     }
 
+    public static Texture getCompanyAddonTexture(ElementInterface unit) {
+        Texture toReturn = getEmptyTexture();
+        if(unit.isCompany()) {
+            toReturn = counterAddOnCompTexture;
+        }
+        return toReturn;
+    }
+
     public static Texture getCountryTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         // choix du bg de l'unité en fonction du pays
@@ -675,6 +691,7 @@ public class GraphicUtil {
                 break;
             case INFANTRY:
             case MOTORISED_INF:
+            case INFANTRY_RECO_COMPANY:
                 toReturn = counterTypeIconInfTexture;
                 break;
             case ANTI_AIR:

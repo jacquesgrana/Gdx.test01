@@ -32,6 +32,10 @@ public interface ElementInterface {
 
     public void setIsMotorised(boolean isMotorised);
 
+    public boolean isCompany();
+
+    public void setIsCompany(boolean isCompany);
+
     public int getRegRank();
 
     public void setRegRank(int regRank);

@@ -21,9 +21,10 @@ public abstract class UnitGroup extends UnitElement { // implements Element
                      UnitTypeEnum type,
                      boolean isElite,
                      boolean isMotorised,
+                     boolean isCompany,
                      int regRank,
                      int level) {
-        super(name, acronym, country, type, isElite, isMotorised, regRank);
+        super(name, acronym, country, type, isElite, isMotorised, isCompany, regRank);
         this.level = level;
         this.units = new OrderedSet<>();
     }

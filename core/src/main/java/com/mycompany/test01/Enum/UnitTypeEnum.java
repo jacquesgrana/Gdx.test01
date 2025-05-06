@@ -32,6 +32,7 @@ public enum UnitTypeEnum {
     MOTORISED_ANTI_TANK ("Motorised Anti Tank"),
     MOTORISED_ANTI_AIR ("Motorised Anti Air"),
 
+    INFANTRY_RECO_COMPANY ("Infantry Reco Company"),
 
     NO_TYPE("No Type");
 

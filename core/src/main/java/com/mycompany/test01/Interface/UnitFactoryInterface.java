@@ -36,6 +36,7 @@ public interface UnitFactoryInterface {
 
     public MotoAntiAirUnit createMotoAntiAirUnit(String name, String acronym, boolean isElite, int regRank);
 
+    // reco inf company
 
     public FrontGroup createFrontGroup(String name, String acronym, boolean isElite, boolean isMotorised);
 

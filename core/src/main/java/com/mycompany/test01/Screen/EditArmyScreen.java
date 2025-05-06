@@ -118,10 +118,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.centerPanel.addActor(selectedUnitAcronymLabel);
 
         selectedUnitIcon = new Image(GraphicUtil.counterBgRedCountry01Texture);
-        selectedUnitIcon.setBounds(centerPanel.getWidth() - 64f - 20f,
-            centerPanel.getHeight() - 64f - 20f,
-            64f,
-            64f);
+        selectedUnitIcon.setBounds(centerPanel.getWidth() - 128f - 20f,
+            centerPanel.getHeight() - 128f - 20f,
+            128f,
+            128f);
         this.centerPanel.addActor(selectedUnitIcon);
 
         this.tree = new Tree<>(GraphicUtil.getUnitTreeSkin());

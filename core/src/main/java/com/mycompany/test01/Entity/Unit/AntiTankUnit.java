@@ -5,7 +5,14 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class AntiTankUnit extends Unit {
 
-    public AntiTankUnit(String name, String acronym, CountryEnum country, boolean isElite, int regRank) {
-        super(name, acronym, country, UnitTypeEnum.ANTI_TANK, isElite, false, 0);
+    public AntiTankUnit(
+        String name,
+        String acronym,
+        CountryEnum country,
+        boolean isElite,
+        boolean isCompany,
+        int regRank
+    ) {
+        super(name, acronym, country, UnitTypeEnum.ANTI_TANK, isElite, false, isCompany, regRank);
     }
 }
