@@ -206,6 +206,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         DivisionGroup blackInfDiv = unitBlackCountryFactory.createInfDivision("455th div", "455");
         group03.addUnit(blackInfDiv);
+
+        DivisionGroup blackMotoInfDiv = unitBlackCountryFactory.createMotoInfDivision("87th div", "87");
+        group03.addUnit(blackMotoInfDiv);
         //units.add(rootGroup);
 
         tree.add(GraphicUtil.createTreeFromGroup(rootGroup, this));
