@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
+import com.mycompany.test01.Factory.UnitBlackCountryFactory;
 import com.mycompany.test01.Factory.UnitRedCountryFactory;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.*;
@@ -44,6 +45,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
 
     private UnitRedCountryFactory unitRedCountryFactory;
+    private UnitBlackCountryFactory unitBlackCountryFactory;
     //private Skin skin;
 
     /*
@@ -56,6 +58,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 */
     public EditArmyScreen(Main game) {
         this.unitRedCountryFactory = new UnitRedCountryFactory();
+        this.unitBlackCountryFactory = new UnitBlackCountryFactory();
         this.game = game;
         stage = new Stage(new ScreenViewport());
         //shapeRenderer = new ShapeRenderer();
@@ -134,6 +137,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true, false);
         ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false);
         ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false);
+        ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", true, false);
+
+
 
         /*
         InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, 2);
@@ -185,8 +191,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         rootGroup.addUnit(group01);
         group01.addUnit(group02);
-        DivisionGroup elitIinfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
-        group02.addUnit(elitIinfDiv);
+        DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
+        group02.addUnit(elitInfDiv);
 
         DivisionGroup infDiv = unitRedCountryFactory.createInfDivision("455th div", "455");
         group02.addUnit(infDiv);
@@ -194,6 +200,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         DivisionGroup motoInfDiv = unitRedCountryFactory.createMotoInfDivision("78th moto div", "78M");
         group02.addUnit(motoInfDiv);
 
+        group01.addUnit(group03);
+        DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st SS div", "1SS");
+        group03.addUnit(eliteBlackInfDiv);
+
+        DivisionGroup blackInfDiv = unitBlackCountryFactory.createInfDivision("455th div", "455");
+        group03.addUnit(blackInfDiv);
         //units.add(rootGroup);
 
         tree.add(GraphicUtil.createTreeFromGroup(rootGroup, this));

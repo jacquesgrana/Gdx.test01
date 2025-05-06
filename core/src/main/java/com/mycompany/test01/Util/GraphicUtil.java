@@ -98,32 +98,59 @@ public class GraphicUtil {
     public static Texture counterBgYellowCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-yellow-country-01@4x.png");
     public static Texture counterBgYellowCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-yellow-country-02@4x.png");
 
-    public static Texture counterTypeIconHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-hq@4x.png");
-    public static Texture counterTypeIconArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-arti@4x.png");
-    public static Texture counterTypeIconInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-inf@4x.png");
-    public static Texture counterTypeIconTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-tank@4x.png");
-    public static Texture counterTypeIconParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-para@4x.png");
-    public static Texture counterTypeIconAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-anti-air@4x.png");
-    public static Texture counterTypeIconAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-anti-tank@4x.png");
-    public static Texture counterTypeIconCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-cav@4x.png");
-    public static Texture counterTypeIconEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-eng@4x.png");
-    public static Texture counterTypeIconMarTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-mar@4x.png");
-    public static Texture counterTypeIconMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-meca-inf@4x.png");
-    public static Texture counterTypeIconMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/texture-unit-icon-type-meca-reco@4x.png");
+    public static Texture counterTypeIconBSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-hq@4x.png");
+    public static Texture counterTypeIconBSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-arti@4x.png");
+    public static Texture counterTypeIconBSInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-inf@4x.png");
+    public static Texture counterTypeIconBSTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-tank@4x.png");
+    public static Texture counterTypeIconBSParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-para@4x.png");
+    public static Texture counterTypeIconBSAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-anti-air@4x.png");
+    public static Texture counterTypeIconBSAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-anti-tank@4x.png");
+    public static Texture counterTypeIconBSCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-cav@4x.png");
+    public static Texture counterTypeIconBSEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-eng@4x.png");
+    public static Texture counterTypeIconBSMarTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mar@4x.png");
+    public static Texture counterTypeIconBSMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-meca-inf@4x.png");
+    public static Texture counterTypeIconBSMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-meca-reco@4x.png");
 
-    public static Texture counterAddOnReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-1-4@4x.png");
-    public static Texture counterAddOnReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-2-4@4x.png");
-    public static Texture counterAddOnReg3_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-3-4@4x.png");
-    public static Texture counterAddOnReg4_4Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-reg-4-4@4x.png");
+    public static Texture counterTypeIconWSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-hq@4x.png");
+    public static Texture counterTypeIconWSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-arti@4x.png");
+    public static Texture counterTypeIconWSInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-inf@4x.png");
+    public static Texture counterTypeIconWSTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-tank@4x.png");
+    public static Texture counterTypeIconWSParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-para@4x.png");
+    public static Texture counterTypeIconWSAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-anti-air@4x.png");
+    public static Texture counterTypeIconWSAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-anti-tank@4x.png");
+    public static Texture counterTypeIconWSCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-cav@4x.png");
+    public static Texture counterTypeIconWSEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-eng@4x.png");
+    public static Texture counterTypeIconWSMarTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mar@4x.png");
+    public static Texture counterTypeIconWSMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-meca-inf@4x.png");
+    public static Texture counterTypeIconWSMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-meca-reco@4x.png");
 
-    public static Texture counterAddOnLevel1_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-1-5@4x.png");
-    public static Texture counterAddOnLevel2_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-2-5@4x.png");
-    public static Texture counterAddOnLevel3_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-3-5@4x.png");
-    public static Texture counterAddOnLevel4_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-4-5@4x.png");
-    public static Texture counterAddOnLevel5_5Texture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-level-5-5@4x.png");
+    public static Texture counterAddOnBSReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-1-4@4x.png");
+    public static Texture counterAddOnBSReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-2-4@4x.png");
+    public static Texture counterAddOnBSReg3_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-3-4@4x.png");
+    public static Texture counterAddOnBSReg4_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-4-4@4x.png");
 
-    public static Texture counterAddOnCompTexture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-comp@4x.png");
-    public static Texture counterAddOnMotTexture = loadTextureFromFile("texture/unit/counter-addon/counter-addon-mot@4x.png");
+    public static Texture counterAddOnBSLevel1_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-level-1-5@4x.png");
+    public static Texture counterAddOnBSLevel2_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-level-2-5@4x.png");
+    public static Texture counterAddOnBSLevel3_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-level-3-5@4x.png");
+    public static Texture counterAddOnBSLevel4_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-level-4-5@4x.png");
+    public static Texture counterAddOnBSLevel5_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-level-5-5@4x.png");
+
+    public static Texture counterAddOnBSCompTexture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-comp@4x.png");
+    public static Texture counterAddOnBSMotTexture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-mot@4x.png");
+
+    public static Texture counterAddOnWSReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-1-4@4x.png");
+    public static Texture counterAddOnWSReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-2-4@4x.png");
+    public static Texture counterAddOnWSReg3_4Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-3-4@4x.png");
+    public static Texture counterAddOnWSReg4_4Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-4-4@4x.png");
+
+    public static Texture counterAddOnWSLevel1_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-level-1-5@4x.png");
+    public static Texture counterAddOnWSLevel2_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-level-2-5@4x.png");
+    public static Texture counterAddOnWSLevel3_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-level-3-5@4x.png");
+    public static Texture counterAddOnWSLevel4_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-level-4-5@4x.png");
+    public static Texture counterAddOnWSLevel5_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-level-5-5@4x.png");
+
+    public static Texture counterAddOnWSCompTexture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-comp@4x.png");
+    public static Texture counterAddOnWSMotTexture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-mot@4x.png");
 
     public static Color backgroundColorDark = new Color(0.1f, 0.1f, 0.12f, 1);
     public static Color backgroundColorMedium = new Color(0.15f, 0.15f, 0.18f, 1);
@@ -475,21 +502,37 @@ public class GraphicUtil {
 
         // Ajouter le texte de l'acronyme à la texture
         String acronym = unit.getAcronym();
-        toReturn = drawTextOnTexture(toReturn, acronym);
+        if(unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite()) {
+            toReturn = drawTextOnTexture(toReturn, acronym, false);
+        }
+        else {
+            toReturn = drawTextOnTexture(toReturn, acronym, true);
+
+        }
+        //toReturn = drawTextOnTexture(toReturn, acronym);
         return toReturn;
     }
 
-    public static Texture drawTextOnTexture(Texture input, String text) {
+    public static Texture drawTextOnTexture(Texture input, String text, boolean isBlackStroke) {
         int width = input.getWidth(), height = input.getHeight();
         FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
         SpriteBatch batch = new SpriteBatch();
 
-        BitmapFont font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-++.fnt"));
+
         //RobotoCondensed-Black-110-++.fnt
         //RobotoCondensed-Black-110.fnt
         //BitmapFont font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-16.fnt"));
 
-        font.setColor(Color.BLACK);
+        //RobotoCondensed-Black-110-WB
+        BitmapFont font = new BitmapFont();
+        if(isBlackStroke) {
+            font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-++.fnt"));
+            font.setColor(Color.BLACK);
+        }
+        else {
+            font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-WB.fnt"));
+            font.setColor(Color.WHITE);
+        }
 
         OrthographicCamera camera = new OrthographicCamera(width, height);
         camera.setToOrtho(true, width, height); // Camera "Y vers le bas" = sens UI classique
@@ -593,19 +636,23 @@ public class GraphicUtil {
         Texture toReturn = getEmptyTexture();
         switch (group.getLevel()) {
             case 1 :
-            toReturn = counterAddOnLevel1_5Texture;
-            break;
+                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel1_5Texture : counterAddOnBSLevel1_5Texture;
+                break;
             case 2 :
-                toReturn = counterAddOnLevel2_5Texture;
+                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel2_5Texture : counterAddOnBSLevel2_5Texture;
+                //toReturn = counterAddOnBSLevel2_5Texture;
                 break;
             case 3 :
-                toReturn = counterAddOnLevel3_5Texture;
+                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel3_5Texture : counterAddOnBSLevel3_5Texture;
+                //toReturn = counterAddOnBSLevel3_5Texture;
                 break;
             case 4 :
-                toReturn = counterAddOnLevel4_5Texture;
+                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel4_5Texture : counterAddOnBSLevel4_5Texture;
+                //toReturn = counterAddOnBSLevel4_5Texture;
                 break;
             case 5 :
-                toReturn = counterAddOnLevel5_5Texture;
+                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel5_5Texture : counterAddOnBSLevel5_5Texture;
+                //toReturn = counterAddOnBSLevel5_5Texture;
                 break;
         }
         return toReturn;
@@ -615,16 +662,19 @@ public class GraphicUtil {
         Texture toReturn = getEmptyTexture();
         switch(unit.getRegRank()) {
             case 1:
-                toReturn = counterAddOnReg1_4Texture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSReg1_4Texture : counterAddOnBSReg1_4Texture;
                 break;
             case 2:
-                toReturn = counterAddOnReg2_4Texture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSReg2_4Texture : counterAddOnBSReg2_4Texture;
+                //toReturn = counterAddOnBSReg2_4Texture;
                 break;
             case 3:
-                toReturn = counterAddOnReg3_4Texture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSReg3_4Texture : counterAddOnBSReg3_4Texture;
+                //toReturn = counterAddOnBSReg3_4Texture;
                 break;
             case 4:
-                toReturn = counterAddOnReg4_4Texture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSReg4_4Texture : counterAddOnBSReg4_4Texture;
+                //toReturn = counterAddOnBSReg4_4Texture;
                 break;
         }
         return toReturn;
@@ -633,7 +683,7 @@ public class GraphicUtil {
     public static Texture getMotorisedAddonTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         if(unit.isMotorised()) {
-            toReturn = counterAddOnMotTexture;
+            toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSMotTexture : counterAddOnBSMotTexture;
         }
         return toReturn;
     }
@@ -641,7 +691,7 @@ public class GraphicUtil {
     public static Texture getCompanyAddonTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         if(unit.isCompany()) {
-            toReturn = counterAddOnCompTexture;
+            toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSCompTexture : counterAddOnBSCompTexture;
         }
         return toReturn;
     }
@@ -661,6 +711,7 @@ public class GraphicUtil {
                 break;
             case BLACK_COUNTRY:
                 toReturn = unit.isElite() ? counterBgBlackCountry01Texture : counterBgBlackCountry02Texture;
+                break;
             case YELLOW_COUNTRY:
                 toReturn = unit.isElite() ? counterBgYellowCountry01Texture : counterBgYellowCountry02Texture;
                 break;
@@ -674,49 +725,49 @@ public class GraphicUtil {
         switch (unit.getType()) {
             case ARTI:
             case MOTORISED_ARTI:
-                toReturn = counterTypeIconArtTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSArtTexture : counterTypeIconBSArtTexture;
                 break;
             case PARA:
-                toReturn = counterTypeIconParaTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSParaTexture : counterTypeIconBSParaTexture;
                 break;
             case TANK:
-                toReturn = counterTypeIconTankTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSTankTexture : counterTypeIconBSTankTexture;
                 break;
             case MARINE:
-                toReturn = counterTypeIconMarTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSMarTexture : counterTypeIconBSMarTexture;
                 break;
             case ENGINEER:
             case MOTORISED_ENGINEER:
-                toReturn = counterTypeIconEngTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSEngTexture : counterTypeIconBSEngTexture;
                 break;
             case INFANTRY:
             case MOTORISED_INF:
             case INFANTRY_RECO_COMPANY:
-                toReturn = counterTypeIconInfTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSInfTexture : counterTypeIconBSInfTexture;
                 break;
             case ANTI_AIR:
             case MOTORISED_ANTI_AIR:
-                toReturn = counterTypeIconAntiAirTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSAntiAirTexture : counterTypeIconBSAntiAirTexture;
                 break;
             case ANTI_TANK:
             case MOTORISED_ANTI_TANK:
-                toReturn = counterTypeIconAntiTankTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSAntiTankTexture : counterTypeIconBSAntiTankTexture;
                 break;
             case CAVALRY:
-                toReturn = counterTypeIconCavTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSCavTexture : counterTypeIconBSCavTexture;
                 break;
             case MECHANISED_INF:
-                toReturn = counterTypeIconMecaInfTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSMecaInfTexture : counterTypeIconBSMecaInfTexture;
                 break;
             case MECHANISED_RECO:
-                toReturn = counterTypeIconMecaRecoTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSMecaRecoTexture : counterTypeIconBSMecaRecoTexture;
                 break;
             case BRIGADE_HQ:
             case DIVISION_HQ:
             case ARMY_HQ:
             case ARMY_GROUP_HQ:
             case FRONT_HQ:
-                toReturn = counterTypeIconHQTexture;
+                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSHQTexture : counterTypeIconBSHQTexture;
                 break;
         }
         return toReturn;
