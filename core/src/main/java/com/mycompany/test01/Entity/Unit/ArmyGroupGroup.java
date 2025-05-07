@@ -8,7 +8,14 @@ public class ArmyGroupGroup extends UnitGroup {
         super();
     }
 
-    public ArmyGroupGroup(String name, String acronym, CountryEnum country, boolean isElite, boolean isMotorised) {
-        super(name, acronym, country, UnitTypeEnum.ARMY_GROUP_HQ, isElite, isMotorised, false, 0, 4);
+    public ArmyGroupGroup(
+        String name,
+        String acronym,
+        CountryEnum country,
+        boolean isElite,
+        boolean isMotorised,
+        boolean usesWhiteStroke
+    ) {
+        super(name, acronym, country, UnitTypeEnum.ARMY_GROUP_HQ, isElite, isMotorised, false, usesWhiteStroke, 0, 4);
     }
 }

@@ -22,9 +22,10 @@ public abstract class UnitGroup extends UnitElement { // implements Element
                      boolean isElite,
                      boolean isMotorised,
                      boolean isCompany,
+                     boolean usesWhiteStroke,
                      int regRank,
                      int level) {
-        super(name, acronym, country, type, isElite, isMotorised, isCompany, regRank);
+        super(name, acronym, country, type, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
         this.level = level;
         this.units = new OrderedSet<>();
     }

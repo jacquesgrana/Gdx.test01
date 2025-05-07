@@ -12,7 +12,8 @@ public class MecaRecoUnit extends Unit {
         boolean isElite,
         boolean isMotorised,
         boolean isCompany,
+        boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.MECHANISED_RECO, isElite, isMotorised, isCompany, regRank);
+       super(name, acronym, country, UnitTypeEnum.MECHANISED_RECO, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
     }
 }

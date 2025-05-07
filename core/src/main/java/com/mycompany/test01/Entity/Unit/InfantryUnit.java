@@ -11,8 +11,9 @@ public class InfantryUnit extends Unit {
         CountryEnum country,
         boolean isElite,
         boolean isCompany,
+        boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.INFANTRY, isElite, false, isCompany, regRank);
+       super(name, acronym, country, UnitTypeEnum.INFANTRY, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

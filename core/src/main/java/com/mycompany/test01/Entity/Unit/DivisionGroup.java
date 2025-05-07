@@ -8,7 +8,13 @@ public class DivisionGroup extends UnitGroup{
         super();
     }
 
-    public DivisionGroup(String name, String acronym, CountryEnum country, boolean isElite, boolean isMotorised) {
-        super(name, acronym, country, UnitTypeEnum.DIVISION_HQ, isElite, isMotorised, false, 0, 2);
+    public DivisionGroup(
+        String name,
+        String acronym,
+        CountryEnum country,
+        boolean isElite,
+        boolean isMotorised,
+        boolean usesWhiteStroke) {
+        super(name, acronym, country, UnitTypeEnum.DIVISION_HQ, isElite, isMotorised, false, usesWhiteStroke, 0, 2);
     }
 }

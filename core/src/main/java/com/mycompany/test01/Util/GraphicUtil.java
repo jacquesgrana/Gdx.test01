@@ -502,18 +502,18 @@ public class GraphicUtil {
 
         // Ajouter le texte de l'acronyme à la texture
         String acronym = unit.getAcronym();
-        if(unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite()) {
-            toReturn = drawTextOnTexture(toReturn, acronym, false);
+        if(unit.isUsesWhiteStroke()) {
+            toReturn = drawTextOnTexture(toReturn, acronym, true);
         }
         else {
-            toReturn = drawTextOnTexture(toReturn, acronym, true);
+            toReturn = drawTextOnTexture(toReturn, acronym, false);
 
         }
         //toReturn = drawTextOnTexture(toReturn, acronym);
         return toReturn;
     }
 
-    public static Texture drawTextOnTexture(Texture input, String text, boolean isBlackStroke) {
+    public static Texture drawTextOnTexture(Texture input, String text, boolean usesWhiteStroke) {
         int width = input.getWidth(), height = input.getHeight();
         FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
         SpriteBatch batch = new SpriteBatch();
@@ -525,13 +525,13 @@ public class GraphicUtil {
 
         //RobotoCondensed-Black-110-WB
         BitmapFont font = new BitmapFont();
-        if(isBlackStroke) {
-            font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-++.fnt"));
-            font.setColor(Color.BLACK);
-        }
-        else {
+        if(usesWhiteStroke) {
             font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-WB.fnt"));
             font.setColor(Color.WHITE);
+        }
+        else {
+            font = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-++.fnt"));
+            font.setColor(Color.BLACK);
         }
 
         OrthographicCamera camera = new OrthographicCamera(width, height);
@@ -636,22 +636,22 @@ public class GraphicUtil {
         Texture toReturn = getEmptyTexture();
         switch (group.getLevel()) {
             case 1 :
-                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel1_5Texture : counterAddOnBSLevel1_5Texture;
+                toReturn = group.isUsesWhiteStroke() ? counterAddOnWSLevel1_5Texture : counterAddOnBSLevel1_5Texture;
                 break;
             case 2 :
-                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel2_5Texture : counterAddOnBSLevel2_5Texture;
+                toReturn = group.isUsesWhiteStroke() ? counterAddOnWSLevel2_5Texture : counterAddOnBSLevel2_5Texture;
                 //toReturn = counterAddOnBSLevel2_5Texture;
                 break;
             case 3 :
-                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel3_5Texture : counterAddOnBSLevel3_5Texture;
+                toReturn = group.isUsesWhiteStroke() ? counterAddOnWSLevel3_5Texture : counterAddOnBSLevel3_5Texture;
                 //toReturn = counterAddOnBSLevel3_5Texture;
                 break;
             case 4 :
-                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel4_5Texture : counterAddOnBSLevel4_5Texture;
+                toReturn = group.isUsesWhiteStroke() ? counterAddOnWSLevel4_5Texture : counterAddOnBSLevel4_5Texture;
                 //toReturn = counterAddOnBSLevel4_5Texture;
                 break;
             case 5 :
-                toReturn = group.getCountry() == CountryEnum.BLACK_COUNTRY && group.isElite() ? counterAddOnWSLevel5_5Texture : counterAddOnBSLevel5_5Texture;
+                toReturn = group.isUsesWhiteStroke() ? counterAddOnWSLevel5_5Texture : counterAddOnBSLevel5_5Texture;
                 //toReturn = counterAddOnBSLevel5_5Texture;
                 break;
         }
@@ -662,18 +662,18 @@ public class GraphicUtil {
         Texture toReturn = getEmptyTexture();
         switch(unit.getRegRank()) {
             case 1:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSReg1_4Texture : counterAddOnBSReg1_4Texture;
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg1_4Texture : counterAddOnBSReg1_4Texture;
                 break;
             case 2:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSReg2_4Texture : counterAddOnBSReg2_4Texture;
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg2_4Texture : counterAddOnBSReg2_4Texture;
                 //toReturn = counterAddOnBSReg2_4Texture;
                 break;
             case 3:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSReg3_4Texture : counterAddOnBSReg3_4Texture;
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg3_4Texture : counterAddOnBSReg3_4Texture;
                 //toReturn = counterAddOnBSReg3_4Texture;
                 break;
             case 4:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSReg4_4Texture : counterAddOnBSReg4_4Texture;
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg4_4Texture : counterAddOnBSReg4_4Texture;
                 //toReturn = counterAddOnBSReg4_4Texture;
                 break;
         }
@@ -683,7 +683,7 @@ public class GraphicUtil {
     public static Texture getMotorisedAddonTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         if(unit.isMotorised()) {
-            toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSMotTexture : counterAddOnBSMotTexture;
+            toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSMotTexture : counterAddOnBSMotTexture;
         }
         return toReturn;
     }
@@ -691,7 +691,7 @@ public class GraphicUtil {
     public static Texture getCompanyAddonTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         if(unit.isCompany()) {
-            toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterAddOnWSCompTexture : counterAddOnBSCompTexture;
+            toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSCompTexture : counterAddOnBSCompTexture;
         }
         return toReturn;
     }
@@ -725,49 +725,49 @@ public class GraphicUtil {
         switch (unit.getType()) {
             case ARTI:
             case MOTORISED_ARTI:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSArtTexture : counterTypeIconBSArtTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSArtTexture : counterTypeIconBSArtTexture;
                 break;
             case PARA:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSParaTexture : counterTypeIconBSParaTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSParaTexture : counterTypeIconBSParaTexture;
                 break;
             case TANK:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSTankTexture : counterTypeIconBSTankTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSTankTexture : counterTypeIconBSTankTexture;
                 break;
             case MARINE:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSMarTexture : counterTypeIconBSMarTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMarTexture : counterTypeIconBSMarTexture;
                 break;
             case ENGINEER:
             case MOTORISED_ENGINEER:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSEngTexture : counterTypeIconBSEngTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSEngTexture : counterTypeIconBSEngTexture;
                 break;
             case INFANTRY:
             case MOTORISED_INF:
             case INFANTRY_RECO_COMPANY:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSInfTexture : counterTypeIconBSInfTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSInfTexture : counterTypeIconBSInfTexture;
                 break;
             case ANTI_AIR:
             case MOTORISED_ANTI_AIR:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSAntiAirTexture : counterTypeIconBSAntiAirTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSAntiAirTexture : counterTypeIconBSAntiAirTexture;
                 break;
             case ANTI_TANK:
             case MOTORISED_ANTI_TANK:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSAntiTankTexture : counterTypeIconBSAntiTankTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSAntiTankTexture : counterTypeIconBSAntiTankTexture;
                 break;
             case CAVALRY:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSCavTexture : counterTypeIconBSCavTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSCavTexture : counterTypeIconBSCavTexture;
                 break;
             case MECHANISED_INF:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSMecaInfTexture : counterTypeIconBSMecaInfTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMecaInfTexture : counterTypeIconBSMecaInfTexture;
                 break;
             case MECHANISED_RECO:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSMecaRecoTexture : counterTypeIconBSMecaRecoTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMecaRecoTexture : counterTypeIconBSMecaRecoTexture;
                 break;
             case BRIGADE_HQ:
             case DIVISION_HQ:
             case ARMY_HQ:
             case ARMY_GROUP_HQ:
             case FRONT_HQ:
-                toReturn = unit.getCountry() == CountryEnum.BLACK_COUNTRY && unit.isElite() ? counterTypeIconWSHQTexture : counterTypeIconBSHQTexture;
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSHQTexture : counterTypeIconBSHQTexture;
                 break;
         }
         return toReturn;

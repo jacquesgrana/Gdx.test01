@@ -20,6 +20,7 @@ public abstract class UnitElement implements ElementInterface {
     protected boolean isElite;
     protected boolean isMotorised;
     protected boolean isCompany;
+    protected boolean usesWhiteStroke;
     protected int regRank;
 
     public UnitElement() {
@@ -31,6 +32,7 @@ public abstract class UnitElement implements ElementInterface {
         isElite = false;
         isMotorised = false;
         isCompany = false;
+        usesWhiteStroke = false;
         regRank = 0;
         unitCounter++;
     }
@@ -43,6 +45,7 @@ public abstract class UnitElement implements ElementInterface {
         boolean isElite,
         boolean isMotorised,
         boolean isCompany,
+        boolean usesWhiteStroke,
         int regRank
     ) {
         this.id = unitCounter;
@@ -53,6 +56,7 @@ public abstract class UnitElement implements ElementInterface {
         this.isElite = isElite;
         this.isMotorised = isMotorised;
         this.isCompany = isCompany;
+        this.usesWhiteStroke = usesWhiteStroke;
         this.regRank = regRank;
         unitCounter++;
     }
@@ -145,6 +149,16 @@ public abstract class UnitElement implements ElementInterface {
     @Override
     public void setIsCompany(boolean isCompany){
         this.isCompany = isCompany;
+    }
+
+    @Override
+    public boolean isUsesWhiteStroke() {
+        return usesWhiteStroke;
+    }
+
+    @Override
+    public void setUsesWhiteStroke(boolean usesWhiteStroke) {
+        this.usesWhiteStroke = usesWhiteStroke;
     }
 
     @Override

@@ -134,10 +134,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true, false);
-        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false);
-        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false);
-        ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", true, false);
+        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true, false, false);
+        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false, false);
+        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false, false);
+        ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", true, false, true);
 
 
 
@@ -201,7 +201,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(motoInfDiv);
 
         group01.addUnit(group03);
-        DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st SS div", "1SS");
+        DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st div", "1Div");
         group03.addUnit(eliteBlackInfDiv);
 
         DivisionGroup blackInfDiv = unitBlackCountryFactory.createInfDivision("455th div", "455");
@@ -266,7 +266,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         Table panel = new Table();
         panel.defaults().pad(3);
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(GraphicUtil.backgroundColorMedium); // Choisissez la couleur que vous voulez
+        pixmap.setColor(GraphicUtil.backgroundColorMedium);
         pixmap.fill();
         Texture texture = new Texture(pixmap);
         pixmap.dispose();

@@ -11,8 +11,9 @@ public class MotoInfUnit extends Unit {
         CountryEnum country,
         boolean isElite,
         boolean isCompany,
+        boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.MOTORISED_INF, isElite, true, isCompany, regRank);
+       super(name, acronym, country, UnitTypeEnum.MOTORISED_INF, isElite, true, isCompany, usesWhiteStroke, regRank);
     }
 }

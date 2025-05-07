@@ -17,8 +17,9 @@ public abstract class Unit extends UnitElement {
                 boolean isElite,
                 boolean isMotorised,
                 boolean isCompany,
+                boolean usesWhiteStroke,
                 int regRank) {
-        super(name, acronym, country, type, isElite, isMotorised, isCompany, regRank);
+        super(name, acronym, country, type, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
     }
 
     /*

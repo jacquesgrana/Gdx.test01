@@ -36,6 +36,10 @@ public interface ElementInterface {
 
     public void setIsCompany(boolean isCompany);
 
+    public boolean isUsesWhiteStroke();
+
+    public void setUsesWhiteStroke(boolean usesWhiteStroke);
+
     public int getRegRank();
 
     public void setRegRank(int regRank);

@@ -11,8 +11,9 @@ public class InfantryRecoCompanyUnit extends Unit {
         CountryEnum country,
         boolean isElite,
         boolean isMotorised,
+        boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.INFANTRY_RECO_COMPANY, isElite, isMotorised, true, regRank);
+       super(name, acronym, country, UnitTypeEnum.INFANTRY_RECO_COMPANY, isElite, isMotorised, true, usesWhiteStroke, regRank);
     }
 }

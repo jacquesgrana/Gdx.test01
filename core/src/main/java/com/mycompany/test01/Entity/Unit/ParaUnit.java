@@ -12,7 +12,8 @@ public class ParaUnit extends Unit {
         boolean isElite,
         boolean isMotorised,
         boolean isCompany,
+        boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.PARA, isElite, isMotorised, isCompany, regRank);
+       super(name, acronym, country, UnitTypeEnum.PARA, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
     }
 }

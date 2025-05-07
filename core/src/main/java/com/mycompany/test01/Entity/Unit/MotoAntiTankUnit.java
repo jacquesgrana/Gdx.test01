@@ -11,8 +11,9 @@ public class MotoAntiTankUnit extends Unit {
         CountryEnum country,
         boolean isElite,
         boolean isCompany,
+        boolean usesWhiteStroke,
         int regRank
     ) {
-        super(name, acronym, country, UnitTypeEnum.MOTORISED_ANTI_TANK, isElite, true, isCompany, regRank);
+        super(name, acronym, country, UnitTypeEnum.MOTORISED_ANTI_TANK, isElite, true, isCompany, usesWhiteStroke, regRank);
     }
 }

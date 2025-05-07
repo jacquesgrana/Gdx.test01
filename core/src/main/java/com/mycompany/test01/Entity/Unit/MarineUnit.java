@@ -12,7 +12,8 @@ public class MarineUnit extends Unit {
         boolean isElite,
         boolean isMotorised,
         boolean isCompany,
+        boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.MARINE, isElite, isMotorised, isCompany, regRank);
+       super(name, acronym, country, UnitTypeEnum.MARINE, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
     }
 }
