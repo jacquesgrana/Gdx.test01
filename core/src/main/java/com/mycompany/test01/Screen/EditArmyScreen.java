@@ -3,11 +3,13 @@ package com.mycompany.test01.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -63,9 +65,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         stage = new Stage(new ScreenViewport());
         //shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
+
         font = new BitmapFont();
-
-
+        /*
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Roboto_Condensed-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 16;
+        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "•";
+        font = generator.generateFont(parameter);
+        generator.dispose();*/
 
         //this.skin = GraphicUtil.getButtonSkin(10, 10);
         //Tree<Label, String> tree = new Tree<>(skin);
@@ -134,9 +142,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true, false, false);
+        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true, false, true);
         ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false, false);
-        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false, false);
+        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false, true);
         ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", true, false, true);
 
 
@@ -199,6 +207,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         DivisionGroup motoInfDiv = unitRedCountryFactory.createMotoInfDivision("78th moto div", "78M");
         group02.addUnit(motoInfDiv);
+
+        BrigadeGroup motoInfBrig = unitRedCountryFactory.createMotoInfBrigade("77th moto brigade", "77M");
+        group02.addUnit(motoInfBrig);
 
         group01.addUnit(group03);
         DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st div", "1Div");

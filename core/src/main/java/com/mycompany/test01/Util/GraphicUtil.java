@@ -104,6 +104,8 @@ public class GraphicUtil {
     public static Texture counterTypeIconBSTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-tank@4x.png");
     public static Texture counterTypeIconBSParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-para@4x.png");
     public static Texture counterTypeIconBSAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-anti-air@4x.png");
+    public static Texture counterTypeIconBSHeavyAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-heavy-anti-air@4x.png");
+
     public static Texture counterTypeIconBSAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-anti-tank@4x.png");
     public static Texture counterTypeIconBSCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-cav@4x.png");
     public static Texture counterTypeIconBSEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-eng@4x.png");
@@ -117,6 +119,7 @@ public class GraphicUtil {
     public static Texture counterTypeIconWSTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-tank@4x.png");
     public static Texture counterTypeIconWSParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-para@4x.png");
     public static Texture counterTypeIconWSAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-anti-air@4x.png");
+    public static Texture counterTypeIconWSHeavyAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-heavy-anti-air@4x.png");
     public static Texture counterTypeIconWSAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-anti-tank@4x.png");
     public static Texture counterTypeIconWSCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-cav@4x.png");
     public static Texture counterTypeIconWSEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-eng@4x.png");
@@ -743,11 +746,16 @@ public class GraphicUtil {
             case INFANTRY:
             case MOTORISED_INF:
             case INFANTRY_RECO_COMPANY:
+            case MOTORISED_INF_RECO_COMPANY:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSInfTexture : counterTypeIconBSInfTexture;
                 break;
             case ANTI_AIR:
             case MOTORISED_ANTI_AIR:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSAntiAirTexture : counterTypeIconBSAntiAirTexture;
+                break;
+            case HEAVY_ANTI_AIR:
+            case MOTORISED_HEAVY_ANTI_AIR:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSHeavyAntiAirTexture : counterTypeIconBSHeavyAntiAirTexture;
                 break;
             case ANTI_TANK:
             case MOTORISED_ANTI_TANK:

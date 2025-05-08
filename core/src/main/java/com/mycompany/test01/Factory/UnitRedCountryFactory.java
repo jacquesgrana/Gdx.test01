@@ -160,28 +160,28 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
 
     @Override
     public DivisionGroup createEliteInfDivision(String divName, String acronym) {
-        DivisionGroup division = new DivisionGroup(divName, acronym, CountryEnum.RED_COUNTRY, true, false, false);
+        DivisionGroup division = new DivisionGroup(divName, acronym, CountryEnum.RED_COUNTRY, true, false, true);
         // 3 * 3 inf
-        InfantryUnit inf_01_01 = new InfantryUnit(divName + " inf 1-1", acronym + "•1•1", CountryEnum.RED_COUNTRY, true, false, false, 1);
-        InfantryUnit inf_02_01 = new InfantryUnit(divName + " inf 2-1", acronym + "•1•2", CountryEnum.RED_COUNTRY, true, false, false, 2);
-        InfantryUnit inf_03_01 = new InfantryUnit(divName + " inf 3-1", acronym + "•1•3", CountryEnum.RED_COUNTRY, true, false, false, 3);
-        InfantryUnit inf_01_02 = new InfantryUnit(divName + " inf 1-2", acronym + "•2•1", CountryEnum.RED_COUNTRY, true, false, false, 1);
-        InfantryUnit inf_02_02 = new InfantryUnit(divName + " inf 2-2", acronym + "•2•2", CountryEnum.RED_COUNTRY, true, false, false, 2);
-        InfantryUnit inf_03_02 = new InfantryUnit(divName + " inf 3-2", acronym + "•2•3", CountryEnum.RED_COUNTRY, true, false, false, 3);
-        InfantryUnit inf_01_03 = new InfantryUnit(divName + " inf 1-3", acronym + "•3•1", CountryEnum.RED_COUNTRY, true, false, false, 1);
-        InfantryUnit inf_02_03 = new InfantryUnit(divName + " inf 2-3", acronym + "•3•2", CountryEnum.RED_COUNTRY, true, false, false, 2);
-        InfantryUnit inf_03_03 = new InfantryUnit(divName + " inf 3-3", acronym + "•3•3", CountryEnum.RED_COUNTRY, true, false, false, 3);
+        InfantryUnit inf_01_01 = new InfantryUnit(divName + " inf 1-1", acronym + "•1•1", CountryEnum.RED_COUNTRY, true, false, true, 1);
+        InfantryUnit inf_02_01 = new InfantryUnit(divName + " inf 2-1", acronym + "•1•2", CountryEnum.RED_COUNTRY, true, false, true, 2);
+        InfantryUnit inf_03_01 = new InfantryUnit(divName + " inf 3-1", acronym + "•1•3", CountryEnum.RED_COUNTRY, true, false, true, 3);
+        InfantryUnit inf_01_02 = new InfantryUnit(divName + " inf 1-2", acronym + "•2•1", CountryEnum.RED_COUNTRY, true, false, true, 1);
+        InfantryUnit inf_02_02 = new InfantryUnit(divName + " inf 2-2", acronym + "•2•2", CountryEnum.RED_COUNTRY, true, false, true, 2);
+        InfantryUnit inf_03_02 = new InfantryUnit(divName + " inf 3-2", acronym + "•2•3", CountryEnum.RED_COUNTRY, true, false, true, 3);
+        InfantryUnit inf_01_03 = new InfantryUnit(divName + " inf 1-3", acronym + "•3•1", CountryEnum.RED_COUNTRY, true, false, true, 1);
+        InfantryUnit inf_02_03 = new InfantryUnit(divName + " inf 2-3", acronym + "•3•2", CountryEnum.RED_COUNTRY, true, false, true, 2);
+        InfantryUnit inf_03_03 = new InfantryUnit(divName + " inf 3-3", acronym + "•3•3", CountryEnum.RED_COUNTRY, true, false, true, 3);
         // 3 art
-        ArtiUnit art_01 = new ArtiUnit(divName + " art 1", acronym + "•1", CountryEnum.RED_COUNTRY, true, false, false, 1);
-        ArtiUnit art_02 = new ArtiUnit(divName + " art 2", acronym + "•2", CountryEnum.RED_COUNTRY, true, false, false, 2);
-        ArtiUnit art_03 = new ArtiUnit(divName + " art 3", acronym + "•3", CountryEnum.RED_COUNTRY, true, false, false, 3);
+        ArtiUnit art_01 = new ArtiUnit(divName + " art 1", acronym + "•1", CountryEnum.RED_COUNTRY, true, false, true, 1);
+        ArtiUnit art_02 = new ArtiUnit(divName + " art 2", acronym + "•2", CountryEnum.RED_COUNTRY, true, false, true, 2);
+        ArtiUnit art_03 = new ArtiUnit(divName + " art 3", acronym + "•3", CountryEnum.RED_COUNTRY, true, false, true, 3);
         // 1 Anti tank
-        AntiTankUnit anti_tank_01 = new AntiTankUnit(divName + " anti_tank", acronym, CountryEnum.RED_COUNTRY, true, false, false, 0);
+        AntiTankUnit anti_tank_01 = new AntiTankUnit(divName + " anti_tank", acronym, CountryEnum.RED_COUNTRY, true, false, true, 0);
         // 1 Eng
-        EngineerUnit engineer_01 = new EngineerUnit(divName + " engineer", acronym, CountryEnum.RED_COUNTRY, true, false, false, 0);
+        EngineerUnit engineer_01 = new EngineerUnit(divName + " engineer", acronym, CountryEnum.RED_COUNTRY, true, false, true, 0);
 
         // todo 1 reco inf company
-        InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.RED_COUNTRY, true, false, false, 0);
+        InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.RED_COUNTRY, true, false, true, 0);
 
 
         division.addUnit(inf_01_01);
@@ -219,6 +219,10 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         MotoInfUnit inf_01_03 = new MotoInfUnit(divName + " inf 1-3", acronym + "•3•1", CountryEnum.RED_COUNTRY, false, false, false, 1);
         MotoInfUnit inf_02_03 = new MotoInfUnit(divName + " inf 2-3", acronym + "•3•2", CountryEnum.RED_COUNTRY, false, false, false, 2);
         MotoInfUnit inf_03_03 = new MotoInfUnit(divName + " inf 3-3", acronym + "•3•3", CountryEnum.RED_COUNTRY, false, false, false, 3);
+        // 3 tanks
+        TankUnit tank_01 = new TankUnit(divName + " tank 1", acronym + "•1", CountryEnum.RED_COUNTRY, false, false, false, false, 1);
+        TankUnit tank_02 = new TankUnit(divName + " tank 2", acronym + "•2", CountryEnum.RED_COUNTRY, false, false, false, false, 2);
+        TankUnit tank_03 = new TankUnit(divName + " tank 3", acronym + "•3", CountryEnum.RED_COUNTRY, false, false, false, false, 3);
         // 3 art
         MotoArtiUnit art_01 = new MotoArtiUnit(divName + " art 1", acronym + "•1", CountryEnum.RED_COUNTRY, false, false, false, 1);
         MotoArtiUnit art_02 = new MotoArtiUnit(divName + " art 2", acronym + "•2", CountryEnum.RED_COUNTRY, false, false, false, 2);
@@ -229,8 +233,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         MotoEngineerUnit engineer_01 = new MotoEngineerUnit(divName + " engineer", acronym, CountryEnum.RED_COUNTRY, false, false, false, 0);
 
         // todo 1 moto reco inf company
-        InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.RED_COUNTRY, false, true, false, 0);
-
+        MotoInfRecoCompanyUnit reco_company = new MotoInfRecoCompanyUnit(divName + " reco", acronym, CountryEnum.RED_COUNTRY, false, false, 0);
 
         division.addUnit(inf_01_01);
         division.addUnit(inf_02_01);
@@ -242,6 +245,10 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         division.addUnit(inf_02_03);
         division.addUnit(inf_03_03);
 
+        division.addUnit(tank_01);
+        division.addUnit(tank_02);
+        division.addUnit(tank_03);
+
         division.addUnit(art_01);
         division.addUnit(art_02);
         division.addUnit(art_03);
@@ -252,5 +259,32 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         division.addUnit(reco_company);
 
         return division;
+    }
+
+    public BrigadeGroup createMotoInfBrigade(String brigName, String acronym) {
+        BrigadeGroup brigade = new BrigadeGroup(brigName, acronym, CountryEnum.RED_COUNTRY, false, true, false);
+
+        // 3 * 3 inf
+        MotoInfUnit inf_01_01 = new MotoInfUnit(brigName + " inf 1", acronym + "•1", CountryEnum.RED_COUNTRY, false, false, false, 1);
+        MotoInfUnit inf_02_01 = new MotoInfUnit(brigName + " inf 2", acronym + "•2", CountryEnum.RED_COUNTRY, false, false, false, 2);
+        MotoInfUnit inf_03_01 = new MotoInfUnit(brigName + " inf 3", acronym + "•3", CountryEnum.RED_COUNTRY, false, false, false, 3);
+
+        TankUnit tank_01 = new TankUnit(brigName + " tank 1", acronym + "•1", CountryEnum.RED_COUNTRY, false, false, false, false, 1);
+        TankUnit tank_02 = new TankUnit(brigName + " tank 2", acronym + "•2", CountryEnum.RED_COUNTRY, false, false, false, false, 2);
+
+        MotoArtiUnit art_01 = new MotoArtiUnit(brigName + " art 1", acronym + "•1", CountryEnum.RED_COUNTRY, false, false, false, 1);
+        MotoArtiUnit art_02 = new MotoArtiUnit(brigName + " art 2", acronym + "•2", CountryEnum.RED_COUNTRY, false, false, false, 2);
+
+        brigade.addUnit(inf_01_01);
+        brigade.addUnit(inf_02_01);
+        brigade.addUnit(inf_03_01);
+
+        brigade.addUnit(tank_01);
+        brigade.addUnit(tank_02);
+
+        brigade.addUnit(art_01);
+        brigade.addUnit(art_02);
+
+        return brigade;
     }
 }

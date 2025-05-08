@@ -176,7 +176,7 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         AntiTankUnit anti_tank_01 = new AntiTankUnit(divName + " anti_tank", acronym, CountryEnum.BLACK_COUNTRY, true, false, true, 0);
         // 1 Eng
         EngineerUnit engineer_01 = new EngineerUnit(divName + " engineer", acronym, CountryEnum.BLACK_COUNTRY, true, false, true, 0);
-        AntiAirUnit anti_air_01 = new AntiAirUnit(divName + " anti_air", acronym, CountryEnum.BLACK_COUNTRY, true, false, true, 0);
+        HeavyAntiAirUnit anti_air_01 = new HeavyAntiAirUnit(divName + " heavy_anti_air", acronym, CountryEnum.BLACK_COUNTRY, true, false, true, 0);
 
         // todo 1 reco inf company
         InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.BLACK_COUNTRY, true, false, true, 0);
@@ -218,6 +218,10 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         MotoInfUnit inf_01_03 = new MotoInfUnit(divName + " inf 1-3", acronym + "•3•1", CountryEnum.BLACK_COUNTRY, false, false, false, 1);
         MotoInfUnit inf_02_03 = new MotoInfUnit(divName + " inf 2-3", acronym + "•3•2", CountryEnum.BLACK_COUNTRY, false, false, false, 2);
         MotoInfUnit inf_03_03 = new MotoInfUnit(divName + " inf 3-3", acronym + "•3•3", CountryEnum.BLACK_COUNTRY, false, false, false, 3);
+        // 3 tanks
+        TankUnit tank_01 = new TankUnit(divName + " tank 1", acronym + "•1", CountryEnum.BLACK_COUNTRY, false, false, false, false, 1);
+        TankUnit tank_02 = new TankUnit(divName + " tank 2", acronym + "•2", CountryEnum.BLACK_COUNTRY, false, false, false, false, 2);
+        TankUnit tank_03 = new TankUnit(divName + " tank 3", acronym + "•3", CountryEnum.BLACK_COUNTRY, false, false, false, false, 3);
         // 3 art
         MotoArtiUnit art_01 = new MotoArtiUnit(divName + " art 1", acronym + "•1", CountryEnum.BLACK_COUNTRY, false, false, false, 1);
         MotoArtiUnit art_02 = new MotoArtiUnit(divName + " art 2", acronym + "•2", CountryEnum.BLACK_COUNTRY, false, false, false, 2);
@@ -226,10 +230,11 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         MotoAntiTankUnit anti_tank_01 = new MotoAntiTankUnit(divName + " anti_tank", acronym, CountryEnum.BLACK_COUNTRY, false, false, false, 0);
         // 1 Eng
         MotoAntiAirUnit anti_air_01 = new MotoAntiAirUnit(divName + " anti_air", acronym, CountryEnum.BLACK_COUNTRY, false, false, false, 0);
+        MotoHeavyAntiAirUnit heavy_anti_air_01 = new MotoHeavyAntiAirUnit(divName + " heavy_anti_air", acronym, CountryEnum.BLACK_COUNTRY, false, false, false, 0);
 
         MotoEngineerUnit engineer_01 = new MotoEngineerUnit(divName + " engineer", acronym, CountryEnum.BLACK_COUNTRY, false, false, false, 0);
 
-        InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.BLACK_COUNTRY, false, true, false, 0);
+        MotoInfRecoCompanyUnit reco_company = new MotoInfRecoCompanyUnit(divName + " reco", acronym, CountryEnum.BLACK_COUNTRY, false, false, 0);
 
 
         division.addUnit(inf_01_01);
@@ -242,12 +247,18 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         division.addUnit(inf_02_03);
         division.addUnit(inf_03_03);
 
+        division.addUnit(tank_01);
+        division.addUnit(tank_02);
+        division.addUnit(tank_03);
+
         division.addUnit(art_01);
         division.addUnit(art_02);
         division.addUnit(art_03);
 
         division.addUnit(anti_tank_01);
         division.addUnit(anti_air_01);
+        division.addUnit(heavy_anti_air_01);
+
         division.addUnit(engineer_01);
 
         division.addUnit(reco_company);

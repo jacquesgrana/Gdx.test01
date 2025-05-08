@@ -10,6 +10,8 @@ public enum UnitTypeEnum {
     ARTI ("Artillery"),
     ANTI_TANK ("Anti Tank"),
     ANTI_AIR ("Anti Air"),
+    HEAVY_ANTI_AIR ("Heavy Anti Air"),
+
 
     INFANTRY ("Infantry"),
     CAVALRY ("Cavalry"),
@@ -31,8 +33,12 @@ public enum UnitTypeEnum {
     MOTORISED_ARTI ("Motorised Artillery"),
     MOTORISED_ANTI_TANK ("Motorised Anti Tank"),
     MOTORISED_ANTI_AIR ("Motorised Anti Air"),
+    MOTORISED_HEAVY_ANTI_AIR ("Motorised Heavy Anti Air"),
+
 
     INFANTRY_RECO_COMPANY ("Infantry Reco Company"),
+    MOTORISED_INF_RECO_COMPANY ("Motorised Infantry Reco Company"),
+
 
     NO_TYPE("No Type");
 
