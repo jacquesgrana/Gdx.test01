@@ -28,6 +28,11 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
+    public SkiMachineGunUnit createSkiMachineGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new SkiMachineGunUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
     public GliderInfantryUnit createGliderInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new GliderInfantryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
@@ -75,6 +80,11 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     @Override
     public TankUnit createTankUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new TankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public HeavyTankUnit createHeavyTankUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new HeavyTankUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
     @Override
