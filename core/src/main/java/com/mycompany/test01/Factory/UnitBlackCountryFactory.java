@@ -17,6 +17,17 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
+    public MountainArtiUnit createMountainArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank)
+    {
+        return new MountainArtiUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public SkiInfantryUnit createSkiInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new SkiInfantryUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
     public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
         return new CavalryUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, isMotorised, false, usesWhiteStroke, regRank);
     }

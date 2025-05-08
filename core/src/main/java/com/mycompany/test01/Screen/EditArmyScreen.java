@@ -203,10 +203,20 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         AssaultGun assault_gun_01 = unitRedCountryFactory.createAssaultGunUnit("478 Assault_Gun", "478", false, false, 0);
         AssaultGun assault_gun_02 = unitRedCountryFactory.createAssaultGunUnit("85 Assault_Gun", "85", true, true, 0);
 
+        MountainArtiUnit mountain_arti_01 = unitRedCountryFactory.createMountainArtiUnit("125th Mountain Art", "125", false, false, 1);
+        MountainArtiUnit mountain_arti_02 = unitRedCountryFactory.createMountainArtiUnit("82th Mountain Art", "82", true, true, 2);
+
+        SkiInfantryUnit ski_inf_01 = unitRedCountryFactory.createSkiInfUnit("45 Ski", "45", false, false, 0);
+        SkiInfantryUnit ski_inf_02 = unitRedCountryFactory.createSkiInfUnit("4 Ski", "4", true, true, 0);
+
         group02.addUnit(red_mountain_inf_01);
         group02.addUnit(red_mountain_inf_02);
         group02.addUnit(assault_gun_01);
         group02.addUnit(assault_gun_02);
+        group02.addUnit(mountain_arti_01);
+        group02.addUnit(mountain_arti_02);
+        group02.addUnit(ski_inf_01);
+        group02.addUnit(ski_inf_02);
 
         DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
         group02.addUnit(elitInfDiv);
@@ -227,10 +237,20 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         MountainInfantryUnit black_mountain_inf_02 = unitBlackCountryFactory.createMountainInfUnit("Mtn 32", "32", true, true, 0);
         AssaultGun black_assault_gun_01 = unitBlackCountryFactory.createAssaultGunUnit("311 Assault_Gun", "311", false, false, 0);
         AssaultGun black_assault_gun_02 = unitBlackCountryFactory.createAssaultGunUnit("12 Assault_Gun", "12", true, true, 0);
+        MountainArtiUnit black_mountain_arti_01 = unitBlackCountryFactory.createMountainArtiUnit("14th Mountain Art", "14", false, false, 1);
+        MountainArtiUnit black_mountain_arti_02 = unitBlackCountryFactory.createMountainArtiUnit("7th Mountain Art", "7", true, true, 2);
+        SkiInfantryUnit black_ski_inf_01 = unitBlackCountryFactory.createSkiInfUnit("45 Ski", "45", false, false, 0);
+        SkiInfantryUnit black_ski_inf_02 = unitBlackCountryFactory.createSkiInfUnit("4 Ski", "4", true, true, 0);
+
+
         group03.addUnit(black_mountain_inf_01);
         group03.addUnit(black_mountain_inf_02);
         group03.addUnit(black_assault_gun_01);
         group03.addUnit(black_assault_gun_02);
+        group03.addUnit(black_mountain_arti_01);
+        group03.addUnit(black_mountain_arti_02);
+        group03.addUnit(black_ski_inf_01);
+        group03.addUnit(black_ski_inf_02);
 
         DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st div", "1Div");
         group03.addUnit(eliteBlackInfDiv);

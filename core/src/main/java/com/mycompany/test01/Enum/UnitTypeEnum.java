@@ -23,6 +23,8 @@ public enum UnitTypeEnum {
 
     TANK ("Tank"),
     MOUNTAIN_INF ("Mountain Infantry"),
+    MOUNTAIN_ARTI ("Mountain Artillery"),
+    SKI_INF ("Ski Infantry"),
     MECHANISED_INF ("Mechanised Infantry"),
     MOTORISED_INF ("Motorised Infantry"),
     ASSAULT_GUN ("Assault Gun"),
