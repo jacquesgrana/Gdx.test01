@@ -209,6 +209,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         SkiInfantryUnit ski_inf_01 = unitRedCountryFactory.createSkiInfUnit("45 Ski", "45", false, false, 0);
         SkiInfantryUnit ski_inf_02 = unitRedCountryFactory.createSkiInfUnit("4 Ski", "4", true, true, 0);
 
+        MecaArtiUnit meca_arti_01 = unitRedCountryFactory.createMecaArtiUnit("302th", "302", false, false, 0);
+        MecaArtiUnit meca_arti_02 = unitRedCountryFactory.createMecaArtiUnit("32th", "32", true, true, 0);
+
+        MortarArtiUnit mortar_arti_01 = unitRedCountryFactory.createMortarArtiUnit("118th", "118", false, false, 0);
+        MortarArtiUnit mortar_arti_02 = unitRedCountryFactory.createMortarArtiUnit("9th", "9", true, true, 0);
+
+        CivilEngineerUnit civil_eng_01 = unitRedCountryFactory.createCivilEngineerUnit("10th NW", "10NW", false, false, 0);
+        CivilEngineerUnit civil_eng_02 = unitRedCountryFactory.createCivilEngineerUnit("2th W", "2W", true, true, 0);
+
         group02.addUnit(red_mountain_inf_01);
         group02.addUnit(red_mountain_inf_02);
         group02.addUnit(assault_gun_01);
@@ -217,6 +226,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(mountain_arti_02);
         group02.addUnit(ski_inf_01);
         group02.addUnit(ski_inf_02);
+        group02.addUnit(meca_arti_01);
+        group02.addUnit(meca_arti_02);
+        group02.addUnit(mortar_arti_01);
+        group02.addUnit(mortar_arti_02);
+        group02.addUnit(civil_eng_01);
+        group02.addUnit(civil_eng_02);
 
         DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
         group02.addUnit(elitInfDiv);
@@ -241,6 +256,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         MountainArtiUnit black_mountain_arti_02 = unitBlackCountryFactory.createMountainArtiUnit("7th Mountain Art", "7", true, true, 2);
         SkiInfantryUnit black_ski_inf_01 = unitBlackCountryFactory.createSkiInfUnit("45 Ski", "45", false, false, 0);
         SkiInfantryUnit black_ski_inf_02 = unitBlackCountryFactory.createSkiInfUnit("4 Ski", "4", true, true, 0);
+        MecaArtiUnit black_meca_arti_01 = unitBlackCountryFactory.createMecaArtiUnit("302th", "302", false, false, 0);
+        MecaArtiUnit black_meca_arti_02 = unitBlackCountryFactory.createMecaArtiUnit("32th", "32", true, true, 0);
+        MortarArtiUnit black_mortar_arti_01 = unitBlackCountryFactory.createMortarArtiUnit("118th", "118", false, false, 0);
+        MortarArtiUnit black_mortar_arti_02 = unitBlackCountryFactory.createMortarArtiUnit("9th", "9", true, true, 0);
+        CivilEngineerUnit black_civil_eng_01 = unitBlackCountryFactory.createCivilEngineerUnit("10th NW", "10NW", false, false, 0);
+        CivilEngineerUnit black_civil_eng_02 = unitBlackCountryFactory.createCivilEngineerUnit("2th W", "2W", true, true, 0);
 
 
         group03.addUnit(black_mountain_inf_01);
@@ -251,6 +272,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group03.addUnit(black_mountain_arti_02);
         group03.addUnit(black_ski_inf_01);
         group03.addUnit(black_ski_inf_02);
+        group03.addUnit(black_meca_arti_01);
+        group03.addUnit(black_meca_arti_02);
+        group03.addUnit(black_mortar_arti_01);
+        group03.addUnit(black_mortar_arti_02);
+        group03.addUnit(black_civil_eng_01);
+        group03.addUnit(black_civil_eng_02);
 
         DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st div", "1Div");
         group03.addUnit(eliteBlackInfDiv);

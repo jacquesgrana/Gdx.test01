@@ -100,6 +100,7 @@ public class GraphicUtil {
 
     public static Texture counterTypeIconBSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-hq@4x.png");
     public static Texture counterTypeIconBSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-arti@4x.png");
+    public static Texture counterTypeIconBSMortarArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mortar-arti@4x.png");
     public static Texture counterTypeIconBSInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-inf@4x.png");
     public static Texture counterTypeIconBSMountainInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mountain-inf@4x.png");
     public static Texture counterTypeIconBSMountainArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mountain-arti@4x.png");
@@ -112,12 +113,15 @@ public class GraphicUtil {
     public static Texture counterTypeIconBSAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-anti-tank@4x.png");
     public static Texture counterTypeIconBSCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-cav@4x.png");
     public static Texture counterTypeIconBSEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-eng@4x.png");
+    public static Texture counterTypeIconBSCivilEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-civil-eng@4x.png");
     public static Texture counterTypeIconBSMarTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mar@4x.png");
     public static Texture counterTypeIconBSMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-meca-inf@4x.png");
+    public static Texture counterTypeIconBSMecaArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-meca-arti@4x.png");
     public static Texture counterTypeIconBSMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-meca-reco@4x.png");
 
     public static Texture counterTypeIconWSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-hq@4x.png");
     public static Texture counterTypeIconWSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-arti@4x.png");
+    public static Texture counterTypeIconWSMortarArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mortar-arti@4x.png");
     public static Texture counterTypeIconWSInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-inf@4x.png");
     public static Texture counterTypeIconWSMountainInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mountain-inf@4x.png");
     public static Texture counterTypeIconWSMountainArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mountain-arti@4x.png");
@@ -130,8 +134,10 @@ public class GraphicUtil {
     public static Texture counterTypeIconWSAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-anti-tank@4x.png");
     public static Texture counterTypeIconWSCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-cav@4x.png");
     public static Texture counterTypeIconWSEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-eng@4x.png");
+    public static Texture counterTypeIconWSCivilEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-civil-eng@4x.png");
     public static Texture counterTypeIconWSMarTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mar@4x.png");
     public static Texture counterTypeIconWSMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-meca-inf@4x.png");
+    public static Texture counterTypeIconWSMecaArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-meca-arti@4x.png");
     public static Texture counterTypeIconWSMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-meca-reco@4x.png");
 
     public static Texture counterAddOnBSReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-1-4@4x.png");
@@ -737,6 +743,12 @@ public class GraphicUtil {
             case MOTORISED_ARTI:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSArtTexture : counterTypeIconBSArtTexture;
                 break;
+            case MECHANISED_ARTI:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMecaArtTexture : counterTypeIconBSMecaArtTexture;
+                break;
+            case MORTAR_ARTI:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMortarArtTexture : counterTypeIconBSMortarArtTexture;
+                break;
             case PARA:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSParaTexture : counterTypeIconBSParaTexture;
                 break;
@@ -752,6 +764,9 @@ public class GraphicUtil {
             case ENGINEER:
             case MOTORISED_ENGINEER:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSEngTexture : counterTypeIconBSEngTexture;
+                break;
+            case CIVIL_ENGINEER:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSCivilEngTexture : counterTypeIconBSCivilEngTexture;
                 break;
             case INFANTRY:
             case MOTORISED_INF:

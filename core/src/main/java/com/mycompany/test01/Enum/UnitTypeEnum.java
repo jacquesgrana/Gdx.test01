@@ -8,6 +8,8 @@ public enum UnitTypeEnum {
     BRIGADE_HQ ("Brigade Head Quarter"),
 
     ARTI ("Artillery"),
+    MORTAR_ARTI ("Mortar Artillery"),
+
     ANTI_TANK ("Anti Tank"),
     ANTI_AIR ("Anti Air"),
     HEAVY_ANTI_AIR ("Heavy Anti Air"),

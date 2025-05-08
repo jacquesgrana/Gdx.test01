@@ -3,9 +3,9 @@ package com.mycompany.test01.Entity.Unit;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public class MecaInfUnit extends Unit {
+public class CivilEngineerUnit extends Unit {
 
-    public MecaInfUnit(
+    public CivilEngineerUnit(
         String name,
         String acronym,
         CountryEnum country,
@@ -13,6 +13,6 @@ public class MecaInfUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.MECHANISED_INF, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.CIVIL_ENGINEER, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

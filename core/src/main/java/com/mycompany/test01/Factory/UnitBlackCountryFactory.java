@@ -47,10 +47,19 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         return new EngineerUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
+    @Override
+    public CivilEngineerUnit createCivilEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return  new CivilEngineerUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
 
     @Override
     public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new ArtiUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public MortarArtiUnit createMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new MortarArtiUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -65,9 +74,15 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
 
 
     @Override
-    public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
-        return new MecaInfUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, isMotorised, false, usesWhiteStroke, regRank);
+    public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new MecaInfUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
+
+    @Override
+    public MecaArtiUnit createMecaArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new MecaArtiUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
 
     @Override
     public MotoInfUnit createMotoInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
