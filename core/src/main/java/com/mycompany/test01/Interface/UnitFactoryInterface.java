@@ -6,6 +6,8 @@ import com.mycompany.test01.Enum.CountryEnum;
 public interface UnitFactoryInterface {
     public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
+    public MountainInfantryUnit createMountainInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
+
     public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank);
 
     public ParaUnit createParaUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank);
@@ -16,7 +18,10 @@ public interface UnitFactoryInterface {
 
     public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
-    public TankUnit createTankUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, boolean isMotorised, int regRank);
+    public TankUnit createTankUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
+
+    public AssaultGun createAssaultGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
+
 
     public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank);
 

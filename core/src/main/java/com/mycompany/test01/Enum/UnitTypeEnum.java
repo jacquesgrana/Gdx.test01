@@ -22,6 +22,7 @@ public enum UnitTypeEnum {
     LOGISTIC ("Logistic"),
 
     TANK ("Tank"),
+    MOUNTAIN_INF ("Mountain Infantry"),
     MECHANISED_INF ("Mechanised Infantry"),
     MOTORISED_INF ("Motorised Infantry"),
     ASSAULT_GUN ("Assault Gun"),

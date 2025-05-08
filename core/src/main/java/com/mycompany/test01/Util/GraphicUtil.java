@@ -101,11 +101,12 @@ public class GraphicUtil {
     public static Texture counterTypeIconBSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-hq@4x.png");
     public static Texture counterTypeIconBSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-arti@4x.png");
     public static Texture counterTypeIconBSInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-inf@4x.png");
+    public static Texture counterTypeIconBSMountainInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mountain-inf@4x.png");
     public static Texture counterTypeIconBSTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-tank@4x.png");
+    public static Texture counterTypeIconBSAssaultGunTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-assault-gun@4x.png");
     public static Texture counterTypeIconBSParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-para@4x.png");
     public static Texture counterTypeIconBSAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-anti-air@4x.png");
     public static Texture counterTypeIconBSHeavyAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-heavy-anti-air@4x.png");
-
     public static Texture counterTypeIconBSAntiTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-anti-tank@4x.png");
     public static Texture counterTypeIconBSCavTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-cav@4x.png");
     public static Texture counterTypeIconBSEngTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-eng@4x.png");
@@ -116,7 +117,10 @@ public class GraphicUtil {
     public static Texture counterTypeIconWSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-hq@4x.png");
     public static Texture counterTypeIconWSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-arti@4x.png");
     public static Texture counterTypeIconWSInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-inf@4x.png");
+    public static Texture counterTypeIconWSMountainInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mountain-inf@4x.png");
     public static Texture counterTypeIconWSTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-tank@4x.png");
+    public static Texture counterTypeIconWSAssaultGunTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-assault-gun@4x.png");
+
     public static Texture counterTypeIconWSParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-para@4x.png");
     public static Texture counterTypeIconWSAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-anti-air@4x.png");
     public static Texture counterTypeIconWSHeavyAntiAirTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-heavy-anti-air@4x.png");
@@ -736,6 +740,9 @@ public class GraphicUtil {
             case TANK:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSTankTexture : counterTypeIconBSTankTexture;
                 break;
+            case ASSAULT_GUN:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSAssaultGunTexture : counterTypeIconBSAssaultGunTexture;
+                break;
             case MARINE:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMarTexture : counterTypeIconBSMarTexture;
                 break;
@@ -748,6 +755,9 @@ public class GraphicUtil {
             case INFANTRY_RECO_COMPANY:
             case MOTORISED_INF_RECO_COMPANY:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSInfTexture : counterTypeIconBSInfTexture;
+                break;
+            case MOUNTAIN_INF:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMountainInfTexture : counterTypeIconBSMountainInfTexture;
                 break;
             case ANTI_AIR:
             case MOTORISED_ANTI_AIR:

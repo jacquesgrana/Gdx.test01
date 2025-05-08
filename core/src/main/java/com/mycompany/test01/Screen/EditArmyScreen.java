@@ -147,8 +147,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false, true);
         ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", true, false, true);
 
-
-
         /*
         InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, 2);
         CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false, false, 1);
@@ -199,6 +197,17 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         rootGroup.addUnit(group01);
         group01.addUnit(group02);
+        MountainInfantryUnit red_mountain_inf_01 = unitRedCountryFactory.createMountainInfUnit("Mtn 755", "755", false, false, 0);
+        MountainInfantryUnit red_mountain_inf_02 = unitRedCountryFactory.createMountainInfUnit("Mtn 17", "17", true, true, 0);
+
+        AssaultGun assault_gun_01 = unitRedCountryFactory.createAssaultGunUnit("478 Assault_Gun", "478", false, false, 0);
+        AssaultGun assault_gun_02 = unitRedCountryFactory.createAssaultGunUnit("85 Assault_Gun", "85", true, true, 0);
+
+        group02.addUnit(red_mountain_inf_01);
+        group02.addUnit(red_mountain_inf_02);
+        group02.addUnit(assault_gun_01);
+        group02.addUnit(assault_gun_02);
+
         DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
         group02.addUnit(elitInfDiv);
 
@@ -212,6 +221,17 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(motoInfBrig);
 
         group01.addUnit(group03);
+
+
+        MountainInfantryUnit black_mountain_inf_01 = unitBlackCountryFactory.createMountainInfUnit("Mtn 455", "455", false, false, 0);
+        MountainInfantryUnit black_mountain_inf_02 = unitBlackCountryFactory.createMountainInfUnit("Mtn 32", "32", true, true, 0);
+        AssaultGun black_assault_gun_01 = unitBlackCountryFactory.createAssaultGunUnit("311 Assault_Gun", "311", false, false, 0);
+        AssaultGun black_assault_gun_02 = unitBlackCountryFactory.createAssaultGunUnit("12 Assault_Gun", "12", true, true, 0);
+        group03.addUnit(black_mountain_inf_01);
+        group03.addUnit(black_mountain_inf_02);
+        group03.addUnit(black_assault_gun_01);
+        group03.addUnit(black_assault_gun_02);
+
         DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st div", "1Div");
         group03.addUnit(eliteBlackInfDiv);
 

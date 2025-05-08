@@ -12,6 +12,11 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
+    public MountainInfantryUnit createMountainInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new MountainInfantryUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
     public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
         return new CavalryUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, isMotorised, false, usesWhiteStroke, regRank);
     }
@@ -38,9 +43,15 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public TankUnit createTankUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
-        return new TankUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, isMotorised, false, usesWhiteStroke, regRank);
+    public TankUnit createTankUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new TankUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
+
+    @Override
+    public AssaultGun createAssaultGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank){
+        return new AssaultGun(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
 
     @Override
     public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
@@ -219,9 +230,9 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         MotoInfUnit inf_02_03 = new MotoInfUnit(divName + " inf 2-3", acronym + "•3•2", CountryEnum.BLACK_COUNTRY, false, false, false, 2);
         MotoInfUnit inf_03_03 = new MotoInfUnit(divName + " inf 3-3", acronym + "•3•3", CountryEnum.BLACK_COUNTRY, false, false, false, 3);
         // 3 tanks
-        TankUnit tank_01 = new TankUnit(divName + " tank 1", acronym + "•1", CountryEnum.BLACK_COUNTRY, false, false, false, false, 1);
-        TankUnit tank_02 = new TankUnit(divName + " tank 2", acronym + "•2", CountryEnum.BLACK_COUNTRY, false, false, false, false, 2);
-        TankUnit tank_03 = new TankUnit(divName + " tank 3", acronym + "•3", CountryEnum.BLACK_COUNTRY, false, false, false, false, 3);
+        TankUnit tank_01 = new TankUnit(divName + " tank 1", acronym + "•1", CountryEnum.BLACK_COUNTRY, false, false, false, 1);
+        TankUnit tank_02 = new TankUnit(divName + " tank 2", acronym + "•2", CountryEnum.BLACK_COUNTRY, false, false, false, 2);
+        TankUnit tank_03 = new TankUnit(divName + " tank 3", acronym + "•3", CountryEnum.BLACK_COUNTRY, false, false, false, 3);
         // 3 art
         MotoArtiUnit art_01 = new MotoArtiUnit(divName + " art 1", acronym + "•1", CountryEnum.BLACK_COUNTRY, false, false, false, 1);
         MotoArtiUnit art_02 = new MotoArtiUnit(divName + " art 2", acronym + "•2", CountryEnum.BLACK_COUNTRY, false, false, false, 2);
