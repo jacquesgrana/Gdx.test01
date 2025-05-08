@@ -37,9 +37,13 @@ public enum UnitTypeEnum {
     MECHANISED_RECO ("Mechanised Reco"),
     MECHANISED_ENGINEER ("Mechanised Engineer"),
     MOTORISED_ENGINEER ("Motorised Engineer"),
+    MOTORISED_CIVIL_ENGINEER ("Motorised Civil Engineer"),
+
     MOTORISED_LOGISTIC ("Motorised Logistic"),
     MECHANISED_ARTI ("Mechanised Artillery"),
     MOTORISED_ARTI ("Motorised Artillery"),
+    MOTORISED_MORTAR_ARTI ("Motorised Mortar Artillery"),
+    MOTORISED_ROCKET_ARTI ("Motorised Rocket Artillery"),
     MOTORISED_ANTI_TANK ("Motorised Anti Tank"),
     MOTORISED_ANTI_AIR ("Motorised Anti Air"),
     MOTORISED_HEAVY_ANTI_AIR ("Motorised Heavy Anti Air"),

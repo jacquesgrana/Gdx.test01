@@ -766,9 +766,11 @@ public class GraphicUtil {
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMecaArtTexture : counterTypeIconBSMecaArtTexture;
                 break;
             case MORTAR_ARTI:
+            case MOTORISED_MORTAR_ARTI:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMortarArtTexture : counterTypeIconBSMortarArtTexture;
                 break;
             case ROCKET_ARTI:
+            case MOTORISED_ROCKET_ARTI:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSRocketArtTexture : counterTypeIconBSRocketArtTexture;
                 break;
             case PARA:
@@ -791,6 +793,7 @@ public class GraphicUtil {
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSEngTexture : counterTypeIconBSEngTexture;
                 break;
             case CIVIL_ENGINEER:
+            case MOTORISED_CIVIL_ENGINEER:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSCivilEngTexture : counterTypeIconBSCivilEngTexture;
                 break;
             case INFANTRY:
