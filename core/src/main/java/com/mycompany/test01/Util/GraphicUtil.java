@@ -125,8 +125,9 @@ public class GraphicUtil {
     public static Texture counterTypeIconBSMachineGunTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-machine-gun@4x.png");
     public static Texture counterTypeIconBSBicycleInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-bicycle-inf@4x.png");
     public static Texture counterTypeIconBSMotorcycleInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-motorcycle-inf@4x.png");
+    public static Texture counterTypeIconBSLogisticTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-logistic@4x.png");
 
-    //texture-unit-icon-type-bicycle-inf@4x
+    //texture-unit-icon-type-logistic@4x
 
     public static Texture counterTypeIconWSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-hq@4x.png");
     public static Texture counterTypeIconWSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-arti@4x.png");
@@ -155,6 +156,8 @@ public class GraphicUtil {
     public static Texture counterTypeIconWSMachineGunTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-machine-gun@4x.png");
     public static Texture counterTypeIconWSBicycleInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-bicycle-inf@4x.png");
     public static Texture counterTypeIconWSMotorcycleInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-motorcycle-inf@4x.png");
+    public static Texture counterTypeIconWSLogisticTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-logistic@4x.png");
+
 
     public static Texture counterAddOnBSReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-1-4@4x.png");
     public static Texture counterAddOnBSReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-2-4@4x.png");
@@ -847,6 +850,9 @@ public class GraphicUtil {
                 break;
             case MOTORCYCLE_INF:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMotorcycleInfTexture : counterTypeIconBSMotorcycleInfTexture;
+                break;
+            case LOGISTIC:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSLogisticTexture : counterTypeIconBSLogisticTexture;
                 break;
         }
         return toReturn;

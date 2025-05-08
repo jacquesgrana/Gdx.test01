@@ -241,6 +241,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         SkiMachineGunUnit ski_mg_01 = unitRedCountryFactory.createSkiMachineGunUnit("372th", "372", false, false, 0);
         SkiMachineGunUnit ski_mg_02 = unitRedCountryFactory.createSkiMachineGunUnit("372th", "372", true, true, 0);
 
+        LogisticUnit logistic_01 = unitRedCountryFactory.createLogisticUnit("16th", "16", false, false, 3);
+        LogisticUnit logistic_02 = unitRedCountryFactory.createLogisticUnit("11th", "1", true, true, 0);
+
         /*
         group02.addUnit(red_mountain_inf_01);
         group02.addUnit(red_mountain_inf_02);
@@ -272,6 +275,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(heavy_tank_02);
         group02.addUnit(ski_mg_01);
         group02.addUnit(ski_mg_02);
+        group02.addUnit(logistic_01);
+        group02.addUnit(logistic_02);
 
         /*
         DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
@@ -320,6 +325,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         HeavyTankUnit black_heavy_tank_02 = unitBlackCountryFactory.createHeavyTankUnit("7th", "7", true, true, 0);
         SkiMachineGunUnit black_ski_mg_01 = unitBlackCountryFactory.createSkiMachineGunUnit("372th", "372", false, false, 0);
         SkiMachineGunUnit black_ski_mg_02 = unitBlackCountryFactory.createSkiMachineGunUnit("372th", "372", true, true, 0);
+        LogisticUnit black_logistic_01 = unitBlackCountryFactory.createLogisticUnit("8th", "8", false, false, 3);
+        LogisticUnit black_logistic_02 = unitBlackCountryFactory.createLogisticUnit("3th", "3", true, true, 0);
 
 /*
         group03.addUnit(black_mountain_inf_01);
@@ -352,6 +359,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group03.addUnit(black_heavy_tank_02);
         group03.addUnit(black_ski_mg_01);
         group03.addUnit(black_ski_mg_02);
+        group03.addUnit(black_logistic_01);
+        group03.addUnit(black_logistic_02);
 
         /*
         DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st div", "1Div");

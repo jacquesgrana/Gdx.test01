@@ -154,6 +154,11 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         return new MotorcycleInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
+    public LogisticUnit createLogisticUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank)
+    {
+        return new LogisticUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
 
 
     @Override

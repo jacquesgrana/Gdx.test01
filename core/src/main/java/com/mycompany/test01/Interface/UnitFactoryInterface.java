@@ -64,6 +64,9 @@ public interface UnitFactoryInterface {
 
     public MotorcycleInfUnit createMotorcycleUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
+    public LogisticUnit createLogisticUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
+
+
 
     public FrontGroup createFrontGroup(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke);
 
