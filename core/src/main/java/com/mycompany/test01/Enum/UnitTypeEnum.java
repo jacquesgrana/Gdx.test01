@@ -9,6 +9,7 @@ public enum UnitTypeEnum {
 
     ARTI ("Artillery"),
     MORTAR_ARTI ("Mortar Artillery"),
+    ROCKET_ARTI ("Rocket Artillery"),
 
     ANTI_TANK ("Anti Tank"),
     ANTI_AIR ("Anti Air"),
@@ -27,6 +28,7 @@ public enum UnitTypeEnum {
     MOUNTAIN_INF ("Mountain Infantry"),
     MOUNTAIN_ARTI ("Mountain Artillery"),
     SKI_INF ("Ski Infantry"),
+    GLIDER_INF ("Glider Infantry"),
     MECHANISED_INF ("Mechanised Infantry"),
     MOTORISED_INF ("Motorised Infantry"),
     ASSAULT_GUN ("Assault Gun"),
@@ -40,10 +42,13 @@ public enum UnitTypeEnum {
     MOTORISED_ANTI_AIR ("Motorised Anti Air"),
     MOTORISED_HEAVY_ANTI_AIR ("Motorised Heavy Anti Air"),
 
+    MOTORCYCLE_INF ("Motorcycle Infantry"),
+    BICYCLE_INF ("Bicycle Infantry"),
 
     INFANTRY_RECO_COMPANY ("Infantry Reco Company"),
     MOTORISED_INF_RECO_COMPANY ("Motorised Infantry Reco Company"),
 
+    MACHINE_GUN ("Machine Gun"),
 
     NO_TYPE("No Type");
 

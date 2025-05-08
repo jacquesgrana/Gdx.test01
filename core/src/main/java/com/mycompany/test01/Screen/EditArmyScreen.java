@@ -197,6 +197,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         rootGroup.addUnit(group01);
         group01.addUnit(group02);
+        /*
         MountainInfantryUnit red_mountain_inf_01 = unitRedCountryFactory.createMountainInfUnit("Mtn 755", "755", false, false, 0);
         MountainInfantryUnit red_mountain_inf_02 = unitRedCountryFactory.createMountainInfUnit("Mtn 17", "17", true, true, 0);
 
@@ -211,6 +212,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         MecaArtiUnit meca_arti_01 = unitRedCountryFactory.createMecaArtiUnit("302th", "302", false, false, 0);
         MecaArtiUnit meca_arti_02 = unitRedCountryFactory.createMecaArtiUnit("32th", "32", true, true, 0);
+        */
 
         MortarArtiUnit mortar_arti_01 = unitRedCountryFactory.createMortarArtiUnit("118th", "118", false, false, 0);
         MortarArtiUnit mortar_arti_02 = unitRedCountryFactory.createMortarArtiUnit("9th", "9", true, true, 0);
@@ -218,6 +220,21 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         CivilEngineerUnit civil_eng_01 = unitRedCountryFactory.createCivilEngineerUnit("10th NW", "10NW", false, false, 0);
         CivilEngineerUnit civil_eng_02 = unitRedCountryFactory.createCivilEngineerUnit("2th W", "2W", true, true, 0);
 
+        MachineGunUnit machine_gun_01 = unitRedCountryFactory.createMachineGunUnit("725th", "728", false, false, 0);
+        MachineGunUnit machine_gun_02 = unitRedCountryFactory.createMachineGunUnit("122th", "122", true, true, 0);
+
+        RocketArtiUnit rocket_arti_01 = unitRedCountryFactory.createRocketArtiUnit("385th", "385", false, false, 0);
+        RocketArtiUnit rocket_arti_02 = unitRedCountryFactory.createRocketArtiUnit("35th", "35", true, true, 0);
+
+        GliderInfantryUnit glider_in_01 = unitRedCountryFactory.createGliderInfUnit("32th", "32", false, false, 0);
+        GliderInfantryUnit glider_in_02 = unitRedCountryFactory.createGliderInfUnit("32th", "32", true, true, 0);
+
+        BicycleInfUnit bicycle_inf_01 = unitRedCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
+        BicycleInfUnit bicycle_inf_02 = unitRedCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
+        MotorcycleInfUnit motorcycle_inf_01 = unitRedCountryFactory.createMotorcycleUnit("62th", "62", false, false, 0);
+        MotorcycleInfUnit motorcycle_inf_02 = unitRedCountryFactory.createMotorcycleUnit("6th", "6", true, true, 0);
+
+        /*
         group02.addUnit(red_mountain_inf_01);
         group02.addUnit(red_mountain_inf_02);
         group02.addUnit(assault_gun_01);
@@ -228,11 +245,24 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(ski_inf_02);
         group02.addUnit(meca_arti_01);
         group02.addUnit(meca_arti_02);
+
+         */
         group02.addUnit(mortar_arti_01);
         group02.addUnit(mortar_arti_02);
         group02.addUnit(civil_eng_01);
         group02.addUnit(civil_eng_02);
+        group02.addUnit(machine_gun_01);
+        group02.addUnit(machine_gun_02);
+        group02.addUnit(rocket_arti_01);
+        group02.addUnit(rocket_arti_02);
+        group02.addUnit(glider_in_01);
+        group02.addUnit(glider_in_02);
+        group02.addUnit(bicycle_inf_01);
+        group02.addUnit(bicycle_inf_02);
+        group02.addUnit(motorcycle_inf_01);
+        group02.addUnit(motorcycle_inf_02);
 
+        /*
         DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
         group02.addUnit(elitInfDiv);
 
@@ -244,10 +274,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         BrigadeGroup motoInfBrig = unitRedCountryFactory.createMotoInfBrigade("77th moto brigade", "77M");
         group02.addUnit(motoInfBrig);
+        */
 
         group01.addUnit(group03);
 
 
+        /*
         MountainInfantryUnit black_mountain_inf_01 = unitBlackCountryFactory.createMountainInfUnit("Mtn 455", "455", false, false, 0);
         MountainInfantryUnit black_mountain_inf_02 = unitBlackCountryFactory.createMountainInfUnit("Mtn 32", "32", true, true, 0);
         AssaultGun black_assault_gun_01 = unitBlackCountryFactory.createAssaultGunUnit("311 Assault_Gun", "311", false, false, 0);
@@ -258,12 +290,23 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         SkiInfantryUnit black_ski_inf_02 = unitBlackCountryFactory.createSkiInfUnit("4 Ski", "4", true, true, 0);
         MecaArtiUnit black_meca_arti_01 = unitBlackCountryFactory.createMecaArtiUnit("302th", "302", false, false, 0);
         MecaArtiUnit black_meca_arti_02 = unitBlackCountryFactory.createMecaArtiUnit("32th", "32", true, true, 0);
+        */
         MortarArtiUnit black_mortar_arti_01 = unitBlackCountryFactory.createMortarArtiUnit("118th", "118", false, false, 0);
         MortarArtiUnit black_mortar_arti_02 = unitBlackCountryFactory.createMortarArtiUnit("9th", "9", true, true, 0);
         CivilEngineerUnit black_civil_eng_01 = unitBlackCountryFactory.createCivilEngineerUnit("10th NW", "10NW", false, false, 0);
         CivilEngineerUnit black_civil_eng_02 = unitBlackCountryFactory.createCivilEngineerUnit("2th W", "2W", true, true, 0);
+        MachineGunUnit black_machine_gun_01 = unitBlackCountryFactory.createMachineGunUnit("725th", "728", false, false, 0);
+        MachineGunUnit black_machine_gun_02 = unitBlackCountryFactory.createMachineGunUnit("122th", "122", true, true, 0);
+        RocketArtiUnit black_rocket_arti_01 = unitBlackCountryFactory.createRocketArtiUnit("145th", "145", false, false, 0);
+        RocketArtiUnit black_rocket_arti_02 = unitBlackCountryFactory.createRocketArtiUnit("8th", "8", true, true, 0);
+        GliderInfantryUnit black_glider_in_01 = unitBlackCountryFactory.createGliderInfUnit("32th", "32", false, false, 0);
+        GliderInfantryUnit black_glider_in_02 = unitBlackCountryFactory.createGliderInfUnit("32th", "32", true, true, 0);
+        BicycleInfUnit black_bicycle_inf_01 = unitBlackCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
+        BicycleInfUnit black_bicycle_inf_02 = unitBlackCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
+        MotorcycleInfUnit black_motorcycle_inf_01 = unitBlackCountryFactory.createMotorcycleUnit("62th", "62", false, false, 0);
+        MotorcycleInfUnit black_motorcycle_inf_02 = unitBlackCountryFactory.createMotorcycleUnit("6th", "6", true, true, 0);
 
-
+/*
         group03.addUnit(black_mountain_inf_01);
         group03.addUnit(black_mountain_inf_02);
         group03.addUnit(black_assault_gun_01);
@@ -274,11 +317,23 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group03.addUnit(black_ski_inf_02);
         group03.addUnit(black_meca_arti_01);
         group03.addUnit(black_meca_arti_02);
+        */
         group03.addUnit(black_mortar_arti_01);
+
         group03.addUnit(black_mortar_arti_02);
         group03.addUnit(black_civil_eng_01);
         group03.addUnit(black_civil_eng_02);
-
+        group03.addUnit(black_machine_gun_01);
+        group03.addUnit(black_machine_gun_02);
+        group03.addUnit(black_rocket_arti_01);
+        group03.addUnit(black_rocket_arti_02);
+        group03.addUnit(black_glider_in_01);
+        group03.addUnit(black_glider_in_02);
+        group03.addUnit(black_bicycle_inf_01);
+        group03.addUnit(black_bicycle_inf_02);
+        group03.addUnit(black_motorcycle_inf_01);
+        group03.addUnit(black_motorcycle_inf_02);
+        /*
         DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st div", "1Div");
         group03.addUnit(eliteBlackInfDiv);
 
@@ -288,7 +343,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         DivisionGroup blackMotoInfDiv = unitBlackCountryFactory.createMotoInfDivision("87th div", "87");
         group03.addUnit(blackMotoInfDiv);
         //units.add(rootGroup);
-
+        */
         tree.add(GraphicUtil.createTreeFromGroup(rootGroup, this));
         // ajouter listener
 

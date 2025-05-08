@@ -101,10 +101,12 @@ public class GraphicUtil {
     public static Texture counterTypeIconBSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-hq@4x.png");
     public static Texture counterTypeIconBSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-arti@4x.png");
     public static Texture counterTypeIconBSMortarArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mortar-arti@4x.png");
+    public static Texture counterTypeIconBSRocketArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-rocket-arti@4x.png");
     public static Texture counterTypeIconBSInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-inf@4x.png");
     public static Texture counterTypeIconBSMountainInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mountain-inf@4x.png");
     public static Texture counterTypeIconBSMountainArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-mountain-arti@4x.png");
     public static Texture counterTypeIconBSSkiInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-ski-inf@4x.png");
+    public static Texture counterTypeIconBSGliderInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-glider-inf@4x.png");
     public static Texture counterTypeIconBSTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-tank@4x.png");
     public static Texture counterTypeIconBSAssaultGunTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-assault-gun@4x.png");
     public static Texture counterTypeIconBSParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-para@4x.png");
@@ -118,14 +120,21 @@ public class GraphicUtil {
     public static Texture counterTypeIconBSMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-meca-inf@4x.png");
     public static Texture counterTypeIconBSMecaArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-meca-arti@4x.png");
     public static Texture counterTypeIconBSMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-meca-reco@4x.png");
+    public static Texture counterTypeIconBSMachineGunTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-machine-gun@4x.png");
+    public static Texture counterTypeIconBSBicycleInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-bicycle-inf@4x.png");
+    public static Texture counterTypeIconBSMotorcycleInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-motorcycle-inf@4x.png");
+
+    //texture-unit-icon-type-bicycle-inf@4x
 
     public static Texture counterTypeIconWSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-hq@4x.png");
     public static Texture counterTypeIconWSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-arti@4x.png");
     public static Texture counterTypeIconWSMortarArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mortar-arti@4x.png");
+    public static Texture counterTypeIconWSRocketArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-rocket-arti@4x.png");
     public static Texture counterTypeIconWSInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-inf@4x.png");
     public static Texture counterTypeIconWSMountainInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mountain-inf@4x.png");
     public static Texture counterTypeIconWSMountainArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-mountain-arti@4x.png");
     public static Texture counterTypeIconWSSkiInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-ski-inf@4x.png");
+    public static Texture counterTypeIconWSGliderInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-glider-inf@4x.png");
     public static Texture counterTypeIconWSTankTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-tank@4x.png");
     public static Texture counterTypeIconWSAssaultGunTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-assault-gun@4x.png");
     public static Texture counterTypeIconWSParaTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-para@4x.png");
@@ -139,6 +148,9 @@ public class GraphicUtil {
     public static Texture counterTypeIconWSMecaInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-meca-inf@4x.png");
     public static Texture counterTypeIconWSMecaArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-meca-arti@4x.png");
     public static Texture counterTypeIconWSMecaRecoTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-meca-reco@4x.png");
+    public static Texture counterTypeIconWSMachineGunTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-machine-gun@4x.png");
+    public static Texture counterTypeIconWSBicycleInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-bicycle-inf@4x.png");
+    public static Texture counterTypeIconWSMotorcycleInfTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-motorcycle-inf@4x.png");
 
     public static Texture counterAddOnBSReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-1-4@4x.png");
     public static Texture counterAddOnBSReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-2-4@4x.png");
@@ -749,6 +761,9 @@ public class GraphicUtil {
             case MORTAR_ARTI:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMortarArtTexture : counterTypeIconBSMortarArtTexture;
                 break;
+            case ROCKET_ARTI:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSRocketArtTexture : counterTypeIconBSRocketArtTexture;
+                break;
             case PARA:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSParaTexture : counterTypeIconBSParaTexture;
                 break;
@@ -783,6 +798,9 @@ public class GraphicUtil {
             case SKI_INF:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSSkiInfTexture : counterTypeIconBSSkiInfTexture;
                 break;
+            case GLIDER_INF:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSGliderInfTexture : counterTypeIconBSGliderInfTexture;
+                break;
             case ANTI_AIR:
             case MOTORISED_ANTI_AIR:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSAntiAirTexture : counterTypeIconBSAntiAirTexture;
@@ -810,6 +828,15 @@ public class GraphicUtil {
             case ARMY_GROUP_HQ:
             case FRONT_HQ:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSHQTexture : counterTypeIconBSHQTexture;
+                break;
+            case MACHINE_GUN:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMachineGunTexture : counterTypeIconBSMachineGunTexture;
+                break;
+            case BICYCLE_INF:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSBicycleInfTexture : counterTypeIconBSBicycleInfTexture;
+                break;
+            case MOTORCYCLE_INF:
+                toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMotorcycleInfTexture : counterTypeIconBSMotorcycleInfTexture;
                 break;
         }
         return toReturn;
