@@ -97,6 +97,9 @@ public class GraphicUtil {
     public static Texture counterBgGreenCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-green-country-02@4x.png");
     public static Texture counterBgYellowCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-yellow-country-01@4x.png");
     public static Texture counterBgYellowCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-yellow-country-02@4x.png");
+    public static Texture counterBgBrownCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-brown-country-01@4x.png");
+    public static Texture counterBgBrownCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-brown-country-02@4x.png");
+
 
     public static Texture counterTypeIconBSHQTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-hq@4x.png");
     public static Texture counterTypeIconBSArtTexture = loadTextureFromFile("texture/unit/counter-type-icon/black-stroke/texture-unit-icon-type-arti@4x.png");
@@ -749,6 +752,9 @@ public class GraphicUtil {
                 break;
             case YELLOW_COUNTRY:
                 toReturn = unit.isElite() ? counterBgYellowCountry01Texture : counterBgYellowCountry02Texture;
+                break;
+            case BROWN_COUNTRY:
+                toReturn = unit.isElite() ? counterBgBrownCountry01Texture : counterBgBrownCountry02Texture;
                 break;
         }
         return toReturn;

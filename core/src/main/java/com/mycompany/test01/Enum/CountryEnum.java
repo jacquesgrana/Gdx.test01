@@ -6,6 +6,7 @@ public enum CountryEnum {
     BLACK_COUNTRY ("Black Country"),
     GREEN_COUNTRY ("Green Country"),
     YELLOW_COUNTRY ("Yellow Country"),
+    BROWN_COUNTRY ("Yellow Country"),
     NO_COUNTRY ("No Country");
 
     private final String name;

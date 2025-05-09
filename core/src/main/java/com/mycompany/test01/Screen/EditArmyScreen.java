@@ -22,6 +22,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Factory.UnitBlackCountryFactory;
+import com.mycompany.test01.Factory.UnitBlueCountryFactory;
+import com.mycompany.test01.Factory.UnitBrownCountryFactory;
 import com.mycompany.test01.Factory.UnitRedCountryFactory;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.*;
@@ -48,6 +50,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
     private UnitRedCountryFactory unitRedCountryFactory;
     private UnitBlackCountryFactory unitBlackCountryFactory;
+    private UnitBlueCountryFactory unitBlueCountryFactory;
+    private UnitBrownCountryFactory unitBrownCountryFactory;
+
+
     //private Skin skin;
 
     /*
@@ -61,6 +67,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     public EditArmyScreen(Main game) {
         this.unitRedCountryFactory = new UnitRedCountryFactory();
         this.unitBlackCountryFactory = new UnitBlackCountryFactory();
+        this.unitBlueCountryFactory = new UnitBlueCountryFactory();
+        this.unitBrownCountryFactory = new UnitBrownCountryFactory();
         this.game = game;
         stage = new Stage(new ScreenViewport());
         //shapeRenderer = new ShapeRenderer();
@@ -146,6 +154,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false, false);
         ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false, true);
         ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", true, false, true);
+        ArmyGroup group04 = unitBlueCountryFactory.createArmyGroup("Army 2", "2e", false, false, false);
+        ArmyGroup group05 = unitBrownCountryFactory.createArmyGroup("Army 5", "5th", false, false, false);
 
         /*
         InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, 2);
@@ -353,7 +363,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         MotoCivilEngineerUnit black_moto_civil_eng_02 = unitBlackCountryFactory.createMotoCivilEngineerUnit("15th", "15", true, true, 0);
         MotoRocketArtiUnit black_moto_rocket_arti_01 = unitBlackCountryFactory.createMotoRocketArtiUnit("328th", "328", false, false, 2);
         MotoRocketArtiUnit black_moto_rocket_arti_02 = unitBlackCountryFactory.createMotoRocketArtiUnit("10th", "10", true, true, 3);
-/*
+
+        /*
         group03.addUnit(black_mountain_inf_01);
         group03.addUnit(black_mountain_inf_02);
         group03.addUnit(black_assault_gun_01);
@@ -394,6 +405,78 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group03.addUnit(black_moto_civil_eng_02);
         group03.addUnit(black_moto_rocket_arti_01);
         group03.addUnit(black_moto_rocket_arti_02);
+
+        group01.addUnit(group04);
+
+        BicycleInfUnit blue_bicycle_inf_01 = unitBlueCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
+        BicycleInfUnit blue_bicycle_inf_02 = unitBlueCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
+        MotorcycleInfUnit blue_motorcycle_inf_01 = unitBlueCountryFactory.createMotorcycleUnit("62th", "62", false, false, 0);
+        MotorcycleInfUnit blue_motorcycle_inf_02 = unitBlueCountryFactory.createMotorcycleUnit("6th", "6", true, true, 0);
+        HeavyTankUnit blue_heavy_tank_01 = unitBlueCountryFactory.createHeavyTankUnit("33th", "33", false, false, 0);
+        HeavyTankUnit blue_heavy_tank_02 = unitBlueCountryFactory.createHeavyTankUnit("7th", "7", true, true, 0);
+        SkiMachineGunUnit blue_ski_mg_01 = unitBlueCountryFactory.createSkiMachineGunUnit("372th", "372", false, false, 0);
+        SkiMachineGunUnit blue_ski_mg_02 = unitBlueCountryFactory.createSkiMachineGunUnit("372th", "372", true, true, 0);
+        LogisticUnit blue_logistic_01 = unitBlueCountryFactory.createLogisticUnit("8th", "8", false, false, 3);
+        LogisticUnit blue_logistic_02 = unitBlueCountryFactory.createLogisticUnit("3th", "3", true, true, 0);
+        MotoMortarArtiUnit blue_moto_mortar_01 = unitBlueCountryFactory.createMotoMortarArtiUnit("115th", "115", false, false, 0);
+        MotoMortarArtiUnit blue_moto_mortar_02 = unitBlueCountryFactory.createMotoMortarArtiUnit("75th", "75", true, true, 0);
+        MotoCivilEngineerUnit blue_moto_civil_eng_01 = unitBlueCountryFactory.createMotoCivilEngineerUnit("115th", "115", false, false, 0);
+        MotoCivilEngineerUnit blue_moto_civil_eng_02 = unitBlueCountryFactory.createMotoCivilEngineerUnit("15th", "15", true, true, 0);
+        MotoRocketArtiUnit blue_moto_rocket_arti_01 = unitBlueCountryFactory.createMotoRocketArtiUnit("328th", "328", false, false, 2);
+        MotoRocketArtiUnit blue_moto_rocket_arti_02 = unitBlueCountryFactory.createMotoRocketArtiUnit("10th", "10", true, true, 3);
+
+        group04.addUnit(blue_bicycle_inf_01);
+        group04.addUnit(blue_bicycle_inf_02);
+        group04.addUnit(blue_motorcycle_inf_01);
+        group04.addUnit(blue_motorcycle_inf_02);
+        group04.addUnit(blue_heavy_tank_01);
+        group04.addUnit(blue_heavy_tank_02);
+        group04.addUnit(blue_ski_mg_01);
+        group04.addUnit(blue_ski_mg_02);
+        group04.addUnit(blue_logistic_01);
+        group04.addUnit(blue_logistic_02);
+        group04.addUnit(blue_moto_mortar_01);
+        group04.addUnit(blue_moto_mortar_02);
+        group04.addUnit(blue_moto_civil_eng_01);
+        group04.addUnit(blue_moto_civil_eng_02);
+        group04.addUnit(blue_moto_rocket_arti_01);
+        group04.addUnit(blue_moto_rocket_arti_02);
+
+        group01.addUnit(group05);
+
+        BicycleInfUnit brown_bicycle_inf_01 = unitBrownCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
+        BicycleInfUnit brown_bicycle_inf_02 = unitBrownCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
+        MotorcycleInfUnit brown_motorcycle_inf_01 = unitBrownCountryFactory.createMotorcycleUnit("62th", "62", false, false, 0);
+        MotorcycleInfUnit brown_motorcycle_inf_02 = unitBrownCountryFactory.createMotorcycleUnit("6th", "6", true, true, 0);
+        HeavyTankUnit brown_heavy_tank_01 = unitBrownCountryFactory.createHeavyTankUnit("33th", "33", false, false, 0);
+        HeavyTankUnit brown_heavy_tank_02 = unitBrownCountryFactory.createHeavyTankUnit("7th", "7", true, true, 0);
+        SkiMachineGunUnit brown_ski_mg_01 = unitBrownCountryFactory.createSkiMachineGunUnit("372th", "372", false, false, 0);
+        SkiMachineGunUnit brown_ski_mg_02 = unitBrownCountryFactory.createSkiMachineGunUnit("372th", "372", true, true, 0);
+        LogisticUnit brown_logistic_01 = unitBrownCountryFactory.createLogisticUnit("8th", "8", false, false, 3);
+        LogisticUnit brown_logistic_02 = unitBrownCountryFactory.createLogisticUnit("3th", "3", true, true, 0);
+        MotoMortarArtiUnit brown_moto_mortar_01 = unitBrownCountryFactory.createMotoMortarArtiUnit("115th", "115", false, false, 0);
+        MotoMortarArtiUnit brown_moto_mortar_02 = unitBrownCountryFactory.createMotoMortarArtiUnit("75th", "75", true, true, 0);
+        MotoCivilEngineerUnit brown_moto_civil_eng_01 = unitBrownCountryFactory.createMotoCivilEngineerUnit("115th", "115", false, false, 0);
+        MotoCivilEngineerUnit brown_moto_civil_eng_02 = unitBrownCountryFactory.createMotoCivilEngineerUnit("15th", "15", true, true, 0);
+        MotoRocketArtiUnit brown_moto_rocket_arti_01 = unitBrownCountryFactory.createMotoRocketArtiUnit("328th", "328", false, false, 2);
+        MotoRocketArtiUnit brown_moto_rocket_arti_02 = unitBrownCountryFactory.createMotoRocketArtiUnit("10th", "10", true, true, 3);
+
+        group05.addUnit(brown_bicycle_inf_01);
+        group05.addUnit(brown_bicycle_inf_02);
+        group05.addUnit(brown_motorcycle_inf_01);
+        group05.addUnit(brown_motorcycle_inf_02);
+        group05.addUnit(brown_heavy_tank_01);
+        group05.addUnit(brown_heavy_tank_02);
+        group05.addUnit(brown_ski_mg_01);
+        group05.addUnit(brown_ski_mg_02);
+        group05.addUnit(brown_logistic_01);
+        group05.addUnit(brown_logistic_02);
+        group05.addUnit(brown_moto_mortar_01);
+        group05.addUnit(brown_moto_mortar_02);
+        group05.addUnit(brown_moto_civil_eng_01);
+        group05.addUnit(brown_moto_civil_eng_02);
+        group05.addUnit(brown_moto_rocket_arti_01);
+        group05.addUnit(brown_moto_rocket_arti_02);
 
         /*
         DivisionGroup eliteBlackInfDiv = unitBlackCountryFactory.createEliteInfDivision("1st div", "1Div");
