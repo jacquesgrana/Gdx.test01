@@ -13,6 +13,6 @@ public class EngineerUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.ENGINEER, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.ENGINEER, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

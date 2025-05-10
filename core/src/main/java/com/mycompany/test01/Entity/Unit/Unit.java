@@ -14,12 +14,13 @@ public abstract class Unit extends UnitElement {
                 String acronym,
                 CountryEnum country,
                 UnitTypeEnum type,
+                boolean isPara,
                 boolean isElite,
                 boolean isMotorised,
                 boolean isCompany,
                 boolean usesWhiteStroke,
                 int regRank) {
-        super(name, acronym, country, type, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, type, isPara, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
     }
 
     /*

@@ -5,15 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.Unit;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
@@ -22,7 +19,6 @@ import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Screen.EditArmyScreen;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 public class GraphicUtil {
 
@@ -162,10 +158,11 @@ public class GraphicUtil {
     public static Texture counterTypeIconWSLogisticTexture = loadTextureFromFile("texture/unit/counter-type-icon/white-stroke/texture-unit-icon-type-logistic@4x.png");
 
 
-    public static Texture counterAddOnBSReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-1-4@4x.png");
-    public static Texture counterAddOnBSReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-2-4@4x.png");
-    public static Texture counterAddOnBSReg3_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-3-4@4x.png");
-    public static Texture counterAddOnBSReg4_4Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-4-4@4x.png");
+    public static Texture counterAddOnBSReg1_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-1-5@4x.png");
+    public static Texture counterAddOnBSReg2_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-2-5@4x.png");
+    public static Texture counterAddOnBSReg3_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-3-5@4x.png");
+    public static Texture counterAddOnBSReg4_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-4-5@4x.png");
+    public static Texture counterAddOnBSReg5_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-reg-5-5@4x.png");
 
     public static Texture counterAddOnBSLevel1_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-level-1-5@4x.png");
     public static Texture counterAddOnBSLevel2_5Texture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-level-2-5@4x.png");
@@ -175,11 +172,14 @@ public class GraphicUtil {
 
     public static Texture counterAddOnBSCompTexture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-comp@4x.png");
     public static Texture counterAddOnBSMotTexture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-mot@4x.png");
+    public static Texture counterAddOnBSParaTexture = loadTextureFromFile("texture/unit/counter-addon/black-stroke/counter-addon-para@4x.png");
 
-    public static Texture counterAddOnWSReg1_4Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-1-4@4x.png");
-    public static Texture counterAddOnWSReg2_4Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-2-4@4x.png");
-    public static Texture counterAddOnWSReg3_4Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-3-4@4x.png");
-    public static Texture counterAddOnWSReg4_4Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-4-4@4x.png");
+    public static Texture counterAddOnWSReg1_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-1-5@4x.png");
+    public static Texture counterAddOnWSReg2_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-2-5@4x.png");
+    public static Texture counterAddOnWSReg3_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-3-5@4x.png");
+    public static Texture counterAddOnWSReg4_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-4-5@4x.png");
+    public static Texture counterAddOnWSReg5_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-reg-5-5@4x.png");
+
 
     public static Texture counterAddOnWSLevel1_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-level-1-5@4x.png");
     public static Texture counterAddOnWSLevel2_5Texture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-level-2-5@4x.png");
@@ -189,6 +189,7 @@ public class GraphicUtil {
 
     public static Texture counterAddOnWSCompTexture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-comp@4x.png");
     public static Texture counterAddOnWSMotTexture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-mot@4x.png");
+    public static Texture counterAddOnWSParaTexture = loadTextureFromFile("texture/unit/counter-addon/white-stroke/counter-addon-para@4x.png");
 
     public static Color backgroundColorDark = new Color(0.1f, 0.1f, 0.12f, 1);
     public static Color backgroundColorMedium = new Color(0.15f, 0.15f, 0.18f, 1);
@@ -525,6 +526,7 @@ public class GraphicUtil {
         Texture typeIcon = getUnitTypeTexture(unit);
 
         // choix des addons en fonction de l'unité
+        Texture paraAddon = getParaAddonTexture(unit);
         Texture motorisedAddon = getMotorisedAddonTexture(unit);
         Texture regRankAddon = getRegRankAddonTexture(unit);
         Texture companyAddon = getCompanyAddonTexture(unit);
@@ -536,7 +538,7 @@ public class GraphicUtil {
             levelAddon = getLevelAddonTexture((UnitGroup) unit);
         }
 
-        toReturn = stackTextures(background, typeIcon, motorisedAddon, regRankAddon, levelAddon, companyAddon);
+        toReturn = stackTextures(background, typeIcon, paraAddon, motorisedAddon, regRankAddon, levelAddon, companyAddon);
 
         // Ajouter le texte de l'acronyme à la texture
         String acronym = unit.getAcronym();
@@ -613,7 +615,7 @@ public class GraphicUtil {
     }
 
 
-    public static Texture stackTextures(Texture background, Texture typeIcon, Texture motorisedAddon, Texture regRankAddon, Texture levelAddon, Texture companyAddon) {
+    public static Texture stackTextures(Texture background, Texture typeIcon, Texture paraAddon, Texture motorisedAddon, Texture regRankAddon, Texture levelAddon, Texture companyAddon) {
         // Empilement des textures
         int width = background.getWidth();
         int height = background.getHeight();
@@ -621,6 +623,7 @@ public class GraphicUtil {
         // Copier la texture de fond dans un pixmap
         Pixmap pixmapBackground = textureToPixmap(background);
         Pixmap pixmapTypeIcon = textureToPixmap(typeIcon);
+        Pixmap pixmapParaAddon = textureToPixmap(paraAddon);
         Pixmap pixmapMotorisedAddon = textureToPixmap(motorisedAddon);
         Pixmap pixmapRegRankAddon = textureToPixmap(regRankAddon);
         Pixmap pixmapLevelAddon = textureToPixmap(levelAddon);
@@ -632,6 +635,13 @@ public class GraphicUtil {
 
         // Empile l'icône type sur le fond
         pixmapBackground.drawPixmap(pixmapTypeIcon, xTypeIcon, yTypeIcon);
+
+        // Vérification de la taille de pixmap pour motorisedAddon
+        int xParaAddon = (width - pixmapParaAddon.getWidth()) / 2;
+        int yParaAddon = (height - pixmapParaAddon.getHeight()) / 2;
+
+        // Empile motorisedAddon sur le fond
+        pixmapBackground.drawPixmap(pixmapParaAddon, xParaAddon, yParaAddon);
 
         // Vérification de la taille de pixmap pour motorisedAddon
         int xMotorisedAddon = (width - pixmapMotorisedAddon.getWidth()) / 2;
@@ -700,18 +710,22 @@ public class GraphicUtil {
         Texture toReturn = getEmptyTexture();
         switch(unit.getRegRank()) {
             case 1:
-                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg1_4Texture : counterAddOnBSReg1_4Texture;
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg1_5Texture : counterAddOnBSReg1_5Texture;
                 break;
             case 2:
-                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg2_4Texture : counterAddOnBSReg2_4Texture;
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg2_5Texture : counterAddOnBSReg2_5Texture;
                 //toReturn = counterAddOnBSReg2_4Texture;
                 break;
             case 3:
-                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg3_4Texture : counterAddOnBSReg3_4Texture;
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg3_5Texture : counterAddOnBSReg3_5Texture;
                 //toReturn = counterAddOnBSReg3_4Texture;
                 break;
             case 4:
-                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg4_4Texture : counterAddOnBSReg4_4Texture;
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg4_5Texture : counterAddOnBSReg4_5Texture;
+                //toReturn = counterAddOnBSReg4_4Texture;
+                break;
+            case 5:
+                toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSReg5_5Texture : counterAddOnBSReg5_5Texture;
                 //toReturn = counterAddOnBSReg4_4Texture;
                 break;
         }
@@ -722,6 +736,14 @@ public class GraphicUtil {
         Texture toReturn = getEmptyTexture();
         if(unit.isMotorised()) {
             toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSMotTexture : counterAddOnBSMotTexture;
+        }
+        return toReturn;
+    }
+
+    public static Texture getParaAddonTexture(ElementInterface unit) {
+        Texture toReturn = getEmptyTexture();
+        if(unit.isPara()) { // TODO : remplacer par isPara()
+            toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSParaTexture : counterAddOnBSParaTexture;
         }
         return toReturn;
     }
@@ -765,6 +787,7 @@ public class GraphicUtil {
         // choix de l'icon du type en fonction du type
         switch (unit.getType()) {
             case ARTI:
+            case PARA_ARTI:
             case MOTORISED_ARTI:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSArtTexture : counterTypeIconBSArtTexture;
                 break;
@@ -772,6 +795,7 @@ public class GraphicUtil {
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMecaArtTexture : counterTypeIconBSMecaArtTexture;
                 break;
             case MORTAR_ARTI:
+            case PARA_MORTAR_ARTI:
             case MOTORISED_MORTAR_ARTI:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMortarArtTexture : counterTypeIconBSMortarArtTexture;
                 break;
@@ -779,9 +803,11 @@ public class GraphicUtil {
             case MOTORISED_ROCKET_ARTI:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSRocketArtTexture : counterTypeIconBSRocketArtTexture;
                 break;
-            case PARA:
+                /*
+            case PARA_INF:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSParaTexture : counterTypeIconBSParaTexture;
                 break;
+                */
             case TANK:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSTankTexture : counterTypeIconBSTankTexture;
                 break;
@@ -791,7 +817,7 @@ public class GraphicUtil {
             case ASSAULT_GUN:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSAssaultGunTexture : counterTypeIconBSAssaultGunTexture;
                 break;
-            case MARINE:
+            case MARINE_INF:
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSMarTexture : counterTypeIconBSMarTexture;
                 break;
             case ENGINEER:
@@ -803,6 +829,7 @@ public class GraphicUtil {
                 toReturn = unit.isUsesWhiteStroke() ? counterTypeIconWSCivilEngTexture : counterTypeIconBSCivilEngTexture;
                 break;
             case INFANTRY:
+            case PARA_INF:
             case MOTORISED_INF:
             case INFANTRY_RECO_COMPANY:
             case MOTORISED_INF_RECO_COMPANY:

@@ -150,12 +150,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
 
-        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR", true, false, true);
-        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false, false);
-        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false, true);
-        ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", true, false, true);
-        ArmyGroup group04 = unitBlueCountryFactory.createArmyGroup("Army 2", "2e", false, false, false);
-        ArmyGroup group05 = unitBrownCountryFactory.createArmyGroup("Army 5", "5th", false, false, false);
+        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR",  false,true, false, true);
+        ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false, false, false);
+        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", false, true, false, true);
+        ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", false, true, false, true);
+        ArmyGroup group04 = unitBlueCountryFactory.createArmyGroup("Army 2", "2e", false, false, false, false);
+        ArmyGroup group05 = unitBrownCountryFactory.createArmyGroup("Army 5", "5th", false, false, false, false);
 
         /*
         InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, 2);
@@ -262,8 +262,17 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         MotoCivilEngineerUnit moto_civil_eng_01 = unitRedCountryFactory.createMotoCivilEngineerUnit("115th", "115", false, false, 0);
         MotoCivilEngineerUnit moto_civil_eng_02 = unitRedCountryFactory.createMotoCivilEngineerUnit("15th", "15", true, true, 0);
 
-        MotoRocketArtiUnit moto_rocket_arti_01 = unitRedCountryFactory.createMotoRocketArtiUnit("115th", "115", false, false, 0);
-        MotoRocketArtiUnit moto_rocket_arti_02 = unitRedCountryFactory.createMotoRocketArtiUnit("11th", "11", true, true, 4);
+        MotoRocketArtiUnit moto_rocket_arti_01 = unitRedCountryFactory.createMotoRocketArtiUnit("115th", "115", false, false, 4);
+        MotoRocketArtiUnit moto_rocket_arti_02 = unitRedCountryFactory.createMotoRocketArtiUnit("11th", "11", true, true, 5);
+
+        ParaInfUnit para_inf_01 = unitRedCountryFactory.createParaUnit("62th para", "62", false, false, 1);
+        ParaInfUnit para_inf_02 = unitRedCountryFactory.createParaUnit("16th para", "16", true, true, 1);
+
+        ParaArtiUnit para_arti_01 = unitRedCountryFactory.createParaArtiUnit("112th", "112", false, false, 0);
+        ParaArtiUnit para_arti_02 = unitRedCountryFactory.createParaArtiUnit("2nd", "2", true, true, 5);
+
+        ParaMortarArtiUnit para_mortar_arti_01 = unitRedCountryFactory.createParaMortarArtiUnit("78th", "78", false, false, 0);
+        ParaMortarArtiUnit para_mortar_arti_02 = unitRedCountryFactory.createParaMortarArtiUnit("7th", "7", true, true, 0);
 
         /*
         group02.addUnit(red_mountain_inf_01);
@@ -305,6 +314,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(moto_civil_eng_02);
         group02.addUnit(moto_rocket_arti_01);
         group02.addUnit(moto_rocket_arti_02);
+        group02.addUnit(para_inf_01);
+        group02.addUnit(para_inf_02);
+        group02.addUnit(para_arti_01);
+        group02.addUnit(para_arti_02);
+        group02.addUnit(para_mortar_arti_01);
+        group02.addUnit(para_mortar_arti_02);
 
         /*
         DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");

@@ -3,9 +3,9 @@ package com.mycompany.test01.Entity.Unit;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public class TankUnit extends Unit {
+public class ParaMortarArtiUnit extends Unit {
 
-    public TankUnit(
+    public ParaMortarArtiUnit(
         String name,
         String acronym,
         CountryEnum country,
@@ -13,6 +13,6 @@ public class TankUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-        super(name, acronym, country, UnitTypeEnum.TANK, isElite, false, false, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.PARA_MORTAR_ARTI, true, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

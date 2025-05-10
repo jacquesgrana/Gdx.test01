@@ -14,6 +14,6 @@ public class SkiMachineGunUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.SKI_MACHINE_GUN, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.SKI_MACHINE_GUN, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

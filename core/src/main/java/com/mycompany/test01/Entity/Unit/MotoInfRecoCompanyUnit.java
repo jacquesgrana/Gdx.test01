@@ -13,6 +13,6 @@ public class MotoInfRecoCompanyUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.MOTORISED_INF_RECO_COMPANY, isElite, true, true, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.MOTORISED_INF_RECO_COMPANY, false, isElite, true, true, usesWhiteStroke, regRank);
     }
 }

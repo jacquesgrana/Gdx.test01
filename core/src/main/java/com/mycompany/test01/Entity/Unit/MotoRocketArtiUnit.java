@@ -14,6 +14,6 @@ public class MotoRocketArtiUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-        super(name, acronym, country, UnitTypeEnum.MOTORISED_ROCKET_ARTI, isElite, true, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.MOTORISED_ROCKET_ARTI, false, isElite, true, isCompany, usesWhiteStroke, regRank);
     }
 }

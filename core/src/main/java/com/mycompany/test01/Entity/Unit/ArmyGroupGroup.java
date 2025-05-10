@@ -12,10 +12,11 @@ public class ArmyGroupGroup extends UnitGroup {
         String name,
         String acronym,
         CountryEnum country,
+        boolean isPara,
         boolean isElite,
         boolean isMotorised,
         boolean usesWhiteStroke
     ) {
-        super(name, acronym, country, UnitTypeEnum.ARMY_GROUP_HQ, isElite, isMotorised, false, usesWhiteStroke, 0, 4);
+        super(name, acronym, country, UnitTypeEnum.ARMY_GROUP_HQ, isPara, isElite, isMotorised, false, usesWhiteStroke, 0, 4);
     }
 }

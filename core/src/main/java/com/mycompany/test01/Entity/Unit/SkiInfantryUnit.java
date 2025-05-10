@@ -14,6 +14,6 @@ public class SkiInfantryUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.SKI_INF, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.SKI_INF, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

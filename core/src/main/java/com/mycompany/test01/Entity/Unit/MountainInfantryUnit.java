@@ -14,6 +14,6 @@ public class MountainInfantryUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.MOUNTAIN_INF, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.MOUNTAIN_INF, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

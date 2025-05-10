@@ -13,6 +13,6 @@ public class HeavyTankUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-        super(name, acronym, country, UnitTypeEnum.HEAVY_TANK, isElite, false, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.HEAVY_TANK, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

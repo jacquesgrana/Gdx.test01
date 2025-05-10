@@ -17,6 +17,7 @@ public abstract class UnitElement implements ElementInterface {
     protected String acronym;
     protected CountryEnum country;
     protected UnitTypeEnum type;
+    protected boolean isPara;
     protected boolean isElite;
     protected boolean isMotorised;
     protected boolean isCompany;
@@ -29,6 +30,7 @@ public abstract class UnitElement implements ElementInterface {
         this.acronym = "";
         this.country = CountryEnum.NO_COUNTRY;
         this.type = UnitTypeEnum.NO_TYPE;
+        isPara = false;
         isElite = false;
         isMotorised = false;
         isCompany = false;
@@ -42,6 +44,7 @@ public abstract class UnitElement implements ElementInterface {
         String acronym,
         CountryEnum country,
         UnitTypeEnum type,
+        boolean isPara,
         boolean isElite,
         boolean isMotorised,
         boolean isCompany,
@@ -53,6 +56,7 @@ public abstract class UnitElement implements ElementInterface {
         this.acronym = acronym;
         this.country = country;
         this.type = type;
+        this.isPara = isPara;
         this.isElite = isElite;
         this.isMotorised = isMotorised;
         this.isCompany = isCompany;
@@ -113,12 +117,22 @@ public abstract class UnitElement implements ElementInterface {
 
     @Override
     public UnitTypeEnum getType() {
-        return type;
+        return this.type;
     }
 
     @Override
     public void setType(UnitTypeEnum type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean isPara() {
+        return this.isPara;
+    }
+
+    @Override
+    public void setIsPara(boolean isPara) {
+        this.isPara = isPara;
     }
 
     @Override

@@ -10,6 +10,9 @@ public enum UnitTypeEnum {
     ARTI ("Artillery"),
     MORTAR_ARTI ("Mortar Artillery"),
     ROCKET_ARTI ("Rocket Artillery"),
+    PARA_ARTI ("Para Artillery"),
+    PARA_MORTAR_ARTI ("Para Mortar Artillery"),
+
 
     ANTI_TANK ("Anti Tank"),
     ANTI_AIR ("Anti Air"),
@@ -20,8 +23,8 @@ public enum UnitTypeEnum {
     CAVALRY ("Cavalry"),
     ENGINEER ("Engineer"),
     CIVIL_ENGINEER ("Civil Engineer"),
-    PARA ("Para troop"),
-    MARINE ("Marine troop"),
+    PARA_INF ("Para Infantry"),
+    MARINE_INF ("Marine Infantry"),
     LOGISTIC ("Logistic"),
 
     TANK ("Tank"),

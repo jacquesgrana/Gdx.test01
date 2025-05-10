@@ -13,6 +13,6 @@ public class MecaInfUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.MECHANISED_INF, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.MECHANISED_INF, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

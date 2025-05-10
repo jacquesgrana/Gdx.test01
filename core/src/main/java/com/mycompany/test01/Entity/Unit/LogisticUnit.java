@@ -13,6 +13,6 @@ public class LogisticUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.LOGISTIC, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.LOGISTIC, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

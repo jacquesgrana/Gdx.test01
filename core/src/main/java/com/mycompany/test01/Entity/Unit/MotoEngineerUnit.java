@@ -14,6 +14,6 @@ public class MotoEngineerUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.MOTORISED_ENGINEER, isElite, true, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.MOTORISED_ENGINEER, false, isElite, true, isCompany, usesWhiteStroke, regRank);
     }
 }

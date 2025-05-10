@@ -13,6 +13,6 @@ public class MotorcycleInfUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.MOTORCYCLE_INF, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.MOTORCYCLE_INF, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

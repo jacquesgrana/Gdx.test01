@@ -14,6 +14,6 @@ public class AntiAirUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
         ) {
-        super(name, acronym, country, UnitTypeEnum.ANTI_AIR, isElite, false, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.ANTI_AIR, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

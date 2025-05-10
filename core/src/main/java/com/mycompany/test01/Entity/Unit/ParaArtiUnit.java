@@ -3,17 +3,17 @@ package com.mycompany.test01.Entity.Unit;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public class ParaUnit extends Unit {
+public class ParaArtiUnit extends Unit {
 
-    public ParaUnit(
+    public ParaArtiUnit(
         String name,
         String acronym,
         CountryEnum country,
         boolean isElite,
-        boolean isMotorised,
         boolean isCompany,
         boolean usesWhiteStroke,
-        int regRank) {
-       super(name, acronym, country, UnitTypeEnum.PARA, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
+        int regRank
+    ) {
+       super(name, acronym, country, UnitTypeEnum.PARA_ARTI, true, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

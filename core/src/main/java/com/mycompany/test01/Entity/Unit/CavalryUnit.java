@@ -15,6 +15,6 @@ public class CavalryUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.CAVALRY, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.CAVALRY, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

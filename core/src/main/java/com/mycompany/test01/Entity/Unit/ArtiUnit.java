@@ -13,6 +13,6 @@ public class ArtiUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-        super(name, acronym, country, UnitTypeEnum.ARTI, isElite, false, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.ARTI, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

@@ -14,6 +14,6 @@ public class AntiTankUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-        super(name, acronym, country, UnitTypeEnum.ANTI_TANK, isElite, false, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.ANTI_TANK, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

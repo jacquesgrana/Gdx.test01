@@ -13,6 +13,6 @@ public class CivilEngineerUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.CIVIL_ENGINEER, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.CIVIL_ENGINEER, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

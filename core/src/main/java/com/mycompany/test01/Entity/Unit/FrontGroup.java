@@ -13,10 +13,11 @@ public class FrontGroup extends UnitGroup {
         String name,
         String acronym,
         CountryEnum country,
+        boolean isPara,
         boolean isElite,
         boolean isMotorised,
         boolean usesWhiteStroke
     ) {
-        super(name, acronym, country, UnitTypeEnum.FRONT_HQ, isElite, isMotorised, false, usesWhiteStroke, 0, 5);
+        super(name, acronym, country, UnitTypeEnum.FRONT_HQ, isPara, isElite, isMotorised, false, usesWhiteStroke, 0, 5);
     }
 }

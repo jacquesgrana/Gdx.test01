@@ -13,6 +13,6 @@ public class MecaArtiUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.MECHANISED_ARTI, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.MECHANISED_ARTI, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

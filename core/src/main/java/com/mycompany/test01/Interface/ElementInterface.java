@@ -24,6 +24,10 @@ public interface ElementInterface {
 
     public void setType(UnitTypeEnum type);
 
+    public boolean isPara();
+
+    public void setIsPara(boolean isPara);
+
     public boolean isElite();
 
     public void setIsElite(boolean isElite);

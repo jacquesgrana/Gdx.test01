@@ -13,6 +13,6 @@ public class AssaultGun extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-        super(name, acronym, country, UnitTypeEnum.ASSAULT_GUN, isElite, false, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.ASSAULT_GUN, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

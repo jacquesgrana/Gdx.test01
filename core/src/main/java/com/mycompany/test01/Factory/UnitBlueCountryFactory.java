@@ -43,8 +43,8 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public ParaUnit createParaUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
-        return new ParaUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, isMotorised, false, usesWhiteStroke, regRank);
+    public ParaInfUnit createParaUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new ParaInfUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -80,6 +80,16 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
     @Override
     public RocketArtiUnit createRocketArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new RocketArtiUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public ParaArtiUnit createParaArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new ParaArtiUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public ParaMortarArtiUnit createParaMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new ParaMortarArtiUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -164,14 +174,17 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
         return new MachineGunUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
+    @Override
     public BicycleInfUnit createBicycleUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new BicycleInfUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
+    @Override
     public MotorcycleInfUnit createMotorcycleUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new MotorcycleInfUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
+    @Override
     public LogisticUnit createLogisticUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank)
     {
         return new LogisticUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
@@ -180,34 +193,34 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
 
 
     @Override
-    public FrontGroup createFrontGroup(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
-        return new FrontGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, isMotorised, usesWhiteStroke);
+    public FrontGroup createFrontGroup(String name, String acronym, boolean isPara, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
+        return new FrontGroup(name, acronym, CountryEnum.BLUE_COUNTRY,isPara, isElite, isMotorised, usesWhiteStroke);
     }
 
     @Override
-    public ArmyGroupGroup createArmyGroupGroup(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
-        return new ArmyGroupGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, isMotorised, usesWhiteStroke);
+    public ArmyGroupGroup createArmyGroupGroup(String name, String acronym, boolean isPara, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
+        return new ArmyGroupGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isPara, isElite, isMotorised, usesWhiteStroke);
     }
 
     @Override
-    public ArmyGroup createArmyGroup(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
-        return new ArmyGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, isMotorised, usesWhiteStroke);
+    public ArmyGroup createArmyGroup(String name, String acronym, boolean isPara, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
+        return new ArmyGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isPara, isElite, isMotorised, usesWhiteStroke);
     }
 
     @Override
-    public DivisionGroup createDivisionGroup(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
-        return new DivisionGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, isMotorised, usesWhiteStroke);
+    public DivisionGroup createDivisionGroup(String name, String acronym, boolean isPara, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
+        return new DivisionGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isPara, isElite, isMotorised, usesWhiteStroke);
     }
 
     @Override
-    public BrigadeGroup createBrigadeGroup(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
-        return new BrigadeGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, isMotorised, usesWhiteStroke);
+    public BrigadeGroup createBrigadeGroup(String name, String acronym, boolean isPara, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
+        return new BrigadeGroup(name, acronym, CountryEnum.BLUE_COUNTRY, isPara, isElite, isMotorised, usesWhiteStroke);
     }
 
 
     @Override
     public DivisionGroup createInfDivision(String divName, String acronym) {
-        DivisionGroup division = new DivisionGroup(divName, acronym, CountryEnum.BLUE_COUNTRY, false, false, false );
+        DivisionGroup division = new DivisionGroup(divName, acronym, CountryEnum.BLUE_COUNTRY, false, false, false, false );
         // 3 * 3 inf
         InfantryUnit inf_01_01 = new InfantryUnit(divName + " inf 1-1", acronym + "•1•1", CountryEnum.BLUE_COUNTRY, false, false, false, 1);
         InfantryUnit inf_02_01 = new InfantryUnit(divName + " inf 2-1", acronym + "•1•2", CountryEnum.BLUE_COUNTRY, false, false, false, 2);
@@ -251,7 +264,7 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
 
     @Override
     public DivisionGroup createEliteInfDivision(String divName, String acronym) {
-        DivisionGroup division = new DivisionGroup(divName, acronym, CountryEnum.BLUE_COUNTRY, true, false, true );
+        DivisionGroup division = new DivisionGroup(divName, acronym, CountryEnum.BLUE_COUNTRY, false, true, false, true );
         // 3 * 3 inf
         InfantryUnit inf_01_01 = new InfantryUnit(divName + " inf 1-1", acronym + "•1•1", CountryEnum.BLUE_COUNTRY, true, false, true, 1);
         InfantryUnit inf_02_01 = new InfantryUnit(divName + " inf 2-1", acronym + "•1•2", CountryEnum.BLUE_COUNTRY, true, false, true, 2);
@@ -289,7 +302,6 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
         division.addUnit(art_01);
         division.addUnit(art_02);
         division.addUnit(art_03);
-
         division.addUnit(anti_tank_01);
         division.addUnit(anti_air_01);
         division.addUnit(engineer_01);
@@ -300,7 +312,7 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
     }
 
     public DivisionGroup createMotoInfDivision(String divName, String acronym) {
-        DivisionGroup division = new DivisionGroup(divName, acronym, CountryEnum.BLUE_COUNTRY, false, true, false);
+        DivisionGroup division = new DivisionGroup(divName, acronym, CountryEnum.BLUE_COUNTRY, false, false, true, false);
 
         // 3 * 3 inf
         MotoInfUnit inf_01_01 = new MotoInfUnit(divName + " inf 1-1", acronym + "•1•1", CountryEnum.BLUE_COUNTRY, false, false, false, 1);

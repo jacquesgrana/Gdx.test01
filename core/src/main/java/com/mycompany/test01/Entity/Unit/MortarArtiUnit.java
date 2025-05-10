@@ -13,6 +13,6 @@ public class MortarArtiUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-        super(name, acronym, country, UnitTypeEnum.MORTAR_ARTI, isElite, false, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.MORTAR_ARTI, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

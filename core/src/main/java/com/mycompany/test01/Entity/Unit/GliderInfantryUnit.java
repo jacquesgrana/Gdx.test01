@@ -14,6 +14,6 @@ public class GliderInfantryUnit extends Unit {
         boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.GLIDER_INF, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.GLIDER_INF, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }
