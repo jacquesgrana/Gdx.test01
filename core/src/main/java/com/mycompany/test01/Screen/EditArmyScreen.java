@@ -239,7 +239,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         GliderInfantryUnit glider_in_01 = unitRedCountryFactory.createGliderInfUnit("32th", "32", false, false, 0);
         GliderInfantryUnit glider_in_02 = unitRedCountryFactory.createGliderInfUnit("32th", "32", true, true, 0);
 
-         */
+
 
         BicycleInfUnit bicycle_inf_01 = unitRedCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
         BicycleInfUnit bicycle_inf_02 = unitRedCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
@@ -258,6 +258,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         MotoMortarArtiUnit moto_mortar_01 = unitRedCountryFactory.createMotoMortarArtiUnit("115th", "115", false, false, 0);
         MotoMortarArtiUnit moto_mortar_02 = unitRedCountryFactory.createMotoMortarArtiUnit("75th", "75", true, true, 0);
+        
+         */
 
         MotoCivilEngineerUnit moto_civil_eng_01 = unitRedCountryFactory.createMotoCivilEngineerUnit("115th", "115", false, false, 0);
         MotoCivilEngineerUnit moto_civil_eng_02 = unitRedCountryFactory.createMotoCivilEngineerUnit("15th", "15", true, true, 0);
@@ -273,6 +275,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         ParaMortarArtiUnit para_mortar_arti_01 = unitRedCountryFactory.createParaMortarArtiUnit("78th", "78", false, false, 0);
         ParaMortarArtiUnit para_mortar_arti_02 = unitRedCountryFactory.createParaMortarArtiUnit("7th", "7", true, true, 0);
+
+        BridgeEngineerUnit bridge_eng_01 = unitRedCountryFactory.createBridgeEngineerUnit("177th", "177", false, false, 0);
+        BridgeEngineerUnit bridge_eng_02 = unitRedCountryFactory.createBridgeEngineerUnit("85th", "85", true, true, 0);
+        MotoBridgeEngineerUnit moto_bridge_eng_01 = unitRedCountryFactory.createMotoBridgeEngineerUnit("177th", "177", false, false, 0);
+        MotoBridgeEngineerUnit moto_bridge_eng_02 = unitRedCountryFactory.createMotoBridgeEngineerUnit("85th", "85", true, true, 0);
 
         /*
         group02.addUnit(red_mountain_inf_01);
@@ -296,7 +303,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(rocket_arti_02);
         group02.addUnit(glider_in_01);
         group02.addUnit(glider_in_02);
-         */
+
 
         group02.addUnit(bicycle_inf_01);
         group02.addUnit(bicycle_inf_02);
@@ -310,6 +317,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(logistic_02);
         group02.addUnit(moto_mortar_01);
         group02.addUnit(moto_mortar_02);
+
+         */
         group02.addUnit(moto_civil_eng_01);
         group02.addUnit(moto_civil_eng_02);
         group02.addUnit(moto_rocket_arti_01);
@@ -320,6 +329,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(para_arti_02);
         group02.addUnit(para_mortar_arti_01);
         group02.addUnit(para_mortar_arti_02);
+        group02.addUnit(bridge_eng_01);
+        group02.addUnit(bridge_eng_02);
+        group02.addUnit(moto_bridge_eng_01);
+        group02.addUnit(moto_bridge_eng_02);
+
+        //
 
         /*
         DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");

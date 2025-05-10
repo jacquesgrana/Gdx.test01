@@ -23,6 +23,7 @@ public enum UnitTypeEnum {
     CAVALRY ("Cavalry"),
     ENGINEER ("Engineer"),
     CIVIL_ENGINEER ("Civil Engineer"),
+    BRIDGE_ENGINEER ("Bridge Engineer"),
     PARA_INF ("Para Infantry"),
     MARINE_INF ("Marine Infantry"),
     LOGISTIC ("Logistic"),
@@ -41,6 +42,8 @@ public enum UnitTypeEnum {
     MECHANISED_ENGINEER ("Mechanised Engineer"),
     MOTORISED_ENGINEER ("Motorised Engineer"),
     MOTORISED_CIVIL_ENGINEER ("Motorised Civil Engineer"),
+    MOTORISED_BRIDGE_ENGINEER ("Motorised Bridge Engineer"),
+
 
     MOTORISED_LOGISTIC ("Motorised Logistic"),
     MECHANISED_ARTI ("Mechanised Artillery"),

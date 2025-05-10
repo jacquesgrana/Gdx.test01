@@ -25,6 +25,8 @@ public interface UnitFactoryInterface {
 
     public CivilEngineerUnit createCivilEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
+    public BridgeEngineerUnit createBridgeEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
+
     public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
     public MortarArtiUnit createMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
@@ -52,6 +54,8 @@ public interface UnitFactoryInterface {
     public MotoEngineerUnit createMotoEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
     public MotoCivilEngineerUnit createMotoCivilEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
+
+    public MotoBridgeEngineerUnit createMotoBridgeEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
     public MotoArtiUnit createMotoArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 

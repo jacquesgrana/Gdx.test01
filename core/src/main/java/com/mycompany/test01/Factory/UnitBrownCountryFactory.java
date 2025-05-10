@@ -63,6 +63,11 @@ public class UnitBrownCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
+    public BridgeEngineerUnit createBridgeEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return  new BridgeEngineerUnit(name, acronym, CountryEnum.BROWN_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
     public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new ArtiUnit(name, acronym, CountryEnum.BROWN_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
@@ -132,6 +137,11 @@ public class UnitBrownCountryFactory implements UnitFactoryInterface {
     @Override
     public MotoCivilEngineerUnit createMotoCivilEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new MotoCivilEngineerUnit(name, acronym, CountryEnum.BROWN_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public MotoBridgeEngineerUnit createMotoBridgeEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return  new MotoBridgeEngineerUnit(name, acronym, CountryEnum.BROWN_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
     @Override
