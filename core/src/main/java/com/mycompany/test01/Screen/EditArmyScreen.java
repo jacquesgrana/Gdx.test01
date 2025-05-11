@@ -10,11 +10,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -34,26 +36,31 @@ import com.mycompany.test01.Util.GraphicUtil;
 
 public class EditArmyScreen implements Screen, InputProcessor { //,
     final Main game;
-    private Stage stage;
-    private BitmapFont font;
+    private final Stage stage;
+    private final BitmapFont font;
     //private ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private final Table leftPanel, centerPanel, rightPanel;
+    private final Table leftPanel, centerPanel, rightPanel, centerButtonPanel;
     private Tree<UnitNode, String> tree;
+
+    private UnitElement selectedUnit;
+    private FrontGroup rootGroup;
 
     //private String selectedUnitName = "nothing selected";
     private final Label selectedUnitNameLabel;
     private final Label selectedUnitTypeLabel;
     private final Label selectedUnitAcronymLabel;
-
+    private final Label selectedUnitParentNameLabel;
     private final Image selectedUnitIcon;
 
+    //private final Table centerButtonPanel;
 
-    private UnitRedCountryFactory unitRedCountryFactory;
-    private UnitBlackCountryFactory unitBlackCountryFactory;
-    private UnitBlueCountryFactory unitBlueCountryFactory;
-    private UnitBrownCountryFactory unitBrownCountryFactory;
+    private final UnitRedCountryFactory unitRedCountryFactory;
+    private final UnitBlackCountryFactory unitBlackCountryFactory;
+    private final UnitBlueCountryFactory unitBlueCountryFactory;
+    private final UnitBrownCountryFactory unitBrownCountryFactory;
 
-
+    private ButtonWrapper buttonDeleteWrapper = null;
+    private ButtonWrapper buttonAddWrapper = null;
     //private Skin skin;
 
     /*
@@ -70,11 +77,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.unitBlueCountryFactory = new UnitBlueCountryFactory();
         this.unitBrownCountryFactory = new UnitBrownCountryFactory();
         this.game = game;
-        stage = new Stage(new ScreenViewport());
+        this.stage = new Stage(new ScreenViewport());
         //shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
 
-        font = new BitmapFont();
+        this.font = new BitmapFont();
+        this.selectedUnit = null;
         /*
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Roboto_Condensed-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -107,19 +115,24 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             }
         });
 
-        stage.addActor(buttonBackWrapper.getButton());
+        this.stage.addActor(buttonBackWrapper.getButton());
 
         this.leftPanel = createPanel(0);
-        stage.addActor(leftPanel);
+        this.stage.addActor(this.leftPanel);
         this.leftPanel.setVisible(true);
 
         this.centerPanel = createPanel(1);
-        stage.addActor(centerPanel);
+        this.stage.addActor(this.centerPanel);
         this.centerPanel.setVisible(true);
 
         this.rightPanel = createPanel(2);
-        stage.addActor(rightPanel);
+        this.stage.addActor(this.rightPanel);
         this.rightPanel.setVisible(true);
+
+        this.centerButtonPanel = createCenterButtonPanel();
+        this.centerButtonPanel.setVisible(true);
+
+        this.centerPanel.addActor(this.centerButtonPanel);
 
         //Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
@@ -136,130 +149,46 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         selectedUnitAcronymLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 100f);
         this.centerPanel.addActor(selectedUnitAcronymLabel);
 
-        selectedUnitIcon = new Image(GraphicUtil.counterBgRedCountry01Texture);
+        selectedUnitParentNameLabel = new Label("nothing selected", labelStyle);
+        selectedUnitParentNameLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 140f);
+        this.centerPanel.addActor(selectedUnitParentNameLabel);
+
+        selectedUnitIcon = new Image(GraphicUtil.getEmptyTexture());
         selectedUnitIcon.setBounds(centerPanel.getWidth() - 128f - 20f,
             centerPanel.getHeight() - 128f - 20f,
             128f,
             128f);
         this.centerPanel.addActor(selectedUnitIcon);
 
+        this.initTree();
+        this.fillTree();
+
+        this.leftPanel.addActor(tree);
+
+    }
+
+    public void initTree() {
         this.tree = new Tree<>(GraphicUtil.getUnitTreeSkin());
 
         tree.setPadding(10);
         tree.setIndentSpacing(25);
         tree.setIconSpacing(5, 0);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
+    }
 
-        FrontGroup rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR",  false,true, false, true);
+    public void fillTree() {
+
+
+        this.rootGroup = unitRedCountryFactory.createFrontGroup("front","1NOR",  false,true, false, true);
         ArmyGroupGroup group01 = unitRedCountryFactory.createArmyGroupGroup("army group 01","GRP1", false, false, false, false);
-        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", false, true, false, true);
+        ArmyGroup group02 = unitRedCountryFactory.createArmyGroup("army 01","ARM1", true, false, false, true);
         ArmyGroup group03 = unitBlackCountryFactory.createArmyGroup("Army II", "AII", false, true, false, true);
         ArmyGroup group04 = unitBlueCountryFactory.createArmyGroup("Army 2", "2e", false, false, false, false);
         ArmyGroup group05 = unitBrownCountryFactory.createArmyGroup("Army 5", "5th", false, false, false, false);
 
-        /*
-        InfantryUnit unit01 = unitRedCountryFactory.createInfantryUnit ( "unit 01","125", false, 2);
-        CavalryUnit unit02 = unitRedCountryFactory.createCavalryUnit("unit 02","13", false, false, 1);
-
-
-
-        InfantryUnit unit03 = unitRedCountryFactory.createInfantryUnit("unit 03","328", true, 3);
-        ArtiUnit unit04 = unitRedCountryFactory.createArtiUnit("unit 04","ARM1", true, 4);
-        TankUnit unit05 = unitRedCountryFactory.createTankUnit("unit 05","ARM1", false, false, 1);
-        AntiTankUnit unit06 = unitRedCountryFactory.createAntiTankUnit("unit 05","ARM1", false, 2);
-        AntiAirUnit unit07 = unitRedCountryFactory.createAntiAirUnit("unit 05","ARM1", true, 4);
-            //OrderedSet<Element> units = new OrderedSet<>();
-        ParaUnit unit08 = unitRedCountryFactory.createParaUnit("unit 08", "501", true, false, 3);
-        MarineUnit unit09 = unitRedCountryFactory.createMarineUnit("unit 09", "16M", true, false, 1);
-        MarineUnit unit13 = unitRedCountryFactory.createMarineUnit("unit 13", "17M", true, true, 0);
-
-        EngineerUnit unit10 = unitRedCountryFactory.createEngineerUnit("unit10", "512", false, 0);
-        MecaInfUnit unit11 = unitRedCountryFactory.createMecaInfUnit("unit11", "117", true, false, 4);
-        MecaRecoUnit unit12 = unitRedCountryFactory.createMecaRecoUnit("unit12", "233", false, false, 0);
-        MotoInfUnit unit14 = unitRedCountryFactory.createMotoInfUnit("unit14", "33G", true, 3);
-        MotoEngineerUnit unit15 = unitRedCountryFactory.createMotoEngineerUnit("unit15", "1102", false, 2);
-        MotoArtiUnit unit16 = unitRedCountryFactory.createMotoArtiUnit("unit16", "442", false, 2);
-
-        rootGroup.addUnit(group01);
-        rootGroup.addUnit(unit01);
-        rootGroup.addUnit(unit02);
-
-        group01.addUnit(group02);
-        group01.addUnit(unit03);
-        group01.addUnit(unit14);
-
-        group02.addUnit(unit10);
-        group02.addUnit(unit11);
-        group02.addUnit(unit12);
-        group02.addUnit(unit13);
-        group02.addUnit(unit15);
-        group02.addUnit(unit16);
-
-
-        group02.addUnit(unit04);
-        group02.addUnit(unit05);
-        group02.addUnit(unit06);
-        group02.addUnit(unit07);
-        group02.addUnit(unit08);
-
-        group02.addUnit(unit09);
-*/
 
         rootGroup.addUnit(group01);
         group01.addUnit(group02);
-        /*
-        MountainInfantryUnit red_mountain_inf_01 = unitRedCountryFactory.createMountainInfUnit("Mtn 755", "755", false, false, 0);
-        MountainInfantryUnit red_mountain_inf_02 = unitRedCountryFactory.createMountainInfUnit("Mtn 17", "17", true, true, 0);
-
-        AssaultGun assault_gun_01 = unitRedCountryFactory.createAssaultGunUnit("478 Assault_Gun", "478", false, false, 0);
-        AssaultGun assault_gun_02 = unitRedCountryFactory.createAssaultGunUnit("85 Assault_Gun", "85", true, true, 0);
-
-        MountainArtiUnit mountain_arti_01 = unitRedCountryFactory.createMountainArtiUnit("125th Mountain Art", "125", false, false, 1);
-        MountainArtiUnit mountain_arti_02 = unitRedCountryFactory.createMountainArtiUnit("82th Mountain Art", "82", true, true, 2);
-
-        SkiInfantryUnit ski_inf_01 = unitRedCountryFactory.createSkiInfUnit("45 Ski", "45", false, false, 0);
-        SkiInfantryUnit ski_inf_02 = unitRedCountryFactory.createSkiInfUnit("4 Ski", "4", true, true, 0);
-
-        MecaArtiUnit meca_arti_01 = unitRedCountryFactory.createMecaArtiUnit("302th", "302", false, false, 0);
-        MecaArtiUnit meca_arti_02 = unitRedCountryFactory.createMecaArtiUnit("32th", "32", true, true, 0);
-
-
-        MortarArtiUnit mortar_arti_01 = unitRedCountryFactory.createMortarArtiUnit("118th", "118", false, false, 0);
-        MortarArtiUnit mortar_arti_02 = unitRedCountryFactory.createMortarArtiUnit("9th", "9", true, true, 0);
-
-        CivilEngineerUnit civil_eng_01 = unitRedCountryFactory.createCivilEngineerUnit("10th NW", "10NW", false, false, 0);
-        CivilEngineerUnit civil_eng_02 = unitRedCountryFactory.createCivilEngineerUnit("2th W", "2W", true, true, 0);
-
-        MachineGunUnit machine_gun_01 = unitRedCountryFactory.createMachineGunUnit("725th", "728", false, false, 0);
-        MachineGunUnit machine_gun_02 = unitRedCountryFactory.createMachineGunUnit("122th", "122", true, true, 0);
-
-        RocketArtiUnit rocket_arti_01 = unitRedCountryFactory.createRocketArtiUnit("385th", "385", false, false, 0);
-        RocketArtiUnit rocket_arti_02 = unitRedCountryFactory.createRocketArtiUnit("35th", "35", true, true, 0);
-
-        GliderInfantryUnit glider_in_01 = unitRedCountryFactory.createGliderInfUnit("32th", "32", false, false, 0);
-        GliderInfantryUnit glider_in_02 = unitRedCountryFactory.createGliderInfUnit("32th", "32", true, true, 0);
-
-
-
-        BicycleInfUnit bicycle_inf_01 = unitRedCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
-        BicycleInfUnit bicycle_inf_02 = unitRedCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
-
-        MotorcycleInfUnit motorcycle_inf_01 = unitRedCountryFactory.createMotorcycleUnit("62th", "62", false, false, 0);
-        MotorcycleInfUnit motorcycle_inf_02 = unitRedCountryFactory.createMotorcycleUnit("6th", "6", true, true, 0);
-
-        HeavyTankUnit heavy_tank_01 = unitRedCountryFactory.createHeavyTankUnit("16th", "16", false, false, 0);
-        HeavyTankUnit heavy_tank_02 = unitRedCountryFactory.createHeavyTankUnit("6th", "6", true, true, 0);
-
-        SkiMachineGunUnit ski_mg_01 = unitRedCountryFactory.createSkiMachineGunUnit("372th", "372", false, false, 0);
-        SkiMachineGunUnit ski_mg_02 = unitRedCountryFactory.createSkiMachineGunUnit("372th", "372", true, true, 0);
-
-        LogisticUnit logistic_01 = unitRedCountryFactory.createLogisticUnit("16th", "16", false, false, 3);
-        LogisticUnit logistic_02 = unitRedCountryFactory.createLogisticUnit("11th", "1", true, true, 0);
-
-        MotoMortarArtiUnit moto_mortar_01 = unitRedCountryFactory.createMotoMortarArtiUnit("115th", "115", false, false, 0);
-        MotoMortarArtiUnit moto_mortar_02 = unitRedCountryFactory.createMotoMortarArtiUnit("75th", "75", true, true, 0);
-        
-         */
 
         MotoCivilEngineerUnit moto_civil_eng_01 = unitRedCountryFactory.createMotoCivilEngineerUnit("115th", "115", false, false, 0);
         MotoCivilEngineerUnit moto_civil_eng_02 = unitRedCountryFactory.createMotoCivilEngineerUnit("15th", "15", true, true, 0);
@@ -267,8 +196,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         MotoRocketArtiUnit moto_rocket_arti_01 = unitRedCountryFactory.createMotoRocketArtiUnit("115th", "115", false, false, 4);
         MotoRocketArtiUnit moto_rocket_arti_02 = unitRedCountryFactory.createMotoRocketArtiUnit("11th", "11", true, true, 5);
 
-        ParaInfUnit para_inf_01 = unitRedCountryFactory.createParaUnit("62th para", "62", false, false, 1);
-        ParaInfUnit para_inf_02 = unitRedCountryFactory.createParaUnit("16th para", "16", true, true, 1);
+        ParaInfUnit para_inf_01 = unitRedCountryFactory.createParaInfUnit("62th para", "62", false, false, 1);
+        ParaInfUnit para_inf_02 = unitRedCountryFactory.createParaInfUnit("16th para", "16", true, true, 1);
 
         ParaArtiUnit para_arti_01 = unitRedCountryFactory.createParaArtiUnit("112th", "112", false, false, 0);
         ParaArtiUnit para_arti_02 = unitRedCountryFactory.createParaArtiUnit("2nd", "2", true, true, 5);
@@ -281,44 +210,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         MotoBridgeEngineerUnit moto_bridge_eng_01 = unitRedCountryFactory.createMotoBridgeEngineerUnit("177th", "177", false, false, 0);
         MotoBridgeEngineerUnit moto_bridge_eng_02 = unitRedCountryFactory.createMotoBridgeEngineerUnit("85th", "85", true, true, 0);
 
-        /*
-        group02.addUnit(red_mountain_inf_01);
-        group02.addUnit(red_mountain_inf_02);
-        group02.addUnit(assault_gun_01);
-        group02.addUnit(assault_gun_02);
-        group02.addUnit(mountain_arti_01);
-        group02.addUnit(mountain_arti_02);
-        group02.addUnit(ski_inf_01);
-        group02.addUnit(ski_inf_02);
-        group02.addUnit(meca_arti_01);
-        group02.addUnit(meca_arti_02);
-
-        group02.addUnit(mortar_arti_01);
-        group02.addUnit(mortar_arti_02);
-        group02.addUnit(civil_eng_01);
-        group02.addUnit(civil_eng_02);
-        group02.addUnit(machine_gun_01);
-        group02.addUnit(machine_gun_02);
-        group02.addUnit(rocket_arti_01);
-        group02.addUnit(rocket_arti_02);
-        group02.addUnit(glider_in_01);
-        group02.addUnit(glider_in_02);
-
-
-        group02.addUnit(bicycle_inf_01);
-        group02.addUnit(bicycle_inf_02);
-        group02.addUnit(motorcycle_inf_01);
-        group02.addUnit(motorcycle_inf_02);
-        group02.addUnit(heavy_tank_01);
-        group02.addUnit(heavy_tank_02);
-        group02.addUnit(ski_mg_01);
-        group02.addUnit(ski_mg_02);
-        group02.addUnit(logistic_01);
-        group02.addUnit(logistic_02);
-        group02.addUnit(moto_mortar_01);
-        group02.addUnit(moto_mortar_02);
-
-         */
         group02.addUnit(moto_civil_eng_01);
         group02.addUnit(moto_civil_eng_02);
         group02.addUnit(moto_rocket_arti_01);
@@ -334,48 +225,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group02.addUnit(moto_bridge_eng_01);
         group02.addUnit(moto_bridge_eng_02);
 
-        //
-
-        /*
-        DivisionGroup elitInfDiv = unitRedCountryFactory.createEliteInfDivision("46th Guard div", "46G");
-        group02.addUnit(elitInfDiv);
-
-        DivisionGroup infDiv = unitRedCountryFactory.createInfDivision("455th div", "455");
-        group02.addUnit(infDiv);
-
-        DivisionGroup motoInfDiv = unitRedCountryFactory.createMotoInfDivision("78th moto div", "78M");
-        group02.addUnit(motoInfDiv);
-
-        BrigadeGroup motoInfBrig = unitRedCountryFactory.createMotoInfBrigade("77th moto brigade", "77M");
-        group02.addUnit(motoInfBrig);
-        */
-
         group01.addUnit(group03);
-
-
-        /*
-        MountainInfantryUnit black_mountain_inf_01 = unitBlackCountryFactory.createMountainInfUnit("Mtn 455", "455", false, false, 0);
-        MountainInfantryUnit black_mountain_inf_02 = unitBlackCountryFactory.createMountainInfUnit("Mtn 32", "32", true, true, 0);
-        AssaultGun black_assault_gun_01 = unitBlackCountryFactory.createAssaultGunUnit("311 Assault_Gun", "311", false, false, 0);
-        AssaultGun black_assault_gun_02 = unitBlackCountryFactory.createAssaultGunUnit("12 Assault_Gun", "12", true, true, 0);
-        MountainArtiUnit black_mountain_arti_01 = unitBlackCountryFactory.createMountainArtiUnit("14th Mountain Art", "14", false, false, 1);
-        MountainArtiUnit black_mountain_arti_02 = unitBlackCountryFactory.createMountainArtiUnit("7th Mountain Art", "7", true, true, 2);
-        SkiInfantryUnit black_ski_inf_01 = unitBlackCountryFactory.createSkiInfUnit("45 Ski", "45", false, false, 0);
-        SkiInfantryUnit black_ski_inf_02 = unitBlackCountryFactory.createSkiInfUnit("4 Ski", "4", true, true, 0);
-        MecaArtiUnit black_meca_arti_01 = unitBlackCountryFactory.createMecaArtiUnit("302th", "302", false, false, 0);
-        MecaArtiUnit black_meca_arti_02 = unitBlackCountryFactory.createMecaArtiUnit("32th", "32", true, true, 0);
-
-        MortarArtiUnit black_mortar_arti_01 = unitBlackCountryFactory.createMortarArtiUnit("118th", "118", false, false, 0);
-        MortarArtiUnit black_mortar_arti_02 = unitBlackCountryFactory.createMortarArtiUnit("9th", "9", true, true, 0);
-        CivilEngineerUnit black_civil_eng_01 = unitBlackCountryFactory.createCivilEngineerUnit("10th NW", "10NW", false, false, 0);
-        CivilEngineerUnit black_civil_eng_02 = unitBlackCountryFactory.createCivilEngineerUnit("2th W", "2W", true, true, 0);
-        MachineGunUnit black_machine_gun_01 = unitBlackCountryFactory.createMachineGunUnit("725th", "728", false, false, 0);
-        MachineGunUnit black_machine_gun_02 = unitBlackCountryFactory.createMachineGunUnit("122th", "122", true, true, 0);
-        RocketArtiUnit black_rocket_arti_01 = unitBlackCountryFactory.createRocketArtiUnit("145th", "145", false, false, 0);
-        RocketArtiUnit black_rocket_arti_02 = unitBlackCountryFactory.createRocketArtiUnit("8th", "8", true, true, 0);
-        GliderInfantryUnit black_glider_in_01 = unitBlackCountryFactory.createGliderInfUnit("32th", "32", false, false, 0);
-        GliderInfantryUnit black_glider_in_02 = unitBlackCountryFactory.createGliderInfUnit("32th", "32", true, true, 0);
-        */
 
         BicycleInfUnit black_bicycle_inf_01 = unitBlackCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
         BicycleInfUnit black_bicycle_inf_02 = unitBlackCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
@@ -394,31 +244,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         MotoRocketArtiUnit black_moto_rocket_arti_01 = unitBlackCountryFactory.createMotoRocketArtiUnit("328th", "328", false, false, 2);
         MotoRocketArtiUnit black_moto_rocket_arti_02 = unitBlackCountryFactory.createMotoRocketArtiUnit("10th", "10", true, true, 3);
 
-        /*
-        group03.addUnit(black_mountain_inf_01);
-        group03.addUnit(black_mountain_inf_02);
-        group03.addUnit(black_assault_gun_01);
-        group03.addUnit(black_assault_gun_02);
-        group03.addUnit(black_mountain_arti_01);
-        group03.addUnit(black_mountain_arti_02);
-        group03.addUnit(black_ski_inf_01);
-        group03.addUnit(black_ski_inf_02);
-        group03.addUnit(black_meca_arti_01);
-        group03.addUnit(black_meca_arti_02);
-
-        group03.addUnit(black_mortar_arti_01);
-
-        group03.addUnit(black_mortar_arti_02);
-        group03.addUnit(black_civil_eng_01);
-        group03.addUnit(black_civil_eng_02);
-        group03.addUnit(black_machine_gun_01);
-        group03.addUnit(black_machine_gun_02);
-        group03.addUnit(black_rocket_arti_01);
-        group03.addUnit(black_rocket_arti_02);
-        group03.addUnit(black_glider_in_01);
-        group03.addUnit(black_glider_in_02);
-
- */
         group03.addUnit(black_bicycle_inf_01);
         group03.addUnit(black_bicycle_inf_02);
         group03.addUnit(black_motorcycle_inf_01);
@@ -519,14 +344,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         group03.addUnit(blackMotoInfDiv);
         //units.add(rootGroup);
         */
-        tree.add(GraphicUtil.createTreeFromGroup(rootGroup, this));
+        tree.add(GraphicUtil.createTreeFromGroup(this.rootGroup, this));
         // ajouter listener
 
         EditArmyScreen that = this;
         tree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
             public void clicked (InputEvent event, float x, float y) {
                 System.out.println("click on root");
-                that.displayUnitInfos(rootGroup);
+                that.displayUnitInfos(that.rootGroup);
                 tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
             }
         });
@@ -537,30 +362,38 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         float rectWidth = (Gdx.graphics.getWidth() - (3 + 1) * 50f) / 3;
         float rectHeight = Gdx.graphics.getHeight() - 150f;
         tree.setBounds(0f, -20f, rectWidth, rectHeight);
-        this.leftPanel.addActor(tree);
-
     }
 
     public void displayUnitInfos(ElementInterface element) {
         //this.selectedUnitName = name;
+        this.selectedUnit = (UnitElement) element;
         if (selectedUnitNameLabel != null) {
-            selectedUnitNameLabel.setText("Unit Name : " + element.getName());
+            selectedUnitNameLabel.setText("Name : " + this.selectedUnit.getName());
         }
         if (selectedUnitTypeLabel != null) {
-            selectedUnitTypeLabel.setText("Unit Type : " + element.getType().toString());
+            selectedUnitTypeLabel.setText("Type : " + this.selectedUnit.getType().toString());
         }
         //selectedUnitAcronymLabel
         if (selectedUnitAcronymLabel != null) {
-            selectedUnitAcronymLabel.setText("Unit Acronym : " + element.getAcronym());
+            selectedUnitAcronymLabel.setText("Acronym : " + this.selectedUnit.getAcronym());
+        }
+
+        if (selectedUnitParentNameLabel != null ) {
+            if(this.selectedUnit.getParent() != null) {
+                selectedUnitParentNameLabel.setText("Parent Name : " + this.selectedUnit.getParent().getName());
+            }
+            else {
+                selectedUnitParentNameLabel.setText("Parent Name : Root");
+            }
         }
         // faire méthode qui génère la texture en fonction de l'element (unité)
-        Texture counterTexture = GraphicUtil.getCounterTextureFromUnit(element);
+        Texture counterTexture = GraphicUtil.getCounterTextureFromUnit(this.selectedUnit);
         //System.out.println("texture : " + counterTexture);
         if (selectedUnitIcon != null) {
             selectedUnitIcon.setDrawable(new TextureRegionDrawable(counterTexture));
         }
-
-
+        this.buttonDeleteWrapper.getButton().setDisabled(false);
+        this.buttonAddWrapper.getButton().setDisabled(!(element instanceof UnitGroup));
         //System.out.println("nom : " + element.getName());
     }
 
@@ -585,6 +418,80 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         panel.setBackground(background);
 
         return panel;
+    }
+
+    private Table createCenterButtonPanel() {
+        float padding = 20f;
+        Table panel = new Table();
+        panel.defaults().pad(2);
+
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(GraphicUtil.backgroundColorLight);
+        pixmap.fill();
+
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+        Drawable background = new TextureRegionDrawable(new TextureRegion(texture));
+
+        panel.setBounds(padding, Gdx.graphics.getHeight() - 460f, (Gdx.graphics.getWidth() - 200f) / 3 - 2 * padding, 100);
+
+        panel.setBackground(background);
+
+        this.buttonDeleteWrapper = new ButtonWrapper(
+            "Delete Unit",
+            font,
+            20,
+            20, 150, 50);
+        EditArmyScreen that = this;
+
+        this.buttonDeleteWrapper.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+
+                System.out.println("click delete unit");
+                if(selectedUnit != null) {
+
+                    //tree.clear();
+                    //tree.add(GraphicUtil.createTreeFromGroup(rootGroup, that));
+
+                    //that.tree.updateRootNodes();
+                    that.removeSelectedUnitAndUpdateTree();
+                }
+            }
+        });
+        this.buttonDeleteWrapper.getButton().setDisabled(true);
+        panel.addActor(this.buttonDeleteWrapper.getButton());
+
+        this.buttonAddWrapper = new ButtonWrapper(
+            "Add Unit",
+            font,
+            190,
+            20, 150, 50);
+
+        this.buttonAddWrapper.getButton().addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                System.out.println("click add unit");
+            }
+        });
+        this.buttonAddWrapper.getButton().setDisabled(true);
+
+        panel.addActor(this.buttonAddWrapper.getButton());
+
+        return panel;
+    }
+
+    private void removeSelectedUnitAndUpdateTree() {
+        selectedUnit.getParent().removeUnit(selectedUnit);
+        //GraphicUtil.printGroup(rootGroup);
+        tree.clear();
+        UnitNode root = GraphicUtil.createTreeFromGroup(rootGroup, this);
+        tree.add(root);
+        tree.expandAll(); // Ne fonctionne pas sans !!!
+        // TODO : Raz de selectedUnit
+        // TODO : ajouter listener sur root !!!
+        tree.invalidateHierarchy();
     }
 
     @Override

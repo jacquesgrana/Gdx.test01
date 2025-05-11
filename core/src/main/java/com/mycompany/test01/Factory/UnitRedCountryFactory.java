@@ -43,7 +43,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public ParaInfUnit createParaUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+    public ParaInfUnit createParaInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new ParaInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 

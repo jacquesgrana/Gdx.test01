@@ -1,5 +1,6 @@
 package com.mycompany.test01.Interface;
 
+import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
@@ -7,6 +8,10 @@ public interface ElementInterface {
     public int getId();
 
     public void setId(int id);
+
+    public UnitGroup getParent();
+
+    public void setParent(UnitGroup parent);
 
     public String getName();
 

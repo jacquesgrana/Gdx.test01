@@ -522,6 +522,21 @@ public class GraphicUtil {
         return groupNode;
     }
 
+    public static void printGroup(UnitGroup group) {
+
+        // Parcourir les unités du groupe
+        for (ElementInterface element : group.getUnits()) {
+            if (element instanceof UnitGroup) {
+                printGroup((UnitGroup) element);
+
+
+            } else if (element instanceof Unit) {
+
+            }
+            System.out.println("type : " + element.getType() + " / Name : " + element.getName());
+        }
+    }
+
     public static Texture getCounterTextureFromUnit(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         Texture background = getCountryTexture(unit);

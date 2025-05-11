@@ -33,6 +33,7 @@ public abstract class UnitGroup extends UnitElement { // implements Element
 
     public void addUnit(ElementInterface element) {
         if(element != null) {
+            element.setParent(this);
             this.units.add(element);
         }
     }

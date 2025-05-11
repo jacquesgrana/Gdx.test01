@@ -17,7 +17,7 @@ public interface UnitFactoryInterface {
 
     public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank);
 
-    public ParaInfUnit createParaUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
+    public ParaInfUnit createParaInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
     public MarineUnit createMarineUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank);
 

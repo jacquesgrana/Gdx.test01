@@ -13,6 +13,7 @@ todo : ajouter booleen isElite + ajouter int regPosition (0 - 3) + ajouter boole
 public abstract class UnitElement implements ElementInterface {
     private static int unitCounter = 0;
     protected int id;
+    protected UnitGroup parent;
     protected String name;
     protected String acronym;
     protected CountryEnum country;
@@ -26,6 +27,7 @@ public abstract class UnitElement implements ElementInterface {
 
     public UnitElement() {
         this.id = unitCounter;
+        this.parent = null;
         this.name = "";
         this.acronym = "";
         this.country = CountryEnum.NO_COUNTRY;
@@ -83,6 +85,16 @@ public abstract class UnitElement implements ElementInterface {
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public UnitGroup getParent() {
+        return this.parent;
+    }
+
+    @Override
+    public void setParent(UnitGroup parent) {
+        this.parent = parent;
     }
 
     @Override
