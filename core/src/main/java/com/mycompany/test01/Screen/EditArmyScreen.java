@@ -3,7 +3,6 @@ package com.mycompany.test01.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -165,6 +164,31 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         this.leftPanel.addActor(tree);
 
+    }
+
+    private void resetSelectedUnit() {
+        this.selectedUnit = null;
+
+        //"nothing selected"
+        selectedUnitNameLabel.setText("nothing selected");
+        selectedUnitTypeLabel.setText("nothing selected");
+        selectedUnitAcronymLabel.setText("nothing selected");
+        selectedUnitParentNameLabel.setText("nothing selected");
+        selectedUnitIcon.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getEmptyTexture())));
+
+        this.buttonDeleteWrapper.getButton().setDisabled(true);
+        this.buttonAddWrapper.getButton().setDisabled(true);
+    }
+
+    private void addListenerToRootTreeNode() {
+        EditArmyScreen that = this;
+        tree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
+            public void clicked (InputEvent event, float x, float y) {
+                System.out.println("click on root");
+                that.displayUnitInfos(that.rootGroup);
+                tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
+            }
+        });
     }
 
     public void initTree() {
@@ -347,6 +371,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.add(GraphicUtil.createTreeFromGroup(this.rootGroup, this));
         // ajouter listener
 
+        /*
         EditArmyScreen that = this;
         tree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
             public void clicked (InputEvent event, float x, float y) {
@@ -355,6 +380,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
                 tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
             }
         });
+        */
+        addListenerToRootTreeNode();
 
         tree.expandAll();
 
@@ -469,16 +496,13 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             20, 150, 50);
 
         this.buttonAddWrapper.getButton().addListener(new ChangeListener() {
-
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 System.out.println("click add unit");
             }
         });
         this.buttonAddWrapper.getButton().setDisabled(true);
-
         panel.addActor(this.buttonAddWrapper.getButton());
-
         return panel;
     }
 
@@ -488,11 +512,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.clear();
         UnitNode root = GraphicUtil.createTreeFromGroup(rootGroup, this);
         tree.add(root);
-        tree.expandAll(); // Ne fonctionne pas sans !!!
-        // TODO : Raz de selectedUnit
-        // TODO : ajouter listener sur root !!!
+        tree.expandAll();
+        addListenerToRootTreeNode();
         tree.invalidateHierarchy();
+
+        // TODO : Raz de selectedUnit
+        resetSelectedUnit();
     }
+
 
     @Override
     public void show() {
