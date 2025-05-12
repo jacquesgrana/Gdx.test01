@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Tree;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.mycompany.test01.Common.UnitNode;
@@ -303,6 +301,89 @@ public class GraphicUtil {
 
         return skin;
     }
+
+    public static Skin getLabelSkin(int width, int height) {
+        Skin skin = new Skin();
+
+        // Génère une police par défaut
+        BitmapFont font = new BitmapFont();
+        skin.add("default", font);
+
+        // Crée un fond pour le label (optionnel, tu peux l'enlever si tu veux un fond transparent)
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        pixmap.setColor(GraphicUtil.buttonColorMedium); // à définir dans GraphicUtil, par exemple Color.CLEAR ou une couleur douce
+        pixmap.fill();
+        skin.add("label-bg", new Texture(pixmap));
+        pixmap.dispose();
+
+        // Crée le style du label
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = skin.getFont("default");
+        labelStyle.background = skin.newDrawable("label-bg"); // optionnel, retire cette ligne pour un label sans fond
+
+        skin.add("default", labelStyle);
+
+        return skin;
+    }
+
+
+    public static Skin getSelectorSkin(int width, int height) {
+        Skin skin = new Skin();
+
+        // Generate a default font
+        BitmapFont font = new BitmapFont();
+        skin.add("default", font);
+
+        // Create textures for different states
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        pixmap.setColor(GraphicUtil.buttonColorMedium);
+        pixmap.fill();
+        pixmap.setColor(GraphicUtil.buttonBorderColorDark);
+        pixmap.drawRectangle(0, 0, width, height);
+        skin.add("selectbox", new Texture(pixmap));
+
+        // Create a background for the dropdown list
+        Pixmap listBg = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        listBg.setColor(GraphicUtil.buttonColorMedium);
+        listBg.fill();
+        listBg.setColor(GraphicUtil.buttonBorderColorDark);
+        listBg.drawRectangle(0, 0, width, height);
+        skin.add("list-bg", new Texture(listBg));
+
+        // Create a selection background
+        Pixmap selectionBg = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        selectionBg.setColor(GraphicUtil.buttonHoverColorMedium);
+        selectionBg.fill();
+        skin.add("selection", new Texture(selectionBg));
+
+        // Dispose pixmaps
+        pixmap.dispose();
+        listBg.dispose();
+        selectionBg.dispose();
+
+        // Create ScrollPane style (required by SelectBox)
+        ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
+        skin.add("default", scrollPaneStyle);
+
+        // Create List style (required by SelectBox)
+        List.ListStyle listStyle = new List.ListStyle();
+        listStyle.font = skin.getFont("default");
+        listStyle.selection = skin.newDrawable("selection");
+        listStyle.background = skin.newDrawable("list-bg");
+        skin.add("default", listStyle);
+
+        // Create SelectBox style
+        SelectBox.SelectBoxStyle selectBoxStyle = new SelectBox.SelectBoxStyle();
+        selectBoxStyle.font = skin.getFont("default");
+        selectBoxStyle.background = skin.newDrawable("selectbox");
+        selectBoxStyle.scrollStyle = skin.get(ScrollPane.ScrollPaneStyle.class);
+        selectBoxStyle.listStyle = skin.get(List.ListStyle.class);
+        selectBoxStyle.background = skin.newDrawable("selectbox");
+        skin.add("default", selectBoxStyle);
+
+        return skin;
+    }
+
 
     public static Skin getUnitTreeSkin() {
         Skin skin = new Skin();

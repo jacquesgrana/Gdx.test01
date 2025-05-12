@@ -12,16 +12,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mycompany.test01.Common.ButtonWrapper;
+import com.mycompany.test01.Enum.CountryEnum;
+import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Factory.UnitBlackCountryFactory;
 import com.mycompany.test01.Factory.UnitBlueCountryFactory;
 import com.mycompany.test01.Factory.UnitBrownCountryFactory;
@@ -32,16 +33,19 @@ import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
 
+import java.awt.*;
+
 
 public class EditArmyScreen implements Screen, InputProcessor { //,
     final Main game;
     private final Stage stage;
     private final BitmapFont font;
     //private ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private final Table leftPanel, centerPanel, rightPanel, centerButtonPanel;
+    private final Table leftPanel, centerPanel, rightPanel, centerButtonPanel, rightSelectPanel;
     private Tree<UnitNode, String> tree;
 
     private UnitElement selectedUnit;
+    private CountryEnum selectedCountry;
     private FrontGroup rootGroup;
 
     //private String selectedUnitName = "nothing selected";
@@ -82,6 +86,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         this.font = new BitmapFont();
         this.selectedUnit = null;
+        this.selectedCountry = CountryEnum.NO_COUNTRY;
         /*
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Roboto_Condensed-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -164,6 +169,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         this.leftPanel.addActor(tree);
 
+        this.rightSelectPanel = createRightSelectPanel();
+        this.rightSelectPanel.setVisible(false); // à modifier qd tt sera ok
+        this.rightPanel.addActor(rightSelectPanel);
     }
 
     private void resetSelectedUnit() {
@@ -421,6 +429,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         }
         this.buttonDeleteWrapper.getButton().setDisabled(false);
         this.buttonAddWrapper.getButton().setDisabled(!(element instanceof UnitGroup));
+        this.rightSelectPanel.setVisible(false);
         //System.out.println("nom : " + element.getName());
     }
 
@@ -443,6 +452,71 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         //panel.setPosition(x, 100f);
         panel.setBounds(x, 100f, rectWidth, rectHeight);
         panel.setBackground(background);
+
+        return panel;
+    }
+
+    private Table createRightSelectPanel() {
+        Table panel = new Table();
+        panel.defaults().pad(2);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(GraphicUtil.backgroundColorLight);
+        pixmap.fill();
+
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+        Drawable background = new TextureRegionDrawable(new TextureRegion(texture));
+
+        panel.setBounds(50f, Gdx.graphics.getHeight() - 300f, (Gdx.graphics.getWidth() - 200f) / 3 - 100f, 100f);
+
+        panel.setBackground(background);
+
+        // TODO (améliorer : set le pays à la création du FrontGroup racine)
+        SelectBox<CountryEnum> selectCountryBox = new SelectBox<>(GraphicUtil.getSelectorSkin(150, 30));
+        selectCountryBox.setItems(
+            CountryEnum.BLACK_COUNTRY,
+            CountryEnum.BLUE_COUNTRY,
+            CountryEnum.BROWN_COUNTRY,
+            CountryEnum.GREEN_COUNTRY,
+            CountryEnum.RED_COUNTRY
+            //CountryEnum.YELLOW_COUNTRY,
+            );
+        // Création du label qui sera mis à jour
+        final Label countryLabel = new Label(getSelectedCountry().toString(), GraphicUtil.getLabelSkin(200, 30));
+
+        // Ajout du listener pour gérer l'événement de sélection
+        selectCountryBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setSelectedCountry(selectCountryBox.getSelected());
+                countryLabel.setText(getSelectedCountry().toString());
+            }
+        });
+
+        panel.add(selectCountryBox).width(150);
+        panel.add(countryLabel).width(200);
+        panel.row();
+
+        // TODO ajouter un sélecteur pour choisir l'unité
+        SelectBox<UnitTypeEnum> selectUnitBox = new SelectBox<>(GraphicUtil.getSelectorSkin(200, 30));
+        selectUnitBox.setItems(UnitTypeEnum.ANTI_TANK, UnitTypeEnum.ANTI_AIR, UnitTypeEnum.ARMY_HQ, UnitTypeEnum.ARTI);
+
+        final Label unitTypeLabel = new Label("Nothing Selected", GraphicUtil.getLabelSkin(200, 30));
+        selectUnitBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //setSelectedCountry();
+                unitTypeLabel.setText(selectUnitBox.getSelected().toString());
+            }
+        });
+
+
+        panel.add(selectUnitBox).width(150);
+        panel.add(unitTypeLabel).width(200);
+        panel.row();
+        // TODO ajouter un label pour afficher des infos de l'unité choisie
+        // TODO ajouter un bouton pour valider l'ajout
+
 
         return panel;
     }
@@ -495,10 +569,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             190,
             20, 150, 50);
 
+        //EditArmyScreen that = this;
         this.buttonAddWrapper.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 System.out.println("click add unit");
+                //if (selectedUnit instanceof )
+                that.rightSelectPanel.setVisible(true); // à modifier qd tt sera ok
+                // débloquer le sélecteur et le label de rightSelectPanel
             }
         });
         this.buttonAddWrapper.getButton().setDisabled(true);
@@ -515,8 +593,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.expandAll();
         addListenerToRootTreeNode();
         tree.invalidateHierarchy();
-
-        // TODO : Raz de selectedUnit
         resetSelectedUnit();
     }
 
@@ -554,6 +630,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 
+    }
+
+    public CountryEnum getSelectedCountry() {
+        return selectedCountry;
+    }
+
+    public void setSelectedCountry(CountryEnum selectedCountry) {
+        this.selectedCountry = selectedCountry;
     }
 
     @Override

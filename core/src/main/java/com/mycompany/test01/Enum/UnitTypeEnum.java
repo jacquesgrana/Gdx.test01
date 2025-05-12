@@ -13,11 +13,9 @@ public enum UnitTypeEnum {
     PARA_ARTI ("Para Artillery"),
     PARA_MORTAR_ARTI ("Para Mortar Artillery"),
 
-
     ANTI_TANK ("Anti Tank"),
     ANTI_AIR ("Anti Air"),
     HEAVY_ANTI_AIR ("Heavy Anti Air"),
-
 
     INFANTRY ("Infantry"),
     CAVALRY ("Cavalry"),
@@ -39,13 +37,12 @@ public enum UnitTypeEnum {
     MOTORISED_INF ("Motorised Infantry"),
     ASSAULT_GUN ("Assault Gun"),
     MECHANISED_RECO ("Mechanised Reco"),
-    MECHANISED_ENGINEER ("Mechanised Engineer"),
+    //MECHANISED_ENGINEER ("Mechanised Engineer"),
     MOTORISED_ENGINEER ("Motorised Engineer"),
     MOTORISED_CIVIL_ENGINEER ("Motorised Civil Engineer"),
     MOTORISED_BRIDGE_ENGINEER ("Motorised Bridge Engineer"),
 
-
-    MOTORISED_LOGISTIC ("Motorised Logistic"),
+    //MOTORISED_LOGISTIC ("Motorised Logistic"),
     MECHANISED_ARTI ("Mechanised Artillery"),
     MOTORISED_ARTI ("Motorised Artillery"),
     MOTORISED_MORTAR_ARTI ("Motorised Mortar Artillery"),
