@@ -19,9 +19,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Enum.CountryEnum;
+import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Factory.UnitBlackCountryFactory;
 import com.mycompany.test01.Factory.UnitBlueCountryFactory;
@@ -34,6 +36,11 @@ import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class EditArmyScreen implements Screen, InputProcessor { //,
@@ -47,12 +54,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private UnitElement selectedUnit;
     private CountryEnum selectedCountry;
     private FrontGroup rootGroup;
-
+    // TODO List<UnitTypeEnum> allValuesList = Stream.of(UnitTypeEnum.values()).collect(Collectors.toList());
+    private ElementSelectorType[] unitSelectorList;
     //private String selectedUnitName = "nothing selected";
     private final Label selectedUnitNameLabel;
     private final Label selectedUnitTypeLabel;
     private final Label selectedUnitAcronymLabel;
     private final Label selectedUnitParentNameLabel;
+
+    private final Label selectedCountryLabel;
     private final Image selectedUnitIcon;
 
     //private final Table centerButtonPanel;
@@ -64,6 +74,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
     private ButtonWrapper buttonDeleteWrapper = null;
     private ButtonWrapper buttonAddWrapper = null;
+
+    private SelectBox<ElementSelectorType> selectUnitBox;
     //private Skin skin;
 
     /*
@@ -87,6 +99,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.font = new BitmapFont();
         this.selectedUnit = null;
         this.selectedCountry = CountryEnum.NO_COUNTRY;
+        this.selectedCountryLabel = new Label(getSelectedCountry().toString(), GraphicUtil.getLabelSkin(200, 30));
+        this.unitSelectorList = new ElementSelectorType[100]; // TODO 100?
         /*
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Roboto_Condensed-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -430,6 +444,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.buttonDeleteWrapper.getButton().setDisabled(false);
         this.buttonAddWrapper.getButton().setDisabled(!(element instanceof UnitGroup));
         this.rightSelectPanel.setVisible(false);
+        // TODO valider ?? --> oui ??
+        if (element instanceof UnitGroup) {
+            this.setSelectedCountry(element.getCountry());
+            this.selectedCountryLabel.setText(this.getSelectedCountry().toString());
+        }
         //System.out.println("nom : " + element.getName());
     }
 
@@ -482,27 +501,42 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             //CountryEnum.YELLOW_COUNTRY,
             );
         // Création du label qui sera mis à jour
-        final Label countryLabel = new Label(getSelectedCountry().toString(), GraphicUtil.getLabelSkin(200, 30));
+        //final Label countryLabel = new Label(getSelectedCountry().toString(), GraphicUtil.getLabelSkin(200, 30));
 
         // Ajout du listener pour gérer l'événement de sélection
         selectCountryBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 setSelectedCountry(selectCountryBox.getSelected());
-                countryLabel.setText(getSelectedCountry().toString());
+                selectedCountryLabel.setText(getSelectedCountry().toString());
+
             }
         });
 
         panel.add(selectCountryBox).width(150);
-        panel.add(countryLabel).width(200);
+        panel.add(selectedCountryLabel).width(200);
         panel.row();
 
         // TODO ajouter un sélecteur pour choisir l'unité
-        SelectBox<UnitTypeEnum> selectUnitBox = new SelectBox<>(GraphicUtil.getSelectorSkin(200, 30));
-        selectUnitBox.setItems(UnitTypeEnum.ANTI_TANK, UnitTypeEnum.ANTI_AIR, UnitTypeEnum.ARMY_HQ, UnitTypeEnum.ARTI);
+        this.selectUnitBox = new SelectBox<>(GraphicUtil.getSelectorSkin(200, 30));
+        /*
+        Array<ElementSelectorType> gdxArray = new Array<>(ElementSelectorType.values());
+        selectUnitBox.setItems(gdxArray);
+         */
+
+        System.out.println("selected country : " + getSelectedCountry());
+        // Filtrer avec Stream API
+        ElementSelectorType[] filteredTypes = Arrays.stream(ElementSelectorType.values())
+            .filter(type -> type.getCountry().equals(CountryEnum.NO_COUNTRY) ||
+                type.getCountry().equals(getSelectedCountry()))
+            .toArray(ElementSelectorType[]::new);
+
+        // Convertir en Array de libGDX
+        Array<ElementSelectorType> gdxArray = new Array<>(filteredTypes);
+        selectUnitBox.setItems(gdxArray);
 
         final Label unitTypeLabel = new Label("Nothing Selected", GraphicUtil.getLabelSkin(200, 30));
-        selectUnitBox.addListener(new ChangeListener() {
+        this.selectUnitBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //setSelectedCountry();
@@ -577,6 +611,17 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
                 //if (selectedUnit instanceof )
                 that.rightSelectPanel.setVisible(true); // à modifier qd tt sera ok
                 // débloquer le sélecteur et le label de rightSelectPanel
+                
+
+                // TODO faire méthode pour la mise à jour du sélecteur, code dupliqué avec construction du rightPanel
+                that.unitSelectorList = Arrays.stream(ElementSelectorType.values())
+                    .filter(type -> (type.getCountry().equals(CountryEnum.NO_COUNTRY) ||
+                        type.getCountry().equals(getSelectedCountry())) && !type.equals(ElementSelectorType.NO_TYPE))
+                    .toArray(ElementSelectorType[]::new);
+                //that.unitSelectorList = filteredTypes;
+                // Convertir en Array de libGDX
+                Array<ElementSelectorType> gdxArray = new Array<>(that.unitSelectorList);
+                that.selectUnitBox.setItems(gdxArray);
             }
         });
         this.buttonAddWrapper.getButton().setDisabled(true);

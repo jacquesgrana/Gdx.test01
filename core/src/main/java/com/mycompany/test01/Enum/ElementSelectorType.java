@@ -86,6 +86,10 @@ public enum ElementSelectorType {
 
     public CountryEnum getCountry() { return this.country; }
 
+    public boolean equals(ElementSelectorType toCompare) {
+        return this.name == toCompare.getName() && this.country == toCompare.country;
+    }
+
     @Override
     public String toString() {
         return this.name;

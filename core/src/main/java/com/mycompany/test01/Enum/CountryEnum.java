@@ -1,5 +1,7 @@
 package com.mycompany.test01.Enum;
 
+import java.util.Objects;
+
 public enum CountryEnum {
     RED_COUNTRY ("Red Country"),
     BLUE_COUNTRY("Blue Country"),
@@ -17,6 +19,10 @@ public enum CountryEnum {
 
     public String getName() {
         return this.name;
+    }
+
+    public boolean equals(CountryEnum toCompare) {
+        return Objects.equals(this.name, toCompare.getName());
     }
 
     @Override
