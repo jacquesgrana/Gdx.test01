@@ -10,10 +10,9 @@ public class MecaRecoUnit extends Unit {
         String acronym,
         CountryEnum country,
         boolean isElite,
-        boolean isMotorised,
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-       super(name, acronym, country, UnitTypeEnum.MECHANISED_RECO, false, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.MECHANISED_RECO, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

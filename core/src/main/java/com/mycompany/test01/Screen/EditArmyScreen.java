@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -24,7 +25,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
-import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Factory.UnitBlackCountryFactory;
 import com.mycompany.test01.Factory.UnitBlueCountryFactory;
 import com.mycompany.test01.Factory.UnitBrownCountryFactory;
@@ -34,13 +34,10 @@ import com.mycompany.test01.Entity.Unit.*;
 import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Util.UnitUtil;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Objects;
 
 
 public class EditArmyScreen implements Screen, InputProcessor { //,
@@ -76,6 +73,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private ButtonWrapper buttonAddWrapper = null;
 
     private SelectBox<ElementSelectorType> selectUnitBox;
+    private SelectBox<CountryEnum> selectCountryBox;
+
     //private Skin skin;
 
     /*
@@ -275,8 +274,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         BicycleInfUnit black_bicycle_inf_01 = unitBlackCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
         BicycleInfUnit black_bicycle_inf_02 = unitBlackCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
-        MotorcycleInfUnit black_motorcycle_inf_01 = unitBlackCountryFactory.createMotorcycleUnit("62th", "62", false, false, 0);
-        MotorcycleInfUnit black_motorcycle_inf_02 = unitBlackCountryFactory.createMotorcycleUnit("6th", "6", true, true, 0);
+        MotorcycleInfUnit black_motorcycle_inf_01 = unitBlackCountryFactory.createMotorcycleInfUnit("62th", "62", false, false, 0);
+        MotorcycleInfUnit black_motorcycle_inf_02 = unitBlackCountryFactory.createMotorcycleInfUnit("6th", "6", true, true, 0);
         HeavyTankUnit black_heavy_tank_01 = unitBlackCountryFactory.createHeavyTankUnit("33th", "33", false, false, 0);
         HeavyTankUnit black_heavy_tank_02 = unitBlackCountryFactory.createHeavyTankUnit("7th", "7", true, true, 0);
         SkiMachineGunUnit black_ski_mg_01 = unitBlackCountryFactory.createSkiMachineGunUnit("372th", "372", false, false, 0);
@@ -311,8 +310,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         BicycleInfUnit blue_bicycle_inf_01 = unitBlueCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
         BicycleInfUnit blue_bicycle_inf_02 = unitBlueCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
-        MotorcycleInfUnit blue_motorcycle_inf_01 = unitBlueCountryFactory.createMotorcycleUnit("62th", "62", false, false, 0);
-        MotorcycleInfUnit blue_motorcycle_inf_02 = unitBlueCountryFactory.createMotorcycleUnit("6th", "6", true, true, 0);
+        MotorcycleInfUnit blue_motorcycle_inf_01 = unitBlueCountryFactory.createMotorcycleInfUnit("62th", "62", false, false, 0);
+        MotorcycleInfUnit blue_motorcycle_inf_02 = unitBlueCountryFactory.createMotorcycleInfUnit("6th", "6", true, true, 0);
         HeavyTankUnit blue_heavy_tank_01 = unitBlueCountryFactory.createHeavyTankUnit("33th", "33", false, false, 0);
         HeavyTankUnit blue_heavy_tank_02 = unitBlueCountryFactory.createHeavyTankUnit("7th", "7", true, true, 0);
         SkiMachineGunUnit blue_ski_mg_01 = unitBlueCountryFactory.createSkiMachineGunUnit("372th", "372", false, false, 0);
@@ -347,8 +346,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         BicycleInfUnit brown_bicycle_inf_01 = unitBrownCountryFactory.createBicycleUnit("62th", "62", false, false, 0);
         BicycleInfUnit brown_bicycle_inf_02 = unitBrownCountryFactory.createBicycleUnit("6th", "6", true, true, 0);
-        MotorcycleInfUnit brown_motorcycle_inf_01 = unitBrownCountryFactory.createMotorcycleUnit("62th", "62", false, false, 0);
-        MotorcycleInfUnit brown_motorcycle_inf_02 = unitBrownCountryFactory.createMotorcycleUnit("6th", "6", true, true, 0);
+        MotorcycleInfUnit brown_motorcycle_inf_01 = unitBrownCountryFactory.createMotorcycleInfUnit("62th", "62", false, false, 0);
+        MotorcycleInfUnit brown_motorcycle_inf_02 = unitBrownCountryFactory.createMotorcycleInfUnit("6th", "6", true, true, 0);
         HeavyTankUnit brown_heavy_tank_01 = unitBrownCountryFactory.createHeavyTankUnit("33th", "33", false, false, 0);
         HeavyTankUnit brown_heavy_tank_02 = unitBrownCountryFactory.createHeavyTankUnit("7th", "7", true, true, 0);
         SkiMachineGunUnit brown_ski_mg_01 = unitBrownCountryFactory.createSkiMachineGunUnit("372th", "372", false, false, 0);
@@ -448,6 +447,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         if (element instanceof UnitGroup) {
             this.setSelectedCountry(element.getCountry());
             this.selectedCountryLabel.setText(this.getSelectedCountry().toString());
+            // TODO set country selector sur le bon pays
+            this.selectCountryBox.setSelected(this.getSelectedCountry());
+            this.selectedCountryLabel.setText(this.getSelectedCountry().toString());
         }
         //System.out.println("nom : " + element.getName());
     }
@@ -481,22 +483,23 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(GraphicUtil.backgroundColorLight);
         pixmap.fill();
+        EditArmyScreen that = this;
 
         Texture texture = new Texture(pixmap);
         pixmap.dispose();
         Drawable background = new TextureRegionDrawable(new TextureRegion(texture));
 
-        panel.setBounds(50f, Gdx.graphics.getHeight() - 300f, (Gdx.graphics.getWidth() - 200f) / 3 - 100f, 100f);
+        panel.setBounds(50f, Gdx.graphics.getHeight() - 500f, (Gdx.graphics.getWidth() - 200f) / 3 - 100f, 300f);
 
         panel.setBackground(background);
 
         // TODO (améliorer : set le pays à la création du FrontGroup racine)
-        SelectBox<CountryEnum> selectCountryBox = new SelectBox<>(GraphicUtil.getSelectorSkin(150, 30));
-        selectCountryBox.setItems(
+        this.selectCountryBox = new SelectBox<>(GraphicUtil.getSelectorSkin(150, 30));
+        this.selectCountryBox.setItems(
             CountryEnum.BLACK_COUNTRY,
             CountryEnum.BLUE_COUNTRY,
             CountryEnum.BROWN_COUNTRY,
-            CountryEnum.GREEN_COUNTRY,
+            //CountryEnum.GREEN_COUNTRY,
             CountryEnum.RED_COUNTRY
             //CountryEnum.YELLOW_COUNTRY,
             );
@@ -504,12 +507,12 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         //final Label countryLabel = new Label(getSelectedCountry().toString(), GraphicUtil.getLabelSkin(200, 30));
 
         // Ajout du listener pour gérer l'événement de sélection
-        selectCountryBox.addListener(new ChangeListener() {
+        this.selectCountryBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 setSelectedCountry(selectCountryBox.getSelected());
-                selectedCountryLabel.setText(getSelectedCountry().toString());
-
+                //System.out.println("selected country : " + selectCountryBox.getSelected());
+                that.selectedCountryLabel.setText(that.getSelectedCountry().toString());
             }
         });
 
@@ -519,11 +522,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         // TODO ajouter un sélecteur pour choisir l'unité
         this.selectUnitBox = new SelectBox<>(GraphicUtil.getSelectorSkin(200, 30));
+        //this.selectCountryBox = new SelectBox<>(GraphicUtil.getSelectorSkin(150, 30));
+
         /*
         Array<ElementSelectorType> gdxArray = new Array<>(ElementSelectorType.values());
         selectUnitBox.setItems(gdxArray);
          */
 
+        /*
         System.out.println("selected country : " + getSelectedCountry());
         // Filtrer avec Stream API
         ElementSelectorType[] filteredTypes = Arrays.stream(ElementSelectorType.values())
@@ -534,6 +540,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         // Convertir en Array de libGDX
         Array<ElementSelectorType> gdxArray = new Array<>(filteredTypes);
         selectUnitBox.setItems(gdxArray);
+        */
+        this.updateUnitSelectorList(); // TODO vérifier si utile
 
         final Label unitTypeLabel = new Label("Nothing Selected", GraphicUtil.getLabelSkin(200, 30));
         this.selectUnitBox.addListener(new ChangeListener() {
@@ -548,11 +556,113 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         panel.add(selectUnitBox).width(150);
         panel.add(unitTypeLabel).width(200);
         panel.row();
+
+        // TODO ajouter un sélecteur pour choisir le rang du régiment
+        SelectBox<Integer> selectRegRankBox = new SelectBox<Integer>(GraphicUtil.getSelectorSkin(200, 30));
+        final Label unitRegRankLabel = new Label("0", GraphicUtil.getLabelSkin(200, 30));
+
+        selectRegRankBox.setItems(0, 1, 2, 3, 4, 5);
+        selectRegRankBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //setSelectedCountry();
+                unitRegRankLabel.setText(selectRegRankBox.getSelected());
+            }
+        });
+
+        panel.add(selectRegRankBox).width(150);
+        panel.add(unitRegRankLabel).width(200);
+        panel.row();
+
         // TODO ajouter un label pour afficher des infos de l'unité choisie
+
+
+
+        // Création des labels et champs de saisie
+        Label nameLabel = new Label("Name:", GraphicUtil.getLabelSkin(150, 30));
+        TextField nameField = new TextField("", GraphicUtil.getTextFieldSkin(150, 30));
+
+        Label acronymLabel = new Label("Acronym:", GraphicUtil.getLabelSkin(150, 30));
+        TextField acronymField = new TextField("", GraphicUtil.getTextFieldSkin(150, 30));
+
+        // Création de la table
+        panel.add(nameLabel).padRight(10);
+        panel.add(nameField).width(150).padBottom(5);
+        panel.row();
+        panel.add(acronymLabel).padRight(10);
+        panel.add(acronymField).width(150);
+
+        // Création du skin pour les CheckBox
+        Skin checkBoxSkin = GraphicUtil.getCheckBoxSkin(24);
+
+        // Création des cases à cocher
+        CheckBox isEliteCheckBox = new CheckBox(" Elite", checkBoxSkin);
+        //CheckBox isCompanyCheckBox = new CheckBox(" Company", checkBoxSkin);
+
+        // Ajout à la table (par exemple, sous les champs de saisie)
+        panel.row().padTop(10);
+        panel.add(isEliteCheckBox).center();
+        //panel.add(isCompanyCheckBox).left().colspan(2);
+
         // TODO ajouter un bouton pour valider l'ajout
+        ButtonWrapper buttonValidateWrapper = new ButtonWrapper(
+            "Validate",
+            font,
+            0,
+            0, 150, 50);
+        buttonValidateWrapper.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                System.out.println("click validate add unit");
+                if(
+                    !nameField.getText().isEmpty()
+                        && !acronymField.getText().isEmpty()
+                        && !Objects.equals(unitTypeLabel.getText().toString(), "Nothing Selected")
+                ) {
+                    System.out.println("unitType, nameField and acronymField ok !!");
+                    String unitName = nameField.getText();
+                    String unitAcronym = acronymField.getText();
+                    boolean isUnitElite = isEliteCheckBox.isChecked();
+                    //boolean isUnitCompany = isCompanyCheckBox.isChecked();
+                    CountryEnum unitCountry = that.getSelectedCountry();
+                    ElementSelectorType unitType = selectUnitBox.getSelected();
+                    int unitRegRank = (int) selectRegRankBox.getSelected();
+                    // TODO faire méthode qui gère l'ajout dans le tree et qui appelle une librairie pour la création de l'unité avec les paramètres
+                    that.getAndAddNewUnitInTree(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
+                }
+            }
+        });
 
-
+        panel.row().padTop(10);
+        panel.add(buttonValidateWrapper.getButton());
         return panel;
+    }
+
+    // TODO enlever isCompany -> ne sert à rien
+    private void getAndAddNewUnitInTree(
+        String unitName,
+        String unitAcronym,
+        boolean isUnitElite,
+        CountryEnum unitCountry,
+        ElementSelectorType unitType,
+        int unitRegRank
+    ) {
+        // appeler getNewUnitFromSelection(...) méthode de la librairie UnitUtil qui renvoi un UnitElement
+        UnitElement newUnit = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
+        UnitGroup group = (UnitGroup) this.selectedUnit;
+        group.addUnit(newUnit);
+
+        updateTreeFromRoot();
+        //resetSelectedUnit();
+    }
+
+    private void updateTreeFromRoot() {
+        tree.clear();
+        UnitNode root = GraphicUtil.createTreeFromGroup(rootGroup, this);
+        tree.add(root);
+        tree.expandAll();
+        addListenerToRootTreeNode();
+        tree.invalidateHierarchy();
     }
 
     private Table createCenterButtonPanel() {
@@ -610,18 +720,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
                 System.out.println("click add unit");
                 //if (selectedUnit instanceof )
                 that.rightSelectPanel.setVisible(true); // à modifier qd tt sera ok
-                // débloquer le sélecteur et le label de rightSelectPanel
-                
-
-                // TODO faire méthode pour la mise à jour du sélecteur, code dupliqué avec construction du rightPanel
-                that.unitSelectorList = Arrays.stream(ElementSelectorType.values())
-                    .filter(type -> (type.getCountry().equals(CountryEnum.NO_COUNTRY) ||
-                        type.getCountry().equals(getSelectedCountry())) && !type.equals(ElementSelectorType.NO_TYPE))
-                    .toArray(ElementSelectorType[]::new);
-                //that.unitSelectorList = filteredTypes;
-                // Convertir en Array de libGDX
-                Array<ElementSelectorType> gdxArray = new Array<>(that.unitSelectorList);
-                that.selectUnitBox.setItems(gdxArray);
+                that.updateUnitSelectorList();
             }
         });
         this.buttonAddWrapper.getButton().setDisabled(true);
@@ -629,15 +728,30 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         return panel;
     }
 
+    private void updateUnitSelectorList() {
+        this.unitSelectorList = Arrays.stream(ElementSelectorType.values())
+            .filter(type -> (type.getCountry().equals(CountryEnum.NO_COUNTRY) ||
+                type.getCountry().equals(getSelectedCountry())) && !type.equals(ElementSelectorType.NO_TYPE))
+            .toArray(ElementSelectorType[]::new);
+        //that.unitSelectorList = filteredTypes;
+        // Convertir en Array de libGDX
+        Array<ElementSelectorType> gdxArray = new Array<>(this.unitSelectorList);
+        this.selectUnitBox.setItems(gdxArray);
+    }
+
     private void removeSelectedUnitAndUpdateTree() {
         selectedUnit.getParent().removeUnit(selectedUnit);
         //GraphicUtil.printGroup(rootGroup);
+
+        updateTreeFromRoot();
+        /*
         tree.clear();
         UnitNode root = GraphicUtil.createTreeFromGroup(rootGroup, this);
         tree.add(root);
         tree.expandAll();
         addListenerToRootTreeNode();
         tree.invalidateHierarchy();
+        */
         resetSelectedUnit();
     }
 

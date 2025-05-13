@@ -38,8 +38,8 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
-        return new CavalryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, false, usesWhiteStroke, regRank);
+    public CavalryUnit createCavalryUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new CavalryUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite,false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public MarineUnit createMarineUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
-        return new MarineUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, false, usesWhiteStroke, regRank);
+    public MarineInfUnit createMarineInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new MarineInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite,false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -153,8 +153,8 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public MecaRecoUnit createMecaRecoUnit(String name, String acronym, boolean isElite, boolean isMotorised, boolean usesWhiteStroke, int regRank) {
-        return new MecaRecoUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, isMotorised, false, usesWhiteStroke, regRank);
+    public MecaRecoUnit createMecaRecoUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new MecaRecoUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -178,6 +178,16 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
+    public HeavyAntiAirUnit createHeavyAntiAirUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new HeavyAntiAirUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public MotoHeavyAntiAirUnit createMotoHeavyAntiAirUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new MotoHeavyAntiAirUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
     public MachineGunUnit createMachineGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new MachineGunUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
@@ -188,7 +198,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public MotorcycleInfUnit createMotorcycleUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+    public MotorcycleInfUnit createMotorcycleInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new MotorcycleInfUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
@@ -196,6 +206,16 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     public LogisticUnit createLogisticUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank)
     {
         return new LogisticUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public InfantryRecoCompanyUnit createInfRecoCompanyUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new InfantryRecoCompanyUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, usesWhiteStroke, regRank);
+    }
+
+    @Override
+    public MotoInfRecoCompanyUnit createMotoInfRecoCompanyUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
+        return new MotoInfRecoCompanyUnit(name, acronym, CountryEnum.RED_COUNTRY, isElite, usesWhiteStroke, regRank);
     }
 
 
@@ -248,7 +268,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         EngineerUnit engineer_01 = new EngineerUnit(divName + " engineer", acronym, CountryEnum.RED_COUNTRY, false, false, false, 0);
 
         // todo 1 reco inf company
-        InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.RED_COUNTRY, false, false, false, 0);
+        InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.RED_COUNTRY, false, false, 0);
 
         division.addUnit(inf_01_01);
         division.addUnit(inf_02_01);
@@ -295,7 +315,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         EngineerUnit engineer_01 = new EngineerUnit(divName + " engineer", acronym, CountryEnum.RED_COUNTRY, true, false, true, 0);
 
         // todo 1 reco inf company
-        InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.RED_COUNTRY, true, false, true, 0);
+        InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, CountryEnum.RED_COUNTRY, true, true, 0);
 
 
         division.addUnit(inf_01_01);

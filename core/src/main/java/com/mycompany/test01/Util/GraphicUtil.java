@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.Unit;
@@ -302,6 +303,88 @@ public class GraphicUtil {
         return skin;
     }
 
+    public static Skin getCheckBoxSkin(int size) {
+        Skin skin = new Skin();
+
+        // Police par défaut
+        BitmapFont font = new BitmapFont();
+        skin.add("default", font);
+
+        // Fond de la case (non cochée)
+        Pixmap unchecked = new Pixmap(size, size, Pixmap.Format.RGBA8888);
+        unchecked.setColor(0.7f, 0.7f, 0.7f, 1f); // gris clair
+        unchecked.fill();
+        skin.add("checkbox-unchecked", new Texture(unchecked));
+        unchecked.dispose();
+
+        // Fond de la case (cochée)
+        Pixmap checked = new Pixmap(size, size, Pixmap.Format.RGBA8888);
+        checked.setColor(0.2f, 0.7f, 0.2f, 1f); // vert
+        checked.fill();
+        // Ajoute une croix blanche
+        checked.setColor(1, 1, 1, 1);
+        int margin = size / 4;
+        checked.drawLine(margin, margin, size - margin, size - margin);
+        checked.drawLine(margin, size - margin, size - margin, margin);
+        skin.add("checkbox-checked", new Texture(checked));
+        checked.dispose();
+
+        // Style du CheckBox
+        CheckBox.CheckBoxStyle checkBoxStyle = new CheckBox.CheckBoxStyle();
+        checkBoxStyle.checkboxOff = skin.newDrawable("checkbox-unchecked");
+        checkBoxStyle.checkboxOn = skin.newDrawable("checkbox-checked");
+        checkBoxStyle.font = skin.getFont("default");
+        checkBoxStyle.fontColor = Color.WHITE;
+
+        skin.add("default", checkBoxStyle);
+
+        return skin;
+    }
+
+
+    public static Skin getTextFieldSkin(int width, int height) {
+        Skin skin = new Skin();
+
+        // Génère une police par défaut
+        BitmapFont font = new BitmapFont();
+        skin.add("default", font);
+
+        // Crée un fond pour le TextField
+        Pixmap bgPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        bgPixmap.setColor(GraphicUtil.buttonColorMedium); // à définir dans GraphicUtil
+        bgPixmap.fill();
+        skin.add("textfield-bg", new Texture(bgPixmap));
+        bgPixmap.dispose();
+
+        // Crée le curseur (fin trait vertical blanc)
+        Pixmap cursorPixmap = new Pixmap(2, height, Pixmap.Format.RGBA8888);
+        cursorPixmap.setColor(Color.WHITE);
+        cursorPixmap.fill();
+        skin.add("textfield-cursor", new Texture(cursorPixmap));
+        cursorPixmap.dispose();
+
+        // Crée la sélection (bleu clair semi-transparent)
+        Pixmap selectionPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        selectionPixmap.setColor(0.3f, 0.5f, 1f, 0.5f);
+        selectionPixmap.fill();
+        skin.add("textfield-selection", new Texture(selectionPixmap));
+        selectionPixmap.dispose();
+
+        // Style du TextField
+        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
+        textFieldStyle.font = skin.getFont("default");
+        textFieldStyle.fontColor = Color.WHITE;
+        textFieldStyle.background = skin.newDrawable("textfield-bg");
+        textFieldStyle.cursor = skin.newDrawable("textfield-cursor");
+        textFieldStyle.selection = skin.newDrawable("textfield-selection");
+
+        skin.add("default", textFieldStyle);
+
+        return skin;
+    }
+
+
+
     public static Skin getLabelSkin(int width, int height) {
         Skin skin = new Skin();
 
@@ -538,6 +621,7 @@ public class GraphicUtil {
         return texture;
     }
 
+    // TODO : déplacer dans UnitUtil ?
     public static UnitNode createTreeFromGroup(UnitGroup group, Screen screen) {
         // Créer un nœud pour le groupe actuel
         UnitNode groupNode = new UnitNode(group);
@@ -603,6 +687,7 @@ public class GraphicUtil {
         return groupNode;
     }
 
+    // TODO : déplacer dans UnitUtil ?
     public static void printGroup(UnitGroup group) {
 
         // Parcourir les unités du groupe
@@ -618,6 +703,7 @@ public class GraphicUtil {
         }
     }
 
+    // TODO : déplacer dans UnitUtil ?
     public static Texture getCounterTextureFromUnit(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         Texture background = getCountryTexture(unit);

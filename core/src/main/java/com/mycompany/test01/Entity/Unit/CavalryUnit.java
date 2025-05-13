@@ -10,7 +10,6 @@ public class CavalryUnit extends Unit {
         String acronym,
         CountryEnum country,
         boolean isElite,
-        boolean isMotorised, // todo : enlever !!!
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank

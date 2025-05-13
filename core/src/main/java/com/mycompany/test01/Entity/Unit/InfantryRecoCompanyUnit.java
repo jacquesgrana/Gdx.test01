@@ -10,10 +10,9 @@ public class InfantryRecoCompanyUnit extends Unit {
         String acronym,
         CountryEnum country,
         boolean isElite,
-        boolean isMotorised,
         boolean usesWhiteStroke,
         int regRank
     ) {
-       super(name, acronym, country, UnitTypeEnum.INFANTRY_RECO_COMPANY, false, isElite, isMotorised, true, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.INFANTRY_RECO_COMPANY, false, isElite, false, true, usesWhiteStroke, regRank);
     }
 }
