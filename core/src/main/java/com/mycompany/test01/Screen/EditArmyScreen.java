@@ -47,6 +47,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private final BitmapFont font;
     //private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private final Table leftPanel, centerPanel, rightPanel, centerButtonPanel, rightSelectPanel;
+    private ScrollPane leftScrollPane;
     private Tree<UnitNode, String> tree;
 
     private UnitElement selectedUnit;
@@ -122,7 +123,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         ButtonWrapper buttonBackWrapper = new ButtonWrapper(
             "Back to Menu",
-            font,
             (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
             20, 200, 50);
 
@@ -136,6 +136,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.stage.addActor(buttonBackWrapper.getButton());
 
         this.leftPanel = createPanel(0);
+        //scrollPaneSkin = SkinUtil.getScrollPaneSkin(200, 300);
         this.stage.addActor(this.leftPanel);
         this.leftPanel.setVisible(true);
 
@@ -181,7 +182,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.initTree();
         this.fillTree();
 
-        this.leftPanel.addActor(tree);
+        this.leftScrollPane = createLeftScrollPane();
+        this.leftPanel.addActor(this.leftScrollPane);
 
         this.rightSelectPanel = createRightSelectPanel();
         this.rightSelectPanel.setVisible(false); // à modifier qd tt sera ok
@@ -455,7 +457,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         //System.out.println("nom : " + element.getName());
     }
 
-
     private Table createPanel(int columnNumber) {
         float spacing = 50f;
         float columnCount = 3f;
@@ -608,7 +609,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         // TODO ajouter un bouton pour valider l'ajout
         ButtonWrapper buttonValidateWrapper = new ButtonWrapper(
             "Validate",
-            font,
             0,
             0, 150, 50);
         buttonValidateWrapper.getButton().addListener(new ChangeListener() {
@@ -639,7 +639,19 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         return panel;
     }
 
-    // TODO enlever isCompany -> ne sert à rien
+    private ScrollPane createLeftScrollPane()
+    {   float spacing = 50f;
+        float columnCount = 3f;
+        float rectWidth = (Gdx.graphics.getWidth() - (columnCount + 1) * spacing) / columnCount;
+        float rectHeight = Gdx.graphics.getHeight() - 150f;
+        //float padding = 50f;
+        //float width = (Gdx.graphics.getWidth() - 200f) / 3 - 2 * padding;
+        ScrollPane leftScrollPane = new ScrollPane(tree, SkinUtil.getScrollPaneSkin((int) rectWidth, (int) rectHeight));
+        leftScrollPane.setBounds(0f, 0f, rectWidth, rectHeight);
+
+        return leftScrollPane;
+    }
+
     private void getAndAddNewUnitInTree(
         String unitName,
         String unitAcronym,
@@ -648,7 +660,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         ElementSelectorType unitType,
         int unitRegRank
     ) {
-        // appeler getNewUnitFromSelection(...) méthode de la librairie UnitUtil qui renvoi un UnitElement
         UnitElement newUnit = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
         UnitGroup group = (UnitGroup) this.selectedUnit;
         group.addUnit(newUnit);
@@ -685,7 +696,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         this.buttonDeleteWrapper = new ButtonWrapper(
             "Delete Unit",
-            font,
             20,
             20, 150, 50);
         EditArmyScreen that = this;
@@ -710,7 +720,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         this.buttonAddWrapper = new ButtonWrapper(
             "Add Unit",
-            font,
             190,
             20, 150, 50);
 

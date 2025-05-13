@@ -42,7 +42,6 @@ public class MenuScreen implements Screen {
 
         ButtonWrapper buttonWrapperEditMap = new ButtonWrapper(
             "Edit Map",
-            font,
             (int) (Gdx.graphics.getWidth() / 2f - buttonWidth / 2f),
             (int) (Gdx.graphics.getHeight() / 2f + buttonsHeight / 2f),
             buttonWidth, buttonHeight);
@@ -58,7 +57,6 @@ public class MenuScreen implements Screen {
 
         ButtonWrapper buttonWrapperEditArmy = new ButtonWrapper(
             "Edit Army",
-            font,
             (int) (Gdx.graphics.getWidth() / 2f - buttonWidth / 2f),
             (int) ((Gdx.graphics.getHeight() / 2f) - buttonHeight - spacing + buttonsHeight / 2f),
             buttonWidth, buttonHeight);
@@ -74,7 +72,6 @@ public class MenuScreen implements Screen {
 
         ButtonWrapper buttonWrapperQuit = new ButtonWrapper(
             "Quit Game",
-            font,
             (int) (Gdx.graphics.getWidth() / 2f - buttonWidth / 2f),
             (int) (Gdx.graphics.getHeight() / 2f - 2f * (buttonHeight + spacing) + buttonsHeight / 2f),
             buttonWidth, buttonHeight);

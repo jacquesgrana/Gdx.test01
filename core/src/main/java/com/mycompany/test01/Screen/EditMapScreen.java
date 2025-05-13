@@ -81,7 +81,6 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         ButtonWrapper buttonBackWrapper = new ButtonWrapper(
             "Back to Menu",
-            font,
             (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
             20, 200, 50);
 
@@ -102,7 +101,6 @@ public class EditMapScreen implements Screen, InputProcessor {
         // boutons mode : "no-action", "terrain", "road", "river"
         ButtonWrapper buttonModeNoActionWrapper = new ButtonWrapper(
             "No Action",
-            font,
             50, 80, 160, 40);
         EditMapScreen that = this;
         buttonModeNoActionWrapper.getButton().addListener(new ClickListener() {
@@ -124,7 +122,6 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         ButtonWrapper buttonModeTerrainWrapper = new ButtonWrapper(
             "Terrain",
-            font,
             50 + 10 + 160, 80, 160, 40);
         //EditMapScreen that = this;
         buttonModeTerrainWrapper.getButton().addListener(new ClickListener() {
@@ -147,7 +144,6 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         ButtonWrapper buttonModeRiverWrapper = new ButtonWrapper(
             "River",
-            font,
             50 + 2 * (10 + 160), 80, 160, 40);
         //EditMapScreen that = this;
         buttonModeRiverWrapper.getButton().addListener(new ClickListener() {
@@ -170,7 +166,6 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         ButtonWrapper buttonModeRoadWrapper = new ButtonWrapper(
             "Road",
-            font,
             50 + 3 * (10 + 160), 80, 160, 40);
         //EditMapScreen that = this;
         buttonModeRoadWrapper.getButton().addListener(new ClickListener() {
@@ -193,7 +188,6 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         ButtonWrapper buttonModeFortificationWrapper = new ButtonWrapper(
             "Fortification",
-            font,
             50 + 4 * (10 + 160), 80, 160, 40);
         //EditMapScreen that = this;
         buttonModeFortificationWrapper.getButton().addListener(new ClickListener() {
@@ -216,7 +210,6 @@ public class EditMapScreen implements Screen, InputProcessor {
 
         ButtonWrapper buttonModeMiscWrapper = new ButtonWrapper(
             "Miscellaneous",
-            font,
             50 + 5 * (10 + 160), 80, 160, 40);
         //EditMapScreen that = this;
         buttonModeMiscWrapper.getButton().addListener(new ClickListener() {

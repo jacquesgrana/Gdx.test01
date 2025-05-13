@@ -252,4 +252,57 @@ public class SkinUtil {
         skin.add("default", treeStyle);
         return skin;
     }
+
+    public static Skin getScrollPaneSkin(int width, int height) {
+        Skin skin = new Skin();
+
+        // Fond du ScrollPane
+        Pixmap bgPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        bgPixmap.setColor(GraphicUtil.backgroundColorMedium); // même fond que les boutons
+        bgPixmap.fill();
+        skin.add("scrollpane-bg", new Texture(bgPixmap));
+        bgPixmap.dispose();
+
+        // ScrollBar vertical (fond)
+        int barWidth = 12;
+        Pixmap vBarPixmap = new Pixmap(barWidth, height, Pixmap.Format.RGBA8888);
+        vBarPixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f); // gris foncé semi-transparent
+        vBarPixmap.fill();
+        skin.add("vscroll", new Texture(vBarPixmap));
+        vBarPixmap.dispose();
+
+        // ScrollBar vertical (knob)
+        Pixmap vKnobPixmap = new Pixmap(barWidth, 32, Pixmap.Format.RGBA8888);
+        vKnobPixmap.setColor(0.7f, 0.7f, 0.7f, 1f); // gris clair
+        vKnobPixmap.fill();
+        skin.add("vscroll-knob", new Texture(vKnobPixmap));
+        vKnobPixmap.dispose();
+
+        // ScrollBar horizontal (fond)
+        Pixmap hBarPixmap = new Pixmap(width, barWidth, Pixmap.Format.RGBA8888);
+        hBarPixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f);
+        hBarPixmap.fill();
+        skin.add("hscroll", new Texture(hBarPixmap));
+        hBarPixmap.dispose();
+
+        // ScrollBar horizontal (knob)
+        Pixmap hKnobPixmap = new Pixmap(32, barWidth, Pixmap.Format.RGBA8888);
+        hKnobPixmap.setColor(0.7f, 0.7f, 0.7f, 1f);
+        hKnobPixmap.fill();
+        skin.add("hscroll-knob", new Texture(hKnobPixmap));
+        hKnobPixmap.dispose();
+
+        // Style du ScrollPane
+        ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
+        scrollPaneStyle.background = new TextureRegionDrawable(new TextureRegion(skin.get("scrollpane-bg", Texture.class)));
+        scrollPaneStyle.vScroll = new TextureRegionDrawable(new TextureRegion(skin.get("vscroll", Texture.class)));
+        scrollPaneStyle.vScrollKnob = new TextureRegionDrawable(new TextureRegion(skin.get("vscroll-knob", Texture.class)));
+        scrollPaneStyle.hScroll = new TextureRegionDrawable(new TextureRegion(skin.get("hscroll", Texture.class)));
+        scrollPaneStyle.hScrollKnob = new TextureRegionDrawable(new TextureRegion(skin.get("hscroll-knob", Texture.class)));
+
+        skin.add("default", scrollPaneStyle);
+
+        return skin;
+    }
+
 }

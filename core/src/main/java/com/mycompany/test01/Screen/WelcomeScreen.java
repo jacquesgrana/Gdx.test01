@@ -26,7 +26,6 @@ public class WelcomeScreen implements Screen {
 
         ButtonWrapper buttonWrapper = new ButtonWrapper(
             "Menu",
-            font,
             (int) (Gdx.graphics.getWidth() / 2f - 200 / 2f),
             (int) (Gdx.graphics.getHeight() / 2f - 50 / 2f + 20f),
             200, 50);
