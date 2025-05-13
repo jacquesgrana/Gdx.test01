@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mycompany.test01.Service.FileService;
 import com.mycompany.test01.Service.MapService;
 import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Util.SkinUtil;
 
 public class EditMapScreen implements Screen, InputProcessor {
     final Main game;
@@ -68,7 +69,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
 
         this.font = new BitmapFont();
-        this.skin = GraphicUtil.getButtonSkin(80, 30);
+        this.skin = SkinUtil.getButtonSkin(80, 30);
         //this.selectedTerrainPanel = null;
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
@@ -696,7 +697,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             FortificationCategory.CONCRETE_HEAVY
         };
         EditMapScreen that = this;
-        Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+        Skin buttonSkin = SkinUtil.getButtonSkin(160, 30);
         int count = 1;
         for (FortificationCategory fortificationType : fortificationTypes) {
             TextButton button = new TextButton(fortificationType.toString(), buttonSkin);
@@ -741,7 +742,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             RoadCategory.RAILWAY
         };
         EditMapScreen that = this;
-        Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+        Skin buttonSkin = SkinUtil.getButtonSkin(160, 30);
 
         for (RoadCategory roadCategory : roadCategories) {
             TextButton button = new TextButton(roadCategory.toString(), buttonSkin);
@@ -782,7 +783,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             RiverCategory.WIDE
         };
         EditMapScreen that = this;
-        Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+        Skin buttonSkin = SkinUtil.getButtonSkin(160, 30);
 
         for (RiverCategory riverCategory : riverCategories) {
             TextButton button = new TextButton(riverCategory.toString(), buttonSkin);
@@ -813,7 +814,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         this.selectedRiverLabel = new Label("Miscellaneous :", labelStyle);
         panel.add(this.selectedRiverLabel).colspan(5);
         panel.row();
-        Skin buttonSkin = GraphicUtil.getButtonSkin(160, 30);
+        Skin buttonSkin = SkinUtil.getButtonSkin(160, 30);
 
         TextButton buttonReset = new TextButton("Reset Map", buttonSkin);
         buttonReset.addListener(new ClickListener() {

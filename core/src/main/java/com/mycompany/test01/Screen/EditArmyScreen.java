@@ -34,6 +34,7 @@ import com.mycompany.test01.Entity.Unit.*;
 import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Util.SkinUtil;
 import com.mycompany.test01.Util.UnitUtil;
 
 import java.util.Arrays;
@@ -98,7 +99,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.font = new BitmapFont();
         this.selectedUnit = null;
         this.selectedCountry = CountryEnum.NO_COUNTRY;
-        this.selectedCountryLabel = new Label(getSelectedCountry().toString(), GraphicUtil.getLabelSkin(200, 30));
+        this.selectedCountryLabel = new Label(getSelectedCountry().toString(), SkinUtil.getLabelSkin(200, 30));
         this.unitSelectorList = new ElementSelectorType[100]; // TODO 100?
         /*
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Roboto_Condensed-Regular.ttf"));
@@ -213,7 +214,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     }
 
     public void initTree() {
-        this.tree = new Tree<>(GraphicUtil.getUnitTreeSkin());
+        this.tree = new Tree<>(SkinUtil.getUnitTreeSkin());
 
         tree.setPadding(10);
         tree.setIndentSpacing(25);
@@ -494,7 +495,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         panel.setBackground(background);
 
         // TODO (améliorer : set le pays à la création du FrontGroup racine)
-        this.selectCountryBox = new SelectBox<>(GraphicUtil.getSelectorSkin(150, 30));
+        this.selectCountryBox = new SelectBox<>(SkinUtil.getSelectorSkin(150, 30));
         this.selectCountryBox.setItems(
             CountryEnum.BLACK_COUNTRY,
             CountryEnum.BLUE_COUNTRY,
@@ -521,7 +522,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         panel.row();
 
         // TODO ajouter un sélecteur pour choisir l'unité
-        this.selectUnitBox = new SelectBox<>(GraphicUtil.getSelectorSkin(200, 30));
+        this.selectUnitBox = new SelectBox<>(SkinUtil.getSelectorSkin(200, 30));
         //this.selectCountryBox = new SelectBox<>(GraphicUtil.getSelectorSkin(150, 30));
 
         /*
@@ -543,7 +544,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         */
         this.updateUnitSelectorList(); // TODO vérifier si utile
 
-        final Label unitTypeLabel = new Label("Nothing Selected", GraphicUtil.getLabelSkin(200, 30));
+        final Label unitTypeLabel = new Label("Nothing Selected", SkinUtil.getLabelSkin(200, 30));
         this.selectUnitBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -558,8 +559,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         panel.row();
 
         // TODO ajouter un sélecteur pour choisir le rang du régiment
-        SelectBox<Integer> selectRegRankBox = new SelectBox<Integer>(GraphicUtil.getSelectorSkin(200, 30));
-        final Label unitRegRankLabel = new Label("0", GraphicUtil.getLabelSkin(200, 30));
+        SelectBox<Integer> selectRegRankBox = new SelectBox<Integer>(SkinUtil.getSelectorSkin(200, 30));
+        final Label unitRegRankLabel = new Label("0", SkinUtil.getLabelSkin(200, 30));
 
         selectRegRankBox.setItems(0, 1, 2, 3, 4, 5);
         selectRegRankBox.addListener(new ChangeListener() {
@@ -579,11 +580,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
 
         // Création des labels et champs de saisie
-        Label nameLabel = new Label("Name:", GraphicUtil.getLabelSkin(150, 30));
-        TextField nameField = new TextField("", GraphicUtil.getTextFieldSkin(150, 30));
+        Label nameLabel = new Label("Name:", SkinUtil.getLabelSkin(150, 30));
+        TextField nameField = new TextField("", SkinUtil.getTextFieldSkin(150, 30));
 
-        Label acronymLabel = new Label("Acronym:", GraphicUtil.getLabelSkin(150, 30));
-        TextField acronymField = new TextField("", GraphicUtil.getTextFieldSkin(150, 30));
+        Label acronymLabel = new Label("Acronym:", SkinUtil.getLabelSkin(150, 30));
+        TextField acronymField = new TextField("", SkinUtil.getTextFieldSkin(150, 30));
 
         // Création de la table
         panel.add(nameLabel).padRight(10);
@@ -593,7 +594,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         panel.add(acronymField).width(150);
 
         // Création du skin pour les CheckBox
-        Skin checkBoxSkin = GraphicUtil.getCheckBoxSkin(24);
+        Skin checkBoxSkin = SkinUtil.getCheckBoxSkin(24);
 
         // Création des cases à cocher
         CheckBox isEliteCheckBox = new CheckBox(" Elite", checkBoxSkin);
@@ -601,7 +602,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         // Ajout à la table (par exemple, sous les champs de saisie)
         panel.row().padTop(10);
-        panel.add(isEliteCheckBox).center();
+        panel.add(isEliteCheckBox).center().colspan(2);
         //panel.add(isCompanyCheckBox).left().colspan(2);
 
         // TODO ajouter un bouton pour valider l'ajout
@@ -724,6 +725,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             }
         });
         this.buttonAddWrapper.getButton().setDisabled(true);
+        //this.buttonAddWrapper.getButton().getStyle().up = this.buttonAddWrapper.getButton().getStyle().disabled;
+        //this.buttonAddWrapper.getButton().getStyle().over = this.buttonAddWrapper.getButton().getStyle().disabled;
+        //this.buttonAddWrapper.getButton().getStyle().down = this.buttonAddWrapper.getButton().getStyle().disabled;
+        //this.buttonAddWrapper.getButton().getStyle().fontColor = this.buttonAddWrapper.getButton().getStyle().disabledFontColor;
         panel.addActor(this.buttonAddWrapper.getButton());
         return panel;
     }
