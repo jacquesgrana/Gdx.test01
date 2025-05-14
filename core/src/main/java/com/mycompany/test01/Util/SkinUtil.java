@@ -174,6 +174,30 @@ public class SkinUtil {
         return skin;
     }
 
+    public static Skin getTreeNodeLabelSkin(int width, int height) {
+        Skin skin = new Skin();
+
+        // Génère une police par défaut
+        BitmapFont font = new BitmapFont();
+        skin.add("default", font);
+
+        // Crée un fond pour le label (optionnel, tu peux l'enlever si tu veux un fond transparent)
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        pixmap.setColor(GraphicUtil.backgroundColorMedium); // à définir dans GraphicUtil, par exemple Color.CLEAR ou une couleur douce
+        pixmap.fill();
+        skin.add("label-bg", new Texture(pixmap));
+        pixmap.dispose();
+
+        // Crée le style du label
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = skin.getFont("default");
+        labelStyle.background = skin.newDrawable("label-bg"); // optionnel, retire cette ligne pour un label sans fond
+
+        skin.add("default", labelStyle);
+
+        return skin;
+    }
+
 
     public static Skin getSelectorSkin(int width, int height) {
         Skin skin = new Skin();
@@ -248,7 +272,7 @@ public class SkinUtil {
         Tree.TreeStyle treeStyle = new Tree.TreeStyle();
         treeStyle.plus = skin.newDrawable("white", Color.BLACK);
         treeStyle.minus = skin.newDrawable("white", Color.GRAY);
-        treeStyle.selection = skin.newDrawable("white", Color.BLUE);
+        treeStyle.selection = skin.newDrawable("white", GraphicUtil.backgroundColorLight);
         skin.add("default", treeStyle);
         return skin;
     }
@@ -264,16 +288,20 @@ public class SkinUtil {
         bgPixmap.dispose();
 
         // ScrollBar vertical (fond)
-        int barWidth = 12;
+        int barWidth = 20;
         Pixmap vBarPixmap = new Pixmap(barWidth, height, Pixmap.Format.RGBA8888);
-        vBarPixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f); // gris foncé semi-transparent TODO : utiliser une couleur de GraphicUtil
+        // vBarPixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f); // gris foncé semi-transparent TODO : utiliser une couleur de GraphicUtil
+        vBarPixmap.setColor(GraphicUtil.backgroundColorLight); // gris foncé semi-transparent TODO : utiliser une couleur de GraphicUtil
+
         vBarPixmap.fill();
         skin.add("vscroll", new Texture(vBarPixmap));
         vBarPixmap.dispose();
 
         // ScrollBar vertical (knob)
         Pixmap vKnobPixmap = new Pixmap(barWidth, 32, Pixmap.Format.RGBA8888);
-        vKnobPixmap.setColor(0.7f, 0.7f, 0.7f, 1f); // gris clair
+        //vKnobPixmap.setColor(0.7f, 0.7f, 0.7f, 1f); // gris clair
+        vKnobPixmap.setColor(GraphicUtil.buttonColorMedium); // gris clair
+
         vKnobPixmap.fill();
         skin.add("vscroll-knob", new Texture(vKnobPixmap));
         vKnobPixmap.dispose();

@@ -21,7 +21,7 @@ public class UnitNode extends Tree.Node<UnitNode, ElementInterface, Table> {
             unit.getName() + " / "
                 + unit.getAcronym() + " / "
                 + unit.getType().toString(),
-            SkinUtil.getLabelSkin(210, 60)
+            SkinUtil.getTreeNodeLabelSkin(300, 60)
         );
 
         nodeContent.add(unitImage).size(60, 60).padRight(5);
