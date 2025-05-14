@@ -47,7 +47,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private final BitmapFont font;
     //private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private final Table leftPanel, centerPanel, rightPanel, centerButtonPanel, rightSelectPanel;
-    private ScrollPane leftScrollPane;
+    private final ScrollPane leftScrollPane;
     private Tree<UnitNode, String> tree;
 
     private UnitElement selectedUnit;
@@ -77,6 +77,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private SelectBox<ElementSelectorType> selectUnitBox;
     private SelectBox<CountryEnum> selectCountryBox;
 
+
+    private final Skin unitTreeSkin;
+
     //private Skin skin;
 
     /*
@@ -102,6 +105,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.selectedCountry = CountryEnum.NO_COUNTRY;
         this.selectedCountryLabel = new Label(getSelectedCountry().toString(), SkinUtil.getLabelSkin(200, 30));
         this.unitSelectorList = new ElementSelectorType[100]; // TODO 100?
+
+        this.unitTreeSkin = SkinUtil.getUnitTreeSkin();
         /*
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/Roboto_Condensed-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -210,18 +215,27 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             public void clicked (InputEvent event, float x, float y) {
                 System.out.println("click on root");
                 that.displayUnitInfos(that.rootGroup);
-                tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
+                //tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
             }
         });
     }
 
     public void initTree() {
-        this.tree = new Tree<>(SkinUtil.getUnitTreeSkin());
-
+        this.tree = new Tree<>(unitTreeSkin);
+        //tree.setStyle(unitTreeSkin.get("default", Tree.TreeStyle.class));
         tree.setPadding(10);
-        tree.setIndentSpacing(25);
-        tree.setIconSpacing(5, 0);
+        tree.setIndentSpacing(30);
+        tree.setIconSpacing(10, 20);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
+    }
+
+    private void updateTreeFromRoot() {
+        //tree.clear(); // TODO : fait perdre le style !!!!!!!!!!!!!!!
+        UnitNode root = GraphicUtil.createTreeFromGroup(rootGroup, this);
+        tree.add(root);
+        tree.expandAll();
+        addListenerToRootTreeNode();
+        tree.invalidateHierarchy();
     }
 
     public void fillTree() {
@@ -663,18 +677,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         UnitElement newUnit = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
         UnitGroup group = (UnitGroup) this.selectedUnit;
         group.addUnit(newUnit);
-
+        initTree();
+        leftScrollPane.setActor(tree);
         updateTreeFromRoot();
         //resetSelectedUnit();
-    }
-
-    private void updateTreeFromRoot() {
-        tree.clear();
-        UnitNode root = GraphicUtil.createTreeFromGroup(rootGroup, this);
-        tree.add(root);
-        tree.expandAll();
-        addListenerToRootTreeNode();
-        tree.invalidateHierarchy();
     }
 
     private Table createCenterButtonPanel() {
@@ -756,7 +762,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private void removeSelectedUnitAndUpdateTree() {
         selectedUnit.getParent().removeUnit(selectedUnit);
         //GraphicUtil.printGroup(rootGroup);
-
+        initTree();
+        leftScrollPane.setActor(tree);
         updateTreeFromRoot();
         /*
         tree.clear();

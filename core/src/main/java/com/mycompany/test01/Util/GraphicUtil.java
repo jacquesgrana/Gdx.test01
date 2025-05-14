@@ -204,6 +204,10 @@ public class GraphicUtil {
     public static Color buttonDownColorMedium = new Color(0.55f, 0.15f, 0.18f, 1);
     public static Color buttonDisabledColorMedium = new Color(0.18f, 0.18f, 0.2f, 1);
 
+    public static Color buttonHoverColorMediumDark = new Color(0.75f, 0.20f, 0.20f, 1);
+    public static Color buttonHoverColorMediumLight = new Color(0.95f, 0.30f, 0.30f, 1);
+
+    //buttonHoverColorMediumDark et buttonHoverColorMediumLight
     public static Color buttonBorderColorDark = new Color(0.05f, 0.05f, 0.06f, 1);
 
     public static Color textDisabledColorMedium = new Color(0.20f, 0.20f, 0.23f, 1);
@@ -662,7 +666,7 @@ public class GraphicUtil {
                             EditArmyScreen that = (EditArmyScreen) screen;
                             that.displayUnitInfos(element);
                         }
-                        childGroupNode.setExpanded(!childGroupNode.isExpanded());
+                        //childGroupNode.setExpanded(!childGroupNode.isExpanded());
                     }
                 });
 

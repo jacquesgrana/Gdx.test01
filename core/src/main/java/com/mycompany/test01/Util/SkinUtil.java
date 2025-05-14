@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class SkinUtil {
@@ -256,26 +258,166 @@ public class SkinUtil {
         return skin;
     }
 
+    public static Skin getUnitTreeSkin() {
+        Skin skin = new Skin();
 
+        // 1) font & couleur de texte
+        skin.add("default-font", new BitmapFont());
+        skin.add("default-color", Color.WHITE);
+
+        // 2) pixmap 1×1 blanc (pour générer tous les petits drawables teintés)
+        Pixmap pm = new Pixmap(1,1, Pixmap.Format.RGBA8888);
+        pm.setColor(Color.WHITE);
+        pm.fill();
+        skin.add("white", new Texture(pm));
+        pm.dispose();
+
+        // 3) on récupère vos textures
+        Texture plusTex = GraphicUtil.groupTreeIconGroupTexture;
+        Texture minusTex = GraphicUtil.groupTreeIconUnitTexture;
+
+        // 4) prépare le style
+        Tree.TreeStyle treeStyle = new Tree.TreeStyle();
+
+        // 4.a) Sprite pour l'état « plus »
+        Sprite plusSprite = new Sprite(new TextureRegion(plusTex));
+        plusSprite.setSize(32, 32);
+        SpriteDrawable plusDrawable = new SpriteDrawable(plusSprite);
+        plusDrawable.setMinWidth(32);
+        plusDrawable.setMinHeight(32);
+
+        // 4.b) Sprite pour l'état « minus »
+        Sprite minusSprite = new Sprite(new TextureRegion(minusTex));
+        minusSprite.setSize(32, 32);
+        SpriteDrawable minusDrawable = new SpriteDrawable(minusSprite);
+        minusDrawable.setMinWidth(32);
+        minusDrawable.setMinHeight(32);
+
+        treeStyle.plus  = plusDrawable;
+        treeStyle.minus = minusDrawable;
+
+        // 4.c) Sprite pour l'état hover « plusOver »
+        Sprite overPlusSprite = new Sprite(new TextureRegion(plusTex));
+        overPlusSprite.setSize(32, 32);
+        overPlusSprite.setColor(GraphicUtil.buttonHoverColorMediumLight);
+        SpriteDrawable plusOver = new SpriteDrawable(overPlusSprite);
+        plusOver.setMinWidth(32);
+        plusOver.setMinHeight(32);
+
+        // 4.d) Sprite pour hover « minusOver »
+        Sprite overMinusSprite = new Sprite(new TextureRegion(minusTex));
+        overMinusSprite.setSize(32, 32);
+        overMinusSprite.setColor(GraphicUtil.buttonHoverColorMediumDark);
+        SpriteDrawable minusOver = new SpriteDrawable(overMinusSprite);
+        minusOver.setMinWidth(32);
+        minusOver.setMinHeight(32);
+
+        treeStyle.plusOver  = plusOver;
+        treeStyle.minusOver = minusOver;
+
+        // 5) vos styles de ligne EXACTEMENT comme avant
+        treeStyle.over      = skin.newDrawable("white", GraphicUtil.buttonHoverColorMedium);
+        treeStyle.selection = skin.newDrawable("white", GraphicUtil.backgroundColorLight);
+
+        skin.add("default", treeStyle);
+        return skin;
+    }
+
+
+/*
+    public static Skin getUnitTreeSkin() {
+        Skin skin = new Skin();
+
+        // 1) font & couleur de texte
+        skin.add("default-font", new BitmapFont());
+        skin.add("default-color", Color.WHITE);
+
+        // 2) pixmap 1×1 blanc (pour générer tous les petits drawables teintés)
+        Pixmap pm = new Pixmap(1,1, Pixmap.Format.RGBA8888);
+        pm.setColor(Color.WHITE);
+        pm.fill();
+        skin.add("white", new Texture(pm));
+        pm.dispose();
+
+        // 3) on récupère votre texture 512×512
+        Texture bigTex = GraphicUtil.groupTreeIconGroupTexture;
+
+        // 4) prépare le style
+        Tree.TreeStyle treeStyle = new Tree.TreeStyle();
+
+        // on crée un Sprite à partir de TOUTE la texture
+        TextureRegion fullRegion = new TextureRegion(bigTex);
+
+        // 4.a) Sprite pour l'état « repos » (plus / minus)
+        Sprite baseSprite = new Sprite(fullRegion);
+        baseSprite.setSize(32, 32);
+        // la couleur par défaut du sprite est blanche, donc on garde la texture brute
+        SpriteDrawable baseDrawable = new SpriteDrawable(baseSprite);
+        // on fixe aussi la taille mini pour que Tree l'utilise
+        baseDrawable.setMinWidth(32);
+        baseDrawable.setMinHeight(32);
+
+        treeStyle.plus  = baseDrawable;
+        treeStyle.minus = baseDrawable;
+
+        // 4.b) Sprite pour l'état hover « plusOver »
+        Sprite overPlusSprite = new Sprite(fullRegion);
+        overPlusSprite.setSize(32, 32);
+        overPlusSprite.setColor(GraphicUtil.buttonHoverColorMediumLight);
+        SpriteDrawable plusOver = new SpriteDrawable(overPlusSprite);
+        plusOver.setMinWidth(32);
+        plusOver.setMinHeight(32);
+
+        // 4.c) Sprite pour hover « minusOver »
+        Sprite overMinusSprite = new Sprite(fullRegion);
+        overMinusSprite.setSize(32, 32);
+        overMinusSprite.setColor(GraphicUtil.buttonHoverColorMediumDark);
+        SpriteDrawable minusOver = new SpriteDrawable(overMinusSprite);
+        minusOver.setMinWidth(32);
+        minusOver.setMinHeight(32);
+
+        treeStyle.plusOver  = plusOver;
+        treeStyle.minusOver = minusOver;
+
+        // 5) vos styles de ligne EXACTEMENT comme avant
+        //   – on garde la même couleur d'"over"
+        treeStyle.over      = skin.newDrawable("white", GraphicUtil.buttonHoverColorMedium);
+        //   – on garde la même couleur de sélection
+        treeStyle.selection = skin.newDrawable("white", GraphicUtil.backgroundColorLight);
+
+        skin.add("default", treeStyle);
+        return skin;
+    }
+    */
+
+    /*
     public static Skin getUnitTreeSkin() {
         Skin skin = new Skin();
         BitmapFont font = new BitmapFont();
         skin.add("default-font", font);
+        //Texture texture = GraphicUtil.groupTreeIconGroupTexture;
         skin.add("default-color", Color.WHITE);
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+
+        Pixmap pixmap = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
+        //new Image(GraphicUtil.groupTreeIconGroupTexture);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
         skin.add("white", new Texture(pixmap));
+
         pixmap.dispose();
 
         // Créer les styles nécessaires pour Tree
         Tree.TreeStyle treeStyle = new Tree.TreeStyle();
-        treeStyle.plus = skin.newDrawable("white", Color.BLACK);
-        treeStyle.minus = skin.newDrawable("white", Color.GRAY);
+        treeStyle.plus = skin.newDrawable("white", GraphicUtil.backgroundColorDark);
+        treeStyle.minus = skin.newDrawable("white", GraphicUtil.buttonColorMedium);
+        treeStyle.over = skin.newDrawable("white", GraphicUtil.buttonHoverColorMedium);
         treeStyle.selection = skin.newDrawable("white", GraphicUtil.backgroundColorLight);
+        treeStyle.minusOver = skin.newDrawable("white", GraphicUtil.buttonHoverColorMediumDark);
+        treeStyle.plusOver = skin.newDrawable("white", GraphicUtil.buttonHoverColorMediumLight);
+
         skin.add("default", treeStyle);
         return skin;
-    }
+    }*/
 
     public static Skin getScrollPaneSkin(int width, int height) {
         Skin skin = new Skin();

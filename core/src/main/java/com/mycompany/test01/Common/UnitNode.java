@@ -26,12 +26,14 @@ public class UnitNode extends Tree.Node<UnitNode, ElementInterface, Table> {
 
         nodeContent.add(unitImage).size(60, 60).padRight(5);
         nodeContent.add(infoLabel).expandX().fillX();
+        /*
         Image groupImage = new Image(GraphicUtil.groupTreeIconUnitTexture);
         if (unit instanceof UnitGroup) {
             // TODO : faire nouvelle texture spécifique plus jolie pour groupImage
             groupImage = new Image(GraphicUtil.groupTreeIconGroupTexture);
         }
         nodeContent.add(groupImage).size(32, 32).padLeft(10);
+        */
         return nodeContent;
     }
 }
