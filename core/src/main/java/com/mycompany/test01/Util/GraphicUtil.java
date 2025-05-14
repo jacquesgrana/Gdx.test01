@@ -21,6 +21,9 @@ import java.nio.ByteBuffer;
 
 public class GraphicUtil {
 
+    public static Texture groupTreeIconGroupTexture = loadTextureFromFile("texture/icon/texture-group@4x.png");
+    public static Texture groupTreeIconUnitTexture = loadTextureFromFile("texture/icon/texture-unit@4x.png");
+
 
     public static Texture grassTexture = loadTextureFromFile("texture/terrain/texture-grass.png");
     public static Texture forestTexture = loadTextureFromFile("texture/terrain/texture-forest.png");

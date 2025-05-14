@@ -266,7 +266,7 @@ public class SkinUtil {
         // ScrollBar vertical (fond)
         int barWidth = 12;
         Pixmap vBarPixmap = new Pixmap(barWidth, height, Pixmap.Format.RGBA8888);
-        vBarPixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f); // gris foncé semi-transparent
+        vBarPixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f); // gris foncé semi-transparent TODO : utiliser une couleur de GraphicUtil
         vBarPixmap.fill();
         skin.add("vscroll", new Texture(vBarPixmap));
         vBarPixmap.dispose();
