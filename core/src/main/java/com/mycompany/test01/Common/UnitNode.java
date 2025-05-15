@@ -21,7 +21,7 @@ public class UnitNode extends Tree.Node<UnitNode, ElementInterface, Table> {
             unit.getName() + " / "
                 + unit.getAcronym() + " / "
                 + unit.getType().toString(),
-            SkinUtil.getTreeNodeLabelSkin(300, 60)
+            SkinUtil.getTreeNodeLabelSkin(310, 60)
         );
 
         nodeContent.add(unitImage).size(60, 60).padRight(5);
@@ -29,11 +29,11 @@ public class UnitNode extends Tree.Node<UnitNode, ElementInterface, Table> {
         /*
         Image groupImage = new Image(GraphicUtil.groupTreeIconUnitTexture);
         if (unit instanceof UnitGroup) {
-            // TODO : faire nouvelle texture spécifique plus jolie pour groupImage
             groupImage = new Image(GraphicUtil.groupTreeIconGroupTexture);
         }
         nodeContent.add(groupImage).size(32, 32).padLeft(10);
         */
+        //nodeContent.setFillParent(true); -> marche très mal
         return nodeContent;
     }
 }

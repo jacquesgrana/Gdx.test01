@@ -46,13 +46,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private final Stage stage;
     private final BitmapFont font;
     //private ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private final Table leftPanel, centerPanel, rightPanel, centerButtonPanel, rightSelectPanel;
+    private final Table leftPanel, centerPanel, rightPanel, centerButtonPanel, rightSelectPanel, leftCreateRootPanel;
     private final ScrollPane leftScrollPane;
     private Tree<UnitNode, String> tree;
 
     private UnitElement selectedUnit;
     private CountryEnum selectedCountry;
     private FrontGroup rootGroup;
+    private boolean isTreeRootNodeDefined; // TODO finir
+
     // TODO List<UnitTypeEnum> allValuesList = Stream.of(UnitTypeEnum.values()).collect(Collectors.toList());
     private ElementSelectorType[] unitSelectorList;
     //private String selectedUnitName = "nothing selected";
@@ -102,9 +104,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         this.font = new BitmapFont();
         this.selectedUnit = null;
+        this.isTreeRootNodeDefined = false;
         this.selectedCountry = CountryEnum.NO_COUNTRY;
         this.selectedCountryLabel = new Label(getSelectedCountry().toString(), SkinUtil.getLabelSkin(200, 30));
-        this.unitSelectorList = new ElementSelectorType[100]; // TODO 100?
+
+        this.unitSelectorList = new ElementSelectorType[(int) Arrays.stream(ElementSelectorType.values()).count()]; // TODO 100?
 
         this.unitTreeSkin = SkinUtil.getUnitTreeSkin();
         /*
@@ -153,6 +157,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.stage.addActor(this.rightPanel);
         this.rightPanel.setVisible(true);
 
+        this.leftCreateRootPanel = createLeftCreateRootPanel();
+        this.leftPanel.addActor(leftCreateRootPanel);
+
         this.centerButtonPanel = createCenterButtonPanel();
         this.centerButtonPanel.setVisible(true);
 
@@ -184,15 +191,22 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             128f);
         this.centerPanel.addActor(selectedUnitIcon);
 
-        this.initTree();
-        this.fillTree();
-
+        this.initTree(); // TODO : laisser ?
+        //this.fillTree();
         this.leftScrollPane = createLeftScrollPane();
         this.leftPanel.addActor(this.leftScrollPane);
+        this.updateLeftPanelFromBoolean();
 
         this.rightSelectPanel = createRightSelectPanel();
         this.rightSelectPanel.setVisible(false); // à modifier qd tt sera ok
         this.rightPanel.addActor(rightSelectPanel);
+    }
+
+
+    private void updateLeftPanelFromBoolean() {
+        leftScrollPane.setVisible(this.isTreeRootNodeDefined);
+        leftCreateRootPanel.setVisible(!this.isTreeRootNodeDefined);
+        // TODO setVisible du Table de creation du rootGroup avec !isRootDefined
     }
 
     private void resetSelectedUnit() {
@@ -227,12 +241,21 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.setIndentSpacing(30);
         tree.setIconSpacing(10, 20);
         tree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
+        float rectWidth = (Gdx.graphics.getWidth() - (3 + 1) * 50f) / 3;
+        float rectHeight = Gdx.graphics.getHeight() - 150f;
+        tree.setBounds(0f, -20f, rectWidth, rectHeight);
     }
+
+    /*
+    public void setRootNode() {
+        UnitNode rootNode = GraphicUtil.createTreeFromGroup(rootGroup, this);
+    }
+    */
 
     private void updateTreeFromRoot() {
         //tree.clear(); // TODO : fait perdre le style !!!!!!!!!!!!!!!
-        UnitNode root = GraphicUtil.createTreeFromGroup(rootGroup, this);
-        tree.add(root);
+        UnitNode rootNode = GraphicUtil.createTreeFromGroup(rootGroup, this);
+        tree.add(rootNode);
         tree.expandAll();
         addListenerToRootTreeNode();
         tree.invalidateHierarchy();
@@ -424,9 +447,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         tree.expandAll();
 
         //stage.addActor(tree);
+        /*
         float rectWidth = (Gdx.graphics.getWidth() - (3 + 1) * 50f) / 3;
         float rectHeight = Gdx.graphics.getHeight() - 150f;
         tree.setBounds(0f, -20f, rectWidth, rectHeight);
+        */
     }
 
     public void displayUnitInfos(ElementInterface element) {
@@ -464,7 +489,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         if (element instanceof UnitGroup) {
             this.setSelectedCountry(element.getCountry());
             this.selectedCountryLabel.setText(this.getSelectedCountry().toString());
-            // TODO set country selector sur le bon pays
             this.selectCountryBox.setSelected(this.getSelectedCountry());
             this.selectedCountryLabel.setText(this.getSelectedCountry().toString());
         }
@@ -493,9 +517,111 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         return panel;
     }
 
+    private Table createLeftCreateRootPanel() {
+        Table panel = new Table();
+        panel.defaults().pad(1);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(GraphicUtil.backgroundColorLight);
+        pixmap.fill();
+        EditArmyScreen that = this;
+
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+        Drawable background = new TextureRegionDrawable(new TextureRegion(texture));
+
+        panel.setBounds(50f, Gdx.graphics.getHeight() - 500f, (Gdx.graphics.getWidth() - 200f) / 3 - 100f, 260f);
+
+        panel.setBackground(background);
+
+        Label selectedRootCountryLabel = new Label(getSelectedCountry().toString(), SkinUtil.getLabelSkin(200, 30));
+
+        SelectBox<CountryEnum> selectRootCountryBox = new SelectBox<>(SkinUtil.getSelectorSkin(150, 30));
+        selectRootCountryBox.setItems(
+            CountryEnum.BLACK_COUNTRY,
+            CountryEnum.BLUE_COUNTRY,
+            CountryEnum.BROWN_COUNTRY,
+            //CountryEnum.GREEN_COUNTRY,
+            CountryEnum.RED_COUNTRY
+            //CountryEnum.YELLOW_COUNTRY,
+        );
+        // Création du label qui sera mis à jour
+        //final Label countryLabel = new Label(getSelectedCountry().toString(), GraphicUtil.getLabelSkin(200, 30));
+
+        // Ajout du listener pour gérer l'événement de sélection
+        selectRootCountryBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setSelectedCountry(selectRootCountryBox.getSelected());
+                //System.out.println("selected country : " + selectCountryBox.getSelected());
+                selectedRootCountryLabel.setText(that.getSelectedCountry().toString());
+            }
+        });
+        selectedRootCountryLabel.setPosition(20, 100);
+        panel.add(selectRootCountryBox).width(150);
+        panel.add(selectedRootCountryLabel).width(200);
+        panel.row();
+
+        // Création des labels et champs de saisie
+        Label nameLabel = new Label("Name:", SkinUtil.getLabelSkin(150, 30));
+        TextField nameField = new TextField("", SkinUtil.getTextFieldSkin(150, 30));
+
+        Label acronymLabel = new Label("Acronym:", SkinUtil.getLabelSkin(150, 30));
+        TextField acronymField = new TextField("", SkinUtil.getTextFieldSkin(150, 30));
+
+        // Création de la table
+        panel.add(nameLabel).padRight(10);
+        panel.add(nameField).width(150).padBottom(5);
+        panel.row();
+        panel.add(acronymLabel).padRight(10);
+        panel.add(acronymField).width(150);
+
+        // Création du skin pour les CheckBox
+        Skin checkBoxSkin = SkinUtil.getCheckBoxSkin(24);
+
+        // Création des cases à cocher
+        CheckBox isEliteCheckBox = new CheckBox(" Elite", checkBoxSkin);
+        //CheckBox isCompanyCheckBox = new CheckBox(" Company", checkBoxSkin);
+
+        // Ajout à la table (par exemple, sous les champs de saisie)
+        panel.row().padTop(10);
+        panel.add(isEliteCheckBox).center().colspan(2);
+
+        ButtonWrapper buttonValidateWrapper = new ButtonWrapper(
+            "Add Front Group",
+            20,
+            20, 150, 50);
+        buttonValidateWrapper.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                //System.out.println("click validate add unit");
+
+                if(
+                    !nameField.getText().isEmpty()
+                        && !acronymField.getText().isEmpty()
+                ) {
+                    System.out.println("unitType, nameField and acronymField ok !!");
+                    String unitName = nameField.getText();
+                    String unitAcronym = acronymField.getText();
+                    boolean isUnitElite = isEliteCheckBox.isChecked();
+                    //boolean isUnitCompany = isCompanyCheckBox.isChecked();
+                    CountryEnum unitCountry = that.getSelectedCountry();
+                    // TODO faire méthode qui gère l'ajout dans le tree et qui appelle une librairie pour la création de l'unité avec les paramètres
+                    that.getAndAddNewRootUnitInTree(unitName, unitAcronym, isUnitElite, unitCountry);
+                }
+
+            }
+        });
+
+        panel.addActor(buttonValidateWrapper.getButton());
+        panel.row();
+        return panel;
+    }
+
     private Table createRightSelectPanel() {
         Table panel = new Table();
         panel.defaults().pad(2);
+
+        // TODO faire méthode ?
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(GraphicUtil.backgroundColorLight);
         pixmap.fill();
@@ -618,6 +744,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         // Ajout à la table (par exemple, sous les champs de saisie)
         panel.row().padTop(10);
         panel.add(isEliteCheckBox).center().colspan(2);
+
         //panel.add(isCompanyCheckBox).left().colspan(2);
 
         // TODO ajouter un bouton pour valider l'ajout
@@ -681,6 +808,21 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         leftScrollPane.setActor(tree);
         updateTreeFromRoot();
         //resetSelectedUnit();
+    }
+
+    private void getAndAddNewRootUnitInTree(
+        String unitName,
+        String unitAcronym,
+        boolean isUnitElite,
+        CountryEnum unitCountry
+    ) {
+        UnitElement newRoot = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, ElementSelectorType.FRONT_HQ, 0);
+        this.rootGroup = (FrontGroup) newRoot;
+        initTree();
+        leftScrollPane.setActor(tree);
+        updateTreeFromRoot();
+        this.isTreeRootNodeDefined = true;
+        this.updateLeftPanelFromBoolean();
     }
 
     private Table createCenterButtonPanel() {
