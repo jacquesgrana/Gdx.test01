@@ -892,12 +892,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
     private void saveRootGroupToFile() {
         // TODO utiliser le file chooser de FileService
-        this.unitElementSerializer.serialize(rootGroup, "test.json");
+        String jsonData = this.unitElementSerializer.serialize(rootGroup);
+        this.unitElementSerializer.saveJsonStringToFile(jsonData, "test.json");
     }
 
     private void loadRootFromFile() {
         // TODO utiliser le file chooser de FileService
-        UnitGroup newRoot = this.unitElementSerializer.deserialize("test.json");
+        String jsonData = this.unitElementSerializer.loadJsonStringFromFile("test.json");
+        UnitGroup newRoot = this.unitElementSerializer.deserialize(jsonData);
         //GraphicUtil.printGroup(newRoot);
         //System.out.println("new root group : " + newRoot.getName() + " / " + newRoot.getClass());
         this.rootGroup = (FrontGroup) newRoot;

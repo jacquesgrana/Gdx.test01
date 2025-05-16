@@ -57,26 +57,7 @@ public class UnitElementSerializer {
      * @param rootGroup Le UnitGroup racine à sérialiser.
      * @param filePath  Le chemin du fichier où sauvegarder les données (par exemple, "data/units.json").
      */
-
     /*
-    public <T extends UnitGroup> void serialize(T rootGroup, String filePath) {
-        if (rootGroup == null) {
-            System.err.println("Le rootGroup à sérialiser est null.");
-            return;
-        }
-        try {
-            FileHandle file = Gdx.files.local(filePath); // Utilise Gdx.files.local, .external, ou .absolute selon vos besoins
-            String jsonData = json.prettyPrint(rootGroup, rootGroup.getClass().getModifiers());
-            //String jsonData = json.prettyPrint(rootGroup); // prettyPrint pour la lisibilité, toJson pour la concision
-            file.writeString(jsonData, false); // false pour écraser le fichier s'il existe
-            System.out.println("Sérialisation terminée vers : " + file.path());
-        } catch (Exception e) {
-            System.err.println("Erreur lors de la sérialisation :");
-            e.printStackTrace();
-        }
-    }
-    */
-
     public <T extends UnitGroup> void serialize(T rootGroup, String filePath) {
         if (rootGroup == null) {
             System.err.println("Le rootGroup à sérialiser est null.");
@@ -98,94 +79,128 @@ public class UnitElementSerializer {
             e.printStackTrace();
         }
     }
+*/
 
+    public <T extends UnitGroup> String serialize(T rootGroup) {
+        if (rootGroup == null) {
+            Gdx.app.error("UnitElementSerializer", "Le rootGroup à sérialiser est null.");
+            return null;
+        }
+
+        String jsonData;
+        try {
+            // Utilisez UnitGroup.class comme knownType.
+            // Si rootGroup est une instance d'une sous-classe (ex: FrontGroup),
+            // le champ "class" sera écrit dans le JSON.
+            jsonData = json.toJson(rootGroup, UnitGroup.class);
+            // Si vous préférez un JSON formaté pour la lisibilité (plus lourd) :
+            // jsonData = json.prettyPrint(rootGroup, UnitGroup.class);
+
+        } catch (Exception e) {
+            Gdx.app.error("UnitElementSerializer", "Erreur lors de la conversion de l'objet en JSON.", e);
+            return null; // Retourne null si la sérialisation elle-même échoue
+        }
+
+        // Appel de la méthode pour sauvegarder la chaîne JSON dans un fichier
+        // Vous pourriez vérifier le succès de la sauvegarde ici si saveJsonStringToFile retournait un booléen
+        //saveJsonStringToFile(jsonData, filePath);
+
+        return jsonData; // Retourne la chaîne JSON
+    }
 
     /**
-     * Désérialise un UnitGroup à partir d'un fichier.
+     * Sauvegarde une chaîne de caractères (typiquement JSON) dans un fichier spécifié.
+     * Cette méthode peut être rendue statique et/ou déplacée dans une classe utilitaire de gestion de fichiers.
      *
-     * @param filePath Le chemin du fichier à partir duquel charger les données (par exemple, "data/units.json").
-     * @return Le UnitGroup racine désérialisé, ou null en cas d'erreur ou si le fichier n'existe pas.
+     * @param jsonString La chaîne JSON à sauvegarder.
+     * @param filePath   Le chemin du fichier où sauvegarder les données.
      */
-
-    /*
-    public UnitGroup deserialize(String filePath) {
-        FileHandle file = Gdx.files.local(filePath);
-        if (!file.exists()) {
-            Gdx.app.error("UnitElementSerializer", "File not found for deserialization: " + filePath);
-            return null;
+    public void saveJsonStringToFile(String jsonString, String filePath) {
+        if (jsonString == null) {
+            Gdx.app.error("UnitElementSerializer", "La chaîne JSON à sauvegarder est null. Sauvegarde annulée pour : " + filePath);
+            return;
+        }
+        if (filePath == null || filePath.trim().isEmpty()) {
+            Gdx.app.error("UnitElementSerializer", "Le chemin du fichier pour la sauvegarde est null ou vide. Sauvegarde annulée.");
+            return;
         }
 
-        String jsonData = file.readString();
-        if (jsonData == null || jsonData.isEmpty()) {
-            Gdx.app.error("UnitElementSerializer", "File data is null or empty: " + filePath);
-            return null;
-        }
-
-        UnitGroup rootGroup = null;
         try {
-            // Json.fromJson va créer les instances de Unit, UnitGroup,
-            // et peupler leurs champs (sauf 'parent' qui est transient).
-            // Il utilisera les constructeurs sans argument publics.
-            // Pour le champ 'units' dans UnitGroup, il créera une OrderedSet
-            // et la remplira avec des instances de Unit ou UnitGroup basées
-            // sur l'information "class" dans le JSON.
-            // ***************************************************
-
-            //rootGroup = json.fromJson(UnitGroup.class, jsonData);
-            rootGroup = json.fromJson(FrontGroup.class, jsonData);
+            FileHandle file = Gdx.files.local(filePath);
+            file.writeString(jsonString, false); // 'false' pour écraser le fichier s'il existe
+            Gdx.app.log("UnitElementSerializer", "Données JSON sauvegardées avec succès vers : " + file.path());
         } catch (Exception e) {
-            Gdx.app.error("UnitElementSerializer", "Error during deserialization", e);
+            Gdx.app.error("UnitElementSerializer", "Erreur lors de la sauvegarde des données JSON dans le fichier : " + filePath, e);
+            // Vous pourriez choisir de lancer une exception ici si l'appelant doit gérer l'échec.
+        }
+    }
+
+    /**
+     * Charge le contenu d'un fichier en tant que chaîne de caractères.
+     *
+     * @param filePath Le chemin du fichier à lire.
+     * @return Le contenu du fichier sous forme de String, ou null si le fichier n'existe pas,
+     *         est vide, ou si une erreur de lecture survient.
+     */
+    public String loadJsonStringFromFile(String filePath) {
+        if (filePath == null || filePath.trim().isEmpty()) {
+            Gdx.app.error("UnitElementSerializer", "Le chemin du fichier pour le chargement est null ou vide.");
             return null;
         }
 
-        if (rootGroup != null) {
-            // 1. Réinitialiser le compteur statique global des IDs.
-            // Ceci est crucial pour que les nouvelles unités créées après le chargement
-            // aient des IDs uniques et ne rentrent pas en conflit avec les IDs chargés.
-            int maxId = findMaxId(rootGroup, -1); // Commence la recherche avec -1
-            UnitElement.setUnitCounter(maxId + 1);
-            Gdx.app.log("UnitElementSerializer", "UnitCounter reset to: " + UnitElement.getUnitCounter());
-
-            // 2. Reconstruire les références parentes.
-            // C'est ici que nous parcourons l'arbre désérialisé et définissons
-            // manuellement le champ 'parent' de chaque élément.
-            rebuildParentReferences(rootGroup, null);
-            Gdx.app.log("UnitElementSerializer", "Parent references rebuilt for deserialized data.");
-        }
-        return rootGroup;
-    }*/
-
-    public UnitGroup deserialize(String filePath) {
         FileHandle file = Gdx.files.local(filePath);
         if (!file.exists()) {
-            Gdx.app.error("UnitElementSerializer", "File not found for deserialization: " + filePath);
+            Gdx.app.error("UnitElementSerializer", "Fichier non trouvé pour le chargement : " + filePath);
             return null;
         }
 
-        String jsonData = file.readString();
+        String jsonData = null;
+        try {
+            jsonData = file.readString();
+            if (jsonData == null || jsonData.isEmpty()) {
+                Gdx.app.error("UnitElementSerializer", "Les données du fichier sont null ou vides : " + filePath);
+                return null; // Retourne null si le fichier est vide
+            }
+        } catch (Exception e) {
+            Gdx.app.error("UnitElementSerializer", "Erreur durant la lecture du fichier : " + filePath, e);
+            return null; // Retourne null en cas d'erreur de lecture
+        }
+        Gdx.app.log("UnitElementSerializer", "Données JSON chargées avec succès depuis : " + filePath);
+        return jsonData;
+    }
+
+    /**
+     * Désérialise un UnitGroup à partir d'une chaîne de données JSON.
+     *
+     * @param jsonData La chaîne de données JSON à désérialiser.
+     * @return Le UnitGroup racine désérialisé, ou null en cas d'erreur ou si les données JSON sont invalides.
+     */
+    public UnitGroup deserialize(String jsonData) {
         if (jsonData == null || jsonData.isEmpty()) {
-            Gdx.app.error("UnitElementSerializer", "File data is null or empty: " + filePath);
+            Gdx.app.error("UnitElementSerializer", "Les données JSON à désérialiser sont null ou vides.");
             return null;
         }
 
         UnitGroup rootGroup = null;
         try {
-            // MODIFICATION ICI:
             // Désérialisez en tant que UnitGroup. LibGDX Json utilisera
             // le champ "class" dans le JSON pour instancier le type concret.
             rootGroup = json.fromJson(UnitGroup.class, jsonData);
         } catch (Exception e) {
-            Gdx.app.error("UnitElementSerializer", "Error during deserialization", e);
+            Gdx.app.error("UnitElementSerializer", "Erreur durant la désérialisation des données JSON.", e);
             return null;
         }
 
         if (rootGroup != null) {
-            int maxId = findMaxId(rootGroup, -1);
+            // 1. Réinitialiser le compteur statique UnitElement.unitCounter
+            //    en trouvant l'ID le plus élevé dans les données désérialisées.
+            int maxId = findMaxId(rootGroup, -1); // Commence la recherche avec -1
             UnitElement.setUnitCounter(maxId + 1);
-            Gdx.app.log("UnitElementSerializer", "UnitCounter reset to: " + UnitElement.getUnitCounter());
+            Gdx.app.log("UnitElementSerializer", "UnitCounter réinitialisé à : " + UnitElement.getUnitCounter());
 
+            // 2. Reconstruire les références parentes.
             rebuildParentReferences(rootGroup, null);
-            Gdx.app.log("UnitElementSerializer", "Parent references rebuilt for deserialized data.");
+            Gdx.app.log("UnitElementSerializer", "Références parentes reconstruites pour les données désérialisées.");
         }
         return rootGroup;
     }
