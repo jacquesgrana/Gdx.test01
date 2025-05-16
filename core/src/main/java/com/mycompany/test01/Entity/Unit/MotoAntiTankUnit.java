@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class MotoAntiTankUnit extends Unit {
 
+    public MotoAntiTankUnit() {
+        super();
+    }
+
     public MotoAntiTankUnit(
         String name,
         String acronym,

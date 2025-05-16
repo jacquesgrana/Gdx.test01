@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class RocketArtiUnit extends Unit {
 
+    public RocketArtiUnit() {
+        super();
+    }
+
     public RocketArtiUnit(
         String name,
         String acronym,

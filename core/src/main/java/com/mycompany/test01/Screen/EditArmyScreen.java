@@ -33,6 +33,7 @@ import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.*;
 import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Main;
+import com.mycompany.test01.Serializer.UnitElementSerializer;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 import com.mycompany.test01.Util.UnitUtil;
@@ -75,12 +76,17 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
     private ButtonWrapper buttonDeleteWrapper = null;
     private ButtonWrapper buttonAddWrapper = null;
+    private ButtonWrapper buttonSaveAllWrapper = null;
+    private ButtonWrapper buttonLoadAllWrapper = null;
+
 
     private SelectBox<ElementSelectorType> selectUnitBox;
     //private SelectBox<CountryEnum> selectCountryBox;
 
 
     private final Skin unitTreeSkin;
+
+    private final UnitElementSerializer unitElementSerializer;
 
     //private Skin skin;
 
@@ -97,6 +103,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         //this.unitBlackCountryFactory = new UnitBlackCountryFactory();
         //this.unitBlueCountryFactory = new UnitBlueCountryFactory();
         //this.unitBrownCountryFactory = new UnitBrownCountryFactory();
+        this.unitElementSerializer = new UnitElementSerializer();
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
         //shapeRenderer = new ShapeRenderer();
@@ -206,7 +213,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private void updateLeftPanelFromBoolean() {
         leftScrollPane.setVisible(this.isTreeRootNodeDefined);
         leftCreateRootPanel.setVisible(!this.isTreeRootNodeDefined);
-        // TODO setVisible du Table de creation du rootGroup avec !isRootDefined
     }
 
     private void resetSelectedUnit() {
@@ -221,6 +227,18 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
         this.buttonDeleteWrapper.getButton().setDisabled(true);
         this.buttonAddWrapper.getButton().setDisabled(true);
+
+        this.buttonSaveAllWrapper.getButton().setDisabled(rootGroup == null || rootGroup.getUnits().size == 0);
+
+        /*
+        if(rootGroup != null) {
+            this.buttonSaveAllWrapper.getButton().setDisabled(rootGroup.getUnits().size == 0);
+        }
+        else {
+            this.buttonSaveAllWrapper.getButton().setDisabled(true);
+        }*/
+
+        this.buttonLoadAllWrapper.getButton().setDisabled(false);
     }
 
     private void addListenerToRootTreeNode() {
@@ -772,7 +790,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     private Table createCenterButtonPanel() {
         float padding = 20f;
         Table panel = new Table();
-        panel.defaults().pad(2);
+        //panel.defaults().pad(2);
 
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(GraphicUtil.backgroundColorLight);
@@ -782,14 +800,15 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         pixmap.dispose();
         Drawable background = new TextureRegionDrawable(new TextureRegion(texture));
 
-        panel.setBounds(padding, Gdx.graphics.getHeight() - 460f, (Gdx.graphics.getWidth() - 200f) / 3 - 2 * padding, 100);
+        panel.setBounds(padding, Gdx.graphics.getHeight() - 510f, (Gdx.graphics.getWidth() - 200f) / 3 - 2 * padding, 170);
 
         panel.setBackground(background);
 
+        //buttonSaveAllWrapper
         this.buttonDeleteWrapper = new ButtonWrapper(
             "Delete Unit",
             20,
-            20, 150, 50);
+            90, 150, 50);
         EditArmyScreen that = this;
 
         this.buttonDeleteWrapper.getButton().addListener(new ChangeListener() {
@@ -813,7 +832,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.buttonAddWrapper = new ButtonWrapper(
             "Add Unit",
             190,
-            20, 150, 50);
+            90, 150, 50);
 
         //EditArmyScreen that = this;
         this.buttonAddWrapper.getButton().addListener(new ChangeListener() {
@@ -827,7 +846,69 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         });
         this.buttonAddWrapper.getButton().setDisabled(true);
         panel.addActor(this.buttonAddWrapper.getButton());
+
+        this.buttonSaveAllWrapper = new ButtonWrapper(
+            "Save All",
+            360,
+            90, 150, 50);
+
+        //EditArmyScreen that = this;
+        this.buttonSaveAllWrapper.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                System.out.println("click save all");
+                //if (selectedUnit instanceof )
+                that.saveRootGroupToFile();
+
+            }
+        });
+        this.buttonSaveAllWrapper.getButton().setDisabled(true);
+        panel.addActor(this.buttonSaveAllWrapper.getButton());
+        panel.row();
+
+
+        this.buttonLoadAllWrapper = new ButtonWrapper(
+            "Load All",
+            20,
+            20, 150, 50);
+
+        //EditArmyScreen that = this;
+        this.buttonLoadAllWrapper.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                System.out.println("click load all");
+                //if (selectedUnit instanceof )
+                that.loadRootFromFile();
+
+            }
+        });
+        //this.buttonLoadAllWrapper.getButton().setDisabled(true);
+        panel.addActor(this.buttonLoadAllWrapper.getButton());
+
+        //buttonLoadAllWrapper
+
         return panel;
+    }
+
+    private void saveRootGroupToFile() {
+        // TODO utiliser le file chooser de FileService
+        this.unitElementSerializer.serialize(rootGroup, "test.json");
+    }
+
+    private void loadRootFromFile() {
+        // TODO utiliser le file chooser de FileService
+        UnitGroup newRoot = this.unitElementSerializer.deserialize("test.json");
+        //GraphicUtil.printGroup(newRoot);
+        //System.out.println("new root group : " + newRoot.getName() + " / " + newRoot.getClass());
+        this.rootGroup = (FrontGroup) newRoot;
+        initTree();
+        leftScrollPane.setActor(tree);
+        this.isTreeRootNodeDefined = true;
+        this.selectedCountry = rootGroup.getCountry();
+        updateTreeFromRoot();
+        updateLeftPanelFromBoolean();
+        //resetSelectedUnit();
+        this.buttonSaveAllWrapper.getButton().setDisabled(false);
     }
 
     private void updateUnitSelectorList() {
@@ -856,6 +937,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         leftScrollPane.setActor(tree);
         updateTreeFromRoot();
         //resetSelectedUnit();
+        this.buttonSaveAllWrapper.getButton().setDisabled(false);
     }
 
     private void getAndAddNewRootUnitInTree(
@@ -882,12 +964,21 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
             leftScrollPane.setActor(tree);
             updateTreeFromRoot();
             resetSelectedUnit();
+            this.buttonSaveAllWrapper.getButton().setDisabled(rootGroup.getUnits().size == 0);
         }
         else {
-            rootGroup = null;
-            isTreeRootNodeDefined = false;
-            updateLeftPanelFromBoolean();
-            resetSelectedUnit();
+            // TODO : enlever le try/catch ??
+            try {
+                rootGroup = null;
+                isTreeRootNodeDefined = false;
+                updateLeftPanelFromBoolean();
+                resetSelectedUnit();
+                this.buttonSaveAllWrapper.getButton().setDisabled(true);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

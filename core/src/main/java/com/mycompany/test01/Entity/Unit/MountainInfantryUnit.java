@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class MountainInfantryUnit extends Unit {
 
+    public MountainInfantryUnit() {
+        super();
+    }
+
     public MountainInfantryUnit(
         String name,
         String acronym,

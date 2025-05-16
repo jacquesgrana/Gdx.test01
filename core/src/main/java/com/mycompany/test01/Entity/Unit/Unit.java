@@ -3,11 +3,12 @@ package com.mycompany.test01.Entity.Unit;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public abstract class Unit extends UnitElement {
+public class Unit extends UnitElement {
     //private int id;
     //private String name;
 
     public Unit() {
+        super();
     }
 
     public Unit(String name,

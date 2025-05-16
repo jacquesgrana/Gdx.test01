@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class InfantryRecoCompanyUnit extends Unit {
 
+    public InfantryRecoCompanyUnit() {
+        super();
+    }
+
     public InfantryRecoCompanyUnit(
         String name,
         String acronym,

@@ -21,7 +21,7 @@ import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.mycompany.test01.Service.FileService;
+import com.mycompany.test01.Service.MapFileService;
 import com.mycompany.test01.Service.MapService;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
@@ -34,7 +34,7 @@ public class EditMapScreen implements Screen, InputProcessor {
     private Pixmap drawingMapPixmap;
     private Texture drawingTexture = null;
     final MapService mapService;
-    final FileService fileService;
+    final MapFileService mapFileService;
     private boolean isMiniMapVisible = false;
     private EditMapMode mode;
     private final Label modeLabel;
@@ -61,7 +61,7 @@ public class EditMapScreen implements Screen, InputProcessor {
         this.mode = EditMapMode.NO_ACTION;
         this.mapService = MapService.getInstance();
         this.mapService.init();
-        this.fileService = FileService.getInstance();
+        this.mapFileService = MapFileService.getInstance();
         //mapService.updateMapSize();
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -825,7 +825,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //System.out.println("clic save");
-                fileService.openSaveFileChooser();
+                mapFileService.openSaveMapFileChooser();
                 redrawMap();
             }
         });
@@ -836,7 +836,7 @@ public class EditMapScreen implements Screen, InputProcessor {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //System.out.println("clic load");
-                fileService.openLoadFileChooser();
+                mapFileService.openLoadMapFileChooser();
 
                 redrawMap();
             }

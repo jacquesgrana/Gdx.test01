@@ -79,14 +79,14 @@ public class SkinUtil {
 
         // Fond de la case (non cochée)
         Pixmap unchecked = new Pixmap(size, size, Pixmap.Format.RGBA8888);
-        unchecked.setColor(0.7f, 0.7f, 0.7f, 1f); // gris clair
+        unchecked.setColor(GraphicUtil.buttonColorMedium); // gris clair
         unchecked.fill();
         skin.add("checkbox-unchecked", new Texture(unchecked));
         unchecked.dispose();
 
         // Fond de la case (cochée)
         Pixmap checked = new Pixmap(size, size, Pixmap.Format.RGBA8888);
-        checked.setColor(0.2f, 0.7f, 0.2f, 1f); // vert
+        checked.setColor(GraphicUtil.buttonHoverColorMedium); // vert
         checked.fill();
         // Ajoute une croix blanche
         checked.setColor(1, 1, 1, 1);
@@ -132,7 +132,7 @@ public class SkinUtil {
 
         // Crée la sélection (bleu clair semi-transparent)
         Pixmap selectionPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        selectionPixmap.setColor(0.3f, 0.5f, 1f, 0.5f);
+        selectionPixmap.setColor(GraphicUtil.buttonHoverColorMediumLight); // TODO : utiliser GraphicUtil !!
         selectionPixmap.fill();
         skin.add("textfield-selection", new Texture(selectionPixmap));
         selectionPixmap.dispose();

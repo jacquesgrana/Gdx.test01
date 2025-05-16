@@ -5,7 +5,7 @@ import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Interface.ElementInterface;
 
-public abstract class UnitGroup extends UnitElement { // implements Element
+public class UnitGroup extends UnitElement { // implements Element
     private int level;
     private OrderedSet<ElementInterface> units;
 
@@ -41,6 +41,7 @@ public abstract class UnitGroup extends UnitElement { // implements Element
     public void removeUnit(ElementInterface element) {
         if(element != null && this.units.contains(element)) {
             this.units.remove(element);
+            element.setParent(null);
         }
     }
 

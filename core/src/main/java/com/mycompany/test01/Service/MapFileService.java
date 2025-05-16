@@ -9,8 +9,8 @@ import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.FileChooserInterface;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
-public class FileService {
-    private static FileService instance = null;
+public class MapFileService {
+    private static MapFileService instance = null;
 
     public static final String GAME_DATA_FILE_PATH = "game_data/";
     public static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
@@ -18,26 +18,26 @@ public class FileService {
     private final FileChooserInterface fileChooser;
     //NativeFileChooser fileChooser;
 
-    public FileService() {
+    public MapFileService() {
         json = new Json();
         //NativeFileChooser fileChooser = new NativeFileChooser();
         fileChooser = new DesktopMapFileChooser(); // Utilisez une implémentation spécifique à la plateforme
     }
 
-    public static FileService getInstance() {
+    public static MapFileService getInstance() {
         if (instance == null) {
-            instance = new FileService();
+            instance = new MapFileService();
         }
         return instance;
     }
 
-    public void openLoadFileChooser() {
+    public void openLoadMapFileChooser() {
         checkOrInitDirs();
         DesktopMapFileChooserlistener fileChooserlistener = new DesktopMapFileChooserlistener();
         fileChooser.openLoadFileChooser(fileChooserlistener, MAP_FILE_PATH);
     }
 
-    public void openSaveFileChooser() {
+    public void openSaveMapFileChooser() {
         checkOrInitDirs();
         DesktopMapFileChooserlistener fileChooserlistener = new DesktopMapFileChooserlistener();
         fileChooser.openSaveFileChooser(fileChooserlistener, MAP_FILE_PATH);

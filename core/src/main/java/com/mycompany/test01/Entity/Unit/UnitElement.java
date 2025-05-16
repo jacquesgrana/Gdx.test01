@@ -13,7 +13,7 @@ todo : ajouter booleen isElite + ajouter int regPosition (0 - 3) + ajouter boole
 public abstract class UnitElement implements ElementInterface {
     private static int unitCounter = 0;
     protected int id;
-    protected UnitGroup parent;
+    protected transient UnitGroup parent;
     protected String name;
     protected String acronym;
     protected CountryEnum country;

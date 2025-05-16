@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class SkiMachineGunUnit extends Unit {
 
+    public SkiMachineGunUnit() {
+        super();
+    }
+
     public SkiMachineGunUnit(
         String name,
         String acronym,

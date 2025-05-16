@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class HeavyTankUnit extends Unit {
 
+    public HeavyTankUnit() {
+        super();
+    }
+
     public HeavyTankUnit(
         String name,
         String acronym,

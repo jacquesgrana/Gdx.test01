@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class AssaultGun extends Unit {
 
+    public AssaultGun() {
+        super();
+    }
+
     public AssaultGun(
         String name,
         String acronym,

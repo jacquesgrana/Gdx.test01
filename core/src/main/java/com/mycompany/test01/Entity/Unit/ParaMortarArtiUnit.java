@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class ParaMortarArtiUnit extends Unit {
 
+    public ParaMortarArtiUnit() {
+        super();
+    }
+
     public ParaMortarArtiUnit(
         String name,
         String acronym,

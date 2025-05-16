@@ -3,7 +3,7 @@ package com.mycompany.test01.Common;
 import com.badlogic.gdx.files.FileHandle;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.FileChooserListenerInterface;
-import com.mycompany.test01.Service.FileService;
+import com.mycompany.test01.Service.MapFileService;
 import com.mycompany.test01.Service.MapService;
 
 import java.util.Objects;
@@ -11,11 +11,11 @@ import java.util.Objects;
 public class DesktopMapFileChooserlistener implements FileChooserListenerInterface {
 
     private MapService mapService;
-    private FileService fileService;
+    private MapFileService mapFileService;
 
     public DesktopMapFileChooserlistener() {
         mapService = MapService.getInstance();
-        fileService = FileService.getInstance();
+        mapFileService = MapFileService.getInstance();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class DesktopMapFileChooserlistener implements FileChooserListenerInterfa
         //System.out.println("test !! : file path : " + file.path());
         //System.out.println("mode : " + mode);
         if(Objects.equals(mode, "LOAD")) {
-            MapData mapData = fileService.loadMapData(file.path()); // TODO modifier la méthode du service
+            MapData mapData = mapFileService.loadMapData(file.path()); // TODO modifier la méthode du service
             //MapData mapData = fileService.loadMapData(file.path()); // TODO modifier la méthode du service
 
             mapService.SetMapData(mapData);
@@ -32,7 +32,7 @@ public class DesktopMapFileChooserlistener implements FileChooserListenerInterfa
         }
         else if(Objects.equals(mode, "SAVE")) {
             MapData mapData = mapService.getMapData();
-            fileService.saveMapData(mapData, file.path());
+            mapFileService.saveMapData(mapData, file.path());
             //fileService.saveMapData(mapData, file.path());
 
         }

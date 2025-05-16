@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class BicycleInfUnit extends Unit {
 
+    public BicycleInfUnit() {
+        super();
+    }
+
     public BicycleInfUnit(
         String name,
         String acronym,

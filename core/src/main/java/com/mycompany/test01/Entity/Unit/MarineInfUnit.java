@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class MarineInfUnit extends Unit {
 
+    public MarineInfUnit() {
+        super();
+    }
+
     public MarineInfUnit(
         String name,
         String acronym,

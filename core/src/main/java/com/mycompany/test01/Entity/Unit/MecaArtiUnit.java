@@ -5,6 +5,10 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 
 public class MecaArtiUnit extends Unit {
 
+    public MecaArtiUnit() {
+        super();
+    }
+
     public MecaArtiUnit(
         String name,
         String acronym,
