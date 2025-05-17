@@ -8,12 +8,12 @@ import com.mycompany.test01.Service.MapService;
 
 import java.util.Objects;
 
-public class DesktopMapFileChooserlistener implements FileChooserListenerInterface {
+public class DesktopMapFileChooserListener implements FileChooserListenerInterface {
 
     private MapService mapService;
     private MapFileService mapFileService;
 
-    public DesktopMapFileChooserlistener() {
+    public DesktopMapFileChooserListener() {
         mapService = MapService.getInstance();
         mapFileService = MapFileService.getInstance();
     }

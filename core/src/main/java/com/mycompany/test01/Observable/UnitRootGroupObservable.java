@@ -4,25 +4,24 @@ import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Interface.Observable;
 import com.mycompany.test01.Interface.Observer;
-import com.mycompany.test01.Service.MapFileService;
 import com.mycompany.test01.Util.GraphicUtil;
 
-public class UnitGroupObservable implements Observable<UnitGroup> {
+public class UnitRootGroupObservable implements Observable<UnitGroup> {
 
-    private static UnitGroupObservable instance = null;
+    private static UnitRootGroupObservable instance = null;
 
     private Array<Observer<UnitGroup>> observers = new Array<>();
     private UnitGroup observed;
 
 
-    public static UnitGroupObservable getInstance() {
+    public static UnitRootGroupObservable getInstance() {
         if (instance == null) {
-            instance = new UnitGroupObservable();
+            instance = new UnitRootGroupObservable();
         }
         return instance;
     }
 
-    private UnitGroupObservable() {
+    private UnitRootGroupObservable() {
         observers = new Array<>();
         observed = null;
     }

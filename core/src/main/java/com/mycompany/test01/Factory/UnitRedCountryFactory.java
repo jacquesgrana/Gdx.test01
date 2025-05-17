@@ -231,7 +231,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public ArmyGroup createArmyGroup(String name, String acronym, boolean isElite, boolean isPara, boolean isMotorised, boolean usesWhiteStroke) {
+    public ArmyGroup createArmyGroup(String name, String acronym, boolean isPara, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
         return new ArmyGroup(name, acronym, CountryEnum.RED_COUNTRY, isPara, isElite, isMotorised, usesWhiteStroke);
     }
 

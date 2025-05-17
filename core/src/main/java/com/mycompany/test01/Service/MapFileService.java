@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.mycompany.test01.Common.DesktopFileChooser;
-import com.mycompany.test01.Common.DesktopMapFileChooserlistener;
+import com.mycompany.test01.Common.DesktopMapFileChooserListener;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.FileChooserInterface;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;
@@ -33,13 +33,13 @@ public class MapFileService {
 
     public void openLoadMapFileChooser() {
         checkOrInitDirs();
-        DesktopMapFileChooserlistener fileChooserlistener = new DesktopMapFileChooserlistener();
+        DesktopMapFileChooserListener fileChooserlistener = new DesktopMapFileChooserListener();
         fileChooser.openLoadFileChooser(fileChooserlistener, MAP_FILE_PATH);
     }
 
     public void openSaveMapFileChooser() {
         checkOrInitDirs();
-        DesktopMapFileChooserlistener fileChooserlistener = new DesktopMapFileChooserlistener();
+        DesktopMapFileChooserListener fileChooserlistener = new DesktopMapFileChooserListener();
         fileChooser.openSaveFileChooser(fileChooserlistener, MAP_FILE_PATH);
     }
 

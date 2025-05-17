@@ -17,6 +17,6 @@ public class TankUnit extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank) {
-        super(name, acronym, country, UnitTypeEnum.TANK, isElite, false, false, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, UnitTypeEnum.TANK, false, isElite, false, isCompany, usesWhiteStroke, regRank);
     }
 }

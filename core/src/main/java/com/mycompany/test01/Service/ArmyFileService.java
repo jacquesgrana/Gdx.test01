@@ -2,11 +2,10 @@ package com.mycompany.test01.Service;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Json;
-import com.mycompany.test01.Common.DesktopArmyFileChooserlistener;
+import com.mycompany.test01.Common.DesktopArmyGroupFileChooserListener;
+import com.mycompany.test01.Common.DesktopArmyRootFileChooserListener;
 import com.mycompany.test01.Common.DesktopFileChooser;
-import com.mycompany.test01.Common.DesktopMapFileChooserlistener;
-import com.mycompany.test01.Entity.Unit.ArmyGroup;
+import com.mycompany.test01.Entity.Unit.UnitElement;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Interface.FileChooserInterface;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
@@ -17,22 +16,24 @@ public class ArmyFileService {
 
     public static final String GAME_DATA_FILE_PATH = "game_data/";
     public static final String ARMY_FILE_PATH = GAME_DATA_FILE_PATH + "armies/";
+    public static final String GROUP_FILE_PATH = GAME_DATA_FILE_PATH + "groups/";
     //private final Json json;
     private final FileChooserInterface fileChooser;
     private final UnitElementSerializer unitElementSerializer;
 
     private UnitGroup rootToSave;
+    private UnitGroup groupToSave;
     private UnitGroup rootLoaded;
 
-    //NativeFileChooser fileChooser;
+    private UnitElement selectedUnit;
 
     public ArmyFileService() {
-        //json = new Json();
-        //NativeFileChooser fileChooser = new NativeFileChooser();
         this.fileChooser = new DesktopFileChooser(); // Utilisez une implémentation spécifique à la plateforme
         this.unitElementSerializer = new UnitElementSerializer();
         this.rootToSave = null;
+        this.groupToSave = null;
         this.rootLoaded = null;
+        this.selectedUnit = null;
     }
 
     public static ArmyFileService getInstance() {
@@ -42,16 +43,28 @@ public class ArmyFileService {
         return instance;
     }
 
-    public void openLoadArmyFileChooser() {
+    public void openLoadArmyRootFileChooser() {
         checkOrInitDirs();
-        DesktopArmyFileChooserlistener fileChooserlistener = new DesktopArmyFileChooserlistener();
+        DesktopArmyRootFileChooserListener fileChooserlistener = new DesktopArmyRootFileChooserListener();
         fileChooser.openLoadFileChooser(fileChooserlistener, ARMY_FILE_PATH);
     }
 
-    public void openSaveArmyFileChooser() {
+    public void openSaveArmyRootFileChooser() {
         checkOrInitDirs();
-        DesktopArmyFileChooserlistener fileChooserlistener = new DesktopArmyFileChooserlistener();
+        DesktopArmyRootFileChooserListener fileChooserlistener = new DesktopArmyRootFileChooserListener();
         fileChooser.openSaveFileChooser(fileChooserlistener, ARMY_FILE_PATH);
+    }
+
+    public void openLoadArmyGroupFileChooser() {
+        checkOrInitDirs();
+        DesktopArmyGroupFileChooserListener fileChooserlistener = new DesktopArmyGroupFileChooserListener();
+        fileChooser.openLoadFileChooser(fileChooserlistener, GROUP_FILE_PATH);
+    }
+
+    public void openSaveArmyGroupFileChooser() {
+        checkOrInitDirs();
+        DesktopArmyGroupFileChooserListener fileChooserlistener = new DesktopArmyGroupFileChooserListener();
+        fileChooser.openSaveFileChooser(fileChooserlistener, GROUP_FILE_PATH);
     }
 
     private void checkOrInitDirs() {
@@ -59,9 +72,11 @@ public class ArmyFileService {
         if(!dataDir.exists()) dataDir.mkdirs();
         FileHandle armyDir = Gdx.files.local(ARMY_FILE_PATH);
         if(!armyDir.exists()) armyDir.mkdirs();
+        FileHandle groupDir = Gdx.files.local(GROUP_FILE_PATH);
+        if(!groupDir.exists()) groupDir.mkdirs();
     }
 
-    public void saveArmyData(String filePath) { //GameData data, String filePath
+    public void saveArmyRootData(String filePath) { //GameData data, String filePath
         //FileHandle file = Gdx.files.local(MAP_FILE_PATH + fileName + ".json");
         FileHandle file = Gdx.files.absolute(filePath);
         /*
@@ -72,6 +87,14 @@ public class ArmyFileService {
         //data.setModificationDate(System.currentTimeMillis());
         //String jsonString = json.toJson(data);
         String jsonString = unitElementSerializer.serialize(this.rootToSave);
+        file.writeString(jsonString, false);
+    }
+
+    public void saveArmyGroupData(String filePath) {
+        FileHandle file = Gdx.files.absolute(filePath);
+        UnitGroup selectedGroup = (UnitGroup) this.selectedUnit;
+        selectedGroup.setParent(null);
+        String jsonString = unitElementSerializer.serialize(selectedGroup);
         file.writeString(jsonString, false);
     }
 
@@ -86,10 +109,10 @@ public class ArmyFileService {
             //System.out.println("jsonString : " + jsonString);
             try {
                 //MapData data = json.fromJson(MapData.class, jsonString);
-                UnitGroup rootGroup = unitElementSerializer.deserialize(jsonString);
-                System.out.println("rootGroup : " + rootGroup);
+                UnitGroup group = unitElementSerializer.deserialize(jsonString);
+                System.out.println("group : " + group);
                 //this.rootLoaded = rootGroup;
-                return rootGroup;
+                return group;
             }
             catch (Exception e) {
                 //e.printStackTrace();
@@ -109,11 +132,27 @@ public class ArmyFileService {
         this.rootToSave = rootToSave;
     }
 
+    public UnitGroup getGroupToSave() {
+        return groupToSave;
+    }
+
+    public void setGroupToSave(UnitGroup groupToSave) {
+        this.groupToSave = groupToSave;
+    }
+
     public UnitGroup getRootLoaded() {
         return rootLoaded;
     }
 
     public void setRootLoaded(UnitGroup rootLoaded) {
         this.rootLoaded = rootLoaded;
+    }
+
+    public UnitElement getSelectedUnit() {
+        return selectedUnit;
+    }
+
+    public void setSelectedUnit(UnitElement selectedUnit) {
+        this.selectedUnit = selectedUnit;
     }
 }

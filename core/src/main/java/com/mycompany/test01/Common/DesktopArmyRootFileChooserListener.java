@@ -1,29 +1,25 @@
 package com.mycompany.test01.Common;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Interface.FileChooserListenerInterface;
-import com.mycompany.test01.Observable.UnitGroupObservable;
+import com.mycompany.test01.Observable.UnitRootGroupObservable;
 import com.mycompany.test01.Service.ArmyFileService;
-import com.mycompany.test01.Service.MapFileService;
-import com.mycompany.test01.Service.MapService;
-import com.mycompany.test01.Util.GraphicUtil;
 
 import java.util.Objects;
 
-public class DesktopArmyFileChooserlistener implements FileChooserListenerInterface {
+public class DesktopArmyRootFileChooserListener implements FileChooserListenerInterface {
 
     //private MapService mapService;
     //private MapFileService mapFileService;
-    private ArmyFileService armyFileService;
-    private UnitGroupObservable unitGroupObservable;
+    private final ArmyFileService armyFileService;
+    private final UnitRootGroupObservable unitRootGroupObservable;
 
-    public DesktopArmyFileChooserlistener() {
+    public DesktopArmyRootFileChooserListener() {
         //mapService = MapService.getInstance();
         //mapFileService = MapFileService.getInstance();
         //unitGroupObservable = new UnitGroupObservable();
-        this.unitGroupObservable = UnitGroupObservable.getInstance();
+        this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
 
         armyFileService = ArmyFileService.getInstance();
     }
@@ -32,15 +28,15 @@ public class DesktopArmyFileChooserlistener implements FileChooserListenerInterf
     public void selected(FileHandle file, String mode) {
         if(Objects.equals(mode, "LOAD")) {
 
+            // TODO mettre un try/catch avec gestion du catch ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             UnitGroup rootGroup = armyFileService.loadArmyData(file.path());
             armyFileService.setRootLoaded(rootGroup);
-            GraphicUtil.printGroup(rootGroup);
-            unitGroupObservable.setObserved(rootGroup);
-            unitGroupObservable.notifyObservers();
-            // TODO utiliser observable pour appeler une méthode de EditMapScreen qui met à jour l'arbre
+            //GraphicUtil.printGroup(rootGroup);
+            unitRootGroupObservable.setObserved(rootGroup);
+            unitRootGroupObservable.notifyObservers();
         }
         else if(Objects.equals(mode, "SAVE")) {
-            armyFileService.saveArmyData(file.path());
+            armyFileService.saveArmyRootData(file.path());
         }
 
     }
