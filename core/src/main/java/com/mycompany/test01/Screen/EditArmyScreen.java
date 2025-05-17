@@ -32,8 +32,11 @@ import com.mycompany.test01.Factory.UnitRedCountryFactory;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.*;
 import com.mycompany.test01.Interface.ElementInterface;
+import com.mycompany.test01.Interface.Observer;
 import com.mycompany.test01.Main;
+import com.mycompany.test01.Observable.UnitGroupObservable;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
+import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 import com.mycompany.test01.Util.UnitUtil;
@@ -42,7 +45,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-public class EditArmyScreen implements Screen, InputProcessor { //,
+public class EditArmyScreen implements Screen, InputProcessor, Observer<UnitGroup> { //,
     final Main game;
     private final Stage stage;
     private final BitmapFont font;
@@ -67,6 +70,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
     //private final Label selectedCountryLabel;
     private final Image selectedUnitIcon;
 
+    private final ArmyFileService armyFileService;
+
+    private final UnitGroupObservable unitGroupObservable;
     //private final Table centerButtonPanel;
 
     //private final UnitRedCountryFactory unitRedCountryFactory;
@@ -113,6 +119,17 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
         this.selectedUnit = null;
         this.isTreeRootNodeDefined = false;
         this.selectedCountry = CountryEnum.NO_COUNTRY;
+        this.armyFileService = ArmyFileService.getInstance();
+
+
+        // *******************************************************
+
+        //this.unitGroupObservable = new UnitGroupObservable();
+        this.unitGroupObservable = UnitGroupObservable.getInstance();
+        this.unitGroupObservable.subscribe(this);
+
+        // *******************************************************
+
         //this.selectedCountryLabel = new Label(getSelectedCountry().toString(), SkinUtil.getLabelSkin(200, 30));
 
         this.unitSelectorList = new ElementSelectorType[(int) Arrays.stream(ElementSelectorType.values()).count()]; // TODO 100?
@@ -892,17 +909,45 @@ public class EditArmyScreen implements Screen, InputProcessor { //,
 
     private void saveRootGroupToFile() {
         // TODO utiliser le file chooser de FileService
-        String jsonData = this.unitElementSerializer.serialize(rootGroup);
-        this.unitElementSerializer.saveJsonStringToFile(jsonData, "test.json");
+
+        //String jsonData = this.unitElementSerializer.serialize(rootGroup);
+        //this.unitElementSerializer.saveJsonStringToFile(jsonData, "test.json");
+
+        // set le rootGroup du service
+        armyFileService.setRootToSave(rootGroup);
+        armyFileService.openSaveArmyFileChooser();
     }
 
     private void loadRootFromFile() {
-        // TODO utiliser le file chooser de FileService
+        // TODO utiliser le file chooser de FileService *************************************************************************************
+        armyFileService.openLoadArmyFileChooser();
+        /*
         String jsonData = this.unitElementSerializer.loadJsonStringFromFile("test.json");
         UnitGroup newRoot = this.unitElementSerializer.deserialize(jsonData);
         //GraphicUtil.printGroup(newRoot);
         //System.out.println("new root group : " + newRoot.getName() + " / " + newRoot.getClass());
+
         this.rootGroup = (FrontGroup) newRoot;
+        initTree();
+        leftScrollPane.setActor(tree);
+        this.isTreeRootNodeDefined = true;
+        this.selectedCountry = rootGroup.getCountry();
+        updateTreeFromRoot();
+        updateLeftPanelFromBoolean();
+        //resetSelectedUnit();
+        this.buttonSaveAllWrapper.getButton().setDisabled(false);
+        */
+    }
+
+    @Override
+    public void update(UnitGroup newValue) {
+        System.out.println("update observer side");
+        this.armyFileService.setRootLoaded(newValue);
+        this.updateRootAndTree();
+    }
+
+    public void updateRootAndTree() {
+        this.rootGroup = (FrontGroup) armyFileService.getRootLoaded();
         initTree();
         leftScrollPane.setActor(tree);
         this.isTreeRootNodeDefined = true;

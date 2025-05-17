@@ -3,7 +3,7 @@ package com.mycompany.test01.Service;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.mycompany.test01.Common.DesktopMapFileChooser;
+import com.mycompany.test01.Common.DesktopFileChooser;
 import com.mycompany.test01.Common.DesktopMapFileChooserlistener;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.FileChooserInterface;
@@ -21,7 +21,7 @@ public class MapFileService {
     public MapFileService() {
         json = new Json();
         //NativeFileChooser fileChooser = new NativeFileChooser();
-        fileChooser = new DesktopMapFileChooser(); // Utilisez une implémentation spécifique à la plateforme
+        fileChooser = new DesktopFileChooser(); // Utilisez une implémentation spécifique à la plateforme
     }
 
     public static MapFileService getInstance() {

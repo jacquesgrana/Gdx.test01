@@ -9,7 +9,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
-public class DesktopMapFileChooser implements FileChooserInterface {
+public class DesktopFileChooser implements FileChooserInterface {
     @Override
     public void openLoadFileChooser(FileChooserListenerInterface listener, String dirPath) {
         JFileChooser chooser = new JFileChooser();
