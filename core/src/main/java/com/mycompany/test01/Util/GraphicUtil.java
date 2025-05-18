@@ -213,9 +213,13 @@ public class GraphicUtil {
     public static Color textDisabledColorMedium = new Color(0.20f, 0.20f, 0.23f, 1);
 
     // Couleurs spécifiques pour le Toast (à définir selon vos préférences)
-    public static Color toastBackgroundColor = new Color(0.2f, 0.2f, 0.2f, 0.85f); // Noir semi-transparent
-    public static Color toastFontColor = Color.WHITE;
+    public static Color toastBackgroundColor = new Color(1f, 1f, 1f, 1f); // Noir semi-transparent
+    public static Color toastFontColor = backgroundColorDark; //new Color(0.9020f, 0.7843f, 0.1176f, 1.0f);
     public static Color toastBorderColor = new Color(0.5f, 0.5f, 0.5f, 0.85f); // Gris semi-transparent pour la bordure
+
+    //public static Color getToastSuccessBackgroundColor = new Color(0.1f, 0.8f, 0.1f, 1f);
+    public static Color toastSuccessBackgroundColor = new Color(0.2353f, 1f, 0.1961f, 1f);
+    public static Color toastDangerBackgroundColor = new Color(1.0f, 0.2353f, 0.1961f, 1f);
     /**
      * Creates a Texture from an image file located in the assets' folder.
      *

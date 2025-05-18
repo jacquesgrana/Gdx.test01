@@ -31,8 +31,20 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
             try {
                 UnitGroup newGroup = armyFileService.loadArmyData(file.path());
                 UnitGroup selectedGroup = (UnitGroup) armyFileService.getSelectedUnit();
-                selectedGroup.addUnit(newGroup);
-                GraphicUtil.printGroup(armyFileService.getRootToSave());
+
+                // TODO : vérifier si le level de  newGroup est inférieur à celui de selected group, sinon afficher toast DANGER avec toastObservable
+                if(newGroup.getLevel() < selectedGroup.getLevel()) {
+                    selectedGroup.addUnit(newGroup);
+                    Toast toast = new Toast("Group Loaded", "SUCCESS");
+                    this.toastObservable.setObserved(toast);
+                    this.toastObservable.notifyObservers();
+                }
+                else {
+                    Toast toast = new Toast("Bad Group Level Error", "DANGER");
+                    this.toastObservable.setObserved(toast);
+                    this.toastObservable.notifyObservers();
+                }
+                //GraphicUtil.printGroup(armyFileService.getRootToSave());
                 unitRootGroupObservable.setObserved(armyFileService.getRootToSave());
                 // trop cool si ca marche !!!! -> ça marche du 1e coup !! trop de la balle !!
                 unitRootGroupObservable.notifyObservers();

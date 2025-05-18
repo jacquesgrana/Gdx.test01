@@ -863,8 +863,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         //System.out.println("update observer side");
         this.armyFileService.setRootLoaded(newValue);
         this.updateRootAndTree();
-        Toast toast = new Toast("File loaded", "SUCCESS");
-        toast.show(this.stage, 2f);
+        //Toast toast = new Toast("File loaded", "SUCCESS");
+        //toast.show(this.stage, 2f);
+        //Toast.showToast(this.stage, "File Loaded", "SUCCESS", 2f);
     }
 
 

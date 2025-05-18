@@ -23,7 +23,7 @@ public class DesktopArmyRootFileChooserListener implements FileChooserListenerIn
         //unitGroupObservable = new UnitGroupObservable();
         this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
         this.toastObservable = ToastObservable.getInstance();
-        armyFileService = ArmyFileService.getInstance();
+        this.armyFileService = ArmyFileService.getInstance();
     }
 
     @Override
@@ -31,14 +31,26 @@ public class DesktopArmyRootFileChooserListener implements FileChooserListenerIn
         if(Objects.equals(mode, "LOAD")) {
 
             // TODO mettre un try/catch avec gestion du catch ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            UnitGroup rootGroup = armyFileService.loadArmyData(file.path());
-            armyFileService.setRootLoaded(rootGroup);
-            //GraphicUtil.printGroup(rootGroup);
-            unitRootGroupObservable.setObserved(rootGroup);
-            unitRootGroupObservable.notifyObservers();
+            UnitGroup rootGroup = this.armyFileService.loadArmyData(file.path());
+            if(rootGroup.getLevel() == 5) {
+                this.armyFileService.setRootLoaded(rootGroup);
+                //GraphicUtil.printGroup(rootGroup);
+                this.unitRootGroupObservable.setObserved(rootGroup);
+                this.unitRootGroupObservable.notifyObservers();
+                Toast toast = new Toast("Root Group Loaded", "SUCCESS");
+                this.toastObservable.setObserved(toast);
+                this.toastObservable.notifyObservers();
+            }
+            else {
+                Toast toast = new Toast("Bad Root Group Level Error", "DANGER");
+                this.toastObservable.setObserved(toast);
+                this.toastObservable.notifyObservers();
+            }
+
+
         }
         else if(Objects.equals(mode, "SAVE")) {
-            armyFileService.saveArmyRootData(file.path());
+            this.armyFileService.saveArmyRootData(file.path());
             Toast toast = new Toast("File Saved", "SUCCESS");
             this.toastObservable.setObserved(toast);
             this.toastObservable.notifyObservers();
