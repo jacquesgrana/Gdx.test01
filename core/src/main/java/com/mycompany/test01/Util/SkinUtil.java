@@ -509,14 +509,14 @@ public class SkinUtil {
 
         // ScrollBar horizontal (fond)
         Pixmap hBarPixmap = new Pixmap(width, barWidth, Pixmap.Format.RGBA8888);
-        hBarPixmap.setColor(0.2f, 0.2f, 0.2f, 0.7f);
+        hBarPixmap.setColor(GraphicUtil.backgroundColorLight);
         hBarPixmap.fill();
         skin.add("hscroll", new Texture(hBarPixmap));
         hBarPixmap.dispose();
 
         // ScrollBar horizontal (knob)
         Pixmap hKnobPixmap = new Pixmap(32, barWidth, Pixmap.Format.RGBA8888);
-        hKnobPixmap.setColor(0.7f, 0.7f, 0.7f, 1f);
+        hKnobPixmap.setColor(GraphicUtil.buttonColorMedium);
         hKnobPixmap.fill();
         skin.add("hscroll-knob", new Texture(hKnobPixmap));
         hKnobPixmap.dispose();
