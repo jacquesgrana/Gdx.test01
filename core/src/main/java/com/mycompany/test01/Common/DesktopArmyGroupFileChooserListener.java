@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.mycompany.test01.Entity.Unit.ArmyGroup;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Interface.FileChooserListenerInterface;
+import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
 import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Util.GraphicUtil;
@@ -14,9 +15,11 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
 
     private final ArmyFileService armyFileService;
     private final UnitRootGroupObservable unitRootGroupObservable;
+    private final ToastObservable toastObservable;
 
     public DesktopArmyGroupFileChooserListener() {
         this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
+        this.toastObservable = ToastObservable.getInstance();
         armyFileService = ArmyFileService.getInstance();
     }
 
@@ -31,7 +34,7 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
                 selectedGroup.addUnit(newGroup);
                 GraphicUtil.printGroup(armyFileService.getRootToSave());
                 unitRootGroupObservable.setObserved(armyFileService.getRootToSave());
-                // trop cool si ca marche !!!!
+                // trop cool si ca marche !!!! -> ça marche du 1e coup !! trop de la balle !!
                 unitRootGroupObservable.notifyObservers();
             }
             catch (Exception e) {
@@ -41,6 +44,9 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
         }
         else if(Objects.equals(mode, "SAVE")) {
             armyFileService.saveArmyGroupData(file.path());
+            Toast toast = new Toast("File Saved", "SUCCESS");
+            this.toastObservable.setObserved(toast);
+            this.toastObservable.notifyObservers();
         }
 
     }

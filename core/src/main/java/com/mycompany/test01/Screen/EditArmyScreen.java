@@ -23,13 +23,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
+import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.*;
 import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Interface.Observer;
+import com.mycompany.test01.Interface.ToastObserver;
+import com.mycompany.test01.Interface.UnitGroupObserver;
 import com.mycompany.test01.Main;
+import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
 import com.mycompany.test01.Service.ArmyFileService;
@@ -41,7 +45,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-public class EditArmyScreen implements Screen, InputProcessor, Observer<UnitGroup> { //,
+public class EditArmyScreen implements Screen, InputProcessor { //, Observer<UnitGroup>
     final Main game;
     private final Stage stage;
     private final BitmapFont font;
@@ -69,6 +73,7 @@ public class EditArmyScreen implements Screen, InputProcessor, Observer<UnitGrou
     private final ArmyFileService armyFileService;
 
     private final UnitRootGroupObservable unitRootGroupObservable;
+    private final ToastObservable toastObservable;
     //private final Table centerButtonPanel;
 
     //private final UnitRedCountryFactory unitRedCountryFactory;
@@ -124,7 +129,11 @@ public class EditArmyScreen implements Screen, InputProcessor, Observer<UnitGrou
 
         //this.unitGroupObservable = new UnitGroupObservable();
         this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
-        this.unitRootGroupObservable.subscribe(this);
+        this.toastObservable = ToastObservable.getInstance();
+
+        this.subscribeToObservables();
+
+        //this.unitRootGroupObservable.subscribe(this);
 
         // *******************************************************
 
@@ -812,12 +821,58 @@ public class EditArmyScreen implements Screen, InputProcessor, Observer<UnitGrou
         armyFileService.openLoadArmyGroupFileChooser();
     }
 
-    @Override
-    public void update(UnitGroup newValue) {
+    private void subscribeToObservables() {
+        if (this.unitRootGroupObservable != null) {
+            // Création d'un Observer<UnitGroup> anonyme
+            unitRootGroupObservable.subscribe(new UnitGroupObserver() {
+                @Override
+                public void update(UnitGroup newValue) {
+                    EditArmyScreen.this.updateRootFromObservable(newValue);
+                }
+            });
+            // Alternativement, si vous voulez utiliser UnitGroupObserver (s'il existe et est une interface fonctionnelle ou que vous l'implémentez ici)
+            // unitGroupObservable.subscribe(new UnitGroupObserver() {
+            //     @Override
+            //     public void update(UnitGroup newValue) {
+            //         EditArmyScreen.this.handleUnitGroupUpdate(newValue);
+            //     }
+            // });
+        }
+
+        if (toastObservable != null) {
+            // Création d'un Observer<Toast> anonyme
+            toastObservable.subscribe(new ToastObserver() {
+                @Override
+                public void update(Toast newValue) {
+                    EditArmyScreen.this.displayToastFromObservable(newValue);
+                }
+            });
+            // Alternativement, si vous voulez utiliser ToastObserver
+            // toastObservable.subscribe(new ToastObserver() {
+            //     @Override
+            //     public void update(Toast newValue) {
+            //         EditArmyScreen.this.handleToastUpdate(newValue);
+            //     }
+            // });
+        }
+    }
+
+
+    //@Override
+    public void updateRootFromObservable(UnitGroup newValue) {
         //System.out.println("update observer side");
         this.armyFileService.setRootLoaded(newValue);
         this.updateRootAndTree();
+        Toast toast = new Toast("File loaded", "SUCCESS");
+        toast.show(this.stage, 2f);
     }
+
+
+    //@Override
+    public void displayToastFromObservable(Toast toast){
+        toast.show(this.stage, 2f);
+    }
+
 
     public void updateRootAndTree() {
         this.rootGroup = (FrontGroup) armyFileService.getRootLoaded();

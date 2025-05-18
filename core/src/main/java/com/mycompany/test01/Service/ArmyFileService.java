@@ -96,6 +96,12 @@ public class ArmyFileService {
         selectedGroup.setParent(null);
         String jsonString = unitElementSerializer.serialize(selectedGroup);
         file.writeString(jsonString, false);
+
+        // faire afficher un  toast au Screen !!
+        /*
+        Toast toast = new Toast("File loaded", "SUCCESS");
+        toast.show(this.stage, 4f);
+         */
     }
 
     public UnitGroup loadArmyData(String filePath) { //String filePath
@@ -110,8 +116,9 @@ public class ArmyFileService {
             try {
                 //MapData data = json.fromJson(MapData.class, jsonString);
                 UnitGroup group = unitElementSerializer.deserialize(jsonString);
-                System.out.println("group : " + group);
+                //System.out.println("group : " + group);
                 //this.rootLoaded = rootGroup;
+
                 return group;
             }
             catch (Exception e) {

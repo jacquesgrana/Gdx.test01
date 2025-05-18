@@ -11,6 +11,65 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class SkinUtil {
+
+    /**
+     * Crée un Skin pour les Toasts (notifications).
+     * Le Skin contiendra un LabelStyle nommé "default".
+     *
+     * @param width  Largeur souhaitée pour le fond du toast (peut être indicative, la taille réelle s'adaptera au contenu).
+     * @param height Hauteur souhaitée pour le fond du toast.
+     * @return Un Skin configuré pour les Toasts.
+     */
+    public static Skin getToastSkin(int width, int height) {
+        Skin skin = new Skin();
+
+        // 1. Police de caractères
+        BitmapFont font = new BitmapFont(); // Vous pouvez utiliser une police spécifique si vous en avez une
+        skin.add("default-font", font); // Nommez-la pour la récupérer facilement
+
+        // 2. Fond du Toast
+        Pixmap pixmapBg = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        pixmapBg.setColor(GraphicUtil.toastBackgroundColor); // Couleur de fond définie dans GraphicUtil
+        pixmapBg.fill();
+
+        // Optionnel : Ajouter une bordure au toast
+        // pixmapBg.setColor(GraphicUtil.toastBorderColor);
+        // pixmapBg.drawRectangle(0, 0, width, height);
+
+        skin.add("toast-background", new Texture(pixmapBg));
+        pixmapBg.dispose();
+
+        // 3. Style du Label pour le Toast
+        Label.LabelStyle toastLabelStyle = new Label.LabelStyle();
+        toastLabelStyle.font = skin.getFont("default-font");
+        toastLabelStyle.fontColor = GraphicUtil.toastFontColor; // Couleur de la police définie dans GraphicUtil
+
+        // Crée un TextureRegionDrawable pour le fond.
+        // C'est une manière simple d'utiliser une texture comme fond.
+        // Pour des fonds plus complexes (avec des bords qui ne s'étirent pas),
+        // vous pourriez utiliser un NinePatch et un NinePatchDrawable.
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(skin.get("toast-background", Texture.class)));
+
+        // Optionnel : Ajouter du padding interne au Drawable si c'est un NinePatchDrawable
+        // Si vous utilisez un NinePatch qui a des zones de padding définies :
+        // NinePatch patch = new NinePatch(skin.get("toast-background", Texture.class), left, right, top, bottom);
+        // NinePatchDrawable ninePatchDrawable = new NinePatchDrawable(patch);
+        // ninePatchDrawable.setLeftWidth(10f); // Exemple de padding
+        // ninePatchDrawable.setRightWidth(10f);
+        // ninePatchDrawable.setTopHeight(5f);
+        // ninePatchDrawable.setBottomHeight(5f);
+        // toastLabelStyle.background = ninePatchDrawable;
+
+        toastLabelStyle.background = backgroundDrawable;
+
+
+        // Ajoute le style au skin. Vous pouvez l'appeler "default" si c'est le style
+        // principal pour les labels dans ce skin, ou un nom spécifique comme "toast-style".
+        skin.add("default", toastLabelStyle);
+
+        return skin;
+    }
+
     public static Skin getButtonSkin(int width, int height) {
         Skin skin = new Skin();
 

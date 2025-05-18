@@ -6,5 +6,5 @@ public interface Observable<T> {
     public void subscribe(Observer<T> observer);
     public void unsubscribe(Observer<T> observer);
     public void notifyObservers();
-    public void setObserved(UnitGroup observed);
+    public void setObserved(T observed);
 }
