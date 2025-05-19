@@ -1,5 +1,6 @@
 package com.mycompany.test01.Service;
 
+import com.mycompany.test01.Entity.Unit.FrontGroup;
 import com.mycompany.test01.Entity.Unit.UnitElement;
 import com.mycompany.test01.Enum.CountryEnum;
 
@@ -7,11 +8,16 @@ public class EditArmyService {
     private static EditArmyService instance;
 
     private UnitElement selectedUnit;
-    private CountryEnum selectedCountry; // TODO dans editArmyService
+    private CountryEnum selectedCountry;
+    private boolean isTreeRootNodeDefined;
+    private FrontGroup rootGroup;
+
 
     public EditArmyService() {
         this.selectedUnit = null;
         this.selectedCountry = CountryEnum.NO_COUNTRY;
+        this.isTreeRootNodeDefined = false;
+        this.rootGroup = null;
     }
 
     public static EditArmyService getInstance() {
@@ -35,5 +41,21 @@ public class EditArmyService {
 
     public void setSelectedCountry(CountryEnum selectedCountry) {
         this.selectedCountry = selectedCountry;
+    }
+
+    public boolean isTreeRootNodeDefined() {
+        return isTreeRootNodeDefined;
+    }
+
+    public void setTreeRootNodeDefined(boolean treeRootNodeDefined) {
+        isTreeRootNodeDefined = treeRootNodeDefined;
+    }
+
+    public FrontGroup getRootGroup() {
+        return rootGroup;
+    }
+
+    public void setRootGroup(FrontGroup rootGroup) {
+        this.rootGroup = rootGroup;
     }
 }
