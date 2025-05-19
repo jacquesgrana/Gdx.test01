@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
+import com.mycompany.test01.Enum.ColorStyleEnum;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Common.UnitNode;
@@ -908,14 +909,25 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         ElementSelectorType unitType,
         int unitRegRank
     ) {
-        UnitElement newUnit = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
-        UnitGroup group = (UnitGroup) this.selectedUnit;
-        group.addUnit(newUnit);
-        initTree();
-        leftScrollPane.setActor(tree);
-        updateTreeFromRoot();
-        //resetSelectedUnit();
-        this.buttonSaveAllWrapper.getButton().setDisabled(false);
+        if(this.selectedUnit instanceof UnitGroup) {
+            UnitElement newUnit = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
+            if(newUnit instanceof UnitGroup && ((UnitGroup) newUnit).getLevel() >= ((UnitGroup) this.selectedUnit).getLevel() ) {
+                Toast.showToast(this.stage, "New unit level is too high", ColorStyleEnum.DANGER, 2f);
+            }
+            else {
+                //assert this.selectedUnit instanceof UnitGroup;
+                UnitGroup group = (UnitGroup) this.selectedUnit;
+                group.addUnit(newUnit);
+                initTree();
+                leftScrollPane.setActor(tree);
+                updateTreeFromRoot();
+                //resetSelectedUnit();
+                this.buttonSaveAllWrapper.getButton().setDisabled(false);
+                Toast.showToast(this.stage, "New Unit added", ColorStyleEnum.SUCCESS, 2f);
+            }
+        }
+
+
     }
 
     private void getAndAddNewRootUnitInTree(
@@ -933,6 +945,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         updateTreeFromRoot();
         this.isTreeRootNodeDefined = true;
         this.updateLeftPanelFromBoolean();
+        Toast.showToast(this.stage, "New Root Unit Group created", ColorStyleEnum.SUCCESS, 2f);
     }
 
     private void removeSelectedUnitAndUpdateTree() {
@@ -945,6 +958,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
             resetSelectedUnit();
             this.buttonSaveAllWrapper.getButton().setDisabled(rootGroup.getUnits().size == 0);
             this.buttonSaveGroupWrapper.getButton().setDisabled(true);
+            Toast.showToast(this.stage, "Unit deleted", ColorStyleEnum.SUCCESS, 2f);
         }
         else {
             // TODO : enlever le try/catch ??
@@ -956,6 +970,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 resetSelectedUnit();
                 this.buttonSaveAllWrapper.getButton().setDisabled(true);
                 this.buttonSaveGroupWrapper.getButton().setDisabled(true);
+                Toast.showToast(this.stage, "Root Unit Group deleted", ColorStyleEnum.SUCCESS, 2f);
             }
             catch (Exception e) {
                 e.printStackTrace();

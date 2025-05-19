@@ -53,6 +53,7 @@ public class SkinUtil {
 
             // 1. Police
             BitmapFont font = new BitmapFont(); // Utilisez votre police personnalisée si vous en avez une
+
             toastSkinInstance.add("default-font", font);
 
             // 2. Drawables pour les fonds
@@ -70,7 +71,21 @@ public class SkinUtil {
             toastSkinInstance.add("toast-background-danger", new Texture(dangerPixmap));
             dangerPixmap.dispose();
 
-            // Fond par défaut (si le mode n'est ni SUCCESS ni DANGER)
+            // Fond pour INFO
+            Pixmap infoPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            infoPixmap.setColor(GraphicUtil.toastInfoBackgroundColor); // Ou GraphicUtil.toastDangerBackgroundColor
+            infoPixmap.fill();
+            toastSkinInstance.add("toast-background-info", new Texture(infoPixmap));
+            infoPixmap.dispose();
+
+            // Fond pour WARNING
+            Pixmap warningPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            warningPixmap.setColor(GraphicUtil.toastWarningBackgroundColor); // Ou GraphicUtil.toastDangerBackgroundColor
+            warningPixmap.fill();
+            toastSkinInstance.add("toast-background-warning", new Texture(warningPixmap));
+            warningPixmap.dispose();
+
+            // Fond par défaut (si le mode n'est ni SUCCESS ni DANGER ni INFO ni WARNING)
             Pixmap defaultPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
             defaultPixmap.setColor(GraphicUtil.toastBackgroundColor); // Ou une couleur de votre GraphicUtil
             defaultPixmap.fill();

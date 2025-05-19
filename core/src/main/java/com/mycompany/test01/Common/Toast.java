@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import com.mycompany.test01.Enum.ColorStyleEnum;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 
@@ -15,7 +16,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class Toast extends Table {
 
     private String message;
-    private String mode;
+    private ColorStyleEnum mode;
 
     /*
     public Toast(String message, String mode) {
@@ -34,17 +35,21 @@ public class Toast extends Table {
         pack(); // Ajuste la taille au contenu
     }*/
 
-    public Toast(String message, String mode) {
+    public Toast(String message, ColorStyleEnum mode) {
         super(SkinUtil.getToastSkin());
         Skin skin = SkinUtil.getToastSkin();
         this.message = message;
         this.mode = mode;
         // Choisir le nom du Drawable de fond basé sur le mode
         String backgroundDrawableName;
-        if ("SUCCESS".equals(this.mode)) {
+        if (ColorStyleEnum.SUCCESS.equals(this.mode)) {
             backgroundDrawableName = "toast-background-success";
-        } else if ("DANGER".equals(this.mode)) {
+        } else if (ColorStyleEnum.DANGER.equals(this.mode)) {
             backgroundDrawableName = "toast-background-danger";
+        } else if (ColorStyleEnum.INFO.equals(this.mode)) {
+            backgroundDrawableName = "toast-background-info";
+        } else if (ColorStyleEnum.WARNING.equals(this.mode)) {
+            backgroundDrawableName = "toast-background-warning";
         } else {
             backgroundDrawableName = "toast-background-default"; // Cas par défaut
         }
@@ -86,7 +91,7 @@ public class Toast extends Table {
     }
 
     // Méthode statique pour un usage facile
-    public static void showToast(Stage stage, String message, String mode, float duration) {
+    public static void showToast(Stage stage, String message, ColorStyleEnum mode, float duration) {
         Toast toast = new Toast(message, mode);
         toast.show(stage, duration);
     }
@@ -99,11 +104,11 @@ public class Toast extends Table {
         this.message = message;
     }
 
-    public String getMode() {
+    public ColorStyleEnum getMode() {
         return mode;
     }
 
-    public void setMode(String mode) {
+    public void setMode(ColorStyleEnum mode) {
         this.mode = mode;
     }
 }

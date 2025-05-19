@@ -3,6 +3,7 @@ package com.mycompany.test01.Common;
 import com.badlogic.gdx.files.FileHandle;
 import com.mycompany.test01.Entity.Unit.ArmyGroup;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
+import com.mycompany.test01.Enum.ColorStyleEnum;
 import com.mycompany.test01.Interface.FileChooserListenerInterface;
 import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
@@ -35,12 +36,12 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
                 // TODO : vérifier si le level de  newGroup est inférieur à celui de selected group, sinon afficher toast DANGER avec toastObservable
                 if(newGroup.getLevel() < selectedGroup.getLevel()) {
                     selectedGroup.addUnit(newGroup);
-                    Toast toast = new Toast("Group Loaded", "SUCCESS");
+                    Toast toast = new Toast("Group Loaded", ColorStyleEnum.SUCCESS);
                     this.toastObservable.setObserved(toast);
                     this.toastObservable.notifyObservers();
                 }
                 else {
-                    Toast toast = new Toast("Bad Group Level Error", "DANGER");
+                    Toast toast = new Toast("Bad Group Level Error", ColorStyleEnum.DANGER);
                     this.toastObservable.setObserved(toast);
                     this.toastObservable.notifyObservers();
                 }
@@ -56,7 +57,7 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
         }
         else if(Objects.equals(mode, "SAVE")) {
             armyFileService.saveArmyGroupData(file.path());
-            Toast toast = new Toast("File Saved", "SUCCESS");
+            Toast toast = new Toast("File Saved", ColorStyleEnum.SUCCESS);
             this.toastObservable.setObserved(toast);
             this.toastObservable.notifyObservers();
         }
