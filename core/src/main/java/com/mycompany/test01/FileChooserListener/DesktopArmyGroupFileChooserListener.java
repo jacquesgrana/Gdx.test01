@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Enum.ColorStyleEnum;
+import com.mycompany.test01.Exception.LoadArmyFileException;
 import com.mycompany.test01.Interface.FileChooserListenerInterface;
 import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
@@ -30,7 +31,6 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
     public void selected(FileHandle file, String mode) {
         if(Objects.equals(mode, "LOAD")) {
 
-            // TODO mettre un try/catch avec gestion du catch ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             try {
                 UnitGroup newGroup = armyFileService.loadArmyData(file.path());
                 UnitGroup selectedGroup = (UnitGroup) editArmyService.getSelectedUnit();
@@ -57,13 +57,11 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
                     this.toastObservable.setObserved(toast);
                     this.toastObservable.notifyObservers();
                 }
-
-
-                //GraphicUtil.printGroup(armyFileService.getRootToSave());
-
             }
-            catch (Exception e) {
-                e.printStackTrace();
+            catch (LoadArmyFileException e) {
+                Toast toast = new Toast("Error : " + e.getMessage(), ColorStyleEnum.DANGER);
+                this.toastObservable.setObserved(toast);
+                this.toastObservable.notifyObservers();
             }
 
         }

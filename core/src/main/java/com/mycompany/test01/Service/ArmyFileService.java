@@ -2,6 +2,7 @@ package com.mycompany.test01.Service;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.mycompany.test01.Exception.LoadArmyFileException;
 import com.mycompany.test01.FileChooserListener.DesktopArmyGroupFileChooserListener;
 import com.mycompany.test01.FileChooserListener.DesktopArmyRootFileChooserListener;
 import com.mycompany.test01.Common.DesktopFileChooser;
@@ -99,7 +100,7 @@ public class ArmyFileService {
         file.writeString(jsonString, false);
     }
 
-    public UnitGroup loadArmyData(String filePath) { //String filePath
+    public UnitGroup loadArmyData(String filePath) throws LoadArmyFileException { //String filePath
         FileHandle file = Gdx.files.absolute(filePath);
 
         if (file.exists()) {
@@ -111,12 +112,15 @@ public class ArmyFileService {
                 return group;
             }
             catch (Exception e) {
-                System.out.println(e.fillInStackTrace());
+                //System.out.println(e.fillInStackTrace());
+                LoadArmyFileException newError = new LoadArmyFileException("File Datas unreadable", e);
+                throw newError;
             }
 
-            return null;
+            //return null;
         }
-        return null;
+        throw new LoadArmyFileException("File Datas unreadable");
+        //return null;
     }
 
     public UnitGroup getRootToSave() {
