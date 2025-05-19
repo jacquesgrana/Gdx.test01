@@ -4,10 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.mycompany.test01.Common.DesktopFileChooser;
-import com.mycompany.test01.Common.DesktopMapFileChooserListener;
+import com.mycompany.test01.FileChooserListener.DesktopMapFileChooserListener;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.FileChooserInterface;
-//import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 public class MapFileService {
     private static MapFileService instance = null;
@@ -16,11 +15,9 @@ public class MapFileService {
     public static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
     private final Json json;
     private final FileChooserInterface fileChooser;
-    //NativeFileChooser fileChooser;
 
     public MapFileService() {
         json = new Json();
-        //NativeFileChooser fileChooser = new NativeFileChooser();
         fileChooser = new DesktopFileChooser(); // Utilisez une implémentation spécifique à la plateforme
     }
 
@@ -51,12 +48,7 @@ public class MapFileService {
     }
 
     public void saveMapData(MapData data, String filePath) { //GameData data, String filePath
-        //FileHandle file = Gdx.files.local(MAP_FILE_PATH + fileName + ".json");
         FileHandle file = Gdx.files.absolute(filePath);
-        /*
-        if (!file.parent().exists()) {
-            file.parent().mkdirs();
-        }*/
         data.setCreationDate(data.getCreationDate() == -1 ? System.currentTimeMillis() : data.getCreationDate());
         data.setModificationDate(System.currentTimeMillis());
         String jsonString = json.toJson(data);
@@ -64,7 +56,6 @@ public class MapFileService {
     }
 
     public MapData loadMapData(String filePath) { //String filePath
-        //FileHandle file = Gdx.files.local(MAP_FILE_PATH + fileName + ".json");
         FileHandle file = Gdx.files.absolute(filePath);
 
         if (file.exists()) {

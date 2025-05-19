@@ -2,10 +2,9 @@ package com.mycompany.test01.Service;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.mycompany.test01.Common.DesktopArmyGroupFileChooserListener;
-import com.mycompany.test01.Common.DesktopArmyRootFileChooserListener;
+import com.mycompany.test01.FileChooserListener.DesktopArmyGroupFileChooserListener;
+import com.mycompany.test01.FileChooserListener.DesktopArmyRootFileChooserListener;
 import com.mycompany.test01.Common.DesktopFileChooser;
-import com.mycompany.test01.Entity.Unit.UnitElement;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Interface.FileChooserInterface;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
@@ -98,33 +97,20 @@ public class ArmyFileService {
         selectedGroup.setParent(null);
         String jsonString = unitElementSerializer.serialize(selectedGroup);
         file.writeString(jsonString, false);
-
-        // faire afficher un  toast au Screen !!
-        /*
-        Toast toast = new Toast("File loaded", "SUCCESS");
-        toast.show(this.stage, 4f);
-         */
     }
 
     public UnitGroup loadArmyData(String filePath) { //String filePath
-        //FileHandle file = Gdx.files.local(MAP_FILE_PATH + fileName + ".json");
         FileHandle file = Gdx.files.absolute(filePath);
 
         if (file.exists()) {
             // TODO ajouter une vérification des données !!!
 
             String jsonString = file.readString();
-            //System.out.println("jsonString : " + jsonString);
             try {
-                //MapData data = json.fromJson(MapData.class, jsonString);
                 UnitGroup group = unitElementSerializer.deserialize(jsonString);
-                //System.out.println("group : " + group);
-                //this.rootLoaded = rootGroup;
-
                 return group;
             }
             catch (Exception e) {
-                //e.printStackTrace();
                 System.out.println(e.fillInStackTrace());
             }
 
