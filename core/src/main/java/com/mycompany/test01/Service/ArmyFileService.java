@@ -20,20 +20,22 @@ public class ArmyFileService {
     //private final Json json;
     private final FileChooserInterface fileChooser;
     private final UnitElementSerializer unitElementSerializer;
+    private final EditArmyService editArmyService;
 
     private UnitGroup rootToSave;
     private UnitGroup groupToSave;
     private UnitGroup rootLoaded;
 
-    private UnitElement selectedUnit;
+    //private UnitElement selectedUnit;
 
     public ArmyFileService() {
         this.fileChooser = new DesktopFileChooser(); // Utilisez une implémentation spécifique à la plateforme
         this.unitElementSerializer = new UnitElementSerializer();
+        this.editArmyService = EditArmyService.getInstance();
         this.rootToSave = null;
         this.groupToSave = null;
         this.rootLoaded = null;
-        this.selectedUnit = null;
+        //this.selectedUnit = null;
     }
 
     public static ArmyFileService getInstance() {
@@ -92,7 +94,7 @@ public class ArmyFileService {
 
     public void saveArmyGroupData(String filePath) {
         FileHandle file = Gdx.files.absolute(filePath);
-        UnitGroup selectedGroup = (UnitGroup) this.selectedUnit;
+        UnitGroup selectedGroup = (UnitGroup) editArmyService.getSelectedUnit();
         selectedGroup.setParent(null);
         String jsonString = unitElementSerializer.serialize(selectedGroup);
         file.writeString(jsonString, false);
@@ -155,6 +157,7 @@ public class ArmyFileService {
         this.rootLoaded = rootLoaded;
     }
 
+    /*
     public UnitElement getSelectedUnit() {
         return selectedUnit;
     }
@@ -162,4 +165,5 @@ public class ArmyFileService {
     public void setSelectedUnit(UnitElement selectedUnit) {
         this.selectedUnit = selectedUnit;
     }
+     */
 }

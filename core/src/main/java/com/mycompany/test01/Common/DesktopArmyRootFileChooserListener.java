@@ -11,15 +11,12 @@ import com.mycompany.test01.Service.ArmyFileService;
 import java.util.Objects;
 
 public class DesktopArmyRootFileChooserListener implements FileChooserListenerInterface {
-    
+
     private final ArmyFileService armyFileService;
     private final UnitRootGroupObservable unitRootGroupObservable;
     private final ToastObservable toastObservable;
 
     public DesktopArmyRootFileChooserListener() {
-        //mapService = MapService.getInstance();
-        //mapFileService = MapFileService.getInstance();
-        //unitGroupObservable = new UnitGroupObservable();
         this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
         this.toastObservable = ToastObservable.getInstance();
         this.armyFileService = ArmyFileService.getInstance();

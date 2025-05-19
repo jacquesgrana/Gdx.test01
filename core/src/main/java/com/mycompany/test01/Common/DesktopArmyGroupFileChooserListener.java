@@ -8,6 +8,7 @@ import com.mycompany.test01.Interface.FileChooserListenerInterface;
 import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
 import com.mycompany.test01.Service.ArmyFileService;
+import com.mycompany.test01.Service.EditArmyService;
 import com.mycompany.test01.Util.GraphicUtil;
 
 import java.util.Objects;
@@ -17,11 +18,13 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
     private final ArmyFileService armyFileService;
     private final UnitRootGroupObservable unitRootGroupObservable;
     private final ToastObservable toastObservable;
+    private final EditArmyService editArmyService;
 
     public DesktopArmyGroupFileChooserListener() {
         this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
         this.toastObservable = ToastObservable.getInstance();
         armyFileService = ArmyFileService.getInstance();
+        editArmyService = EditArmyService.getInstance();
     }
 
     @Override
@@ -31,24 +34,34 @@ public class DesktopArmyGroupFileChooserListener implements FileChooserListenerI
             // TODO mettre un try/catch avec gestion du catch ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             try {
                 UnitGroup newGroup = armyFileService.loadArmyData(file.path());
-                UnitGroup selectedGroup = (UnitGroup) armyFileService.getSelectedUnit();
+                UnitGroup selectedGroup = (UnitGroup) editArmyService.getSelectedUnit();
 
-                // TODO : vérifier si le level de  newGroup est inférieur à celui de selected group, sinon afficher toast DANGER avec toastObservable
-                if(newGroup.getLevel() < selectedGroup.getLevel()) {
-                    selectedGroup.addUnit(newGroup);
-                    Toast toast = new Toast("Group Loaded", ColorStyleEnum.SUCCESS);
-                    this.toastObservable.setObserved(toast);
-                    this.toastObservable.notifyObservers();
+
+                if(newGroup.getCountry().equals(selectedGroup.getCountry())) {
+                    if(newGroup.getLevel() < selectedGroup.getLevel()) {
+                        // trop cool si ca marche !!!! -> ça marche du 1e coup !! trop de la balle !!
+                        selectedGroup.addUnit(newGroup);
+                        Toast toast = new Toast("Group Loaded", ColorStyleEnum.SUCCESS);
+                        this.toastObservable.setObserved(toast);
+                        this.toastObservable.notifyObservers();
+                        unitRootGroupObservable.setObserved(armyFileService.getRootToSave());
+                        unitRootGroupObservable.notifyObservers();
+                    }
+                    else {
+                        Toast toast = new Toast("Bad Group Level Error", ColorStyleEnum.DANGER);
+                        this.toastObservable.setObserved(toast);
+                        this.toastObservable.notifyObservers();
+                    }
                 }
                 else {
-                    Toast toast = new Toast("Bad Group Level Error", ColorStyleEnum.DANGER);
+                    Toast toast = new Toast("Bad Country Error", ColorStyleEnum.DANGER);
                     this.toastObservable.setObserved(toast);
                     this.toastObservable.notifyObservers();
                 }
+
+
                 //GraphicUtil.printGroup(armyFileService.getRootToSave());
-                unitRootGroupObservable.setObserved(armyFileService.getRootToSave());
-                // trop cool si ca marche !!!! -> ça marche du 1e coup !! trop de la balle !!
-                unitRootGroupObservable.notifyObservers();
+
             }
             catch (Exception e) {
                 e.printStackTrace();

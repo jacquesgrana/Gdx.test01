@@ -30,7 +30,6 @@ import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Unit.*;
 import com.mycompany.test01.Interface.ElementInterface;
-import com.mycompany.test01.Interface.Observer;
 import com.mycompany.test01.Interface.ToastObserver;
 import com.mycompany.test01.Interface.UnitGroupObserver;
 import com.mycompany.test01.Main;
@@ -38,6 +37,7 @@ import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
 import com.mycompany.test01.Service.ArmyFileService;
+import com.mycompany.test01.Service.EditArmyService;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 import com.mycompany.test01.Util.UnitUtil;
@@ -55,10 +55,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     private final ScrollPane leftScrollPane;
     private Tree<UnitNode, String> tree;
 
-    private UnitElement selectedUnit;
-    private CountryEnum selectedCountry;
-    private FrontGroup rootGroup;
-    private boolean isTreeRootNodeDefined; // TODO finir
+    //private UnitElement selectedUnit;
+    //private CountryEnum selectedCountry;
+    private FrontGroup rootGroup; // TODO dans editArmyService
+    private boolean isTreeRootNodeDefined; // TODO dans editArmyService
 
     // TODO List<UnitTypeEnum> allValuesList = Stream.of(UnitTypeEnum.values()).collect(Collectors.toList());
     private ElementSelectorType[] unitSelectorList;
@@ -72,6 +72,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     private final Image selectedUnitIcon;
 
     private final ArmyFileService armyFileService;
+    private final EditArmyService editArmyService;
+
 
     private final UnitRootGroupObservable unitRootGroupObservable;
     private final ToastObservable toastObservable;
@@ -96,7 +98,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
     private final Skin unitTreeSkin;
 
-    private final UnitElementSerializer unitElementSerializer;
+    //private final UnitElementSerializer unitElementSerializer;
 
     //private Skin skin;
 
@@ -113,18 +115,19 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         //this.unitBlackCountryFactory = new UnitBlackCountryFactory();
         //this.unitBlueCountryFactory = new UnitBlueCountryFactory();
         //this.unitBrownCountryFactory = new UnitBrownCountryFactory();
-        this.unitElementSerializer = new UnitElementSerializer();
+        //this.unitElementSerializer = new UnitElementSerializer();
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
         //shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
 
         this.font = new BitmapFont();
-        this.selectedUnit = null;
+        //this.selectedUnit = null;
         this.isTreeRootNodeDefined = false;
-        this.selectedCountry = CountryEnum.NO_COUNTRY;
         this.armyFileService = ArmyFileService.getInstance();
-        this.armyFileService.setSelectedUnit(this.selectedUnit);
+        this.editArmyService = EditArmyService.getInstance();
+        this.editArmyService.setSelectedCountry(CountryEnum.NO_COUNTRY);
+        this.editArmyService.setSelectedUnit(null);
 
         // *******************************************************
 
@@ -241,8 +244,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     }
 
     private void resetSelectedUnit() {
-        this.selectedUnit = null;
-        this.armyFileService.setSelectedUnit(this.selectedUnit);
+        //this.selectedUnit = null;
+        this.editArmyService.setSelectedUnit(null);
 
         //"nothing selected"
         selectedUnitNameLabel.setText("nothing selected");
@@ -307,30 +310,30 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
     public void displayUnitInfos(ElementInterface element) {
         //this.selectedUnitName = name;
-        this.selectedUnit = (UnitElement) element;
-        this.armyFileService.setSelectedUnit(this.selectedUnit);
+        //this.selectedUnit = (UnitElement) element;
+        this.editArmyService.setSelectedUnit((UnitElement) element);
 
         // TODO if inutiles ?!!
         if (selectedUnitNameLabel != null) {
-            selectedUnitNameLabel.setText("Name : " + this.selectedUnit.getName());
+            selectedUnitNameLabel.setText("Name : " + this.editArmyService.getSelectedUnit().getName());
         }
         if (selectedUnitTypeLabel != null) {
-            selectedUnitTypeLabel.setText("Type : " + this.selectedUnit.getType().toString());
+            selectedUnitTypeLabel.setText("Type : " + this.editArmyService.getSelectedUnit().getType().toString());
         }
         //selectedUnitAcronymLabel
         if (selectedUnitAcronymLabel != null) {
-            selectedUnitAcronymLabel.setText("Acronym : " + this.selectedUnit.getAcronym());
+            selectedUnitAcronymLabel.setText("Acronym : " + this.editArmyService.getSelectedUnit().getAcronym());
         }
 
         if (selectedUnitParentNameLabel != null ) {
-            if(this.selectedUnit.getParent() != null) {
-                selectedUnitParentNameLabel.setText("Parent Name : " + this.selectedUnit.getParent().getName());
+            if(this.editArmyService.getSelectedUnit().getParent() != null) {
+                selectedUnitParentNameLabel.setText("Parent Name : " + this.editArmyService.getSelectedUnit().getParent().getName());
             }
             else {
                 selectedUnitParentNameLabel.setText("Parent Name : Root");
             }
         }
-        Texture counterTexture = GraphicUtil.getCounterTextureFromUnit(this.selectedUnit);
+        Texture counterTexture = GraphicUtil.getCounterTextureFromUnit(this.editArmyService.getSelectedUnit());
         //System.out.println("texture : " + counterTexture);
         if (selectedUnitIcon != null) {
             selectedUnitIcon.setDrawable(new TextureRegionDrawable(counterTexture));
@@ -398,7 +401,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
         panel.setBackground(background);
 
-        Label selectedRootCountryLabel = new Label(getSelectedCountry().toString(), SkinUtil.getLabelSkin(200, 30));
+        Label selectedRootCountryLabel = new Label(this.editArmyService.getSelectedCountry().toString(), SkinUtil.getLabelSkin(200, 30));
 
         SelectBox<CountryEnum> selectRootCountryBox = new SelectBox<>(SkinUtil.getSelectorSkin(150, 30));
         selectRootCountryBox.setItems(
@@ -416,9 +419,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         selectRootCountryBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                setSelectedCountry(selectRootCountryBox.getSelected());
+                that.editArmyService.setSelectedCountry(selectRootCountryBox.getSelected());
                 //System.out.println("selected country : " + selectCountryBox.getSelected());
-                selectedRootCountryLabel.setText(that.getSelectedCountry().toString());
+                selectedRootCountryLabel.setText(that.editArmyService.getSelectedCountry().toString());
             }
         });
         selectedRootCountryLabel.setPosition(20, 100);
@@ -470,7 +473,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                     String unitAcronym = acronymField.getText();
                     boolean isUnitElite = isEliteCheckBox.isChecked();
                     //boolean isUnitCompany = isCompanyCheckBox.isChecked();
-                    CountryEnum unitCountry = that.getSelectedCountry();
+                    CountryEnum unitCountry = that.editArmyService.getSelectedCountry();
                     // TODO faire méthode qui gère l'ajout dans le tree et qui appelle une librairie pour la création de l'unité avec les paramètres
                     that.getAndAddNewRootUnitInTree(unitName, unitAcronym, isUnitElite, unitCountry);
                 }
@@ -630,7 +633,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                     String unitAcronym = acronymField.getText();
                     boolean isUnitElite = isEliteCheckBox.isChecked();
                     //boolean isUnitCompany = isCompanyCheckBox.isChecked();
-                    CountryEnum unitCountry = that.getSelectedCountry();
+                    CountryEnum unitCountry = that.editArmyService.getSelectedCountry();
                     ElementSelectorType unitType = selectUnitBox.getSelected();
                     int unitRegRank = (int) selectRegRankBox.getSelected();
                     that.getAndAddNewUnitInTree(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
@@ -686,7 +689,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
             public void changed(ChangeEvent changeEvent, Actor actor) {
 
                 System.out.println("click delete unit");
-                if(selectedUnit != null) {
+                if(that.editArmyService.getSelectedUnit() != null) {
 
                     //tree.clear();
                     //tree.add(GraphicUtil.createTreeFromGroup(rootGroup, that));
@@ -799,7 +802,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     }
 
     private void saveArmyGroupToFile() {
-        armyFileService.setSelectedUnit(this.selectedUnit);
+        editArmyService.setSelectedUnit(this.editArmyService.getSelectedUnit());
         armyFileService.openSaveArmyGroupFileChooser();
     }
 
@@ -882,7 +885,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         initTree();
         leftScrollPane.setActor(tree);
         this.isTreeRootNodeDefined = true;
-        this.selectedCountry = rootGroup.getCountry();
+        this.editArmyService.setSelectedCountry(rootGroup.getCountry());
         updateTreeFromRoot();
         updateLeftPanelFromBoolean();
         //resetSelectedUnit();
@@ -893,7 +896,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     private void updateUnitSelectorList() {
         this.unitSelectorList = Arrays.stream(ElementSelectorType.values())
             .filter(type -> (type.getCountry().equals(CountryEnum.NO_COUNTRY) ||
-                type.getCountry().equals(getSelectedCountry())) && !type.equals(ElementSelectorType.NO_TYPE))
+                type.getCountry().equals(this.editArmyService.getSelectedCountry())) && !type.equals(ElementSelectorType.NO_TYPE))
             .toArray(ElementSelectorType[]::new);
         //that.unitSelectorList = filteredTypes;
         // Convertir en Array de libGDX
@@ -909,14 +912,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         ElementSelectorType unitType,
         int unitRegRank
     ) {
-        if(this.selectedUnit instanceof UnitGroup) {
+        if(this.editArmyService.getSelectedUnit() instanceof UnitGroup) {
             UnitElement newUnit = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
-            if(newUnit instanceof UnitGroup && ((UnitGroup) newUnit).getLevel() >= ((UnitGroup) this.selectedUnit).getLevel() ) {
+            if(newUnit instanceof UnitGroup && ((UnitGroup) newUnit).getLevel() >= ((UnitGroup) this.editArmyService.getSelectedUnit()).getLevel() ) {
                 Toast.showToast(this.stage, "New unit level is too high", ColorStyleEnum.DANGER, 2f);
             }
             else {
                 //assert this.selectedUnit instanceof UnitGroup;
-                UnitGroup group = (UnitGroup) this.selectedUnit;
+                UnitGroup group = (UnitGroup) this.editArmyService.getSelectedUnit();
                 group.addUnit(newUnit);
                 initTree();
                 leftScrollPane.setActor(tree);
@@ -949,8 +952,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     }
 
     private void removeSelectedUnitAndUpdateTree() {
-        if(!selectedUnit.equals(rootGroup)) {
-            selectedUnit.getParent().removeUnit(selectedUnit);
+        if(!this.editArmyService.getSelectedUnit().equals(rootGroup)) {
+            this.editArmyService.getSelectedUnit().getParent().removeUnit(this.editArmyService.getSelectedUnit());
             //GraphicUtil.printGroup(rootGroup);
             initTree();
             leftScrollPane.setActor(tree);
@@ -1015,6 +1018,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
     }
 
+    /*
     public CountryEnum getSelectedCountry() {
         return selectedCountry;
     }
@@ -1022,6 +1026,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     public void setSelectedCountry(CountryEnum selectedCountry) {
         this.selectedCountry = selectedCountry;
     }
+    */
 
     @Override
     public void resize(int i, int i1) {
