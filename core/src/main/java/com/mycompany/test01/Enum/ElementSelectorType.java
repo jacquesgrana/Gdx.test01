@@ -1,5 +1,7 @@
 package com.mycompany.test01.Enum;
 
+import java.util.Objects;
+
 public enum ElementSelectorType {
 
     FRONT_HQ ("Front Head Quarter", CountryEnum.NO_COUNTRY),
@@ -62,14 +64,16 @@ public enum ElementSelectorType {
 
     NO_TYPE("No Type", CountryEnum.NO_COUNTRY),
 
-
     // groupes ajoutés
     GROUP_INF_DIVISION ("Generic Infantry Division", CountryEnum.NO_COUNTRY),
     GROUP_ELITE_INF_DIVISION ("Generic Elite Infantry Division", CountryEnum.NO_COUNTRY),
     GROUP_MOTORISED_INF_DIVISION ("Generic Motorised Infantry Division", CountryEnum.NO_COUNTRY),
 
     // groupes ajoutés spécifiques par country
+    GROUP_BLACK_ELITE_MECA_BRIGADE ("Generic Elite Mechanised Brigade", CountryEnum.BLACK_COUNTRY),
+
     GROUP_RED_MOTORISED_INF_BRIGADE ("Generic Motorised Infantry Brigade", CountryEnum.RED_COUNTRY);
+
 
 
     private final String name;
@@ -87,7 +91,7 @@ public enum ElementSelectorType {
     public CountryEnum getCountry() { return this.country; }
 
     public boolean equals(ElementSelectorType toCompare) {
-        return this.name == toCompare.getName() && this.country == toCompare.country;
+        return Objects.equals(this.name, toCompare.getName()) && this.country == toCompare.country;
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.mycompany.test01.Interface.UnitFactoryInterface;
 
 public class UnitUtil {
 
-    public static UnitElement getNewUnitFromSelection(
+    public static UnitElement getNewUnitFromDatas(
         String unitName,
         String unitAcronym,
         boolean isUnitElite,
@@ -495,6 +495,15 @@ public class UnitUtil {
                 // traitement pour GROUP_RED_MOTORISED_INF_BRIGADE
                 if(unitCountry.equals(CountryEnum.RED_COUNTRY)) {
                     toReturn = unitRedCountryFactory.createMotoInfBrigade(
+                        unitName,
+                        unitAcronym
+                    );
+                }
+                break;
+
+            case GROUP_BLACK_ELITE_MECA_BRIGADE:
+                if(unitCountry.equals(CountryEnum.BLACK_COUNTRY)) {
+                    toReturn = unitBlackCountryFactory.createEliteMecaBrigade(
                         unitName,
                         unitAcronym
                     );

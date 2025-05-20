@@ -35,7 +35,6 @@ import com.mycompany.test01.Interface.UnitGroupObserver;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
-import com.mycompany.test01.Serializer.UnitElementSerializer;
 import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditArmyService;
 import com.mycompany.test01.Util.GraphicUtil;
@@ -556,7 +555,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         Array<ElementSelectorType> gdxArray = new Array<>(filteredTypes);
         selectUnitBox.setItems(gdxArray);
         */
-        this.updateUnitSelectorList(); // TODO vérifier si utile
+        this.updateUnitTypeSelectorList(); // TODO vérifier si utile
 
         final Label unitTypeLabel = new Label("Nothing Selected", SkinUtil.getLabelSkin(200, 30));
         this.selectUnitBox.addListener(new ChangeListener() {
@@ -714,7 +713,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 System.out.println("click add unit");
                 //if (selectedUnit instanceof )
                 that.rightSelectPanel.setVisible(true); // à modifier qd tt sera ok
-                that.updateUnitSelectorList();
+                that.updateUnitTypeSelectorList();
             }
         });
         this.buttonAddWrapper.getButton().setDisabled(true);
@@ -894,10 +893,14 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.buttonSaveGroupWrapper.getButton().setDisabled(true);
     }
 
-    private void updateUnitSelectorList() {
+    /**
+     * filtre la liste des valeurs de l'enum et garde les valeurs qui :
+     * (valeur.getCountry == NO_COUNTRY ou == selectedCountry du service) et valeur != NO_TYPE et != FRONT_HQ
+     */
+    private void updateUnitTypeSelectorList() {
         this.unitSelectorList = Arrays.stream(ElementSelectorType.values())
             .filter(type -> (type.getCountry().equals(CountryEnum.NO_COUNTRY) ||
-                type.getCountry().equals(this.editArmyService.getSelectedCountry())) && !type.equals(ElementSelectorType.NO_TYPE))
+                type.getCountry().equals(this.editArmyService.getSelectedCountry())) && !type.equals(ElementSelectorType.NO_TYPE) && !type.equals(ElementSelectorType.FRONT_HQ))
             .toArray(ElementSelectorType[]::new);
         //that.unitSelectorList = filteredTypes;
         // Convertir en Array de libGDX
@@ -914,7 +917,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         int unitRegRank
     ) {
         if(this.editArmyService.getSelectedUnit() instanceof UnitGroup) {
-            UnitElement newUnit = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
+            UnitElement newUnit = UnitUtil.getNewUnitFromDatas(unitName, unitAcronym, isUnitElite, unitCountry, unitType, unitRegRank);
             if(newUnit instanceof UnitGroup && ((UnitGroup) newUnit).getLevel() >= ((UnitGroup) this.editArmyService.getSelectedUnit()).getLevel() ) {
                 Toast.showToast(this.stage, "New unit level is too high", ColorStyleEnum.DANGER, 2f);
             }
@@ -940,7 +943,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         boolean isUnitElite,
         CountryEnum unitCountry
     ) {
-        UnitElement newRoot = UnitUtil.getNewUnitFromSelection(unitName, unitAcronym, isUnitElite, unitCountry, ElementSelectorType.FRONT_HQ, 0);
+        UnitElement newRoot = UnitUtil.getNewUnitFromDatas(unitName, unitAcronym, isUnitElite, unitCountry, ElementSelectorType.FRONT_HQ, 0);
         //this.rootGroup = (FrontGroup) newRoot;
         this.editArmyService.setRootGroup((FrontGroup) newRoot);
         this.armyFileService.setRootToSave(this.editArmyService.getRootGroup());
