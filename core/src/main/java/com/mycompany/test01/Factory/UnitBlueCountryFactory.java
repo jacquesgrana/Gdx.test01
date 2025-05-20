@@ -141,7 +141,7 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MotoBridgeEngineerUnit createMotoBridgeEngineerUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return  new MotoBridgeEngineerUnit(name, acronym, CountryEnum.BLACK_COUNTRY, isElite, false, usesWhiteStroke, regRank);
+        return  new MotoBridgeEngineerUnit(name, acronym, CountryEnum.BLUE_COUNTRY, isElite, false, usesWhiteStroke, regRank);
     }
 
     @Override

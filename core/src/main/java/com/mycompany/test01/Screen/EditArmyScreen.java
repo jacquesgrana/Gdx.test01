@@ -408,9 +408,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
             CountryEnum.BLACK_COUNTRY,
             CountryEnum.BLUE_COUNTRY,
             CountryEnum.BROWN_COUNTRY,
-            //CountryEnum.GREEN_COUNTRY,
-            CountryEnum.RED_COUNTRY
-            //CountryEnum.YELLOW_COUNTRY,
+            CountryEnum.GREEN_COUNTRY,
+            CountryEnum.RED_COUNTRY,
+            CountryEnum.YELLOW_COUNTRY
         );
         // Création du label qui sera mis à jour
         //final Label countryLabel = new Label(getSelectedCountry().toString(), GraphicUtil.getLabelSkin(200, 30));
