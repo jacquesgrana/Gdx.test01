@@ -3,8 +3,12 @@ package com.mycompany.test01.Util;
 import com.mycompany.test01.Entity.Unit.UnitElement;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
+import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Factory.*;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 public class UnitUtil {
 
@@ -515,5 +519,19 @@ public class UnitUtil {
                 break;
         }
         return toReturn;
+    }
+
+    public static ElementSelectorType getElementSelectorTypeFromUnitType(UnitTypeEnum unitTypeEnum) {
+        Optional<ElementSelectorType> toReturn = Arrays.stream(ElementSelectorType.values())
+            .filter(v -> v.getName().equals(unitTypeEnum.getName()))
+            .findFirst();
+        return toReturn.orElse(null);
+    }
+
+    public static UnitTypeEnum getUnitTypeFromElementSelectorType(ElementSelectorType elementSelectorType) {
+        Optional<UnitTypeEnum> toReturn = Arrays.stream(UnitTypeEnum.values())
+            .filter(v -> v.getName().equals(elementSelectorType.getName()))
+            .findFirst();
+        return toReturn.orElse(null);
     }
 }

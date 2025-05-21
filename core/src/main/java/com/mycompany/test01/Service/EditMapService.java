@@ -10,8 +10,8 @@ import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
 
-public class MapService {
-    private static MapService instance = null;
+public class EditMapService {
+    private static EditMapService instance = null;
 
     private Array<Array<Hexagon>> hexesArray;
     private int hexagonSize; // La moitié de 60px
@@ -41,11 +41,11 @@ public class MapService {
     private Hexagon riverStartHex;
     private Hexagon[] riverStartHexNeighbours;
 
-    public MapService() {}
+    public EditMapService() {}
 
-    public static MapService getInstance() {
+    public static EditMapService getInstance() {
         if (instance == null) {
-            instance = new MapService();
+            instance = new EditMapService();
         }
         return instance;
     }

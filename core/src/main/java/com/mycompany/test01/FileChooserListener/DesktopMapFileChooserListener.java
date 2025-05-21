@@ -4,17 +4,17 @@ import com.badlogic.gdx.files.FileHandle;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.FileChooserListenerInterface;
 import com.mycompany.test01.Service.MapFileService;
-import com.mycompany.test01.Service.MapService;
+import com.mycompany.test01.Service.EditMapService;
 
 import java.util.Objects;
 
 public class DesktopMapFileChooserListener implements FileChooserListenerInterface {
 
-    private MapService mapService;
+    private EditMapService editMapService;
     private MapFileService mapFileService;
 
     public DesktopMapFileChooserListener() {
-        mapService = MapService.getInstance();
+        editMapService = EditMapService.getInstance();
         mapFileService = MapFileService.getInstance();
     }
 
@@ -27,11 +27,11 @@ public class DesktopMapFileChooserListener implements FileChooserListenerInterfa
             MapData mapData = mapFileService.loadMapData(file.path()); // TODO modifier la méthode du service
             //MapData mapData = fileService.loadMapData(file.path()); // TODO modifier la méthode du service
 
-            mapService.SetMapData(mapData);
+            editMapService.SetMapData(mapData);
             //mapService.drawMap();
         }
         else if(Objects.equals(mode, "SAVE")) {
-            MapData mapData = mapService.getMapData();
+            MapData mapData = editMapService.getMapData();
             mapFileService.saveMapData(mapData, file.path());
             //fileService.saveMapData(mapData, file.path());
 
