@@ -1,10 +1,13 @@
 package com.mycompany.test01.Util;
 
+import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Entity.Unit.UnitElement;
+import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Factory.*;
+import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
 
 import java.util.Arrays;
@@ -539,5 +542,25 @@ public class UnitUtil {
         return type.equals(UnitTypeEnum.FRONT_HQ) || type.equals(UnitTypeEnum.ARMY_GROUP_HQ)
             || type.equals(UnitTypeEnum.ARMY_HQ) || type.equals(UnitTypeEnum.DIVISION_HQ)
             || type.equals(UnitTypeEnum.BRIGADE_HQ);
+    }
+
+    /**
+     * Méthode qui crée un orderedSet à partir de parent.getUnits en remplaçant, à la bonne place,
+     * selectedUnit par newUnit
+     * @param parent UnitGroup
+     * @param newUnit UnitElement
+     * @param selectedUnit UnitElement
+     */
+    public static void setNewOrderedSet(UnitGroup parent, UnitElement newUnit, UnitElement selectedUnit) {
+        OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
+        parent.getUnits().forEach( element -> {
+            if(element.equals(selectedUnit)) {
+                newUnits.add(newUnit);
+            }
+            else {
+                newUnits.add(element);
+            }
+        });
+        parent.setUnits(newUnits);
     }
 }

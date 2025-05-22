@@ -864,11 +864,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         return panel;
     }
 
-    // TODO : empêcher si un groupe est modifié en unit ou unit en groupe
-    // TODO : si group : empecher si le nouveau type a un level sup ou egal a son parent
-    // TODO : si group : set le level (faire méthode pour avoir le level en int a partir de UnitType)
-    // TODO recréer une nouvelle unité !!!
-
     private void modifySelectedUnitAndUpdateTree(
         String unitName,
         String unitAcronym,
@@ -883,35 +878,34 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 UnitGroup newGroup = (UnitGroup) newUnit;
 
                 UnitGroup parent = editArmyService.getSelectedUnit().getParent();
-                // TODO : vérifier si les level matchent : si parent.getLevel() > newUnit.getLevel() sinon refuser et afficher un toast approprié
                 if(parent.getLevel() > newGroup.getLevel()) {
                     newGroup.setUnits(((UnitGroup) this.editArmyService.getSelectedUnit()).getUnits());
+
+                    /*
                     OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
-                    // TODO remplacer à la même place dans l'orderedSet du parent
-                    parent.getUnits().forEach( elementInterface -> {
-                        if(elementInterface.equals(this.editArmyService.getSelectedUnit())) {
+                    parent.getUnits().forEach( element -> {
+                        if(element.equals(this.editArmyService.getSelectedUnit())) {
                             newUnits.add(newUnit);
                         }
                         else {
-                            newUnits.add(elementInterface);
+                            newUnits.add(element);
                         }
                     });
                     parent.setUnits(newUnits);
+                     */
+                    UnitUtil.setNewOrderedSet(parent, newUnit, this.editArmyService.getSelectedUnit());
                     //parent.addUnit(newGroup);
                     //parent.removeUnit(this.editArmyService.getSelectedUnit());
 
-                    //newGroup.setId(this.editArmyService.getSelectedUnit().getId());
                     Toast.showToast(this.stage, "Unit Group Modified", ColorStyleEnum.SUCCESS, 2f);
                     isModified = true;
                 }
                 else {
                     Toast.showToast(this.stage, "New group level is too high", ColorStyleEnum.DANGER, 2f);
                 }
-
-
             }
             else {
-                Toast.showToast(this.stage, "New type mismatch", ColorStyleEnum.DANGER, 2f);
+                Toast.showToast(this.stage, "New type must be a group", ColorStyleEnum.DANGER, 2f);
             }
         }
         else {
@@ -919,7 +913,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 UnitElement newUnit = UnitUtil.getNewUnitFromDatas(unitName, unitAcronym, isUnitElite, this.editArmyService.getSelectedCountry(), UnitUtil.getElementSelectorTypeFromUnitType(unitType), unitRegRank);
                 UnitGroup parent = editArmyService.getSelectedUnit().getParent();
 
-                // TODO remplacer à la même place dans l'orderedSet du parent
+                /*
                 OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
                 parent.getUnits().forEach( elementInterface -> {
                     if(elementInterface.equals(this.editArmyService.getSelectedUnit())) {
@@ -930,16 +924,16 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                     }
                 });
                 parent.setUnits(newUnits);
-
+                */
+                UnitUtil.setNewOrderedSet(parent, newUnit, this.editArmyService.getSelectedUnit());
                 //parent.removeUnit(this.editArmyService.getSelectedUnit());
                 //parent.addUnit(newUnit);
 
-                //newUnit.setId(this.editArmyService.getSelectedUnit().getId());
                 Toast.showToast(this.stage, "Unit Modified", ColorStyleEnum.SUCCESS, 2f);
                 isModified = true;
             }
             else {
-                Toast.showToast(this.stage, "New type mismatch", ColorStyleEnum.DANGER, 2f);
+                Toast.showToast(this.stage, "New type must be not a group", ColorStyleEnum.DANGER, 2f);
             }
         }
         //this.editArmyService.getSelectedUnit().setName(unitName);
@@ -952,13 +946,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
             initTree();
             leftScrollPane.setActor(tree);
             updateTreeFromRoot();
-            //resetSelectedUnit();
             this.buttonSaveAllWrapper.getButton().setDisabled(false);
             this.rightEditUnitPanel.setVisible(false);
             this.resetSelectedUnit();
         }
-
-
     }
 
     private void setEditUnitValues() {
