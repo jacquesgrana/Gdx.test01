@@ -534,4 +534,10 @@ public class UnitUtil {
             .findFirst();
         return toReturn.orElse(null);
     }
+
+    public static boolean isGroupType(UnitTypeEnum type) {
+        return type.equals(UnitTypeEnum.FRONT_HQ) || type.equals(UnitTypeEnum.ARMY_GROUP_HQ)
+            || type.equals(UnitTypeEnum.ARMY_HQ) || type.equals(UnitTypeEnum.DIVISION_HQ)
+            || type.equals(UnitTypeEnum.BRIGADE_HQ);
+    }
 }

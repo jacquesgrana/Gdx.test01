@@ -652,17 +652,6 @@ public class GraphicUtil {
         // Créer un nœud pour le groupe actuel
         UnitNode groupNode = new UnitNode(group);
 
-        // ajouter listener
-        /*
-        EditArmyScreen that = (EditArmyScreen) screen;
-        groupNode.getActor().addListener(new ClickListener() {
-            public void clicked (InputEvent event, float x, float y) {
-                System.out.println("clic group");
-                that.displayUnitInfos(groupNode.getValue());
-                groupNode.setExpanded(!groupNode.isExpanded());
-            }
-        });*/
-
         // Parcourir les unités du groupe
         for (ElementInterface element : group.getUnits()) {
             if (element instanceof UnitGroup) {
@@ -696,19 +685,6 @@ public class GraphicUtil {
                     }
                 });
             }
-
-            /*
-            // ajouter listener
-            groupNode.getActor().addListener(new ClickListener() {
-                public void clicked (InputEvent event, float x, float y) {
-                    //System.out.println("clic group");
-                    EditArmyScreen that = (EditArmyScreen) screen;
-                    that.displayUnitInfos(groupNode.getValue());
-                    groupNode.setExpanded(!groupNode.isExpanded());
-
-                }
-            });
-            */
         }
         return groupNode;
     }

@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
@@ -866,31 +867,101 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     // TODO : empêcher si un groupe est modifié en unit ou unit en groupe
     // TODO : si group : empecher si le nouveau type a un level sup ou egal a son parent
     // TODO : si group : set le level (faire méthode pour avoir le level en int a partir de UnitType)
+    // TODO recréer une nouvelle unité !!!
+
     private void modifySelectedUnitAndUpdateTree(
         String unitName,
         String unitAcronym,
         boolean isUnitElite,
         UnitTypeEnum unitType,
         int unitRegRank) {
-        System.out.println("nouveau type : " + unitType.getName());
-        this.editArmyService.getSelectedUnit().setName(unitName);
-        this.editArmyService.getSelectedUnit().setAcronym(unitAcronym);
-        this.editArmyService.getSelectedUnit().setIsElite(isUnitElite);
-        this.editArmyService.getSelectedUnit().setType(unitType);
-        this.editArmyService.getSelectedUnit().setRegRank(unitRegRank);
+        //System.out.println("nouveau type : " + unitType.getName());
+        boolean isModified = false;
+        if(UnitUtil.isGroupType(unitType)) {
+            if(this.editArmyService.getSelectedUnit() instanceof UnitGroup) {
+                UnitElement newUnit = UnitUtil.getNewUnitFromDatas(unitName, unitAcronym, isUnitElite, this.editArmyService.getSelectedCountry(), UnitUtil.getElementSelectorTypeFromUnitType(unitType), unitRegRank);
+                UnitGroup newGroup = (UnitGroup) newUnit;
 
-        initTree();
-        leftScrollPane.setActor(tree);
-        updateTreeFromRoot();
-        //resetSelectedUnit();
-        this.buttonSaveAllWrapper.getButton().setDisabled(false);
-        this.rightEditUnitPanel.setVisible(false);
-        this.resetSelectedUnit();
-        Toast.showToast(this.stage, "Unit Modified", ColorStyleEnum.SUCCESS, 2f);
+                UnitGroup parent = editArmyService.getSelectedUnit().getParent();
+                // TODO : vérifier si les level matchent : si parent.getLevel() > newUnit.getLevel() sinon refuser et afficher un toast approprié
+                if(parent.getLevel() > newGroup.getLevel()) {
+                    newGroup.setUnits(((UnitGroup) this.editArmyService.getSelectedUnit()).getUnits());
+                    OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
+                    // TODO remplacer à la même place dans l'orderedSet du parent
+                    parent.getUnits().forEach( elementInterface -> {
+                        if(elementInterface.equals(this.editArmyService.getSelectedUnit())) {
+                            newUnits.add(newUnit);
+                        }
+                        else {
+                            newUnits.add(elementInterface);
+                        }
+                    });
+                    parent.setUnits(newUnits);
+                    //parent.addUnit(newGroup);
+                    //parent.removeUnit(this.editArmyService.getSelectedUnit());
+
+                    //newGroup.setId(this.editArmyService.getSelectedUnit().getId());
+                    Toast.showToast(this.stage, "Unit Group Modified", ColorStyleEnum.SUCCESS, 2f);
+                    isModified = true;
+                }
+                else {
+                    Toast.showToast(this.stage, "New group level is too high", ColorStyleEnum.DANGER, 2f);
+                }
+
+
+            }
+            else {
+                Toast.showToast(this.stage, "New type mismatch", ColorStyleEnum.DANGER, 2f);
+            }
+        }
+        else {
+            if(!(this.editArmyService.getSelectedUnit() instanceof UnitGroup)) {
+                UnitElement newUnit = UnitUtil.getNewUnitFromDatas(unitName, unitAcronym, isUnitElite, this.editArmyService.getSelectedCountry(), UnitUtil.getElementSelectorTypeFromUnitType(unitType), unitRegRank);
+                UnitGroup parent = editArmyService.getSelectedUnit().getParent();
+
+                // TODO remplacer à la même place dans l'orderedSet du parent
+                OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
+                parent.getUnits().forEach( elementInterface -> {
+                    if(elementInterface.equals(this.editArmyService.getSelectedUnit())) {
+                        newUnits.add(newUnit);
+                    }
+                    else {
+                        newUnits.add(elementInterface);
+                    }
+                });
+                parent.setUnits(newUnits);
+
+                //parent.removeUnit(this.editArmyService.getSelectedUnit());
+                //parent.addUnit(newUnit);
+
+                //newUnit.setId(this.editArmyService.getSelectedUnit().getId());
+                Toast.showToast(this.stage, "Unit Modified", ColorStyleEnum.SUCCESS, 2f);
+                isModified = true;
+            }
+            else {
+                Toast.showToast(this.stage, "New type mismatch", ColorStyleEnum.DANGER, 2f);
+            }
+        }
+        //this.editArmyService.getSelectedUnit().setName(unitName);
+        //this.editArmyService.getSelectedUnit().setAcronym(unitAcronym);
+        //this.editArmyService.getSelectedUnit().setIsElite(isUnitElite);
+        //this.editArmyService.getSelectedUnit().setType(unitType);
+        //this.editArmyService.getSelectedUnit().setRegRank(unitRegRank);
+
+        if(isModified) {
+            initTree();
+            leftScrollPane.setActor(tree);
+            updateTreeFromRoot();
+            //resetSelectedUnit();
+            this.buttonSaveAllWrapper.getButton().setDisabled(false);
+            this.rightEditUnitPanel.setVisible(false);
+            this.resetSelectedUnit();
+        }
+
+
     }
 
     private void setEditUnitValues() {
-        // set le selected de
         this.selectEditUnitBox.setSelected(UnitUtil.getElementSelectorTypeFromUnitType(this.editArmyService.getSelectedUnit().getType()));
         this.editUnitTypeLabel.setText(this.editArmyService.getSelectedUnit().getType().toString());
         this.selectEditRegRankBox.setSelected(this.editArmyService.getSelectedUnit().getRegRank());
