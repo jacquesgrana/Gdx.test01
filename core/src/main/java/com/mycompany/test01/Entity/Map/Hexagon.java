@@ -15,6 +15,8 @@ public class Hexagon {
     private RoadEdges roads;
     private RiverCategory[] rivers;
 
+    private BridgeEdges bridges;
+
 
     public Hexagon() {
     }
@@ -27,6 +29,7 @@ public class Hexagon {
         this.roads = new RoadEdges();
         this.rivers = new RiverCategory[6];
         Arrays.fill(this.rivers, RiverCategory.NO_RIVER);
+        this.bridges = new BridgeEdges();
     }
 
     public int getX() {
@@ -75,5 +78,13 @@ public class Hexagon {
 
     public void setRivers(RiverCategory[] rivers) {
         this.rivers = rivers;
+    }
+
+    public BridgeEdges getBridges() {
+        return bridges;
+    }
+
+    public void setBridges(BridgeEdges bridges) {
+        this.bridges = bridges;
     }
 }

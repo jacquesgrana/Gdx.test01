@@ -794,6 +794,8 @@ public class EditMapScreen implements Screen, InputProcessor {
         }
 
         panel.row();
+
+
         panel.add(riverImage).colspan(5).width(32).height(32);
         panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
         return panel;
@@ -801,7 +803,7 @@ public class EditMapScreen implements Screen, InputProcessor {
 
     private Table createMiscButtonPanel() {
         Table panel = new Table();
-        panel.defaults().pad(5);
+        panel.defaults().pad(4);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
         this.selectedRiverLabel = new Label("Miscellaneous :", labelStyle);
@@ -842,6 +844,18 @@ public class EditMapScreen implements Screen, InputProcessor {
             }
         });
         panel.add(buttonLoad);
+
+        TextButton buttonGenBridge = new TextButton("Add Bridge(s)", buttonSkin);
+        buttonGenBridge.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //System.out.println("clic load");
+                //mapFileService.openLoadMapFileChooser();
+                editMapService.generateBridgesFromRiversAndRoads();
+                redrawMap();
+            }
+        });
+        panel.add(buttonGenBridge);
 
         panel.row();
         panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);

@@ -446,6 +446,30 @@ public class EditMapService {
         // Dessiner les hexagones
         for(int i=0; i < maxI; i++) {
             for (int j=0; j < maxJ; j++) {
+
+/*
+                if(!this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[0].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
+                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[1].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
+                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[2].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
+                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[3].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
+                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[4].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
+                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[5].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)
+                ) {
+                    System.out.println("hex : " + (i+startI) + " / " + (j+startJ)
+                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[0].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[0].isBroken()
+                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[1].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[1].isBroken()
+                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[2].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[2].isBroken()
+                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[3].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[3].isBroken()
+                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[4].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[4].isBroken()
+                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[5].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[5].isBroken()
+                    );
+                }
+
+*/
+
+
+
+
                 /*
                 int x = i * gapX + gapX / 2 + 10;
                 int y = j * gapY + hexagonSize + 10;
@@ -487,8 +511,9 @@ public class EditMapService {
                 drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
+
                 // dessin des rivières
-                if(mapMode == EditMapMode.RIVER || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.NO_ACTION) {
+                if(mapMode == EditMapMode.RIVER || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.MISC || mapMode == EditMapMode.NO_ACTION) {
                     for (int k = 0; k < 6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k] != RiverCategory.NO_RIVER) {
                             drawRiverSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k], k);
@@ -496,8 +521,17 @@ public class EditMapService {
                     }
                 }
 
+                // dessin des ponts
+                if(mapMode == EditMapMode.RIVER || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.MISC || mapMode == EditMapMode.NO_ACTION) {
+                    for (int k = 0; k < 6; k++) {
+                        if(!this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
+                            drawBridgeSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType(), k);
+                        }
+                    }
+                }
+
                 // dessin des routes
-                if(mapMode == EditMapMode.ROAD || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.NO_ACTION) {
+                if(mapMode == EditMapMode.ROAD || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.MISC || mapMode == EditMapMode.NO_ACTION) {
                     for(int k=0; k<6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
                             drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
@@ -511,6 +545,7 @@ public class EditMapService {
                     }
                 }
 
+                // dessin des fortifications
                 if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION
                 && (mapMode == EditMapMode.FORTIFICATION || mapMode == EditMapMode.NO_ACTION)) {
                     drawFortification(
@@ -519,6 +554,31 @@ public class EditMapService {
                         GraphicUtil.getTextureFromFortification(this.hexesArray.get(i + startI).get(j + startJ).getFortification()));
                 }
 
+            }
+        }
+    }
+
+    public void generateBridgesFromRiversAndRoads() {
+        for(int i=0; i < limitI; i++) {
+            for (int j=0; j < limitJ; j++) {
+                Hexagon hex = this.hexesArray.get(i).get(j);
+                for(int k=0; k<6; k++) {
+                    if(
+                        !(hex.getRivers()[k].equals(RiverCategory.NO_RIVER)) &&
+                            (hex.getRoads().getEdges()[k].isPathway() ||
+                                hex.getRoads().getEdges()[k].isRoadway() ||
+                                hex.getRoads().getEdges()[k].isRailway()
+                            )
+                    ) {
+                        BridgeTypeEnum bridgeType = hex.getRoads().getEdges()[k].isRailway() ? BridgeTypeEnum.HEAVY_BRIDGE :
+                            hex.getRoads().getEdges()[k].isRoadway() ? BridgeTypeEnum.MEDIUM_BRIDGE :
+                                hex.getRoads().getEdges()[k].isPathway() ? BridgeTypeEnum.LIGHT_BRIDGE : BridgeTypeEnum.NO_BRIDGE;
+                        this.hexesArray.get(i).get(j).getBridges().getEdges()[k].setBridgeType(bridgeType);
+                    }
+                    else {
+                        this.hexesArray.get(i).get(j).getBridges().getEdges()[k].setBridgeType(BridgeTypeEnum.NO_BRIDGE);
+                    }
+                }
             }
         }
     }
@@ -549,6 +609,8 @@ public class EditMapService {
         int y = getYFromJ(j);
         Texture texture = getRiverTextureFromRiverCatAndK(riverCategory, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
+
+        // TODO faire méthode !!
         if (texturePixmap != null) {
             drawingPixmap.drawPixmap(
                 texturePixmap, // Source Pixmap
@@ -561,6 +623,24 @@ public class EditMapService {
         }
         texture.dispose();
 
+    }
+
+    private void drawBridgeSide(Pixmap drawingPixmap, int i, int j, BridgeTypeEnum bridgeType, int k) {
+        int x = getXFromIJ(i, j);
+        int y = getYFromJ(j);
+        Texture texture = GraphicUtil.getTextureSideFromBridge(bridgeType, k);
+        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
+        if (texturePixmap != null) {
+            drawingPixmap.drawPixmap(
+                texturePixmap, // Source Pixmap
+                0, 0,            // Source X,Y (top-left of source)
+                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
+                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
+                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+            );
+            texturePixmap.dispose();
+        }
+        texture.dispose();
     }
 
     // TODO mettre dans GraphicUtil
@@ -1058,7 +1138,6 @@ public class EditMapService {
     public void SetMapData(MapData mapData) {
         limitI = mapData.getLimitI();
         limitJ = mapData.getLimitJ();
-        hexesArray = new Array<>();
         this.hexesArray = new Array<Array<Hexagon>>(limitI);
         for (int i = 0; i < limitI; i++) {
             Array<Hexagon> row = new Array<Hexagon>(limitJ);
@@ -1068,5 +1147,6 @@ public class EditMapService {
             this.hexesArray.add(row);
         }
         init();
+        generateBridgesFromRiversAndRoads();
     }
 }

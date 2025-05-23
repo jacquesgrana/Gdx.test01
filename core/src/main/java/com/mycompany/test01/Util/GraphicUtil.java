@@ -85,6 +85,27 @@ public class GraphicUtil {
     public static Texture riverWide4SWTexture = loadTextureFromFile("texture/river/wide/texture-4-sw-wide.png");
     public static Texture riverWide5SETexture = loadTextureFromFile("texture/river/wide/texture-5-se-wide.png");
 
+    public static Texture bridgeLight0NWTexture = loadTextureFromFile("texture/bridge/light/texture-0-nw-light-bridge.png");
+    public static Texture bridgeLight1NETexture = loadTextureFromFile("texture/bridge/light/texture-1-ne-light-bridge.png");
+    public static Texture bridgeLight2WTexture = loadTextureFromFile("texture/bridge/light/texture-2-w-light-bridge.png");
+    public static Texture bridgeLight3ETexture = loadTextureFromFile("texture/bridge/light/texture-3-e-light-bridge.png");
+    public static Texture bridgeLight4SWTexture = loadTextureFromFile("texture/bridge/light/texture-4-sw-light-bridge.png");
+    public static Texture bridgeLight5SETexture = loadTextureFromFile("texture/bridge/light/texture-5-se-light-bridge.png");
+
+    public static Texture bridgeMedium0NWTexture = loadTextureFromFile("texture/bridge/medium/texture-0-nw-medium-bridge.png");
+    public static Texture bridgeMedium1NETexture = loadTextureFromFile("texture/bridge/medium/texture-1-ne-medium-bridge.png");
+    public static Texture bridgeMedium2WTexture = loadTextureFromFile("texture/bridge/medium/texture-2-w-medium-bridge.png");
+    public static Texture bridgeMedium3ETexture = loadTextureFromFile("texture/bridge/medium/texture-3-e-medium-bridge.png");
+    public static Texture bridgeMedium4SWTexture = loadTextureFromFile("texture/bridge/medium/texture-4-sw-medium-bridge.png");
+    public static Texture bridgeMedium5SETexture = loadTextureFromFile("texture/bridge/medium/texture-5-se-medium-bridge.png");
+
+    public static Texture bridgeHeavy0NWTexture = loadTextureFromFile("texture/bridge/heavy/texture-0-nw-heavy-bridge.png");
+    public static Texture bridgeHeavy1NETexture = loadTextureFromFile("texture/bridge/heavy/texture-1-ne-heavy-bridge.png");
+    public static Texture bridgeHeavy2WTexture = loadTextureFromFile("texture/bridge/heavy/texture-2-w-heavy-bridge.png");
+    public static Texture bridgeHeavy3ETexture = loadTextureFromFile("texture/bridge/heavy/texture-3-e-heavy-bridge.png");
+    public static Texture bridgeHeavy4SWTexture = loadTextureFromFile("texture/bridge/heavy/texture-4-sw-heavy-bridge.png");
+    public static Texture bridgeHeavy5SETexture = loadTextureFromFile("texture/bridge/heavy/texture-5-se-heavy-bridge.png");
+
     public static Texture counterBgRedCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-red-country-01@4x.png");
     public static Texture counterBgRedCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-red-country-02@4x.png");
     public static Texture counterBgBlueCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-blue-country-01@4x.png");
@@ -278,6 +299,81 @@ public class GraphicUtil {
                 return getEmptyTexture();
         }
         return getEmptyTexture();
+    }
+
+    public static Texture getTextureSideFromBridge(BridgeTypeEnum bridgeType, int side) {
+        Texture toReturn = getEmptyTexture();
+
+        switch (bridgeType) {
+            case LIGHT_BRIDGE:
+                switch (side) {
+                    case 0 :
+                        toReturn = bridgeLight0NWTexture;
+                        break;
+                    case 1:
+                        toReturn = bridgeLight1NETexture;
+                        break;
+                    case 2:
+                        toReturn = bridgeLight2WTexture;
+                        break;
+                    case 3:
+                        toReturn = bridgeLight3ETexture;
+                        break;
+                    case 4:
+                        toReturn = bridgeLight4SWTexture;
+                        break;
+                    case 5:
+                        toReturn = bridgeLight5SETexture;
+                        break;
+                }
+                break;
+            case MEDIUM_BRIDGE:
+                switch (side) {
+                    case 0 :
+                        toReturn = bridgeMedium0NWTexture;
+                        break;
+                    case 1:
+                        toReturn = bridgeMedium1NETexture;
+                        break;
+                    case 2:
+                        toReturn = bridgeMedium2WTexture;
+                        break;
+                    case 3:
+                        toReturn = bridgeMedium3ETexture;
+                        break;
+                    case 4:
+                        toReturn = bridgeMedium4SWTexture;
+                        break;
+                    case 5:
+                        toReturn = bridgeMedium5SETexture;
+                        break;
+                }
+                break;
+            case HEAVY_BRIDGE:
+                switch (side) {
+                    case 0 :
+                        toReturn = bridgeHeavy0NWTexture;
+                        break;
+                    case 1:
+                        toReturn = bridgeHeavy1NETexture;
+                        break;
+                    case 2:
+                        toReturn = bridgeHeavy2WTexture;
+                        break;
+                    case 3:
+                        toReturn = bridgeHeavy3ETexture;
+                        break;
+                    case 4:
+                        toReturn = bridgeHeavy4SWTexture;
+                        break;
+                    case 5:
+                        toReturn = bridgeHeavy5SETexture;
+                        break;
+                }
+                break;
+        }
+
+        return toReturn;
     }
 
     public static Texture getEmptyTexture() {
