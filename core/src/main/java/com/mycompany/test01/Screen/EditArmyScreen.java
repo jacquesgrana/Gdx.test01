@@ -58,7 +58,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
     //private UnitElement selectedUnit;
     //private CountryEnum selectedCountry;
-    //private FrontGroup rootGroup; // TODO dans editArmyService
+    //private FrontGroup rootGroup;
     //private boolean isTreeRootNodeDefined;
 
     //List<UnitTypeEnum> allValuesList = Stream.of(UnitTypeEnum.values()).collect(Collectors.toList());
@@ -135,7 +135,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
         //this.selectedCountryLabel = new Label(getSelectedCountry().toString(), SkinUtil.getLabelSkin(200, 30));
 
-        this.unitSelectorList = new ElementSelectorType[(int) Arrays.stream(ElementSelectorType.values()).count()]; // TODO 100?
+        this.unitSelectorList = new ElementSelectorType[(int) Arrays.stream(ElementSelectorType.values()).count()];
 
         this.unitTreeSkin = SkinUtil.getUnitTreeSkin();
         /*

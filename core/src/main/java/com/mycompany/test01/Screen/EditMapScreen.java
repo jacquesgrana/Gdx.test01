@@ -16,11 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
+import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Enum.*;
+import com.mycompany.test01.Interface.ToastObserver;
+import com.mycompany.test01.Interface.UnitGroupObserver;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Service.MapFileService;
 import com.mycompany.test01.Service.EditMapService;
 import com.mycompany.test01.Util.GraphicUtil;
@@ -57,11 +62,16 @@ public class EditMapScreen implements Screen, InputProcessor {
     private RoadDrawFlagCategory roadDrawFlag = RoadDrawFlagCategory.EMPTY;
     private RiverDrawFlagCategory riverDrawFlag = RiverDrawFlagCategory.EMPTY;
 
+    private final ToastObservable toastObservable;
+
     public EditMapScreen(Main game) {
         this.mode = EditMapMode.NO_ACTION;
         this.editMapService = EditMapService.getInstance();
         this.editMapService.init();
         this.mapFileService = MapFileService.getInstance();
+
+        this.toastObservable = ToastObservable.getInstance();
+        this.subscribeToObservables();
         //mapService.updateMapSize();
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -249,6 +259,22 @@ public class EditMapScreen implements Screen, InputProcessor {
         roadButtonPanel.setVisible(false);
         riverButtonPanel.setVisible(false);
         miscButtonPanel.setVisible(false);
+    }
+
+    private void subscribeToObservables() {
+        if (toastObservable != null) {
+            // Création d'un Observer<Toast> anonyme
+            toastObservable.subscribe(new ToastObserver() {
+                @Override
+                public void update(Toast newValue) {
+                    EditMapScreen.this.displayToastFromObservable(newValue);
+                }
+            });
+        }
+    }
+
+    public void displayToastFromObservable(Toast toast){
+        toast.show(this.stage, 2f);
     }
 
     private void redrawMap() {
@@ -802,6 +828,7 @@ public class EditMapScreen implements Screen, InputProcessor {
     }
 
     private Table createMiscButtonPanel() {
+        EditMapScreen that = this;
         Table panel = new Table();
         panel.defaults().pad(4);
 
@@ -818,6 +845,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 //System.out.println("clic reset");
                 editMapService.resetMap();
                 redrawMap();
+                Toast.showToast(that.stage, "Map reset", ColorStyleEnum.SUCCESS, 2f);
             }
         });
         panel.add(buttonReset);
@@ -853,6 +881,7 @@ public class EditMapScreen implements Screen, InputProcessor {
                 //mapFileService.openLoadMapFileChooser();
                 editMapService.generateBridgesFromRiversAndRoads();
                 redrawMap();
+                Toast.showToast(that.stage, "Brigde(s) generated", ColorStyleEnum.SUCCESS, 2f);
             }
         });
         panel.add(buttonGenBridge);
