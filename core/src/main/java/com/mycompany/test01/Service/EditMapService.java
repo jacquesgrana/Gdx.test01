@@ -247,6 +247,11 @@ public class EditMapService {
         this.limitJ = 100;
     }
 
+    public void setLimits(int limitI, int limitJ) {
+        this.limitI = limitI;
+        this.limitJ = limitJ;
+    }
+
     public void init() {
         this.hexagonSize = 30; // La moitié de 60px
         this.gapX = 50;

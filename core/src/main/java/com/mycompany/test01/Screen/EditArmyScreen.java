@@ -1027,13 +1027,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                     EditArmyScreen.this.updateRootFromObservable(newValue);
                 }
             });
-            // Alternativement, si vous voulez utiliser UnitGroupObserver (s'il existe et est une interface fonctionnelle ou que vous l'implémentez ici)
-            // unitGroupObservable.subscribe(new UnitGroupObserver() {
-            //     @Override
-            //     public void update(UnitGroup newValue) {
-            //         EditArmyScreen.this.handleUnitGroupUpdate(newValue);
-            //     }
-            // });
         }
 
         if (toastObservable != null) {
@@ -1044,13 +1037,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                     EditArmyScreen.this.displayToastFromObservable(newValue);
                 }
             });
-            // Alternativement, si vous voulez utiliser ToastObserver
-            // toastObservable.subscribe(new ToastObserver() {
-            //     @Override
-            //     public void update(Toast newValue) {
-            //         EditArmyScreen.this.handleToastUpdate(newValue);
-            //     }
-            // });
         }
     }
 

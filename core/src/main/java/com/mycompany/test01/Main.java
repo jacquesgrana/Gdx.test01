@@ -8,9 +8,10 @@ public class Main extends Game {
     EditMapService editMapService;
     @Override
     public void create() {
-        this.editMapService = EditMapService.getInstance();
-        editMapService.firstInit();
-        editMapService.initRandomMapArray();
+        //this.editMapService = EditMapService.getInstance();
+        //editMapService.firstInit();
+        //editMapService.initRandomMapArray();
+        //editMapService.resetMap();
         setScreen(new WelcomeScreen(this));
     }
 }

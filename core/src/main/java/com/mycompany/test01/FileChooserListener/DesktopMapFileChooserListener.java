@@ -26,28 +26,20 @@ public class DesktopMapFileChooserListener implements FileChooserListenerInterfa
 
     @Override
     public void selected(FileHandle file, String mode) {
-        //System.out.println("test !! : file name : " + file.name());
-        //System.out.println("test !! : file path : " + file.path());
-        //System.out.println("mode : " + mode);
         if(Objects.equals(mode, "LOAD")) {
-            MapData mapData = mapFileService.loadMapData(file.path()); // TODO modifier la méthode du service
-            //MapData mapData = fileService.loadMapData(file.path()); // TODO modifier la méthode du service
-
+            MapData mapData = mapFileService.loadMapData(file.path());
             editMapService.SetMapData(mapData);
             Toast toast = new Toast("Map Loaded", ColorStyleEnum.SUCCESS);
             this.toastObservable.setObserved(toast);
             this.toastObservable.notifyObservers();
-            //mapService.drawMap();
         }
         else if(Objects.equals(mode, "SAVE")) {
             MapData mapData = editMapService.getMapData();
             mapFileService.saveMapData(mapData, file.path());
-            //fileService.saveMapData(mapData, file.path());
             Toast toast = new Toast("Map Saved", ColorStyleEnum.SUCCESS);
             this.toastObservable.setObserved(toast);
             this.toastObservable.notifyObservers();
         }
-
     }
 
     @Override
