@@ -24,6 +24,7 @@ import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Service.MapFileService;
 import com.mycompany.test01.Service.EditMapService;
 import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Util.MapUtil;
 import com.mycompany.test01.Util.SkinUtil;
 
 public class EditMapScreen implements Screen {
@@ -903,7 +904,15 @@ public class EditMapScreen implements Screen {
                         this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
                     }
 
-                    Hexagon[] neighbours = this.screen.editMapService.getNeighborhoodHexes(i, j);
+                    Hexagon[] neighbours = MapUtil.getNeighborhoodHexes(
+                        i,
+                        j,
+                        this.screen.editMapService.getStartI(),
+                        this.screen.editMapService.getStartJ(),
+                        this.screen.editMapService.getLimitI(),
+                        this.screen.editMapService.getLimitJ(),
+                        this.screen.editMapService.getHexesArray()
+                    );
                     for(int k=0; k<6; k++) {
                         if(neighbours[k] != null) {
                             int ii = neighbours[k].getX();
@@ -962,7 +971,15 @@ public class EditMapScreen implements Screen {
                             if(this.screen.editMapService.getRoadDrawFlag() == DrawFlagCategory.EMPTY || this.screen.editMapService.getRoadDrawFlag() == DrawFlagCategory.SECOND_CLICK_DONE) {
                                 this.screen.editMapService.setRoadStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
 
-                                this.screen.editMapService.setRoadStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
+                                this.screen.editMapService.setRoadStartHexNeighbours(MapUtil.getNeighborhoodHexes(
+                                    i,
+                                    j,
+                                    this.screen.editMapService.getStartI(),
+                                    this.screen.editMapService.getStartJ(),
+                                    this.screen.editMapService.getLimitI(),
+                                    this.screen.editMapService.getLimitJ(),
+                                    this.screen.editMapService.getHexesArray()
+                                ));
                                 this.screen.redrawMap();
 
                                 //this.screen.roadDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
@@ -975,7 +992,15 @@ public class EditMapScreen implements Screen {
                                 int k = this.screen.editMapService.getKFromRoadNeighbours(endHex);
                                 this.screen.editMapService.setRoadForHexes(startHex, endHex, this.screen.selectedRoad, k);
                                 this.screen.editMapService.setRoadStartHex(endHex);
-                                this.screen.editMapService.setRoadStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
+                                this.screen.editMapService.setRoadStartHexNeighbours(MapUtil.getNeighborhoodHexes(
+                                    i,
+                                    j,
+                                    this.screen.editMapService.getStartI(),
+                                    this.screen.editMapService.getStartJ(),
+                                    this.screen.editMapService.getLimitI(),
+                                    this.screen.editMapService.getLimitJ(),
+                                    this.screen.editMapService.getHexesArray()
+                                ));
 
                                 this.screen.redrawMap();
                                 //this.screen.roadDrawFlag = DrawFlagCategory.SECOND_CLICK_DONE;
@@ -1003,7 +1028,15 @@ public class EditMapScreen implements Screen {
                                 //System.out.println("old river flag : " + riverDrawFlag.toString());
 
                                 this.screen.editMapService.setRiverStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
-                                this.screen.editMapService.setRiverStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
+                                this.screen.editMapService.setRiverStartHexNeighbours(MapUtil.getNeighborhoodHexes(
+                                    i,
+                                    j,
+                                    this.screen.editMapService.getStartI(),
+                                    this.screen.editMapService.getStartJ(),
+                                    this.screen.editMapService.getLimitI(),
+                                    this.screen.editMapService.getLimitJ(),
+                                    this.screen.editMapService.getHexesArray()
+                                ));
                                 this.screen.redrawMap();
                                 //this.screen.riverDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
                                 this.screen.editMapService.setRiverDrawFlag(DrawFlagCategory.FIRST_CLICK_DONE);
@@ -1018,7 +1051,15 @@ public class EditMapScreen implements Screen {
                                 int k = this.screen.editMapService.getKFromRiverNeighbours(endHex);
                                 this.screen.editMapService.setRiverForHexes(startHex, endHex, this.screen.selectedRiver, k);
                                 this.screen.editMapService.setRiverStartHex(endHex);
-                                this.screen.editMapService.setRiverStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
+                                this.screen.editMapService.setRiverStartHexNeighbours(MapUtil.getNeighborhoodHexes(
+                                    i,
+                                    j,
+                                    this.screen.editMapService.getStartI(),
+                                    this.screen.editMapService.getStartJ(),
+                                    this.screen.editMapService.getLimitI(),
+                                    this.screen.editMapService.getLimitJ(),
+                                    this.screen.editMapService.getHexesArray()
+                                ));
 
                                 this.screen.redrawMap();
                                 //this.screen.riverDrawFlag = DrawFlagCategory.SECOND_CLICK_DONE;
@@ -1040,7 +1081,15 @@ public class EditMapScreen implements Screen {
                         if(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
                             if(this.screen.editMapService.getCliffDrawFlag() == DrawFlagCategory.EMPTY || this.screen.editMapService.getCliffDrawFlag() == DrawFlagCategory.SECOND_CLICK_DONE) {
                                 this.screen.editMapService.setCliffStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
-                                this.screen.editMapService.setCliffStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
+                                this.screen.editMapService.setCliffStartHexNeighbours(MapUtil.getNeighborhoodHexes(
+                                    i,
+                                    j,
+                                    this.screen.editMapService.getStartI(),
+                                    this.screen.editMapService.getStartJ(),
+                                    this.screen.editMapService.getLimitI(),
+                                    this.screen.editMapService.getLimitJ(),
+                                    this.screen.editMapService.getHexesArray()
+                                ));
                                 this.screen.redrawMap();
                                 //this.screen.cliffDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
                                 this.screen.editMapService.setCliffDrawFlag(DrawFlagCategory.FIRST_CLICK_DONE);
@@ -1053,7 +1102,15 @@ public class EditMapScreen implements Screen {
                                 //this.screen.editMapService.setRiverForHexes(startHex, endHex, this.screen.selectedRiver, k);
                                 startHex.getCliffs()[k].setCliff(!startHex.getCliffs()[k].isCliff());
                                 this.screen.editMapService.setCliffStartHex(endHex);
-                                this.screen.editMapService.setCliffStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
+                                this.screen.editMapService.setCliffStartHexNeighbours(MapUtil.getNeighborhoodHexes(
+                                    i,
+                                    j,
+                                    this.screen.editMapService.getStartI(),
+                                    this.screen.editMapService.getStartJ(),
+                                    this.screen.editMapService.getLimitI(),
+                                    this.screen.editMapService.getLimitJ(),
+                                    this.screen.editMapService.getHexesArray()
+                                ));
 
                                 this.screen.redrawMap();
                                 //this.screen.cliffDrawFlag = DrawFlagCategory.SECOND_CLICK_DONE;

@@ -364,149 +364,11 @@ public class EditMapService {
     public int getJFromY(int y) {
         return (int) ((y - this.hexagonSize * 0.5) / (this.hexagonSize * 1.5));
     }
-    // TODO effets de bord sur limitI et limit J !!
-
-    /**
-     *
-     * @param i : indice venant de l'affichage, sans prise en compte de startI
-     * @param j: indice venant de l'affichage, sans prise en compte de startJ
-     * @return tableau des hex voisins si dans les limites (0>= <limitI et 0>= <limitJ) (hex null si hors de la carte)
-     */
-    public Hexagon[] getNeighborhoodHexes(int i, int j) {
-        Hexagon[] toReturn = new Hexagon[6];
-        for (int k=0; k<6; k++) {
-            if(j % 2 == 0) {
-                switch (k) {
-                    case 0 : //NW
-                        if(j-1+this.startJ >= 0) {
-                            Hexagon northWest = this.hexesArray.get(i+this.startI).get(j-1+this.startJ);
-                            toReturn[k] = northWest;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 1 : //NE
-                        if(i+1+this.startI < this.limitI && j-1+this.startJ >= 0) {
-                            Hexagon northEast = this.hexesArray.get(i+1+this.startI).get(j-1+this.startJ);
-                            toReturn[k] = northEast;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 2 : //W
-                        if(i-1+this.startI >= 0) {
-                            Hexagon west = this.hexesArray.get(i-1+this.startI).get(j+this.startJ);
-                            toReturn[k] = west;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 3 : //E
-                        if(i+1+this.startI < this.limitI) {
-                            Hexagon east = this.hexesArray.get(i+1+this.startI).get(j+this.startJ);
-                            toReturn[k] = east;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 4 : //SW
-                        if(j+1+this.startJ < this.limitJ) {
-                            Hexagon southWest = this.hexesArray.get(i+this.startI).get(j+1+this.startJ);
-                            toReturn[k] = southWest;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 5 : //SE
-                        if(i+1+this.startI < this.limitI && j+1+this.startJ < this.limitJ) {
-                            Hexagon southEast = this.hexesArray.get(i+1+this.startI).get(j+1+this.startJ);
-                            toReturn[k] = southEast;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                }
-            }
-            else {
-                switch (k) {
-                    case 0 : //NW
-                        if(i-1+this.startI >= 0 && j-1+this.startJ >= 0) {
-                            Hexagon northWest = this.hexesArray.get(i-1+this.startI).get(j-1+this.startJ);
-                            toReturn[k] = northWest;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 1 : //NE
-                        if(j-1+this.startJ >= 0) {
-                            Hexagon northEast = this.hexesArray.get(i+this.startI).get(j-1+this.startJ);
-                            toReturn[k] = northEast;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 2 : //W
-                        if(i-1+this.startI >= 0) {
-                            Hexagon west = this.hexesArray.get(i-1+this.startI).get(j+this.startJ);
-                            toReturn[k] = west;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 3 : //E
-                        if(i+1+this.startI < this.limitI) {
-                            Hexagon east = this.hexesArray.get(i+1+this.startI).get(j+this.startJ);
-                            toReturn[k] = east;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 4 : //SW
-                        if(i-1+this.startI >= 0 && j+1+this.startJ < this.limitJ) {
-                            Hexagon southWest = this.hexesArray.get(i-1+this.startI).get(j+1+this.startJ);
-                            toReturn[k] = southWest;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                    case 5 : //SE
-                        if(j+1+this.startJ < this.limitJ) {
-                            Hexagon southEast = this.hexesArray.get(i+this.startI).get(j+1+this.startJ);
-                            toReturn[k] = southEast;
-                        }
-                        else {
-                            toReturn[k] = null;
-                        }
-                        break;
-                }
-            }
-
-        }
-
-        return toReturn;
-    }
 
     public void drawMap(Pixmap drawingPixmap, EditMapMode mapMode) {
         // Dessiner les hexagones
         for(int i=0; i < maxI; i++) {
             for (int j=0; j < maxJ; j++) {
-
-                /*
-                int x = i * gapX + gapX / 2 + 10;
-                int y = j * gapY + hexagonSize + 10;
-                if( j % 2 == 0) x += gapX / 2;
-                */
                 int x = getXFromIJ(i, j);
                 int y = getYFromJ(j);
                 //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
@@ -639,7 +501,7 @@ public class EditMapService {
     private void drawRoadSegment(Pixmap drawingPixmap, int i, int j, RoadCategory roadCategory, int k) {
         int x = getXFromIJ(i, j);
         int y = getYFromJ(j);
-        Texture texture = getRoadTextureFromRoadCatAndK(roadCategory, k);
+        Texture texture = GraphicUtil.getRoadTextureFromRoadCatAndK(roadCategory, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
 
         // TODO faire méthode !!?
@@ -661,7 +523,7 @@ public class EditMapService {
     private void drawRiverSide(Pixmap drawingPixmap, int i, int j, RiverCategory riverCategory, int k) {
         int x = getXFromIJ(i, j);
         int y = getYFromJ(j);
-        Texture texture = getRiverTextureFromRiverCatAndK(riverCategory, k);
+        Texture texture = GraphicUtil.getRiverTextureFromRiverCatAndK(riverCategory, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
 
         // TODO faire méthode !!?
@@ -719,161 +581,6 @@ public class EditMapService {
         texture.dispose();
     }
 
-    // TODO mettre dans GraphicUtil
-    private Texture getRoadTextureFromRoadCatAndK(RoadCategory roadCategory, int k) {
-        Texture texture = GraphicUtil.getEmptyTexture();;
-        switch (roadCategory) {
-            case PATHWAY:
-                switch (k) {
-                    case 0:
-                        texture = GraphicUtil.pathway0NWTexture;
-                        break;
-                    case 1:
-                        texture = GraphicUtil.pathway1NETexture;
-                        break;
-                    case 2:
-                        texture = GraphicUtil.pathway2WTexture;
-                        break;
-                    case 3:
-                        texture = GraphicUtil.pathway3ETexture;
-                        break;
-                    case 4:
-                        texture = GraphicUtil.pathway4SWTexture;
-                        break;
-                    case 5:
-                        texture = GraphicUtil.pathway5SETexture;
-                        break;
-                }
-                break;
-            case ROADWAY:
-                switch (k) {
-                    case 0:
-                        texture = GraphicUtil.roadway0NWTexture;
-                        break;
-                    case 1:
-                        texture = GraphicUtil.roadway1NETexture;
-                        break;
-                    case 2:
-                        texture = GraphicUtil.roadway2WTexture;
-                        break;
-                    case 3:
-                        texture = GraphicUtil.roadway3ETexture;
-                        break;
-                    case 4:
-                        texture = GraphicUtil.roadway4SWTexture;
-                        break;
-                    case 5:
-                        texture = GraphicUtil.roadway5SETexture;
-                        break;
-                }
-                break;
-            case RAILWAY:
-                switch (k) {
-                    case 0:
-                        texture = GraphicUtil.railway0NWTexture;
-                        break;
-                    case 1:
-                        texture = GraphicUtil.railway1NETexture;
-                        break;
-                    case 2:
-                        texture = GraphicUtil.railway2WTexture;
-                        break;
-                    case 3:
-                        texture = GraphicUtil.railway3ETexture;
-                        break;
-                    case 4:
-                        texture = GraphicUtil.railway4SWTexture;
-                        break;
-                    case 5:
-                        texture = GraphicUtil.railway5SETexture;
-                        break;
-                }
-                break;
-            default:
-                texture = GraphicUtil.getEmptyTexture();
-                break;
-        }
-        return texture;
-    }
-
-    // TODO mettre dans GraphicUtil
-    private Texture getRiverTextureFromRiverCatAndK(RiverCategory riverCategory, int k) {
-        Texture texture = GraphicUtil.getEmptyTexture();
-
-        switch(riverCategory) {
-            case NARROW:
-                switch (k) {
-                    case 0:
-                        texture = GraphicUtil.riverNarrow0NWTexture;
-                        break;
-                    case 1:
-                        texture = GraphicUtil.riverNarrow1NETexture;
-                        break;
-                    case 2:
-                        texture = GraphicUtil.riverNarrow2WTexture;
-                        break;
-                    case 3:
-                        texture = GraphicUtil.riverNarrow3ETexture;
-                        break;
-                    case 4:
-                        texture = GraphicUtil.riverNarrow4SWTexture;
-                        break;
-                    case 5:
-                        texture = GraphicUtil.riverNarrow5SETexture;
-                        break;
-                }
-                break;
-            case MEDIUM:
-                switch (k) {
-                    case 0:
-                        texture = GraphicUtil.riverMedium0NWTexture;
-                        break;
-                    case 1:
-                        texture = GraphicUtil.riverMedium1NETexture;
-                        break;
-                    case 2:
-                        texture = GraphicUtil.riverMedium2WTexture;
-                        break;
-                    case 3:
-                        texture = GraphicUtil.riverMedium3ETexture;
-                        break;
-                    case 4:
-                        texture = GraphicUtil.riverMedium4SWTexture;
-                        break;
-                    case 5:
-                        texture = GraphicUtil.riverMedium5SETexture;
-                        break;
-                }
-                break;
-            case WIDE:
-                switch (k) {
-                    case 0:
-                        texture = GraphicUtil.riverWide0NWTexture;
-                        break;
-                    case 1:
-                        texture = GraphicUtil.riverWide1NETexture;
-                        break;
-                    case 2:
-                        texture = GraphicUtil.riverWide2WTexture;
-                        break;
-                    case 3:
-                        texture = GraphicUtil.riverWide3ETexture;
-                        break;
-                    case 4:
-                        texture = GraphicUtil.riverWide4SWTexture;
-                        break;
-                    case 5:
-                        texture = GraphicUtil.riverWide5SETexture;
-                        break;
-                }
-                break;
-            default:
-                texture = GraphicUtil.getEmptyTexture();
-                break;
-        }
-        return texture;
-    }
-
     public void updateMiniMap(int x, int y, Pixmap drawingMapPixmap) {
         x = x - miniMapX - miniMapMargin;
         y = y - miniMapY - miniMapMargin;
@@ -928,20 +635,13 @@ public class EditMapService {
             }
         }
 
-        // dessin du rectangle de la carte visible
-        //
         drawingMapPixmap.setColor(Color.WHITE);
         int selectRectWidth =  miniHexSize * this.maxI;
         int selectRectHeight = miniHexSize * this.maxJ;
 
         int rectX = miniMapX + miniMapMargin + miniHexSize * this.startI;
         int rectY = miniMapY + miniMapMargin + miniHexSize * this.startJ;
-        //pixmap.drawPixel(x, y);
         drawingMapPixmap.drawRectangle(rectX, rectY, selectRectWidth, selectRectHeight);
-        //drawingMapPixmap.drawLine(rectX, rectY, rectX + selectRectWidth, rectY);
-        //drawingMapPixmap.drawLine(rectX, rectY + selectRectHeight, rectX + selectRectWidth, rectY + selectRectHeight);
-        //drawingMapPixmap.drawLine(rectX, rectY, rectX, rectY + selectRectHeight);
-        //drawingMapPixmap.drawLine(rectX + selectRectWidth, rectY, rectX + selectRectWidth, rectY + selectRectHeight);
     }
 
     /*
@@ -1106,7 +806,6 @@ public class EditMapService {
                             return true;
                         }
                         break;
-                        // TODO case CLIFF
                     case CLIFF:
                         //System.out.println("k : " + k);
                         if(this.cliffStartHex != null
