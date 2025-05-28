@@ -1,6 +1,6 @@
 package com.mycompany.test01.Enum;
 
-public enum RoadDrawFlagCategory {
+public enum DrawFlagCategory {
     EMPTY,
     FIRST_CLICK_DONE,
     SECOND_CLICK_DONE;

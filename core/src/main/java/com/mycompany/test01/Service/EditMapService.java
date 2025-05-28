@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.mycompany.test01.Entity.Map.Cliff;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Enum.*;
@@ -40,6 +41,11 @@ public class EditMapService {
 
     private Hexagon riverStartHex;
     private Hexagon[] riverStartHexNeighbours;
+
+    private Hexagon cliffStartHex;
+    private Hexagon[] cliffStartHexNeighbours;
+
+
 
     public EditMapService() {}
 
@@ -242,6 +248,22 @@ public class EditMapService {
         this.riverStartHexNeighbours = riverStartHexNeighbours;
     }
 
+    public Hexagon getCliffStartHex() {
+        return cliffStartHex;
+    }
+
+    public void setCliffStartHex(Hexagon cliffStartHex) {
+        this.cliffStartHex = cliffStartHex;
+    }
+
+    public Hexagon[] getCliffStartHexNeighbours() {
+        return cliffStartHexNeighbours;
+    }
+
+    public void setCliffStartHexNeighbours(Hexagon[] cliffStartHexNeighbours) {
+        this.cliffStartHexNeighbours = cliffStartHexNeighbours;
+    }
+
     public void firstInit() {
         this.limitI = 100;
         this.limitJ = 100;
@@ -283,6 +305,9 @@ public class EditMapService {
 
         this.riverStartHex = null;
         this.riverStartHexNeighbours = new Hexagon[6];
+
+        this.cliffStartHex = null;
+        this.cliffStartHexNeighbours = new Hexagon[6];
     }
 
     public int getXFromIJ(int i, int j) {
@@ -452,29 +477,6 @@ public class EditMapService {
         for(int i=0; i < maxI; i++) {
             for (int j=0; j < maxJ; j++) {
 
-/*
-                if(!this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[0].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
-                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[1].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
-                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[2].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
-                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[3].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
-                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[4].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE) ||
-                    !this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[5].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)
-                ) {
-                    System.out.println("hex : " + (i+startI) + " / " + (j+startJ)
-                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[0].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[0].isBroken()
-                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[1].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[1].isBroken()
-                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[2].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[2].isBroken()
-                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[3].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[3].isBroken()
-                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[4].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[4].isBroken()
-                        + " / " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[5].getBridgeType().toString() + " - " + this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[5].isBroken()
-                    );
-                }
-
-*/
-
-
-
-
                 /*
                 int x = i * gapX + gapX / 2 + 10;
                 int y = j * gapY + hexagonSize + 10;
@@ -513,8 +515,30 @@ public class EditMapService {
                     if(isInRiverStartNeighbours) texture = GraphicUtil.orangeTexture;
                 }
 
+                // TODO idem pour le mode Cliff
+                if(cliffStartHex != null) {
+                    if(i + startI == cliffStartHex.getX() && j + startJ == cliffStartHex.getY()) texture = GraphicUtil.redTexture;
+                    boolean isInCliffStartNeighbours = false;
+                    for(int k=0; k<6; k++) {
+                        if (i + startI == cliffStartHexNeighbours[k].getX() && j + startJ == cliffStartHexNeighbours[k].getY()
+                            && this.hexesArray.get(i + startI).get(j + startJ).getCategory() != HexagonCategory.WATER) {
+                            isInCliffStartNeighbours = true;
+                        }
+                    }
+                    if(isInCliffStartNeighbours) texture = GraphicUtil.orangeTexture;
+                }
+
                 drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
+
+                // dessin des falaises
+                if(mapMode == EditMapMode.CLIFF || mapMode == EditMapMode.RIVER || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.MISC || mapMode == EditMapMode.NO_ACTION) {
+                    for (int k = 0; k < 6; k++) {
+                        if(this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k].isCliff()) {
+                            drawCliffSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k], k);
+                        }
+                    }
+                }
 
 
                 // dessin des rivières
@@ -594,6 +618,7 @@ public class EditMapService {
         Texture texture = getRoadTextureFromRoadCatAndK(roadCategory, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
 
+        // TODO faire méthode !!?
         if (texturePixmap != null) {
             // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
             drawingPixmap.drawPixmap(
@@ -615,7 +640,7 @@ public class EditMapService {
         Texture texture = getRiverTextureFromRiverCatAndK(riverCategory, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
 
-        // TODO faire méthode !!
+        // TODO faire méthode !!?
         if (texturePixmap != null) {
             drawingPixmap.drawPixmap(
                 texturePixmap, // Source Pixmap
@@ -635,6 +660,28 @@ public class EditMapService {
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getTextureSideFromBridge(bridgeType, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
+
+        // TODO faire méthode !!?
+        if (texturePixmap != null) {
+            drawingPixmap.drawPixmap(
+                texturePixmap, // Source Pixmap
+                0, 0,            // Source X,Y (top-left of source)
+                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
+                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
+                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+            );
+            texturePixmap.dispose();
+        }
+        texture.dispose();
+    }
+
+    private void drawCliffSide(Pixmap drawingPixmap, int i, int j, Cliff cliff, int k) {
+        int x = getXFromIJ(i, j);
+        int y = getYFromJ(j);
+        Texture texture = GraphicUtil.getTextureSideFromCliff(cliff, k);
+        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
+
+        // TODO faire méthode !!?
         if (texturePixmap != null) {
             drawingPixmap.drawPixmap(
                 texturePixmap, // Source Pixmap
@@ -1022,7 +1069,7 @@ public class EditMapService {
                         if(this.roadStartHex != null
                             && this.roadStartHexNeighbours[k] != null
                             && this.roadStartHexNeighbours[k].getX() == i + this.startI
-                            &&  this.roadStartHexNeighbours[k].getY() == j + startJ) {
+                            &&  this.roadStartHexNeighbours[k].getY() == j + this.startJ) {
                             return true;
                         }
                         break;
@@ -1031,7 +1078,17 @@ public class EditMapService {
                         if(this.riverStartHex != null
                             && this.riverStartHexNeighbours[k] != null
                             && this.riverStartHexNeighbours[k].getX() == i + this.startI
-                            &&  this.riverStartHexNeighbours[k].getY() == j + startJ) {
+                            &&  this.riverStartHexNeighbours[k].getY() == j + this.startJ) {
+                            return true;
+                        }
+                        break;
+                        // TODO case CLIFF
+                    case CLIFF:
+                        //System.out.println("k : " + k);
+                        if(this.cliffStartHex != null
+                            && this.cliffStartHexNeighbours[k] != null
+                            && this.cliffStartHexNeighbours[k].getX() == i + this.startI
+                            &&  this.cliffStartHexNeighbours[k].getY() == j + this.startJ) {
                             return true;
                         }
                         break;
@@ -1061,6 +1118,19 @@ public class EditMapService {
                 if(this.riverStartHexNeighbours[k] != null
                     && this.riverStartHexNeighbours[k].getX() == hex.getX()
                     &&  this.riverStartHexNeighbours[k].getY() == hex.getY()) {
+                    return k;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public int getKFromCliffNeighbours(Hexagon hex) {
+        if(this.cliffStartHex != null) {
+            for(int k=0; k<6; k++) {
+                if(this.cliffStartHexNeighbours[k] != null
+                    && this.cliffStartHexNeighbours[k].getX() == hex.getX()
+                    &&  this.cliffStartHexNeighbours[k].getY() == hex.getY()) {
                     return k;
                 }
             }

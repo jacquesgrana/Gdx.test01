@@ -14,8 +14,8 @@ public class Hexagon {
     private FortificationCategory fortification;
     private RoadEdges roads;
     private RiverCategory[] rivers;
-
     private BridgeEdges bridges;
+    private Cliff[] cliffs;
 
 
     public Hexagon() {
@@ -30,6 +30,10 @@ public class Hexagon {
         this.rivers = new RiverCategory[6];
         Arrays.fill(this.rivers, RiverCategory.NO_RIVER);
         this.bridges = new BridgeEdges();
+        this.cliffs = new Cliff[6];
+        for(int i=0; i<6; i++) {
+            this.cliffs[i] = new Cliff();
+        }
     }
 
     public int getX() {
@@ -86,5 +90,14 @@ public class Hexagon {
 
     public void setBridges(BridgeEdges bridges) {
         this.bridges = bridges;
+    }
+
+
+    public Cliff[] getCliffs() {
+        return cliffs;
+    }
+
+    public void setCliffs(Cliff[] cliffs) {
+        this.cliffs = cliffs;
     }
 }

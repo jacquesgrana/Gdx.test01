@@ -6,6 +6,7 @@ public enum EditMapMode {
     RIVER("River"),
     ROAD("Road"),
     FORTIFICATION("Fortification"),
+    CLIFF("Cliff"),
     MISC("Miscellaneous");
 
     private final String name;

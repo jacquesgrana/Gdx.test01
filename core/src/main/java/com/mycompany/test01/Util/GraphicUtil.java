@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.mycompany.test01.Common.UnitNode;
+import com.mycompany.test01.Entity.Map.Cliff;
 import com.mycompany.test01.Entity.Unit.Unit;
 import com.mycompany.test01.Entity.Unit.UnitGroup;
 import com.mycompany.test01.Enum.*;
@@ -105,6 +106,13 @@ public class GraphicUtil {
     public static Texture bridgeHeavy3ETexture = loadTextureFromFile("texture/bridge/heavy/texture-3-e-heavy-bridge.png");
     public static Texture bridgeHeavy4SWTexture = loadTextureFromFile("texture/bridge/heavy/texture-4-sw-heavy-bridge.png");
     public static Texture bridgeHeavy5SETexture = loadTextureFromFile("texture/bridge/heavy/texture-5-se-heavy-bridge.png");
+
+    public static Texture clff0NWTexture = loadTextureFromFile("texture/cliff/texture-0-nw-cliff.png");
+    public static Texture clff1NETexture = loadTextureFromFile("texture/cliff/texture-1-ne-cliff.png");
+    public static Texture clff2WTexture = loadTextureFromFile("texture/cliff/texture-2-w-cliff.png");
+    public static Texture clff3ETexture = loadTextureFromFile("texture/cliff/texture-3-e-cliff.png");
+    public static Texture clff4SWTexture = loadTextureFromFile("texture/cliff/texture-4-sw-cliff.png");
+    public static Texture clff5SETexture = loadTextureFromFile("texture/cliff/texture-5-se-cliff.png");
 
     public static Texture counterBgRedCountry01Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-red-country-01@4x.png");
     public static Texture counterBgRedCountry02Texture = loadTextureFromFile("texture/unit/counter-bg/texture-counter-bg-red-country-02@4x.png");
@@ -301,6 +309,33 @@ public class GraphicUtil {
         return getEmptyTexture();
     }
 
+    public static Texture getTextureSideFromCliff(Cliff cliff, int side) {
+        Texture toReturn = getEmptyTexture();
+        if(cliff.isCliff()) {
+            switch (side) {
+                case 0 :
+                    toReturn = clff0NWTexture;
+                    break;
+                case 1:
+                    toReturn = clff1NETexture;
+                    break;
+                case 2:
+                    toReturn = clff2WTexture;
+                    break;
+                case 3:
+                    toReturn = clff3ETexture;
+                    break;
+                case 4:
+                    toReturn = clff4SWTexture;
+                    break;
+                case 5:
+                    toReturn = clff5SETexture;
+                    break;
+            }
+        }
+        return  toReturn;
+    }
+
     public static Texture getTextureSideFromBridge(BridgeTypeEnum bridgeType, int side) {
         Texture toReturn = getEmptyTexture();
 
@@ -384,231 +419,6 @@ public class GraphicUtil {
         pixmap.dispose(); // Dispose of the Pixmap immediately
         return emptyTexture;
     }
-/*
-    public static Skin getButtonSkin(int width, int height) {
-        Skin skin = new Skin();
-
-        // Generate a default font
-        BitmapFont font = new BitmapFont();
-        skin.add("default-font", font);
-
-        // Create a texture for the button background
-        // 80 / 30
-        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        pixmap.setColor(GraphicUtil.buttonColorMedium);
-        pixmap.fill();
-        // Draw a 1-pixel black border
-        pixmap.setColor(GraphicUtil.buttonBorderColorDark);
-        pixmap.drawRectangle(0, 0, (int) pixmap.getWidth(), (int) pixmap.getHeight());
-        skin.add("button-up", new Texture(pixmap));
-        pixmap.dispose(); // Dispose of the Pixmap!
-
-        Pixmap pixmapHover = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        pixmapHover.setColor(GraphicUtil.buttonHoverColorMedium);
-        pixmapHover.fill();
-        pixmapHover.setColor(GraphicUtil.buttonBorderColorDark); //Border Color
-        pixmapHover.drawRectangle(0, 0, width, height);
-        skin.add("button-hover", new Texture(pixmapHover));
-        pixmapHover.dispose();
-
-
-        // Configure a TextButtonStyle
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("button-up", Color.WHITE);
-        textButtonStyle.over = skin.newDrawable("button-hover", GraphicUtil.buttonHoverColorMedium); //Hover State
-        textButtonStyle.down = skin.newDrawable("button-hover", GraphicUtil.buttonHoverColorMedium);
-        textButtonStyle.font = skin.getFont("default-font");
-        skin.add("default", textButtonStyle);
-
-        return skin;
-    }
-
-
-    public static Skin getCheckBoxSkin(int size) {
-        Skin skin = new Skin();
-
-        // Police par défaut
-        BitmapFont font = new BitmapFont();
-        skin.add("default", font);
-
-        // Fond de la case (non cochée)
-        Pixmap unchecked = new Pixmap(size, size, Pixmap.Format.RGBA8888);
-        unchecked.setColor(0.7f, 0.7f, 0.7f, 1f); // gris clair
-        unchecked.fill();
-        skin.add("checkbox-unchecked", new Texture(unchecked));
-        unchecked.dispose();
-
-        // Fond de la case (cochée)
-        Pixmap checked = new Pixmap(size, size, Pixmap.Format.RGBA8888);
-        checked.setColor(0.2f, 0.7f, 0.2f, 1f); // vert
-        checked.fill();
-        // Ajoute une croix blanche
-        checked.setColor(1, 1, 1, 1);
-        int margin = size / 4;
-        checked.drawLine(margin, margin, size - margin, size - margin);
-        checked.drawLine(margin, size - margin, size - margin, margin);
-        skin.add("checkbox-checked", new Texture(checked));
-        checked.dispose();
-
-        // Style du CheckBox
-        CheckBox.CheckBoxStyle checkBoxStyle = new CheckBox.CheckBoxStyle();
-        checkBoxStyle.checkboxOff = skin.newDrawable("checkbox-unchecked");
-        checkBoxStyle.checkboxOn = skin.newDrawable("checkbox-checked");
-        checkBoxStyle.font = skin.getFont("default");
-        checkBoxStyle.fontColor = Color.WHITE;
-
-        skin.add("default", checkBoxStyle);
-
-        return skin;
-    }
-
-
-    public static Skin getTextFieldSkin(int width, int height) {
-        Skin skin = new Skin();
-
-        // Génère une police par défaut
-        BitmapFont font = new BitmapFont();
-        skin.add("default", font);
-
-        // Crée un fond pour le TextField
-        Pixmap bgPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        bgPixmap.setColor(GraphicUtil.buttonColorMedium); // à définir dans GraphicUtil
-        bgPixmap.fill();
-        skin.add("textfield-bg", new Texture(bgPixmap));
-        bgPixmap.dispose();
-
-        // Crée le curseur (fin trait vertical blanc)
-        Pixmap cursorPixmap = new Pixmap(2, height, Pixmap.Format.RGBA8888);
-        cursorPixmap.setColor(Color.WHITE);
-        cursorPixmap.fill();
-        skin.add("textfield-cursor", new Texture(cursorPixmap));
-        cursorPixmap.dispose();
-
-        // Crée la sélection (bleu clair semi-transparent)
-        Pixmap selectionPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        selectionPixmap.setColor(0.3f, 0.5f, 1f, 0.5f);
-        selectionPixmap.fill();
-        skin.add("textfield-selection", new Texture(selectionPixmap));
-        selectionPixmap.dispose();
-
-        // Style du TextField
-        TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
-        textFieldStyle.font = skin.getFont("default");
-        textFieldStyle.fontColor = Color.WHITE;
-        textFieldStyle.background = skin.newDrawable("textfield-bg");
-        textFieldStyle.cursor = skin.newDrawable("textfield-cursor");
-        textFieldStyle.selection = skin.newDrawable("textfield-selection");
-
-        skin.add("default", textFieldStyle);
-
-        return skin;
-    }
-
-
-
-    public static Skin getLabelSkin(int width, int height) {
-        Skin skin = new Skin();
-
-        // Génère une police par défaut
-        BitmapFont font = new BitmapFont();
-        skin.add("default", font);
-
-        // Crée un fond pour le label (optionnel, tu peux l'enlever si tu veux un fond transparent)
-        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        pixmap.setColor(GraphicUtil.buttonColorMedium); // à définir dans GraphicUtil, par exemple Color.CLEAR ou une couleur douce
-        pixmap.fill();
-        skin.add("label-bg", new Texture(pixmap));
-        pixmap.dispose();
-
-        // Crée le style du label
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = skin.getFont("default");
-        labelStyle.background = skin.newDrawable("label-bg"); // optionnel, retire cette ligne pour un label sans fond
-
-        skin.add("default", labelStyle);
-
-        return skin;
-    }
-
-
-    public static Skin getSelectorSkin(int width, int height) {
-        Skin skin = new Skin();
-
-        // Generate a default font
-        BitmapFont font = new BitmapFont();
-        skin.add("default", font);
-
-        // Create textures for different states
-        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        pixmap.setColor(GraphicUtil.buttonColorMedium);
-        pixmap.fill();
-        pixmap.setColor(GraphicUtil.buttonBorderColorDark);
-        pixmap.drawRectangle(0, 0, width, height);
-        skin.add("selectbox", new Texture(pixmap));
-
-        // Create a background for the dropdown list
-        Pixmap listBg = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        listBg.setColor(GraphicUtil.buttonColorMedium);
-        listBg.fill();
-        listBg.setColor(GraphicUtil.buttonBorderColorDark);
-        listBg.drawRectangle(0, 0, width, height);
-        skin.add("list-bg", new Texture(listBg));
-
-        // Create a selection background
-        Pixmap selectionBg = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        selectionBg.setColor(GraphicUtil.buttonHoverColorMedium);
-        selectionBg.fill();
-        skin.add("selection", new Texture(selectionBg));
-
-        // Dispose pixmaps
-        pixmap.dispose();
-        listBg.dispose();
-        selectionBg.dispose();
-
-        // Create ScrollPane style (required by SelectBox)
-        ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
-        skin.add("default", scrollPaneStyle);
-
-        // Create List style (required by SelectBox)
-        List.ListStyle listStyle = new List.ListStyle();
-        listStyle.font = skin.getFont("default");
-        listStyle.selection = skin.newDrawable("selection");
-        listStyle.background = skin.newDrawable("list-bg");
-        skin.add("default", listStyle);
-
-        // Create SelectBox style
-        SelectBox.SelectBoxStyle selectBoxStyle = new SelectBox.SelectBoxStyle();
-        selectBoxStyle.font = skin.getFont("default");
-        selectBoxStyle.background = skin.newDrawable("selectbox");
-        selectBoxStyle.scrollStyle = skin.get(ScrollPane.ScrollPaneStyle.class);
-        selectBoxStyle.listStyle = skin.get(List.ListStyle.class);
-        selectBoxStyle.background = skin.newDrawable("selectbox");
-        skin.add("default", selectBoxStyle);
-
-        return skin;
-    }
-
-
-    public static Skin getUnitTreeSkin() {
-        Skin skin = new Skin();
-        BitmapFont font = new BitmapFont();
-        skin.add("default-font", font);
-        skin.add("default-color", Color.WHITE);
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-        pixmap.dispose();
-
-        // Créer les styles nécessaires pour Tree
-        Tree.TreeStyle treeStyle = new Tree.TreeStyle();
-        treeStyle.plus = skin.newDrawable("white", Color.BLACK);
-        treeStyle.minus = skin.newDrawable("white", Color.GRAY);
-        treeStyle.selection = skin.newDrawable("white", Color.BLUE);
-        skin.add("default", treeStyle);
-        return skin;
-    }
-    */
 
     public static Pixmap textureToPixmap(Texture texture) {
         if (!texture.getTextureData().isPrepared()) {

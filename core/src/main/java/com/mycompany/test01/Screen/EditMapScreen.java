@@ -55,8 +55,10 @@ public class EditMapScreen implements Screen {
     private RoadCategory selectedRoad = RoadCategory.NO_ROAD;
     private RiverCategory selectedRiver = RiverCategory.NO_RIVER;
 
-    private RoadDrawFlagCategory roadDrawFlag = RoadDrawFlagCategory.EMPTY;
-    private RiverDrawFlagCategory riverDrawFlag = RiverDrawFlagCategory.EMPTY;
+    // TODO déplacer dans le service ?
+    private DrawFlagCategory roadDrawFlag = DrawFlagCategory.EMPTY;
+    private DrawFlagCategory riverDrawFlag = DrawFlagCategory.EMPTY;
+    private DrawFlagCategory cliffDrawFlag = DrawFlagCategory.EMPTY;
 
     private final ToastObservable toastObservable;
 
@@ -139,7 +141,7 @@ public class EditMapScreen implements Screen {
         // boutons mode : "no-action", "terrain", "road", "river"
         ButtonWrapper buttonModeNoActionWrapper = new ButtonWrapper(
             "No Action",
-            50, 80, 160, 40);
+            50, 80, 140, 40);
         EditMapScreen that = this;
         buttonModeNoActionWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -151,8 +153,10 @@ public class EditMapScreen implements Screen {
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
                 hideMiscButtonPanel();
+                hideNewMapPanel();
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
+                that.editMapService.setCliffStartHex(null);
                 redrawMap();
             }
         });
@@ -160,7 +164,7 @@ public class EditMapScreen implements Screen {
 
         ButtonWrapper buttonModeTerrainWrapper = new ButtonWrapper(
             "Terrain",
-            50 + 10 + 160, 80, 160, 40);
+            50 + 10 + 140, 80, 140, 40);
         //EditMapScreen that = this;
         buttonModeTerrainWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -171,10 +175,11 @@ public class EditMapScreen implements Screen {
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
                 hideMiscButtonPanel();
+                hideNewMapPanel();
                 showTerrainButtonPanel();
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
-
+                that.editMapService.setCliffStartHex(null);
                 redrawMap();
             }
         });
@@ -182,7 +187,7 @@ public class EditMapScreen implements Screen {
 
         ButtonWrapper buttonModeRiverWrapper = new ButtonWrapper(
             "River",
-            50 + 2 * (10 + 160), 80, 160, 40);
+            50 + 2 * (10 + 140), 80, 140, 40);
         //EditMapScreen that = this;
         buttonModeRiverWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -193,10 +198,11 @@ public class EditMapScreen implements Screen {
                 hideFortificationButtonPanel();
                 hideRoadButtonPanel();
                 hideMiscButtonPanel();
+                hideNewMapPanel();
                 showRiverButtonPanel();
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
-
+                that.editMapService.setCliffStartHex(null);
                 redrawMap();
             }
         });
@@ -204,7 +210,7 @@ public class EditMapScreen implements Screen {
 
         ButtonWrapper buttonModeRoadWrapper = new ButtonWrapper(
             "Road",
-            50 + 3 * (10 + 160), 80, 160, 40);
+            50 + 3 * (10 + 140), 80, 140, 40);
         //EditMapScreen that = this;
         buttonModeRoadWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -215,10 +221,11 @@ public class EditMapScreen implements Screen {
                 hideFortificationButtonPanel();
                 hideRiverButtonPanel();
                 hideMiscButtonPanel();
+                hideNewMapPanel();
                 showRoadButtonPanel();
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
-
+                that.editMapService.setCliffStartHex(null);
                 redrawMap();
             }
         });
@@ -226,7 +233,7 @@ public class EditMapScreen implements Screen {
 
         ButtonWrapper buttonModeFortificationWrapper = new ButtonWrapper(
             "Fortification",
-            50 + 4 * (10 + 160), 80, 160, 40);
+            50 + 4 * (10 + 140), 80, 140, 40);
         //EditMapScreen that = this;
         buttonModeFortificationWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -237,18 +244,45 @@ public class EditMapScreen implements Screen {
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
                 hideMiscButtonPanel();
+                hideNewMapPanel();
                 showFortificationButtonPanel();
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
-
+                that.editMapService.setCliffStartHex(null);
                 redrawMap();
             }
         });
         stage.addActor(buttonModeFortificationWrapper.getButton());
 
+        ButtonWrapper buttonModeCliffWrapper = new ButtonWrapper(
+            "Cliff",
+            50 + 5 * (10 + 140), 80, 140, 40);
+        //EditMapScreen that = this;
+        buttonModeCliffWrapper.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                that.mode = EditMapMode.CLIFF;
+                that.modeLabel.setText("Edit Mode : " + that.mode.toString());
+                hideTerrainButtonPanel();
+                hideFortificationButtonPanel();
+                hideRoadButtonPanel();
+                hideRiverButtonPanel();
+                hideMiscButtonPanel();
+                // TODO ajouter cacher le panel pour set la newmap
+                hideNewMapPanel();
+                that.editMapService.setRoadStartHex(null);
+                that.editMapService.setRiverStartHex(null);
+                that.editMapService.setCliffStartHex(null);
+
+                redrawMap();
+            }
+        });
+        stage.addActor(buttonModeCliffWrapper.getButton());
+
+
         ButtonWrapper buttonModeMiscWrapper = new ButtonWrapper(
             "Miscellaneous",
-            50 + 5 * (10 + 160), 80, 160, 40);
+            50 + 6 * (10 + 140), 80, 140, 40);
         //EditMapScreen that = this;
         buttonModeMiscWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -262,6 +296,7 @@ public class EditMapScreen implements Screen {
                 showMiscButtonPanel();
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
+                that.editMapService.setCliffStartHex(null);
 
                 redrawMap();
             }
@@ -577,7 +612,7 @@ public class EditMapScreen implements Screen {
         }
 
         panel.row();
-        
+
         panel.add(riverImage).colspan(5).width(32).height(32);
         panel.setPosition(Gdx.graphics.getWidth() - 380f, 80f);
         return panel;
@@ -664,7 +699,8 @@ public class EditMapScreen implements Screen {
                 //editMapService.generateBridgesFromRiversAndRoads();
                 //redrawMap();
                 //Toast.showToast(that.stage, "Brigde(s) generated", ColorStyleEnum.SUCCESS, 2f);
-                that.newMapPanel.setVisible(true);
+                //that.newMapPanel.setVisible(true);
+                that.showNewMapPanel();
             }
         });
         panel.add(buttonNewMap);
@@ -712,23 +748,18 @@ public class EditMapScreen implements Screen {
         validateNewMapButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                try {
-                    int newWidth = Integer.parseInt(sizeXField.getText());
-                    int newHeight = Integer.parseInt(sizeYField.getText());
-                    newWidth = newWidth >= 50 ? Math.min(newWidth, 200) : 50;
-                    newHeight = newHeight >= 50 ? Math.min(newHeight, 200) : 50;
-                    System.out.println("width : " + newWidth + " / height : " + newHeight);
-                    that.editMapService.setLimits(newWidth, newHeight);
-                    that.editMapService.init();
-                    that.editMapService.resetMap();
-                    that.redrawMap();
-                    that.newMapPanel.setVisible(false);
-                    Toast.showToast(that.stage, "New map", ColorStyleEnum.SUCCESS, 2f);
-                }
-                catch(Exception e) {
-                    e.printStackTrace();
-                }
-
+                int newWidth = Integer.parseInt(sizeXField.getText());
+                int newHeight = Integer.parseInt(sizeYField.getText());
+                newWidth = newWidth >= 50 ? Math.min(newWidth, 200) : 50;
+                newHeight = newHeight >= 50 ? Math.min(newHeight, 200) : 50;
+                System.out.println("width : " + newWidth + " / height : " + newHeight);
+                that.editMapService.setLimits(newWidth, newHeight);
+                that.editMapService.init();
+                that.editMapService.resetMap();
+                that.redrawMap();
+                //that.newMapPanel.setVisible(false);
+                that.hideNewMapPanel();
+                Toast.showToast(that.stage, "New map", ColorStyleEnum.SUCCESS, 2f);
             }
         });
         panel.add(validateNewMapButton);
@@ -792,6 +823,18 @@ public class EditMapScreen implements Screen {
 
     private void hideMiscButtonPanel() {
         miscButtonPanel.setVisible(false);
+    }
+
+    private void showNewMapPanel() {
+        //newMapPanel
+        if (newMapPanel.getParent() == null) {
+            stage.addActor(newMapPanel);
+        }
+        newMapPanel.setVisible(true);
+    }
+
+    private void hideNewMapPanel() {
+        newMapPanel.setVisible(false);
     }
 
     private static class EditMapScreenInputAdapter extends InputAdapter {
@@ -916,16 +959,16 @@ public class EditMapScreen implements Screen {
                         if(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
                             //System.out.println("old roadDrawFlag : " + roadDrawFlag.toString());
 
-                            if(this.screen.roadDrawFlag == RoadDrawFlagCategory.EMPTY || this.screen.roadDrawFlag == RoadDrawFlagCategory.SECOND_CLICK_DONE) {
+                            if(this.screen.roadDrawFlag == DrawFlagCategory.EMPTY || this.screen.roadDrawFlag == DrawFlagCategory.SECOND_CLICK_DONE) {
                                 this.screen.editMapService.setRoadStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
 
                                 this.screen.editMapService.setRoadStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
                                 this.screen.redrawMap();
 
-                                this.screen.roadDrawFlag = RoadDrawFlagCategory.FIRST_CLICK_DONE;
+                                this.screen.roadDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
 
                             }
-                            else if(this.screen.roadDrawFlag == RoadDrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.ROAD)) {
+                            else if(this.screen.roadDrawFlag == DrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.ROAD)) {
                                 Hexagon startHex = this.screen.editMapService.getRoadStartHex();
                                 Hexagon endHex = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ());
                                 // -> set les routes pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
@@ -935,7 +978,7 @@ public class EditMapScreen implements Screen {
                                 this.screen.editMapService.setRoadStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
 
                                 this.screen.redrawMap();
-                                this.screen.roadDrawFlag = RoadDrawFlagCategory.SECOND_CLICK_DONE;
+                                this.screen.roadDrawFlag = DrawFlagCategory.SECOND_CLICK_DONE;
                             }
                             //System.out.println("new roadDrawFlag : " + roadDrawFlag.toString());
                         }
@@ -955,17 +998,17 @@ public class EditMapScreen implements Screen {
                         if(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
                             //System.out.println("clic mode river indices ok pas water");
 
-                            if(this.screen.riverDrawFlag == RiverDrawFlagCategory.EMPTY || this.screen.riverDrawFlag == RiverDrawFlagCategory.SECOND_CLICK_DONE) {
+                            if(this.screen.riverDrawFlag == DrawFlagCategory.EMPTY || this.screen.riverDrawFlag == DrawFlagCategory.SECOND_CLICK_DONE) {
                                 //System.out.println("old river flag : " + riverDrawFlag.toString());
 
                                 this.screen.editMapService.setRiverStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
                                 this.screen.editMapService.setRiverStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
                                 this.screen.redrawMap();
-                                this.screen.riverDrawFlag = RiverDrawFlagCategory.FIRST_CLICK_DONE;
+                                this.screen.riverDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
                                 //System.out.println("new river flag : " + riverDrawFlag.toString());
 
                             }
-                            else if(this.screen.riverDrawFlag == RiverDrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.RIVER)) {
+                            else if(this.screen.riverDrawFlag == DrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.RIVER)) {
                                 //System.out.println("old river flag : " + riverDrawFlag.toString());
                                 Hexagon startHex = this.screen.editMapService.getRiverStartHex();
                                 Hexagon endHex = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ());
@@ -976,7 +1019,7 @@ public class EditMapScreen implements Screen {
                                 this.screen.editMapService.setRiverStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
 
                                 this.screen.redrawMap();
-                                this.screen.riverDrawFlag = RiverDrawFlagCategory.SECOND_CLICK_DONE;
+                                this.screen.riverDrawFlag = DrawFlagCategory.SECOND_CLICK_DONE;
                                 //System.out.println("new river flag : " + riverDrawFlag.toString());
 
                             }
@@ -987,6 +1030,39 @@ public class EditMapScreen implements Screen {
                         }
                     }
                 }
+                else if(this.screen.mode == EditMapMode.CLIFF) {
+                    this.screen.redrawMap();
+                    if(i >= 0 && i < this.screen.editMapService.getMaxI() && j >= 0 && j < this.screen.editMapService.getMaxJ()) {
+                        //System.out.println("click in map for add cliff");
+                        if(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
+                            if(this.screen.cliffDrawFlag == DrawFlagCategory.EMPTY || this.screen.cliffDrawFlag == DrawFlagCategory.SECOND_CLICK_DONE) {
+                                this.screen.editMapService.setCliffStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
+                                this.screen.editMapService.setCliffStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
+                                this.screen.redrawMap();
+                                this.screen.cliffDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
+                            }
+                            else if(this.screen.cliffDrawFlag == DrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.CLIFF)) {
+                                Hexagon startHex = this.screen.editMapService.getCliffStartHex();
+                                Hexagon endHex = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ());
+                                // -> set les rivers pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
+                                int k = this.screen.editMapService.getKFromCliffNeighbours(endHex);
+                                //this.screen.editMapService.setRiverForHexes(startHex, endHex, this.screen.selectedRiver, k);
+                                startHex.getCliffs()[k].setCliff(!startHex.getCliffs()[k].isCliff());
+                                this.screen.editMapService.setCliffStartHex(endHex);
+                                this.screen.editMapService.setCliffStartHexNeighbours(this.screen.editMapService.getNeighborhoodHexes(i, j));
+
+                                this.screen.redrawMap();
+                                this.screen.cliffDrawFlag = DrawFlagCategory.SECOND_CLICK_DONE;
+                            }
+
+                        }
+                        else {
+                            this.screen.editMapService.setCliffStartHex(null);
+                            this.screen.redrawMap();
+                        }
+
+                    }
+                }
 
                 return true; // Indique que l'événement a été traité
             }
@@ -995,22 +1071,25 @@ public class EditMapScreen implements Screen {
             return false;
         }
 
-
-
+        /*
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
             return false;
         }
+        */
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             return this.screen.stage.touchUp(screenX, screenY, pointer, button);
         }
 
+        /*
         @Override
         public boolean touchCancelled(int i, int i1, int i2, int i3) {
             return false;
         }
+
+         */
 
         @Override
         public boolean keyDown(int keycode) {
@@ -1060,6 +1139,7 @@ public class EditMapScreen implements Screen {
             return true; // Retourne true pour indiquer que l'événement a été traité
         }
 
+        /*
         @Override
         public boolean keyUp(int keycode) {
             return false;
@@ -1078,7 +1158,7 @@ public class EditMapScreen implements Screen {
         @Override
         public boolean scrolled(float amountX, float amountY) {
             return false;
-        }
+        }*/
     }
 
 }
