@@ -45,7 +45,9 @@ public class EditMapService {
     private Hexagon cliffStartHex;
     private Hexagon[] cliffStartHexNeighbours;
 
-
+    private DrawFlagCategory roadDrawFlag = DrawFlagCategory.EMPTY;
+    private DrawFlagCategory riverDrawFlag = DrawFlagCategory.EMPTY;
+    private DrawFlagCategory cliffDrawFlag = DrawFlagCategory.EMPTY;
 
     public EditMapService() {}
 
@@ -264,6 +266,30 @@ public class EditMapService {
         this.cliffStartHexNeighbours = cliffStartHexNeighbours;
     }
 
+    public DrawFlagCategory getCliffDrawFlag() {
+        return cliffDrawFlag;
+    }
+
+    public void setCliffDrawFlag(DrawFlagCategory cliffDrawFlag) {
+        this.cliffDrawFlag = cliffDrawFlag;
+    }
+
+    public DrawFlagCategory getRiverDrawFlag() {
+        return riverDrawFlag;
+    }
+
+    public void setRiverDrawFlag(DrawFlagCategory riverDrawFlag) {
+        this.riverDrawFlag = riverDrawFlag;
+    }
+
+    public DrawFlagCategory getRoadDrawFlag() {
+        return roadDrawFlag;
+    }
+
+    public void setRoadDrawFlag(DrawFlagCategory roadDrawFlag) {
+        this.roadDrawFlag = roadDrawFlag;
+    }
+
     public void firstInit() {
         this.limitI = 100;
         this.limitJ = 100;
@@ -348,7 +374,6 @@ public class EditMapService {
      */
     public Hexagon[] getNeighborhoodHexes(int i, int j) {
         Hexagon[] toReturn = new Hexagon[6];
-        // TODO ajouter startI et startJ pour la borne 0 des tests ??
         for (int k=0; k<6; k++) {
             if(j % 2 == 0) {
                 switch (k) {
@@ -515,7 +540,6 @@ public class EditMapService {
                     if(isInRiverStartNeighbours) texture = GraphicUtil.orangeTexture;
                 }
 
-                // TODO idem pour le mode Cliff
                 if(cliffStartHex != null) {
                     if(i + startI == cliffStartHex.getX() && j + startJ == cliffStartHex.getY()) texture = GraphicUtil.redTexture;
                     boolean isInCliffStartNeighbours = false;
