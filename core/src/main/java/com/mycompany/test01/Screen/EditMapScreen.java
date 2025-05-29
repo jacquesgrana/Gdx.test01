@@ -158,6 +158,8 @@ public class EditMapScreen implements Screen {
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
                 that.editMapService.setCliffStartHex(null);
+                that.editMapService.setCliffDrawFlag(DrawFlagCategory.EMPTY);
+
                 redrawMap();
             }
         });
@@ -181,6 +183,8 @@ public class EditMapScreen implements Screen {
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
                 that.editMapService.setCliffStartHex(null);
+                that.editMapService.setCliffDrawFlag(DrawFlagCategory.EMPTY);
+
                 redrawMap();
             }
         });
@@ -204,6 +208,8 @@ public class EditMapScreen implements Screen {
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
                 that.editMapService.setCliffStartHex(null);
+                that.editMapService.setCliffDrawFlag(DrawFlagCategory.EMPTY);
+
                 redrawMap();
             }
         });
@@ -227,6 +233,8 @@ public class EditMapScreen implements Screen {
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
                 that.editMapService.setCliffStartHex(null);
+                that.editMapService.setCliffDrawFlag(DrawFlagCategory.EMPTY);
+
                 redrawMap();
             }
         });
@@ -250,6 +258,8 @@ public class EditMapScreen implements Screen {
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
                 that.editMapService.setCliffStartHex(null);
+                that.editMapService.setCliffDrawFlag(DrawFlagCategory.EMPTY);
+
                 redrawMap();
             }
         });
@@ -274,6 +284,7 @@ public class EditMapScreen implements Screen {
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
                 that.editMapService.setCliffStartHex(null);
+                that.editMapService.setCliffDrawFlag(DrawFlagCategory.EMPTY);
 
                 redrawMap();
             }
@@ -298,6 +309,7 @@ public class EditMapScreen implements Screen {
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
                 that.editMapService.setCliffStartHex(null);
+                that.editMapService.setCliffDrawFlag(DrawFlagCategory.EMPTY);
 
                 redrawMap();
             }
@@ -802,6 +814,8 @@ public class EditMapScreen implements Screen {
 
     private void hideRoadButtonPanel() {
         roadButtonPanel.setVisible(false);
+        this.editMapService.setRoadDrawFlag(DrawFlagCategory.EMPTY);
+
     }
 
     private void showRiverButtonPanel() {
@@ -813,6 +827,8 @@ public class EditMapScreen implements Screen {
 
     private void hideRiverButtonPanel() {
         riverButtonPanel.setVisible(false);
+        this.editMapService.setRiverDrawFlag(DrawFlagCategory.EMPTY);
+
     }
 
     private void showMiscButtonPanel() {

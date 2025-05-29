@@ -418,7 +418,14 @@ public class EditMapService {
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
                 // dessin des falaises
-                if(mapMode == EditMapMode.CLIFF || mapMode == EditMapMode.RIVER || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.MISC || mapMode == EditMapMode.NO_ACTION) {
+                if(
+                    mapMode == EditMapMode.CLIFF ||
+                        mapMode == EditMapMode.ROAD ||
+                        mapMode == EditMapMode.RIVER ||
+                        mapMode == EditMapMode.TERRAIN ||
+                        mapMode == EditMapMode.MISC ||
+                        mapMode == EditMapMode.NO_ACTION
+                ) {
                     for (int k = 0; k < 6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k].isCliff()) {
                             drawCliffSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k], k);
@@ -428,7 +435,14 @@ public class EditMapService {
 
 
                 // dessin des rivières
-                if(mapMode == EditMapMode.RIVER || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.MISC || mapMode == EditMapMode.NO_ACTION) {
+                if(
+                    mapMode == EditMapMode.CLIFF ||
+                    mapMode == EditMapMode.RIVER ||
+                        mapMode == EditMapMode.ROAD ||
+                        mapMode == EditMapMode.TERRAIN ||
+                        mapMode == EditMapMode.MISC ||
+                        mapMode == EditMapMode.NO_ACTION
+                ) {
                     for (int k = 0; k < 6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k] != RiverCategory.NO_RIVER) {
                             drawRiverSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k], k);
@@ -437,7 +451,13 @@ public class EditMapService {
                 }
 
                 // dessin des ponts
-                if(mapMode == EditMapMode.RIVER || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.MISC || mapMode == EditMapMode.NO_ACTION) {
+                if(
+                    mapMode == EditMapMode.CLIFF ||
+                    mapMode == EditMapMode.RIVER ||
+                        mapMode == EditMapMode.ROAD ||
+                        mapMode == EditMapMode.TERRAIN ||
+                        mapMode == EditMapMode.MISC ||
+                        mapMode == EditMapMode.NO_ACTION) {
                     for (int k = 0; k < 6; k++) {
                         if(!this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
                             drawBridgeSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType(), k);
@@ -446,7 +466,13 @@ public class EditMapService {
                 }
 
                 // dessin des routes
-                if(mapMode == EditMapMode.ROAD || mapMode == EditMapMode.TERRAIN || mapMode == EditMapMode.MISC || mapMode == EditMapMode.NO_ACTION) {
+                if(
+                    mapMode == EditMapMode.CLIFF ||
+                    mapMode == EditMapMode.RIVER ||
+                    mapMode == EditMapMode.ROAD ||
+                        mapMode == EditMapMode.TERRAIN ||
+                        mapMode == EditMapMode.MISC ||
+                        mapMode == EditMapMode.NO_ACTION) {
                     for(int k=0; k<6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
                             drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);

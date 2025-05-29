@@ -880,7 +880,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 UnitGroup parent = editArmyService.getSelectedUnit().getParent();
                 if(parent.getLevel() > newGroup.getLevel()) {
                     newGroup.setUnits(((UnitGroup) this.editArmyService.getSelectedUnit()).getUnits());
-
+                    newGroup.setParent(parent);
                     /*
                     OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
                     parent.getUnits().forEach( element -> {
@@ -912,7 +912,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
             if(!(this.editArmyService.getSelectedUnit() instanceof UnitGroup)) {
                 UnitElement newUnit = UnitUtil.getNewUnitFromDatas(unitName, unitAcronym, isUnitElite, this.editArmyService.getSelectedCountry(), UnitUtil.getElementSelectorTypeFromUnitType(unitType), unitRegRank);
                 UnitGroup parent = editArmyService.getSelectedUnit().getParent();
-
+                newUnit.setParent(parent);
                 /*
                 OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
                 parent.getUnits().forEach( elementInterface -> {
