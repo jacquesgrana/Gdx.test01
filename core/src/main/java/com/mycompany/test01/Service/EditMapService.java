@@ -491,7 +491,7 @@ public class EditMapService {
                 && (mapMode == EditMapMode.FORTIFICATION || mapMode == EditMapMode.NO_ACTION)) {
                     drawFortification(
                         drawingPixmap,
-                        x, y, hexagonSize,
+                        x, y, hexagonSize * 2, // ajouté !!
                         GraphicUtil.getTextureFromFortification(this.hexesArray.get(i + startI).get(j + startJ).getFortification()));
                 }
 

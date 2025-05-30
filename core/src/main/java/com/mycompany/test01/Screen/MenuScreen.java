@@ -22,7 +22,7 @@ public class MenuScreen implements Screen {
     private int buttonWidth = 200;
     private int buttonHeight = 50;
     private int spacing = 20;
-    private int buttonsCount = 3;
+    private int buttonsCount = 4;
 
     public MenuScreen(Main game) {
         this.game = game;
@@ -70,10 +70,25 @@ public class MenuScreen implements Screen {
 
         stage.addActor(buttonWrapperEditArmy.getButton());
 
+        ButtonWrapper buttonWrapperScenar = new ButtonWrapper(
+            "Edit Scenario",
+            (int) (Gdx.graphics.getWidth() / 2f - buttonWidth / 2f),
+            (int) (Gdx.graphics.getHeight() / 2f - 2f * (buttonHeight + spacing) + buttonsHeight / 2f),
+            buttonWidth, buttonHeight);
+
+        buttonWrapperScenar.getButton().addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new EditScenarScreen(game));
+            }
+        });
+
+        stage.addActor(buttonWrapperScenar.getButton());
+
         ButtonWrapper buttonWrapperQuit = new ButtonWrapper(
             "Quit Game",
             (int) (Gdx.graphics.getWidth() / 2f - buttonWidth / 2f),
-            (int) (Gdx.graphics.getHeight() / 2f - 2f * (buttonHeight + spacing) + buttonsHeight / 2f),
+            (int) (Gdx.graphics.getHeight() / 2f - 3f * (buttonHeight + spacing) + buttonsHeight / 2f),
             buttonWidth, buttonHeight);
 
         buttonWrapperQuit.getButton().addListener(new ClickListener() {

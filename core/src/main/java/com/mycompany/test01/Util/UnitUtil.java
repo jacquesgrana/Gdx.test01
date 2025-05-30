@@ -553,7 +553,7 @@ public class UnitUtil {
      * @param newUnit UnitElement
      * @param selectedUnit UnitElement
      */
-    public static void setNewOrderedSet(UnitGroup parent, UnitElement newUnit, UnitElement selectedUnit) {
+    public static void setNewOrderedSetWithReplacement(UnitGroup parent, UnitElement newUnit, UnitElement selectedUnit) {
         OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
         parent.getUnits().forEach( element -> {
             if(element.equals(selectedUnit)) {

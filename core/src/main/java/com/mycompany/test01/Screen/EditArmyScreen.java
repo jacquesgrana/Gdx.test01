@@ -21,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
@@ -881,21 +880,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 if(parent.getLevel() > newGroup.getLevel()) {
                     newGroup.setUnits(((UnitGroup) this.editArmyService.getSelectedUnit()).getUnits());
                     newGroup.setParent(parent);
-                    /*
-                    OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
-                    parent.getUnits().forEach( element -> {
-                        if(element.equals(this.editArmyService.getSelectedUnit())) {
-                            newUnits.add(newUnit);
-                        }
-                        else {
-                            newUnits.add(element);
-                        }
-                    });
-                    parent.setUnits(newUnits);
-                     */
-                    UnitUtil.setNewOrderedSet(parent, newUnit, this.editArmyService.getSelectedUnit());
-                    //parent.addUnit(newGroup);
-                    //parent.removeUnit(this.editArmyService.getSelectedUnit());
+                    UnitUtil.setNewOrderedSetWithReplacement(parent, newUnit, this.editArmyService.getSelectedUnit());
 
                     Toast.showToast(this.stage, "Unit Group Modified", ColorStyleEnum.SUCCESS, 2f);
                     isModified = true;
@@ -913,22 +898,9 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 UnitElement newUnit = UnitUtil.getNewUnitFromDatas(unitName, unitAcronym, isUnitElite, this.editArmyService.getSelectedCountry(), UnitUtil.getElementSelectorTypeFromUnitType(unitType), unitRegRank);
                 UnitGroup parent = editArmyService.getSelectedUnit().getParent();
                 newUnit.setParent(parent);
-                /*
-                OrderedSet<ElementInterface> newUnits = new OrderedSet<>();
-                parent.getUnits().forEach( elementInterface -> {
-                    if(elementInterface.equals(this.editArmyService.getSelectedUnit())) {
-                        newUnits.add(newUnit);
-                    }
-                    else {
-                        newUnits.add(elementInterface);
-                    }
-                });
-                parent.setUnits(newUnits);
-                */
-                UnitUtil.setNewOrderedSet(parent, newUnit, this.editArmyService.getSelectedUnit());
+                UnitUtil.setNewOrderedSetWithReplacement(parent, newUnit, this.editArmyService.getSelectedUnit());
                 //parent.removeUnit(this.editArmyService.getSelectedUnit());
                 //parent.addUnit(newUnit);
-
                 Toast.showToast(this.stage, "Unit Modified", ColorStyleEnum.SUCCESS, 2f);
                 isModified = true;
             }
@@ -936,11 +908,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 Toast.showToast(this.stage, "New type must be not a group", ColorStyleEnum.DANGER, 2f);
             }
         }
-        //this.editArmyService.getSelectedUnit().setName(unitName);
-        //this.editArmyService.getSelectedUnit().setAcronym(unitAcronym);
-        //this.editArmyService.getSelectedUnit().setIsElite(isUnitElite);
-        //this.editArmyService.getSelectedUnit().setType(unitType);
-        //this.editArmyService.getSelectedUnit().setRegRank(unitRegRank);
 
         if(isModified) {
             initTree();
@@ -966,7 +933,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(GraphicUtil.backgroundColorLight);
         pixmap.fill();
-        //EditArmyScreen that = this;
         Texture texture = new Texture(pixmap);
         pixmap.dispose();
         //Drawable background = new TextureRegionDrawable(new TextureRegion(texture));
