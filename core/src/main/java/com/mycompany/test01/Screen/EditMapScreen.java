@@ -279,7 +279,6 @@ public class EditMapScreen implements Screen {
                 hideRoadButtonPanel();
                 hideRiverButtonPanel();
                 hideMiscButtonPanel();
-                // TODO ajouter cacher le panel pour set la newmap
                 hideNewMapPanel();
                 that.editMapService.setRoadStartHex(null);
                 that.editMapService.setRiverStartHex(null);
