@@ -58,6 +58,29 @@ public class EditScenarService {
 
     }
 
+    public void initMapFromZoom() {
+        this.hexSize = this.zoomLevel.getHexSize();
+        this.gapX = (int) this.hexSize * 5 / 3;
+        this.gapY = (int) this.hexSize * 3 / 2;
+        this.margin = 10;
+
+        this.mapWidth = Gdx.graphics.getWidth() - 500f; // TODO : chercher valeur juste
+        this.mapHeight = Gdx.graphics.getHeight() - 230f; // TODO : chercher valeur juste
+        this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
+        this.maxI = Math.min(this.maxI, this.limitI);
+        this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY);
+        this.maxJ = Math.min(this.maxJ, this.limitJ);
+        this.mapX = 50;
+        this.mapY = 180;
+
+
+        // TODO calcul pour rester centré sur le milieu !!!!
+        this.startI = (int) (this.limitI - this.maxI) / 2;
+        this.startI = this.startI > 0 ? this.startI - this.startI % 2 : 0;
+        this.startJ = (int) (this.limitJ - this.maxJ) / 2;
+        this.startJ = this.limitJ > 0 ? this.startJ - this.startJ % 2 : 0;
+    }
+
     public void SetMapData(MapData mapData) {
         limitI = mapData.getLimitI();
         limitJ = mapData.getLimitJ();
@@ -69,7 +92,7 @@ public class EditScenarService {
             }
             this.hexesArray.add(row);
         }
-        System.out.println("limitI : " + limitI + " / limitJ : " + limitJ);
+        //System.out.println("limitI : " + limitI + " / limitJ : " + limitJ);
         initMap();
         //generateBridgesFromRiversAndRoads();
     }
@@ -337,5 +360,40 @@ public class EditScenarService {
 
     public void setZoomLevel(ZoomLevelEnum zoomLevel) {
         this.zoomLevel = zoomLevel;
+    }
+
+    public int getStartI() {
+        return startI;
+    }
+
+    public void setStartI(int startI) {
+        if(startI%2 != 0) startI--;
+        if(startI > this.limitI - this.maxI - 1) {
+            this.startI = this.limitI - this.maxI - 1;
+        }
+        else if (startI < 0) {
+            this.startI = 0;
+        }
+        else {
+            this.startI = startI;
+        }
+        //this.startI = startI + this.maxI > this.limitI ? this.limitI - this.maxI : this.startI < 0 ? 0 : startI;
+    }
+
+    public int getStartJ() {
+        return startJ;
+    }
+
+    public void setStartJ(int startJ) {
+        if(startJ%2 != 0) startJ--;
+        if(startJ > this.limitJ - this.maxJ - 1) {
+            this.startJ = this.limitJ - this.maxJ - 1;
+        }
+        else if (startJ < 0) {
+            this.startJ = 0;
+        }
+        else {
+            this.startJ = startJ;
+        }
     }
 }

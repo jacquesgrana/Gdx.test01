@@ -1,9 +1,6 @@
 package com.mycompany.test01.Screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -22,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
+import com.mycompany.test01.Enum.ZoomLevelEnum;
 import com.mycompany.test01.Interface.ToastObserver;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.ToastObservable;
@@ -224,14 +222,9 @@ public class EditScenarScreen implements Screen {
         // Redraw the map to the pixmap
         editScenarService.drawMap(drawingMapPixmap);
 
-        // Vérifiez si la pixmap a été modifiée
-        System.out.println("Couleur du pixel (0,0) : " + drawingMapPixmap.getPixel(0, 0));
-
         // Create a new texture from the pixmap
         drawingTexture = new Texture(drawingMapPixmap);
 
-        // Vérifiez si la texture a été créée correctement
-        System.out.println("Taille de la texture : " + drawingTexture.getWidth() + "x" + drawingTexture.getHeight());
     }
 
 
@@ -318,7 +311,74 @@ public class EditScenarScreen implements Screen {
 
         @Override
         public boolean keyDown(int keycode) {
-            return false;
+            int delta = 2;
+            //System.out.println("keycode : " + keycode);
+            switch (keycode) {
+                case Input.Keys.LEFT:
+                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getStartI() + delta);
+                    this.screen.redrawMap();
+                    break;
+                case Input.Keys.RIGHT:
+                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getStartI() - delta);
+                    this.screen.redrawMap();
+                    break;
+                case Input.Keys.UP:
+                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getStartJ() + delta);
+                    this.screen.redrawMap();
+                    break;
+                case Input.Keys.DOWN:
+                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getStartJ() - delta);
+                    this.screen.redrawMap();
+                    break;
+                case 157: //Input.Keys.PLUS
+                    //System.out.println("+ key");
+                    switch (this.screen.editScenarService.getZoomLevel()) {
+                        case CLOSE_VIEW :
+                            break;
+                        case NORMAL_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case DISTANT_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case VERY_DISTANT_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                    }
+                    break;
+                case 156: //Input.Keys.MINUS
+                    //System.out.println("- key");
+                    switch (this.screen.editScenarService.getZoomLevel()) {
+                        case CLOSE_VIEW :
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case NORMAL_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case DISTANT_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case VERY_DISTANT_VIEW:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+                    //System.out.println("Autre touche appuyée");
+            }
+            return true; // Retourne true pour indiquer que l'événement a été traité
         }
 
     }
