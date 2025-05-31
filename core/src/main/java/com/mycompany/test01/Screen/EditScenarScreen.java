@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,6 +25,7 @@ import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Interface.ToastObserver;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.ToastObservable;
+import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
@@ -34,11 +36,14 @@ public class EditScenarScreen implements Screen {
     private final Main game;
     private final Stage stage;
     private final BitmapFont font;
-
+    final SpriteBatch batch;
+    private Pixmap drawingMapPixmap;
+    private Texture drawingTexture = null;
     private final ToastObservable toastObservable;
 
     private final ScenarFileService scenarFileService;
 
+    private final EditScenarService editScenarService;
     private final InputMultiplexer inputMultiplexer; // Nouveau champ
     private final EditScenarScreen.EditScenarScreenInputAdapter screenInputAdapter; // Pour la logique d'entrée de l'écran
 
@@ -46,15 +51,16 @@ public class EditScenarScreen implements Screen {
 
     private ScrollPane rightScrollPane;
 
-    private boolean isScenarPresent = false;
+    //private boolean isScenarPresent = false;
 
     public EditScenarScreen(Main game) {
 
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
         this.font = new BitmapFont();
-
+        this.batch = new SpriteBatch();
         this.scenarFileService = ScenarFileService.getInstance();
+        this.editScenarService = EditScenarService.getInstance();
         this.toastObservable = ToastObservable.getInstance();
         this.subscribeToObservables();
 
@@ -66,6 +72,8 @@ public class EditScenarScreen implements Screen {
         inputMultiplexer.addProcessor(screenInputAdapter); // Puis votre logique d'écran personnalisée
 
         Gdx.input.setInputProcessor(inputMultiplexer);    // Définir le multiplexeur comme processeur principal
+        this.drawingTexture = GraphicUtil.getEmptyTexture();
+
 
         this.leftMapPanel = this.createLeftMapPanel();
         this.stage.addActor(this.leftMapPanel);
@@ -183,6 +191,7 @@ public class EditScenarScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("click load map");
                 scenarFileService.openLoadMapFileChooser();
+                redrawMap();
             }
         });
 
@@ -200,6 +209,31 @@ public class EditScenarScreen implements Screen {
         //Drawable background = new TextureRegionDrawable(new TextureRegion(texture));
         return new TextureRegionDrawable(new TextureRegion(texture));
     }
+
+
+    private void redrawMap() {
+        // Dispose of the old texture and pixmap
+        if (drawingTexture != null) drawingTexture.dispose();
+        if (drawingMapPixmap != null) drawingMapPixmap.dispose();
+
+        // Create a new pixmap
+        drawingMapPixmap = new Pixmap(Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() - 230, Pixmap.Format.RGBA8888);
+        drawingMapPixmap.setColor(GraphicUtil.backgroundColorMedium);
+        drawingMapPixmap.fill();
+
+        // Redraw the map to the pixmap
+        editScenarService.drawMap(drawingMapPixmap);
+
+        // Vérifiez si la pixmap a été modifiée
+        System.out.println("Couleur du pixel (0,0) : " + drawingMapPixmap.getPixel(0, 0));
+
+        // Create a new texture from the pixmap
+        drawingTexture = new Texture(drawingMapPixmap);
+
+        // Vérifiez si la texture a été créée correctement
+        System.out.println("Taille de la texture : " + drawingTexture.getWidth() + "x" + drawingTexture.getHeight());
+    }
+
 
     private void subscribeToObservables() {
         if (toastObservable != null) {
@@ -230,8 +264,14 @@ public class EditScenarScreen implements Screen {
             GraphicUtil.backgroundColorDark.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+
+        batch.begin();
+        batch.draw(drawingTexture, 50, 180);
+        batch.end();
     }
 
     @Override
