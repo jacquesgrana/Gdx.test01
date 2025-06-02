@@ -311,7 +311,19 @@ public class EditScenarScreen implements Screen {
 
         @Override
         public boolean keyDown(int keycode) {
-            int delta = 2;
+            int delta = 0;
+            switch (this.screen.editScenarService.getZoomLevel()) {
+                case CLOSE_VIEW:
+                case NORMAL_VIEW:
+                    delta = 2;
+                    break;
+                case DISTANT_VIEW:
+                    delta = 4;
+                    break;
+                case VERY_DISTANT_VIEW:
+                    delta = 8;
+                    break;
+            }
             //System.out.println("keycode : " + keycode);
             switch (keycode) {
                 case Input.Keys.LEFT:

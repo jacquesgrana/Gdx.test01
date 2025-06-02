@@ -312,10 +312,33 @@ public class EditMapService {
         this.maxI = Math.min(this.maxI, this.limitI);
         this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
         this.maxJ = Math.min(this.maxJ, this.limitJ);
+
+        /*
         this.startI = (int) (this.limitI - this.maxI) / 2;
-        this.startI = this.startI > 0 ? this.startI - this.startI % 2 : 0;
+        this.startI = Math.max(this.startI, 0);
+        this.startI = startI - maxI > limitI ? maxI - limitI : startI;
+        this.startI = this.startI % 2 == 0 ? startI : startI - 1;
+
         this.startJ = (int) (this.limitJ - this.maxJ) / 2;
-        this.startJ = this.limitJ > 0 ? this.startJ - this.startJ % 2 : 0;
+        this.startJ = Math.max(this.startJ, 0);
+        this.startJ = startJ - maxJ > limitJ ? maxJ - limitJ : startJ;
+        this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
+*/
+        this.startI = (int) (this.limitI - this.maxI) / 2;
+        //this.startI = this.startI % 2 == 0 ? startI : startI - 1;
+        this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        this.startI = Math.max(this.startI, 0);
+       //this.startI = maxI + startI > limitI ? maxI + limitI : startI;
+        this.startI = Math.min(startI, limitI - maxI);
+
+
+        this.startJ = (int) (this.limitJ - this.maxJ) / 2;
+        //this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
+        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        this.startJ = Math.max(this.startJ, 0);
+        //this.startJ = maxJ + startJ > limitJ ? maxJ + limitJ : startJ;
+        this.startJ = Math.min(startJ, limitJ - maxJ);
+
 
         this.mapX = Gdx.graphics.getWidth() / 2f - this.mapWidth / 2f;
         //this.mapY = Gdx.graphics.getHeight() / 2f - this.mapHeight / 2f;

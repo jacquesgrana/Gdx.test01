@@ -51,14 +51,28 @@ public class EditScenarService {
         this.mapY = 180;
 
         this.startI = (int) (this.limitI - this.maxI) / 2;
-        this.startI = this.startI > 0 ? this.startI - this.startI % 2 : 0;
-        this.startJ = (int) (this.limitJ - this.maxJ) / 2;
-        this.startJ = this.limitJ > 0 ? this.startJ - this.startJ % 2 : 0;
+        //this.startI = this.startI % 2 == 0 ? startI : startI - 1;
+        this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        this.startI = Math.max(this.startI, 0);
+        //this.startI = maxI + startI > limitI ? maxI + limitI : startI;
+        this.startI = Math.min(startI, limitI - maxI);
 
+
+        this.startJ = (int) (this.limitJ - this.maxJ) / 2;
+        //this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
+        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        this.startJ = Math.max(this.startJ, 0);
+        //this.startJ = maxJ + startJ > limitJ ? maxJ + limitJ : startJ;
+        this.startJ = Math.min(startJ, limitJ - maxJ);
 
     }
 
     public void initMapFromZoom() {
+        int middleI = this.startI + ( this.maxI / 2 );
+        middleI = middleI % 2 == 0 ? middleI : middleI - 1;
+        int middleJ = this.startJ + ( this.maxJ / 2 );
+        middleJ = middleJ % 2 == 0 ? middleJ : middleJ - 1;
+
         this.hexSize = this.zoomLevel.getHexSize();
         this.gapX = (int) this.hexSize * 5 / 3;
         this.gapY = (int) this.hexSize * 3 / 2;
@@ -73,12 +87,31 @@ public class EditScenarService {
         this.mapX = 50;
         this.mapY = 180;
 
-
         // TODO calcul pour rester centré sur le milieu !!!!
-        this.startI = (int) (this.limitI - this.maxI) / 2;
-        this.startI = this.startI > 0 ? this.startI - this.startI % 2 : 0;
-        this.startJ = (int) (this.limitJ - this.maxJ) / 2;
-        this.startJ = this.limitJ > 0 ? this.startJ - this.startJ % 2 : 0;
+        // TODO : marche pas pour le dezoom
+
+        this.startI = middleI - ( this.maxI / 2 );
+        this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        this.startI = Math.max(this.startI, 0);
+        this.startI = Math.min(startI, limitI - maxI);
+
+        this.startJ = middleJ - ( this.maxJ / 2 );
+        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        this.startJ = Math.max(this.startJ, 0);
+        this.startJ = Math.min(startJ, limitJ - maxJ);
+        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ - 1;
+
+        /*
+        float centerX = mapX + mapWidth / 2;
+        float centerY = mapY + mapHeight / 2;
+        int centerI = (int) (centerX - mapX - margin) / gapX + startI;
+        int centerJ = (int) (centerY - mapY - margin) / gapY + startJ;
+
+        this.startI = centerI - (this.maxI / 2);
+        this.startI = this.startI % 2 == 0 ? this.startI : this.startI - 1;
+        this.startJ = centerJ - (this.maxJ / 2);
+        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ - 1;
+*/
     }
 
     public void SetMapData(MapData mapData) {
