@@ -35,6 +35,9 @@ public class EditScenarService {
         return instance;
     }
 
+    // TODO : rendre limitI, limitJ, maxI, maxJ pairs !!!
+
+
     public void initMap() {
         this.hexSize = this.zoomLevel.getHexSize();
         this.gapX = (int) this.hexSize * 5 / 3;
@@ -44,8 +47,10 @@ public class EditScenarService {
         this.mapWidth = Gdx.graphics.getWidth() - 500f; // TODO : chercher valeur juste
         this.mapHeight = Gdx.graphics.getHeight() - 230f; // TODO : chercher valeur juste
         this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
+        this.maxI = this.maxI % 2 == 0 ? this.maxI : this.maxI - 1;
         this.maxI = Math.min(this.maxI, this.limitI);
         this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY);
+        this.maxJ = this.maxJ % 2 == 0 ? this.maxJ : this.maxJ - 1;
         this.maxJ = Math.min(this.maxJ, this.limitJ);
         this.mapX = 50;
         this.mapY = 180;
@@ -78,17 +83,17 @@ public class EditScenarService {
         this.gapY = (int) this.hexSize * 3 / 2;
         this.margin = 10;
 
-        this.mapWidth = Gdx.graphics.getWidth() - 500f; // TODO : chercher valeur juste
-        this.mapHeight = Gdx.graphics.getHeight() - 230f; // TODO : chercher valeur juste
+        this.mapWidth = Gdx.graphics.getWidth() - 500f;
+        this.mapHeight = Gdx.graphics.getHeight() - 230f;
         this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
+        this.maxI = this.maxI % 2 == 0 ? this.maxI : this.maxI - 1;
         this.maxI = Math.min(this.maxI, this.limitI);
         this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY);
+        this.maxJ = this.maxJ % 2 == 0 ? this.maxJ : this.maxJ - 1;
         this.maxJ = Math.min(this.maxJ, this.limitJ);
         this.mapX = 50;
         this.mapY = 180;
 
-        // TODO calcul pour rester centré sur le milieu !!!!
-        // TODO : marche pas pour le dezoom
 
         this.startI = middleI - ( this.maxI / 2 );
         this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;

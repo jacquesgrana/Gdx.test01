@@ -57,6 +57,7 @@ public class EditMapService {
         }
         return instance;
     }
+    // TODO : rendre limitI, limitJ, maxI, maxJ pairs !!!
 
     public void initRandomMapArray() {
         this.hexesArray = new Array<Array<Hexagon>>(limitI);
@@ -296,8 +297,8 @@ public class EditMapService {
     }
 
     public void setLimits(int limitI, int limitJ) {
-        this.limitI = limitI;
-        this.limitJ = limitJ;
+        this.limitI = limitI % 2 == 0 ? limitI : limitI - 1;
+        this.limitJ = limitJ % 2 == 0 ? limitJ : limitJ - 1;
     }
 
     public void init() {
@@ -309,8 +310,10 @@ public class EditMapService {
         this.mapWidth = Gdx.graphics.getWidth() - 80f;
         this.mapHeight = Gdx.graphics.getHeight() - 210f;
         this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
+        this.maxI = this.maxI % 2 == 0 ? this.maxI : this.maxI - 1;
         this.maxI = Math.min(this.maxI, this.limitI);
         this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
+        this.maxJ = this.maxJ % 2 == 0 ? this.maxJ : this.maxJ - 1;
         this.maxJ = Math.min(this.maxJ, this.limitJ);
 
         /*
