@@ -329,7 +329,8 @@ public class EditMapService {
 */
         this.startI = (int) (this.limitI - this.maxI) / 2;
         //this.startI = this.startI % 2 == 0 ? startI : startI - 1;
-        this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        //this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        this.startI = this.startI % 2 == 0 ? this.startI : this.startI + 1;
         this.startI = Math.max(this.startI, 0);
        //this.startI = maxI + startI > limitI ? maxI + limitI : startI;
         this.startI = Math.min(startI, limitI - maxI);
@@ -337,7 +338,8 @@ public class EditMapService {
 
         this.startJ = (int) (this.limitJ - this.maxJ) / 2;
         //this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
-        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ + 1;
         this.startJ = Math.max(this.startJ, 0);
         //this.startJ = maxJ + startJ > limitJ ? maxJ + limitJ : startJ;
         this.startJ = Math.min(startJ, limitJ - maxJ);

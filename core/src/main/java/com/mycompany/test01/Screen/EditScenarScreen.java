@@ -301,6 +301,41 @@ public class EditScenarScreen implements Screen {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            float mapX = this.screen.editScenarService.getMapX();
+            float mapY = this.screen.editScenarService.getMapY();
+            float mapWidth = this.screen.editScenarService.getMapWidth();
+            float mapHeight = this.screen.editScenarService.getMapHeight();
+            int margin = this.screen.editScenarService.getMargin();
+            int hexagonSize = this.screen.editScenarService.getHexSize();
+            int gapY = this.screen.editScenarService.getGapY();
+
+            //System.out.println("worldCoords.x : " + worldCoords.x + " / worldCoords.y : " + worldCoords.y);
+            //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
+
+            int x = (int) (screenX - mapX - margin);
+            int y = (int) (screenY - gapY - margin);
+
+            int i = this.screen.editScenarService.getIFromXY(x, y);
+            int j = this.screen.editScenarService.getJFromY(y);
+
+
+            if (x >= 0 && x <= mapWidth - margin &&
+                y >= 0 && y <= mapHeight - margin) {
+                System.out.println("clic in !!");
+                screen.stage.setKeyboardFocus(null);
+
+                if(i >= 0 && i < this.screen.editScenarService.getMaxI() && j >= 0 && j < this.screen.editScenarService.getMaxJ()) {
+                    //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
+                    //System.out.println("hex terrain : " + clickedHexagon.getCategory());
+                    this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
+                    this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
+
+
+                    return true;
+                }
+
+            }
+
             return false;
         }
 

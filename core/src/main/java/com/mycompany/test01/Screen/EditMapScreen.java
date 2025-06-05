@@ -864,7 +864,7 @@ public class EditMapScreen implements Screen {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             // Convertir les coordonnées de l'écran en coordonnées du monde
-            Vector3 worldCoords = this.screen.stage.getCamera().unproject(new Vector3(screenX, screenY, 0));
+            //Vector3 worldCoords = this.screen.stage.getCamera().unproject(new Vector3(screenX, screenY, 0));
 
             // Vérifier si le clic est dans la zone de la carte
             float mapX = this.screen.editMapService.getMapX();
@@ -873,12 +873,13 @@ public class EditMapScreen implements Screen {
             float mapHeight = this.screen.editMapService.getMapHeight();
             int margin = this.screen.editMapService.getMargin();
             int hexagonSize = this.screen.editMapService.getHexagonSize();
+            int gapY = this.screen.editMapService.getGapY();
 
             //System.out.println("worldCoords.x : " + worldCoords.x + " / worldCoords.y : " + worldCoords.y);
             //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
 
             int x = (int) (screenX - mapX - margin);
-            int y = (int) (screenY - 45 - margin);
+            int y = (int) (screenY - gapY - margin); // 45
 
             int i = this.screen.editMapService.getIFromXY(x, y);
             int j = this.screen.editMapService.getJFromY(y);

@@ -57,7 +57,8 @@ public class EditScenarService {
 
         this.startI = (int) (this.limitI - this.maxI) / 2;
         //this.startI = this.startI % 2 == 0 ? startI : startI - 1;
-        this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        //this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        this.startI = this.startI % 2 == 0 ? this.startI : this.startI + 1;
         this.startI = Math.max(this.startI, 0);
         //this.startI = maxI + startI > limitI ? maxI + limitI : startI;
         this.startI = Math.min(startI, limitI - maxI);
@@ -65,18 +66,20 @@ public class EditScenarService {
 
         this.startJ = (int) (this.limitJ - this.maxJ) / 2;
         //this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
-        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ + 1;
         this.startJ = Math.max(this.startJ, 0);
         //this.startJ = maxJ + startJ > limitJ ? maxJ + limitJ : startJ;
         this.startJ = Math.min(startJ, limitJ - maxJ);
-
     }
 
     public void initMapFromZoom() {
         int middleI = this.startI + ( this.maxI / 2 );
-        middleI = middleI % 2 == 0 ? middleI : middleI - 1;
+        //middleI = middleI % 2 == 0 ? middleI : middleI - 1;
+        middleI -= middleI % 2;
         int middleJ = this.startJ + ( this.maxJ / 2 );
-        middleJ = middleJ % 2 == 0 ? middleJ : middleJ - 1;
+        //middleJ = middleJ % 2 == 0 ? middleJ : middleJ - 1;
+        middleJ -= middleJ % 2;
 
         this.hexSize = this.zoomLevel.getHexSize();
         this.gapX = (int) this.hexSize * 5 / 3;
@@ -96,12 +99,15 @@ public class EditScenarService {
 
 
         this.startI = middleI - ( this.maxI / 2 );
-        this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        //this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        this.startI = this.startI % 2 == 0 ? this.startI : this.startI + 1;
         this.startI = Math.max(this.startI, 0);
         this.startI = Math.min(startI, limitI - maxI);
 
         this.startJ = middleJ - ( this.maxJ / 2 );
-        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ + 1;
+
         this.startJ = Math.max(this.startJ, 0);
         this.startJ = Math.min(startJ, limitJ - maxJ);
         //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ - 1;
@@ -315,6 +321,22 @@ public class EditScenarService {
         }
     }
 
+    public void renderHex(int hexI, int hexJ, Texture texture, Pixmap pixmap) {
+        // Calculer les coordonnées du centre de l'hexagone
+        /*
+        int centerX = (hexI - startI) * gapX + gapX / 2 + 10; // Ajouter la marge de 10
+        int centerY = (hexJ - startJ) * gapY + hexagonSize + 10; // Ajouter la marge de 10
+        if ((hexJ - startJ) % 2 == 0) {
+            centerX += gapX / 2; // Décalage pour les lignes paires
+        }
+        */
+        int centerX = getXFromIJ(hexI - startI, hexJ - startJ);
+        int centerY = getYFromJ(hexJ - startJ);
+        // Dessiner l'hexagone avec la couleur spécifiée
+        //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
+        drawHexagon(pixmap, centerX, centerY, hexSize, texture, Color.BLACK);
+    }
+
     public static void drawFortification(
         Pixmap drawingPixmap,
         int x, int y, int hexagonSize,
@@ -433,5 +455,62 @@ public class EditScenarService {
         else {
             this.startJ = startJ;
         }
+    }
+
+    public int getIFromXY(int x, int y) {
+        int j = (int) ((y - this.hexSize * 0.5) / (this.hexSize * 1.5));
+        //System.out.println("j : " + j);
+        int i = 0;
+        if(j % 2 == 0) {
+            i = (int) (x - this.gapX / 2) / this.gapX;
+        }
+        else {
+            i = (int) x / this.gapX;
+        }
+        return i;
+    }
+
+    public int getJFromY(int y) {
+        return (int) ((y - this.hexSize * 0.5) / (this.hexSize * 1.5));
+    }
+
+    public float getMapX() {
+        return mapX;
+    }
+
+    public int getMargin() {
+        return margin;
+    }
+
+    public int getMaxJ() {
+        return maxJ;
+    }
+
+    public int getGapY() {
+        return gapY;
+    }
+
+    public int getGapX() {
+        return gapX;
+    }
+
+    public float getMapY() {
+        return mapY;
+    }
+
+    public float getMapWidth() {
+        return mapWidth;
+    }
+
+    public float getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getHexSize() {
+        return hexSize;
+    }
+
+    public int getMaxI() {
+        return maxI;
     }
 }
