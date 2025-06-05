@@ -425,7 +425,8 @@ public class EditScenarScreen implements Screen {
                     }
                     break;
                 default:
-                    break;
+                    return false;
+                    //break;
                     //System.out.println("Autre touche appuyée");
             }
             return true; // Retourne true pour indiquer que l'événement a été traité

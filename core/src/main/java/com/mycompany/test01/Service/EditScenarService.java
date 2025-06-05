@@ -112,17 +112,6 @@ public class EditScenarService {
         this.startJ = Math.min(startJ, limitJ - maxJ);
         //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ - 1;
 
-        /*
-        float centerX = mapX + mapWidth / 2;
-        float centerY = mapY + mapHeight / 2;
-        int centerI = (int) (centerX - mapX - margin) / gapX + startI;
-        int centerJ = (int) (centerY - mapY - margin) / gapY + startJ;
-
-        this.startI = centerI - (this.maxI / 2);
-        this.startI = this.startI % 2 == 0 ? this.startI : this.startI - 1;
-        this.startJ = centerJ - (this.maxJ / 2);
-        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ - 1;
-*/
     }
 
     public void SetMapData(MapData mapData) {
@@ -323,13 +312,6 @@ public class EditScenarService {
 
     public void renderHex(int hexI, int hexJ, Texture texture, Pixmap pixmap) {
         // Calculer les coordonnées du centre de l'hexagone
-        /*
-        int centerX = (hexI - startI) * gapX + gapX / 2 + 10; // Ajouter la marge de 10
-        int centerY = (hexJ - startJ) * gapY + hexagonSize + 10; // Ajouter la marge de 10
-        if ((hexJ - startJ) % 2 == 0) {
-            centerX += gapX / 2; // Décalage pour les lignes paires
-        }
-        */
         int centerX = getXFromIJ(hexI - startI, hexJ - startJ);
         int centerY = getYFromJ(hexJ - startJ);
         // Dessiner l'hexagone avec la couleur spécifiée
@@ -473,7 +455,6 @@ public class EditScenarService {
     }
 
     public int getJFromY(int y) {
-        // TODO faire les modifs dans getXFrom.. et getYFrom .. + mapService ??
         return (int) ((y - this.hexSize * 0.5) / (this.hexSize * 1.475)); // !!!!!!!!!!!!!!!!!!
     }
 

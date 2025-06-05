@@ -879,7 +879,7 @@ public class EditMapScreen implements Screen {
             //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
 
             int x = (int) (screenX - mapX - margin);
-            int y = (int) (screenY - gapY - margin); // 45
+            int y = (int) (screenY - mapX - margin); // 45
 
             int i = this.screen.editMapService.getIFromXY(x, y);
             int j = this.screen.editMapService.getJFromY(y);
@@ -1211,7 +1211,53 @@ public class EditMapScreen implements Screen {
                         this.screen.redrawMap();
                     }
                     break;
+
+                case 157: //Input.Keys.PLUS
+                    //System.out.println("+ key");
+                    switch (this.screen.editMapService.getZoomLevel()) {
+                        case CLOSE_VIEW :
+                            break;
+                        case NORMAL_VIEW:
+                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                            this.screen.editMapService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case DISTANT_VIEW:
+                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editMapService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case VERY_DISTANT_VIEW:
+                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editMapService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                    }
+                    break;
+                case 156: //Input.Keys.MINUS
+                    //System.out.println("- key");
+                    switch (this.screen.editMapService.getZoomLevel()) {
+                        case CLOSE_VIEW :
+                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editMapService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case NORMAL_VIEW:
+                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editMapService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case DISTANT_VIEW:
+                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                            this.screen.editMapService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case VERY_DISTANT_VIEW:
+                            break;
+                    }
+                    break;
                 default:
+                    return false;
                     //System.out.println("Autre touche appuyée");
             }
             return true; // Retourne true pour indiquer que l'événement a été traité

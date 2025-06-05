@@ -34,6 +34,9 @@ public class EditMapService {
     private int miniMapX;
     private int miniMapY;
 
+    private ZoomLevelEnum zoomLevel;
+
+
     //roadStartHex
     //roadStartHexNeighbours
     private Hexagon roadStartHex;
@@ -49,7 +52,9 @@ public class EditMapService {
     private DrawFlagCategory riverDrawFlag = DrawFlagCategory.EMPTY;
     private DrawFlagCategory cliffDrawFlag = DrawFlagCategory.EMPTY;
 
-    public EditMapService() {}
+    public EditMapService() {
+        this.zoomLevel = ZoomLevelEnum.NORMAL_VIEW;
+    }
 
     public static EditMapService getInstance() {
         if (instance == null) {
@@ -302,9 +307,16 @@ public class EditMapService {
     }
 
     public void init() {
-        this.hexagonSize = 30; // La moitié de 60px
-        this.gapX = 50;
-        this.gapY = 45;
+        //this.hexagonSize = 30;
+        // La moitié de 60px
+        //this.hexagonSize = this.zoomLevel.getHexSize();
+
+        //this.gapX = 50;
+        //this.gapY = 45;
+        //this.margin = 10;
+        this.hexagonSize = this.zoomLevel.getHexSize();
+        this.gapX = (int) this.hexagonSize * 5 / 3;
+        this.gapY = (int) this.hexagonSize * 3 / 2;
         this.margin = 10;
 
         this.mapWidth = Gdx.graphics.getWidth() - 80f;
@@ -346,7 +358,6 @@ public class EditMapService {
 
 
         this.mapX = Gdx.graphics.getWidth() / 2f - this.mapWidth / 2f;
-        //this.mapY = Gdx.graphics.getHeight() / 2f - this.mapHeight / 2f;
         this.mapY = 160f;
 
         this.miniHexSize = 2;
@@ -365,6 +376,66 @@ public class EditMapService {
 
         this.cliffStartHex = null;
         this.cliffStartHexNeighbours = new Hexagon[6];
+    }
+
+    public void initMapFromZoom() {
+        int middleI = this.startI + ( this.maxI / 2 );
+        //middleI = middleI % 2 == 0 ? middleI : middleI - 1;
+        middleI -= middleI % 2;
+        int middleJ = this.startJ + ( this.maxJ / 2 );
+        //middleJ = middleJ % 2 == 0 ? middleJ : middleJ - 1;
+        middleJ -= middleJ % 2;
+
+        this.hexagonSize = this.zoomLevel.getHexSize();
+        this.gapX = (int) this.hexagonSize * 5 / 3;
+        this.gapY = (int) this.hexagonSize * 3 / 2;
+        this.margin = 10;
+
+        this.mapWidth = Gdx.graphics.getWidth() - 80f;
+        this.mapHeight = Gdx.graphics.getHeight() - 210f;
+        this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
+        this.maxI = this.maxI % 2 == 0 ? this.maxI : this.maxI - 1;
+        this.maxI = Math.min(this.maxI, this.limitI);
+        this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
+        this.maxJ = this.maxJ % 2 == 0 ? this.maxJ : this.maxJ - 1;
+        this.maxJ = Math.min(this.maxJ, this.limitJ);
+
+
+        this.mapX = Gdx.graphics.getWidth() / 2f - this.mapWidth / 2f;
+        this.mapY = 160f;
+
+        this.miniHexSize = 2;
+        this.miniMapMargin = 10;
+        //calcul des coordonnées et dimensions de la minimap
+        this.miniMapWidth = this.limitI * miniHexSize + 2 * miniMapMargin;
+        this.miniMapHeight = this.limitJ * miniHexSize + 2 * miniMapMargin;
+        this.miniMapX = (int) this.mapWidth - miniMapWidth;
+        this.miniMapY = (int) this.mapHeight - miniMapHeight;
+
+        this.roadStartHex = null;
+        this.roadStartHexNeighbours = new Hexagon[6];
+
+        this.riverStartHex = null;
+        this.riverStartHexNeighbours = new Hexagon[6];
+
+        this.cliffStartHex = null;
+        this.cliffStartHexNeighbours = new Hexagon[6];
+
+
+        this.startI = middleI - ( this.maxI / 2 );
+        //this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
+        this.startI = this.startI % 2 == 0 ? this.startI : this.startI + 1;
+        this.startI = Math.max(this.startI, 0);
+        this.startI = Math.min(startI, limitI - maxI);
+
+        this.startJ = middleJ - ( this.maxJ / 2 );
+        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
+        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ + 1;
+
+        this.startJ = Math.max(this.startJ, 0);
+        this.startJ = Math.min(startJ, limitJ - maxJ);
+        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ - 1;
+
     }
 
     public int getXFromIJ(int i, int j) {
@@ -393,7 +464,7 @@ public class EditMapService {
     }
 
     public int getJFromY(int y) {
-        return (int) ((y - this.hexagonSize * 0.5) / (this.hexagonSize * 1.5));
+        return (int) ((y - this.hexagonSize * 0.5) / (this.hexagonSize * 1.475));
     }
 
     public void drawMap(Pixmap drawingPixmap, EditMapMode mapMode) {
@@ -1003,5 +1074,13 @@ public class EditMapService {
         }
         init();
         generateBridgesFromRiversAndRoads();
+    }
+
+    public ZoomLevelEnum getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public void setZoomLevel(ZoomLevelEnum zoomLevel) {
+        this.zoomLevel = zoomLevel;
     }
 }
