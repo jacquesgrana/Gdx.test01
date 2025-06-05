@@ -458,8 +458,10 @@ public class EditScenarService {
     }
 
     public int getIFromXY(int x, int y) {
-        int j = (int) ((y - this.hexSize * 0.5) / (this.hexSize * 1.5));
+        //int j = (int) ((y - this.hexSize * 0.5) / (this.hexSize * 1.5));
+        int j = getJFromY(y);
         //System.out.println("j : " + j);
+
         int i = 0;
         if(j % 2 == 0) {
             i = (int) (x - this.gapX / 2) / this.gapX;
@@ -471,7 +473,8 @@ public class EditScenarService {
     }
 
     public int getJFromY(int y) {
-        return (int) ((y - this.hexSize * 0.5) / (this.hexSize * 1.5));
+        // TODO faire les modifs dans getXFrom.. et getYFrom .. + mapService ??
+        return (int) ((y - this.hexSize * 0.5) / (this.hexSize * 1.475)); // !!!!!!!!!!!!!!!!!!
     }
 
     public float getMapX() {

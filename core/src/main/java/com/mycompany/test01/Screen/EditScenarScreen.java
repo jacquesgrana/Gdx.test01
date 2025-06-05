@@ -311,29 +311,28 @@ public class EditScenarScreen implements Screen {
 
             //System.out.println("worldCoords.x : " + worldCoords.x + " / worldCoords.y : " + worldCoords.y);
             //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
-
+            //System.out.println("mapX : " + mapX + " / mapY" + mapY);
             int x = (int) (screenX - mapX - margin);
-            int y = (int) (screenY - gapY - margin);
-
+            int y = (int) (screenY - mapX - margin); // mapX : 50 meme valeur que le y du haut de la map
+            //System.out.println("x : " + x + " / y : " + y);
             int i = this.screen.editScenarService.getIFromXY(x, y);
             int j = this.screen.editScenarService.getJFromY(y);
-
+            //System.out.println("i : " + i + " / j : " + j);
 
             if (x >= 0 && x <= mapWidth - margin &&
                 y >= 0 && y <= mapHeight - margin) {
                 System.out.println("clic in !!");
-                screen.stage.setKeyboardFocus(null);
 
                 if(i >= 0 && i < this.screen.editScenarService.getMaxI() && j >= 0 && j < this.screen.editScenarService.getMaxJ()) {
                     //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
                     //System.out.println("hex terrain : " + clickedHexagon.getCategory());
+                    screen.stage.setKeyboardFocus(null);
+
                     this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
                     this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
-
-
                     return true;
                 }
-
+                return false;
             }
 
             return false;
