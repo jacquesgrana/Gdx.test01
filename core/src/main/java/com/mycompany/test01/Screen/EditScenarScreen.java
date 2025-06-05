@@ -49,7 +49,7 @@ public class EditScenarScreen implements Screen {
 
     private ScrollPane rightScrollPane;
 
-    //private boolean isScenarPresent = false;
+    private boolean isScenarPresent = false;
 
     public EditScenarScreen(Main game) {
 
@@ -183,12 +183,14 @@ public class EditScenarScreen implements Screen {
         //panel.setWidth(340);
         //panel.setHeight(150);
         //panel.pad(20);
+        EditScenarScreen that = this;
         ButtonWrapper buttonLoadMapWrapper = new ButtonWrapper("Load Map", 0, 0, 140, 40);
         buttonLoadMapWrapper.getButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("click load map");
                 scenarFileService.openLoadMapFileChooser();
+                if(editScenarService.getHexesArray() != null) that.isScenarPresent = true;
                 redrawMap();
             }
         });
@@ -301,40 +303,42 @@ public class EditScenarScreen implements Screen {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            float mapX = this.screen.editScenarService.getMapX();
-            float mapY = this.screen.editScenarService.getMapY();
-            float mapWidth = this.screen.editScenarService.getMapWidth();
-            float mapHeight = this.screen.editScenarService.getMapHeight();
-            int margin = this.screen.editScenarService.getMargin();
-            int hexagonSize = this.screen.editScenarService.getHexSize();
-            int gapY = this.screen.editScenarService.getGapY();
+            if (this.screen.isScenarPresent) {
+                float mapX = this.screen.editScenarService.getMapX();
+                float mapY = this.screen.editScenarService.getMapY();
+                float mapWidth = this.screen.editScenarService.getMapWidth();
+                float mapHeight = this.screen.editScenarService.getMapHeight();
+                int margin = this.screen.editScenarService.getMargin();
+                int hexagonSize = this.screen.editScenarService.getHexSize();
+                int gapY = this.screen.editScenarService.getGapY();
 
-            //System.out.println("worldCoords.x : " + worldCoords.x + " / worldCoords.y : " + worldCoords.y);
-            //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
-            //System.out.println("mapX : " + mapX + " / mapY" + mapY);
-            int x = (int) (screenX - mapX - margin);
-            int y = (int) (screenY - mapX - margin); // mapX : 50 meme valeur que le y du haut de la map
-            //System.out.println("x : " + x + " / y : " + y);
-            int i = this.screen.editScenarService.getIFromXY(x, y);
-            int j = this.screen.editScenarService.getJFromY(y);
-            //System.out.println("i : " + i + " / j : " + j);
+                //System.out.println("worldCoords.x : " + worldCoords.x + " / worldCoords.y : " + worldCoords.y);
+                //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
+                //System.out.println("mapX : " + mapX + " / mapY" + mapY);
+                int x = (int) (screenX - mapX - margin);
+                int y = (int) (screenY - mapX - margin); // mapX : 50 meme valeur que le y du haut de la map
+                //System.out.println("x : " + x + " / y : " + y);
+                int i = this.screen.editScenarService.getIFromXY(x, y);
+                int j = this.screen.editScenarService.getJFromY(y);
+                //System.out.println("i : " + i + " / j : " + j);
 
-            if (x >= 0 && x <= mapWidth - margin &&
-                y >= 0 && y <= mapHeight - margin) {
-                System.out.println("clic in !!");
+                if (x >= 0 && x <= mapWidth - margin &&
+                    y >= 0 && y <= mapHeight - margin) {
+                    System.out.println("clic in !!");
 
-                if(i >= 0 && i < this.screen.editScenarService.getMaxI() && j >= 0 && j < this.screen.editScenarService.getMaxJ()) {
-                    //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
-                    //System.out.println("hex terrain : " + clickedHexagon.getCategory());
-                    screen.stage.setKeyboardFocus(null);
+                    if(i >= 0 && i < this.screen.editScenarService.getMaxI() && j >= 0 && j < this.screen.editScenarService.getMaxJ()) {
+                        //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
+                        //System.out.println("hex terrain : " + clickedHexagon.getCategory());
+                        screen.stage.setKeyboardFocus(null);
 
-                    this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
-                    this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
-                    return true;
+                        this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
+                        this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
+                        return true;
+                    }
+                    return false;
                 }
                 return false;
             }
-
             return false;
         }
 
