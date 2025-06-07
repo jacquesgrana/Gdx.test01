@@ -66,8 +66,8 @@ public class EditScenarScreen implements Screen {
 
         // Configurer InputMultiplexer
         inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(stage);             // La Stage d'abord, pour que les UI aient la priorité
         inputMultiplexer.addProcessor(screenInputAdapter); // Puis votre logique d'écran personnalisée
+        inputMultiplexer.addProcessor(stage);             // La Stage d'abord, pour que les UI aient la priorité
 
         Gdx.input.setInputProcessor(inputMultiplexer);    // Définir le multiplexeur comme processeur principal
         this.drawingTexture = GraphicUtil.getEmptyTexture();
@@ -365,19 +365,19 @@ public class EditScenarScreen implements Screen {
             //System.out.println("keycode : " + keycode);
             switch (keycode) {
                 case Input.Keys.LEFT:
-                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getStartI() + delta);
-                    this.screen.redrawMap();
-                    break;
-                case Input.Keys.RIGHT:
                     this.screen.editScenarService.setStartI(this.screen.editScenarService.getStartI() - delta);
                     this.screen.redrawMap();
                     break;
+                case Input.Keys.RIGHT:
+                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getStartI() + delta);
+                    this.screen.redrawMap();
+                    break;
                 case Input.Keys.UP:
-                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getStartJ() + delta);
+                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getStartJ() - delta);
                     this.screen.redrawMap();
                     break;
                 case Input.Keys.DOWN:
-                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getStartJ() - delta);
+                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getStartJ() + delta);
                     this.screen.redrawMap();
                     break;
                 case 157: //Input.Keys.PLUS
@@ -430,6 +430,73 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("Autre touche appuyée");
             }
             return true; // Retourne true pour indiquer que l'événement a été traité
+        }
+
+        @Override
+        public boolean scrolled(float amountX, float amountY) {
+            // Récupérer la position de la souris
+            int mouseX = Gdx.input.getX();
+            int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Conversion coordonnées LibGDX
+
+            // Vérifier si la souris est au-dessus du ScrollPane
+            if (mouseX >= this.screen.rightScrollPane.getX() &&
+                mouseX <= this.screen.rightScrollPane.getX() + this.screen.rightScrollPane.getWidth() &&
+                mouseY >= this.screen.rightScrollPane.getY() &&
+                mouseY <= this.screen.rightScrollPane.getY() + this.screen.rightScrollPane.getHeight()) {
+                return false; // Laisser le ScrollPane gérer l'événement
+            }
+            // amountY est la valeur de défilement de la molette de la souris
+            // > 0 signifie que la molette est déplacée vers le bas
+            // < 0 signifie que la molette est déplacée vers le haut
+            System.out.println("molette !!");
+            if (amountY > 0) {
+                // La molette est déplacée vers le bas
+                System.out.println("molette dezoom");
+
+                switch (this.screen.editScenarService.getZoomLevel()) {
+                    case CLOSE_VIEW :
+                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                        this.screen.editScenarService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case NORMAL_VIEW:
+                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                        this.screen.editScenarService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case DISTANT_VIEW:
+                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                        this.screen.editScenarService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case VERY_DISTANT_VIEW:
+                        break;
+                }
+            } else if (amountY < 0) {
+                // La molette est déplacée vers le haut
+                System.out.println("molette zoom");
+
+                switch (this.screen.editScenarService.getZoomLevel()) {
+                    case CLOSE_VIEW :
+                        break;
+                    case NORMAL_VIEW:
+                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                        this.screen.editScenarService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case DISTANT_VIEW:
+                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                        this.screen.editScenarService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case VERY_DISTANT_VIEW:
+                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                        this.screen.editScenarService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                }
+            }
+            return true; // ou false si vous ne voulez pas consommer l'événement
         }
 
     }

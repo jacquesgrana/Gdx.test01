@@ -1176,26 +1176,26 @@ public class EditMapScreen implements Screen {
             switch (keycode) {
                 case Input.Keys.LEFT:
                     if(!this.screen.isMiniMapVisible) {
-                        this.screen.editMapService.setStartI(this.screen.editMapService.getStartI() + delta);
+                        this.screen.editMapService.setStartI(this.screen.editMapService.getStartI() - delta);
                         this.screen.redrawMap();
                     }
 
                     break;
                 case Input.Keys.RIGHT:
                     if(!this.screen.isMiniMapVisible) {
-                        this.screen.editMapService.setStartI(this.screen.editMapService.getStartI() - delta);
+                        this.screen.editMapService.setStartI(this.screen.editMapService.getStartI() + delta);
                         this.screen.redrawMap();
                     }
                     break;
                 case Input.Keys.UP:
                     if(!this.screen.isMiniMapVisible) {
-                        this.screen.editMapService.setStartJ(this.screen.editMapService.getStartJ() + delta);
+                        this.screen.editMapService.setStartJ(this.screen.editMapService.getStartJ() - delta);
                         this.screen.redrawMap();
                     }
                     break;
                 case Input.Keys.DOWN:
                     if(!this.screen.isMiniMapVisible) {
-                        this.screen.editMapService.setStartJ(this.screen.editMapService.getStartJ() - delta);
+                        this.screen.editMapService.setStartJ(this.screen.editMapService.getStartJ() + delta);
                         this.screen.redrawMap();
                     }
                     break;
@@ -1261,6 +1261,57 @@ public class EditMapScreen implements Screen {
                     //System.out.println("Autre touche appuyée");
             }
             return true; // Retourne true pour indiquer que l'événement a été traité
+        }
+
+        @Override
+        public boolean scrolled(float amountX, float amountY) {
+            // amountY est la valeur de défilement de la molette de la souris
+            // > 0 signifie que la molette est déplacée vers le bas
+            // < 0 signifie que la molette est déplacée vers le haut
+            if (amountY > 0) {
+                // La molette est déplacée vers le bas
+                switch (this.screen.editMapService.getZoomLevel()) {
+                    case CLOSE_VIEW :
+                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                        this.screen.editMapService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case NORMAL_VIEW:
+                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                        this.screen.editMapService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case DISTANT_VIEW:
+                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                        this.screen.editMapService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case VERY_DISTANT_VIEW:
+                        break;
+                }
+            } else if (amountY < 0) {
+                // La molette est déplacée vers le haut
+                switch (this.screen.editMapService.getZoomLevel()) {
+                    case CLOSE_VIEW :
+                        break;
+                    case NORMAL_VIEW:
+                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                        this.screen.editMapService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case DISTANT_VIEW:
+                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                        this.screen.editMapService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                    case VERY_DISTANT_VIEW:
+                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                        this.screen.editMapService.initMapFromZoom();
+                        this.screen.redrawMap();
+                        break;
+                }
+            }
+            return true; // ou false si vous ne voulez pas consommer l'événement
         }
 
         /*
