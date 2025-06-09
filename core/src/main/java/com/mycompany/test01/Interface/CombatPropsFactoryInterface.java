@@ -4,7 +4,7 @@ import com.mycompany.test01.Entity.Unit.CombatProps;
 
 public interface CombatPropsFactoryInterface {
 
-    public CombatProps getInfantryType01CombatProps();
+    public CombatProps getInfantryClassicCombatProps();
 
 
 }

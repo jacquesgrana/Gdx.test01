@@ -52,6 +52,12 @@ public class EditMapService {
     private DrawFlagCategory riverDrawFlag = DrawFlagCategory.EMPTY;
     private DrawFlagCategory cliffDrawFlag = DrawFlagCategory.EMPTY;
 
+    private boolean isRiverVisible = true;
+    private boolean isRoadVisible = true;
+    private boolean isFortificationVisible = true;
+    private boolean isCliffVisible = true;
+    private boolean isBridgeVisible = true;
+
     public EditMapService() {
         this.zoomLevel = ZoomLevelEnum.NORMAL_VIEW;
     }
@@ -520,6 +526,7 @@ public class EditMapService {
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
                 // dessin des falaises
+                /*
                 if(
                     mapMode == EditMapMode.CLIFF ||
                         mapMode == EditMapMode.ROAD ||
@@ -527,7 +534,9 @@ public class EditMapService {
                         mapMode == EditMapMode.TERRAIN ||
                         mapMode == EditMapMode.MISC ||
                         mapMode == EditMapMode.NO_ACTION
-                ) {
+                ) */
+                if(this.isCliffVisible)
+                {
                     for (int k = 0; k < 6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k].isCliff()) {
                             drawCliffSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k], k);
@@ -537,6 +546,7 @@ public class EditMapService {
 
 
                 // dessin des rivières
+                /*
                 if(
                     mapMode == EditMapMode.CLIFF ||
                     mapMode == EditMapMode.RIVER ||
@@ -544,7 +554,9 @@ public class EditMapService {
                         mapMode == EditMapMode.TERRAIN ||
                         mapMode == EditMapMode.MISC ||
                         mapMode == EditMapMode.NO_ACTION
-                ) {
+                )*/
+                if(this.isRiverVisible)
+                {
                     for (int k = 0; k < 6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k] != RiverCategory.NO_RIVER) {
                             drawRiverSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k], k);
@@ -553,13 +565,7 @@ public class EditMapService {
                 }
 
                 // dessin des ponts
-                if(
-                    mapMode == EditMapMode.CLIFF ||
-                    mapMode == EditMapMode.RIVER ||
-                        mapMode == EditMapMode.ROAD ||
-                        mapMode == EditMapMode.TERRAIN ||
-                        mapMode == EditMapMode.MISC ||
-                        mapMode == EditMapMode.NO_ACTION) {
+                if(isBridgeVisible) {
                     for (int k = 0; k < 6; k++) {
                         if(!this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
                             drawBridgeSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType(), k);
@@ -568,13 +574,7 @@ public class EditMapService {
                 }
 
                 // dessin des routes
-                if(
-                    mapMode == EditMapMode.CLIFF ||
-                    mapMode == EditMapMode.RIVER ||
-                    mapMode == EditMapMode.ROAD ||
-                        mapMode == EditMapMode.TERRAIN ||
-                        mapMode == EditMapMode.MISC ||
-                        mapMode == EditMapMode.NO_ACTION) {
+                if(isRoadVisible) {
                     for(int k=0; k<6; k++) {
                         if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
                             drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
@@ -590,7 +590,7 @@ public class EditMapService {
 
                 // dessin des fortifications
                 if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION
-                && (mapMode == EditMapMode.FORTIFICATION || mapMode == EditMapMode.NO_ACTION)) {
+                && isFortificationVisible) {
                     drawFortification(
                         drawingPixmap,
                         x, y, hexagonSize * 2, // ajouté !!
@@ -1082,5 +1082,45 @@ public class EditMapService {
 
     public void setZoomLevel(ZoomLevelEnum zoomLevel) {
         this.zoomLevel = zoomLevel;
+    }
+
+    public boolean isBridgeVisible() {
+        return isBridgeVisible;
+    }
+
+    public void setBridgeVisible(boolean bridgeVisible) {
+        isBridgeVisible = bridgeVisible;
+    }
+
+    public boolean isCliffVisible() {
+        return isCliffVisible;
+    }
+
+    public void setCliffVisible(boolean cliffVisible) {
+        isCliffVisible = cliffVisible;
+    }
+
+    public boolean isFortificationVisible() {
+        return isFortificationVisible;
+    }
+
+    public void setFortificationVisible(boolean fortificationVisible) {
+        isFortificationVisible = fortificationVisible;
+    }
+
+    public boolean isRoadVisible() {
+        return isRoadVisible;
+    }
+
+    public void setRoadVisible(boolean roadVisible) {
+        isRoadVisible = roadVisible;
+    }
+
+    public boolean isRiverVisible() {
+        return isRiverVisible;
+    }
+
+    public void setRiverVisible(boolean riverVisible) {
+        isRiverVisible = riverVisible;
     }
 }

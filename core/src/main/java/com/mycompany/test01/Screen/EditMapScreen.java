@@ -5,10 +5,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -50,13 +51,14 @@ public class EditMapScreen implements Screen {
     private final Table miscButtonPanel;
     private final Table newMapPanel;
 
+    private final Table mapFiltersCheckboxesPanel; // TODO ajouter !!
+
     //private final Skin skin; //Skin for UI elements
     private HexagonCategory selectedTerrain = HexagonCategory.GRASS;
     private FortificationCategory selectedFortification = FortificationCategory.NO_FORTIFICATION;
     private RoadCategory selectedRoad = RoadCategory.NO_ROAD;
     private RiverCategory selectedRiver = RiverCategory.NO_RIVER;
 
-    // TODO déplacer dans le service ?
     //private DrawFlagCategory roadDrawFlag = DrawFlagCategory.EMPTY;
     //private DrawFlagCategory riverDrawFlag = DrawFlagCategory.EMPTY;
     //private DrawFlagCategory cliffDrawFlag = DrawFlagCategory.EMPTY;
@@ -138,6 +140,8 @@ public class EditMapScreen implements Screen {
         this.modeLabel = new Label("Edit Mode : " + this.mode, labelStyle);
         this.modeLabel.setPosition(50, 130);
         stage.addActor(this.modeLabel);
+
+
 
         // boutons mode : "no-action", "terrain", "road", "river"
         ButtonWrapper buttonModeNoActionWrapper = new ButtonWrapper(
@@ -315,7 +319,9 @@ public class EditMapScreen implements Screen {
         });
         stage.addActor(buttonModeMiscWrapper.getButton());
 
-
+        // TODO ajouter mapFilterCheckboxesPanel
+        mapFiltersCheckboxesPanel = createMapFiltersCheckboxesPanel();
+        this.stage.addActor(mapFiltersCheckboxesPanel);
 
         terrainButtonPanel = createTerrainButtonPanel();
         fortificationButtonPanel = createFortificationButtonPanel();
@@ -433,6 +439,73 @@ public class EditMapScreen implements Screen {
 
     @Override
     public void resume() {}
+
+
+    // TODO ajouter createMapFiltersCheckboxesPanel
+    private Table createMapFiltersCheckboxesPanel() {
+        Table panel = new Table();
+        panel.defaults().pad(5);
+        EditMapScreen that = this;
+
+        CheckBox checkBoxRiver = new CheckBox(" River", SkinUtil.getCheckBoxSkin(25));
+        checkBoxRiver.setChecked(true);
+        checkBoxRiver.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //System.out.println("change river checkbox");
+                that.editMapService.setRiverVisible(!that.editMapService.isRiverVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxRiver);
+
+        CheckBox checkBoxRoad = new CheckBox(" Road", SkinUtil.getCheckBoxSkin(25));
+        checkBoxRoad.setChecked(true);
+        checkBoxRoad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editMapService.setRoadVisible(!that.editMapService.isRoadVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxRoad);
+
+        CheckBox checkBoxFort = new CheckBox(" Fort.", SkinUtil.getCheckBoxSkin(25));
+        checkBoxFort.setChecked(true);
+        checkBoxFort.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editMapService.setFortificationVisible(!that.editMapService.isFortificationVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxFort);
+
+        CheckBox checkBoxCliff = new CheckBox(" Cliff", SkinUtil.getCheckBoxSkin(25));
+        checkBoxCliff.setChecked(true);
+        checkBoxCliff.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editMapService.setCliffVisible(!that.editMapService.isCliffVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxCliff);
+
+        CheckBox checkBoxBridge = new CheckBox(" Bridge", SkinUtil.getCheckBoxSkin(25));
+        checkBoxBridge.setChecked(true);
+        checkBoxBridge.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editMapService.setBridgeVisible(!that.editMapService.isBridgeVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxBridge);
+
+        panel.setPosition(400f, 140f);
+        return  panel;
+    }
 
     private Table createTerrainButtonPanel() {
         Table panel = new Table();

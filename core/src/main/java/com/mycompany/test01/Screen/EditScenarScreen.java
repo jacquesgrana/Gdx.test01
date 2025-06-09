@@ -46,6 +46,7 @@ public class EditScenarScreen implements Screen {
     private final EditScenarScreen.EditScenarScreenInputAdapter screenInputAdapter; // Pour la logique d'entrée de l'écran
 
     private final Table leftMapPanel, rightPanel, bottomRightButtonPanel;
+    private Table  rightLoadMapPanel;
 
     private ScrollPane rightScrollPane;
 
@@ -66,8 +67,8 @@ public class EditScenarScreen implements Screen {
 
         // Configurer InputMultiplexer
         inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(screenInputAdapter); // Puis votre logique d'écran personnalisée
-        inputMultiplexer.addProcessor(stage);             // La Stage d'abord, pour que les UI aient la priorité
+        inputMultiplexer.addProcessor(screenInputAdapter);
+        inputMultiplexer.addProcessor(stage);
 
         Gdx.input.setInputProcessor(inputMultiplexer);    // Définir le multiplexeur comme processeur principal
         this.drawingTexture = GraphicUtil.getEmptyTexture();
@@ -118,7 +119,9 @@ public class EditScenarScreen implements Screen {
         panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
         panel.setBounds(Gdx.graphics.getWidth() - 430f, 50f, 380f, Gdx.graphics.getHeight() - 100f);
         panel.pad(20f); // Définir le padding après avoir défini le fond
-        Table rightLoadMapPanel = createRightLoadMapPanel();
+        this.rightLoadMapPanel = createRightLoadMapPanel();
+        this.rightLoadMapPanel.setVisible(false);
+        //Table rightLoadMapPanel = createRightLoadMapPanel();
         //panel.add(rightLoadMapPanel).expand().fill().height(150f); // Utiliser add() et configurer le layout
         panel.add(rightLoadMapPanel).expand().fill().height(150f).top(); // Fixer la hauteur
         return panel;
@@ -136,7 +139,7 @@ public class EditScenarScreen implements Screen {
         panel.setBounds(50f, 100f, Gdx.graphics.getWidth() - 500f, panelHeight);
         //panel.columnDefaults(3);
         int posY = (panelHeight - buttonHeight) / 2;
-
+        EditScenarScreen that =this;
         ButtonWrapper buttonNewScenarWrapper = new ButtonWrapper(
             "New Scenario",
             padding, posY, buttonWidth, buttonHeight);
@@ -145,6 +148,8 @@ public class EditScenarScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("click new scenario");
+                that.rightLoadMapPanel.setVisible(true);
+
             }
         });
         panel.addActor(buttonNewScenarWrapper.getButton());
@@ -445,58 +450,60 @@ public class EditScenarScreen implements Screen {
                 mouseY <= this.screen.rightScrollPane.getY() + this.screen.rightScrollPane.getHeight()) {
                 return false; // Laisser le ScrollPane gérer l'événement
             }
-            // amountY est la valeur de défilement de la molette de la souris
-            // > 0 signifie que la molette est déplacée vers le bas
-            // < 0 signifie que la molette est déplacée vers le haut
-            System.out.println("molette !!");
-            if (amountY > 0) {
-                // La molette est déplacée vers le bas
-                System.out.println("molette dezoom");
+            else {
+                // amountY est la valeur de défilement de la molette de la souris
+                // > 0 signifie que la molette est déplacée vers le bas
+                // < 0 signifie que la molette est déplacée vers le haut
+                //System.out.println("molette !!");
+                if (amountY > 0) {
+                    // La molette est déplacée vers le bas
+                    //System.out.println("molette dezoom");
 
-                switch (this.screen.editScenarService.getZoomLevel()) {
-                    case CLOSE_VIEW :
-                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                        this.screen.editScenarService.initMapFromZoom();
-                        this.screen.redrawMap();
-                        break;
-                    case NORMAL_VIEW:
-                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                        this.screen.editScenarService.initMapFromZoom();
-                        this.screen.redrawMap();
-                        break;
-                    case DISTANT_VIEW:
-                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
-                        this.screen.editScenarService.initMapFromZoom();
-                        this.screen.redrawMap();
-                        break;
-                    case VERY_DISTANT_VIEW:
-                        break;
-                }
-            } else if (amountY < 0) {
-                // La molette est déplacée vers le haut
-                System.out.println("molette zoom");
+                    switch (this.screen.editScenarService.getZoomLevel()) {
+                        case CLOSE_VIEW :
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case NORMAL_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case DISTANT_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case VERY_DISTANT_VIEW:
+                            break;
+                    }
+                } else if (amountY < 0) {
+                    // La molette est déplacée vers le haut
+                    //System.out.println("molette zoom");
 
-                switch (this.screen.editScenarService.getZoomLevel()) {
-                    case CLOSE_VIEW :
-                        break;
-                    case NORMAL_VIEW:
-                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
-                        this.screen.editScenarService.initMapFromZoom();
-                        this.screen.redrawMap();
-                        break;
-                    case DISTANT_VIEW:
-                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                        this.screen.editScenarService.initMapFromZoom();
-                        this.screen.redrawMap();
-                        break;
-                    case VERY_DISTANT_VIEW:
-                        this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                        this.screen.editScenarService.initMapFromZoom();
-                        this.screen.redrawMap();
-                        break;
+                    switch (this.screen.editScenarService.getZoomLevel()) {
+                        case CLOSE_VIEW :
+                            break;
+                        case NORMAL_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case DISTANT_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                        case VERY_DISTANT_VIEW:
+                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.redrawMap();
+                            break;
+                    }
                 }
+                return true; // ou false si vous ne voulez pas consommer l'événement
             }
-            return true; // ou false si vous ne voulez pas consommer l'événement
         }
 
     }
