@@ -5,10 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonWriter;
 
-import com.mycompany.test01.Entity.Unit.*;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.Entity.Unit.ArtiUnit.ArtiUnit;
+import com.mycompany.test01.Entity.Unit.CombatUnit.AntiTankUnit;
+import com.mycompany.test01.Entity.Unit.CombatUnit.EngineerUnit;
+import com.mycompany.test01.Entity.Unit.CombatUnit.InfantryRecoCompanyUnit;
+import com.mycompany.test01.Entity.Unit.CombatUnit.InfantryUnit;
 import com.mycompany.test01.Entity.Unit.Group.*;
 import com.mycompany.test01.Interface.ElementInterface;
 

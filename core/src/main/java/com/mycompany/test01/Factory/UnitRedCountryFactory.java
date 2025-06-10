@@ -1,7 +1,9 @@
 package com.mycompany.test01.Factory;
 
-import com.mycompany.test01.Entity.Unit.*;
+import com.mycompany.test01.Entity.Unit.ArtiUnit.*;
+import com.mycompany.test01.Entity.Unit.CombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Group.*;
+import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
@@ -122,7 +124,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MecaArtiUnit createMecaArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MecaArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MecaArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(8, 6, 4, 2));
     }
 
     @Override

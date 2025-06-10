@@ -1,7 +1,9 @@
 package com.mycompany.test01.Factory;
 
-import com.mycompany.test01.Entity.Unit.*;
+import com.mycompany.test01.Entity.Unit.ArtiUnit.*;
+import com.mycompany.test01.Entity.Unit.CombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Group.*;
+import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
@@ -132,7 +134,7 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MecaArtiUnit createMecaArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MecaArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MecaArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(10, 8, 6, 1));
     }
 
     @Override
@@ -425,8 +427,8 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         TankUnit tankUnit01 = new TankUnit(name + " tank 2-3", acronym, this.country, true, false, true, 2);
         TankUnit tankUnit02 = new TankUnit(name + " tank 3-3", acronym, this.country, true, false, true, 3);
 
-        MecaArtiUnit mecaArtiUnit01 = new MecaArtiUnit(name + " meca arti 1-3", acronym, this.country, true, false, true, 1);
-        MecaArtiUnit mecaArtiUnit02 = new MecaArtiUnit(name + " meca arti 2-3", acronym, this.country, true, false, true, 2);
+        MecaArtiUnit mecaArtiUnit01 = new MecaArtiUnit(name + " meca arti 1-3", acronym, this.country, true, false, true, 1, new ArtiProps(10, 8, 6, 1));
+        MecaArtiUnit mecaArtiUnit02 = new MecaArtiUnit(name + " meca arti 2-3", acronym, this.country, true, false, true, 2, new ArtiProps(10, 8, 6, 1));
         MotoRocketArtiUnit motoRocketArtiUnit = new MotoRocketArtiUnit(name + " moto rocket arti 3-3", acronym, this.country, true, false, true, 3, new ArtiProps(8, 10, 4, 1));
 
         MotoHeavyAntiAirUnit motoHeavyAntiAirUnit = new MotoHeavyAntiAirUnit(name + " heavy moto anti air", acronym, this.country, true, false, true, 0);

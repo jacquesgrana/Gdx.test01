@@ -1,7 +1,9 @@
 package com.mycompany.test01.Interface;
 
-import com.mycompany.test01.Entity.Unit.*;
+import com.mycompany.test01.Entity.Unit.ArtiUnit.*;
+import com.mycompany.test01.Entity.Unit.CombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Group.*;
+import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
 
 public interface UnitFactoryInterface {
     public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
