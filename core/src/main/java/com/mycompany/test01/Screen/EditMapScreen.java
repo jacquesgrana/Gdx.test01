@@ -503,7 +503,7 @@ public class EditMapScreen implements Screen {
         });
         panel.add(checkBoxBridge);
 
-        panel.setPosition(400f, 140f);
+        panel.setPosition(500f, 140f);
         return  panel;
     }
 

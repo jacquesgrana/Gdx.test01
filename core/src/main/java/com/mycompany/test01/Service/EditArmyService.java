@@ -1,7 +1,7 @@
 package com.mycompany.test01.Service;
 
-import com.mycompany.test01.Entity.Unit.FrontGroup;
-import com.mycompany.test01.Entity.Unit.UnitElement;
+import com.mycompany.test01.Entity.Unit.Group.FrontGroup;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Enum.CountryEnum;
 
 public class EditArmyService {

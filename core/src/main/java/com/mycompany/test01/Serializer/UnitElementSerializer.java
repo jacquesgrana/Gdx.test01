@@ -6,11 +6,11 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonWriter;
 
 import com.mycompany.test01.Entity.Unit.*;
+import com.mycompany.test01.Entity.Unit.Abstract.Unit;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.Entity.Unit.Group.*;
 import com.mycompany.test01.Interface.ElementInterface;
-
-import com.badlogic.gdx.utils.Json;
-
-import java.io.StringWriter;
 
 public class UnitElementSerializer {
 

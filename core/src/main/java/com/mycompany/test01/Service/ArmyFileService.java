@@ -6,7 +6,7 @@ import com.mycompany.test01.Exception.LoadArmyFileException;
 import com.mycompany.test01.FileChooserListener.DesktopArmyGroupFileChooserListener;
 import com.mycompany.test01.FileChooserListener.DesktopArmyRootFileChooserListener;
 import com.mycompany.test01.Common.DesktopFileChooser;
-import com.mycompany.test01.Entity.Unit.UnitGroup;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Interface.FileChooserInterface;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;

@@ -1,9 +1,10 @@
-package com.mycompany.test01.Entity.Unit;
+package com.mycompany.test01.Entity.Unit.Group;
 
+import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public class ArmyGroup extends UnitGroup{
+public class ArmyGroup extends UnitGroup {
     public ArmyGroup() {
         super();
     }

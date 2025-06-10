@@ -1,8 +1,8 @@
 package com.mycompany.test01.Util;
 
 import com.badlogic.gdx.utils.OrderedSet;
-import com.mycompany.test01.Entity.Unit.UnitElement;
-import com.mycompany.test01.Entity.Unit.UnitGroup;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Enum.UnitTypeEnum;

@@ -1,5 +1,6 @@
 package com.mycompany.test01.Entity.Unit;
 
+import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 

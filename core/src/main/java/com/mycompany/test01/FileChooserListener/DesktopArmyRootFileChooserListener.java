@@ -2,7 +2,7 @@ package com.mycompany.test01.FileChooserListener;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.mycompany.test01.Common.Toast;
-import com.mycompany.test01.Entity.Unit.UnitGroup;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.ColorStyleEnum;
 import com.mycompany.test01.Exception.LoadArmyFileException;
 import com.mycompany.test01.Interface.FileChooserListenerInterface;

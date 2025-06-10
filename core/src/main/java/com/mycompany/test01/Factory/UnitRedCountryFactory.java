@@ -1,6 +1,8 @@
 package com.mycompany.test01.Factory;
 
 import com.mycompany.test01.Entity.Unit.*;
+import com.mycompany.test01.Entity.Unit.Group.*;
+import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
 
@@ -70,7 +72,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
 
     @Override
     public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new ArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new ArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(10, 2, 1, 6));
     }
 
     @Override
@@ -260,9 +262,9 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         InfantryUnit inf_02_03 = new InfantryUnit(divName + " inf 2-3", acronym + "•3•2", this.country, false, false, false, 2);
         InfantryUnit inf_03_03 = new InfantryUnit(divName + " inf 3-3", acronym + "•3•3", this.country, false, false, false, 3);
         // 3 art
-        ArtiUnit art_01 = new ArtiUnit(divName + " art 1", acronym + "•1", this.country, false, false, false, 1);
-        ArtiUnit art_02 = new ArtiUnit(divName + " art 2", acronym + "•2", this.country, false, false, false, 2);
-        ArtiUnit art_03 = new ArtiUnit(divName + " art 3", acronym + "•3", this.country, false, false, false, 3);
+        ArtiUnit art_01 = new ArtiUnit(divName + " art 1", acronym + "•1", this.country, false, false, false, 1, new ArtiProps(12, 4, 2, 12));
+        ArtiUnit art_02 = new ArtiUnit(divName + " art 2", acronym + "•2", this.country, false, false, false, 2, new ArtiProps(10, 2, 1, 6));
+        ArtiUnit art_03 = new ArtiUnit(divName + " art 3", acronym + "•3", this.country, false, false, false, 3, new ArtiProps(10, 2, 1, 6));
         // 1 Anti tank
         AntiTankUnit anti_tank_01 = new AntiTankUnit(divName + " anti_tank", acronym, this.country, false, false, false, 0);
         // 1 Eng
@@ -307,9 +309,9 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         InfantryUnit inf_02_03 = new InfantryUnit(divName + " inf 2-3", acronym + "•3•2", this.country, true, false, true, 2);
         InfantryUnit inf_03_03 = new InfantryUnit(divName + " inf 3-3", acronym + "•3•3", this.country, true, false, true, 3);
         // 3 art
-        ArtiUnit art_01 = new ArtiUnit(divName + " art 1", acronym + "•1", this.country, true, false, true, 1);
-        ArtiUnit art_02 = new ArtiUnit(divName + " art 2", acronym + "•2", this.country, true, false, true, 2);
-        ArtiUnit art_03 = new ArtiUnit(divName + " art 3", acronym + "•3", this.country, true, false, true, 3);
+        ArtiUnit art_01 = new ArtiUnit(divName + " art 1", acronym + "•1", this.country, true, false, true, 1, new ArtiProps(12, 6, 4, 12));
+        ArtiUnit art_02 = new ArtiUnit(divName + " art 2", acronym + "•2", this.country, true, false, true, 2, new ArtiProps(10, 3, 2, 6));
+        ArtiUnit art_03 = new ArtiUnit(divName + " art 3", acronym + "•3", this.country, true, false, true, 3, new ArtiProps(10, 3, 2, 6));
         // 1 Anti tank
         AntiTankUnit anti_tank_01 = new AntiTankUnit(divName + " anti_tank", acronym, this.country, true, false, true, 0);
         // 1 Eng

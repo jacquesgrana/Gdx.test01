@@ -1,4 +1,4 @@
-package com.mycompany.test01.Entity.Unit;
+package com.mycompany.test01.Entity.Unit.Props;
 
 public class CombatProps {
     // class ? -> enum?

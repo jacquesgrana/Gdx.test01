@@ -1,4 +1,4 @@
-package com.mycompany.test01.Entity.Unit;
+package com.mycompany.test01.Entity.Unit.Abstract;
 
 import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Enum.CountryEnum;
