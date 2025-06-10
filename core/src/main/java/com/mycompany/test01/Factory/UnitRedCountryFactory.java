@@ -22,7 +22,7 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
     @Override
     public MountainArtiUnit createMountainArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank)
     {
-        return new MountainArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MountainArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(6, 4, 3, 4));
     }
 
     @Override
@@ -77,27 +77,27 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MortarArtiUnit createMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(3, 3, 2, 3));
     }
 
     @Override
     public MotoMortarArtiUnit createMotoMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MotoMortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MotoMortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(4, 2, 1, 3));
     }
 
     @Override
     public RocketArtiUnit createRocketArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new RocketArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new RocketArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(7, 10, 4, 3));
     }
 
     @Override
     public ParaArtiUnit createParaArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new ParaArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new ParaArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(9, 4, 2, 4));
     }
 
     @Override
     public ParaMortarArtiUnit createParaMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new ParaMortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new ParaMortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(4, 4, 2, 3));
     }
 
     @Override
@@ -147,12 +147,12 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MotoArtiUnit createMotoArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MotoArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MotoArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(10, 3, 2, 4));
     }
 
     @Override
     public MotoRocketArtiUnit createMotoRocketArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MotoRocketArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MotoRocketArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(6, 12, 5, 3));
     }
 
     @Override
@@ -361,9 +361,9 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         TankUnit tank_02 = new TankUnit(divName + " tank 2", acronym + "•2", this.country, false, false, false, 2);
         TankUnit tank_03 = new TankUnit(divName + " tank 3", acronym + "•3", this.country, false, false, false, 3);
         // 3 art
-        MotoArtiUnit art_01 = new MotoArtiUnit(divName + " art 1", acronym + "•1", this.country, false, false, false, 1);
-        MotoArtiUnit art_02 = new MotoArtiUnit(divName + " art 2", acronym + "•2", this.country, false, false, false, 2);
-        MotoArtiUnit art_03 = new MotoArtiUnit(divName + " art 3", acronym + "•3", this.country, false, false, false, 3);
+        MotoArtiUnit art_01 = new MotoArtiUnit(divName + " art 1", acronym + "•1", this.country, false, false, false, 1, new ArtiProps(12, 4, 3, 8));
+        MotoArtiUnit art_02 = new MotoArtiUnit(divName + " art 2", acronym + "•2", this.country, false, false, false, 2, new ArtiProps(10, 3, 2, 4));
+        MotoArtiUnit art_03 = new MotoArtiUnit(divName + " art 3", acronym + "•3", this.country, false, false, false, 3, new ArtiProps(10, 3, 2, 4));
         // 1 Anti tank
         MotoAntiTankUnit anti_tank_01 = new MotoAntiTankUnit(divName + " anti_tank", acronym, this.country, false, false, false, 0);
         // 1 Eng
@@ -409,8 +409,8 @@ public class UnitRedCountryFactory implements UnitFactoryInterface {
         TankUnit tank_01 = new TankUnit(brigName + " tank 1", acronym + "•1", this.country, false, false, false, 1);
         TankUnit tank_02 = new TankUnit(brigName + " tank 2", acronym + "•2", this.country, false, false, false, 2);
 
-        MotoArtiUnit art_01 = new MotoArtiUnit(brigName + " art 1", acronym + "•1", this.country, false, false, false, 1);
-        MotoArtiUnit art_02 = new MotoArtiUnit(brigName + " art 2", acronym + "•2", this.country, false, false, false, 2);
+        MotoArtiUnit art_01 = new MotoArtiUnit(brigName + " art 1", acronym + "•1", this.country, false, false, false, 1, new ArtiProps(10, 3, 2, 4));
+        MotoArtiUnit art_02 = new MotoArtiUnit(brigName + " art 2", acronym + "•2", this.country, false, false, false, 2, new ArtiProps(10, 3, 2, 4));
 
         brigade.addUnit(inf_01_01);
         brigade.addUnit(inf_02_01);

@@ -1,10 +1,12 @@
 package com.mycompany.test01.Entity.Unit;
 
+import com.mycompany.test01.Entity.Unit.Abstract.ArtiAbstract;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
+import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public class ParaArtiUnit extends Unit {
+public class ParaArtiUnit extends ArtiAbstract {
 
     public ParaArtiUnit() {
         super();
@@ -17,8 +19,9 @@ public class ParaArtiUnit extends Unit {
         boolean isElite,
         boolean isCompany,
         boolean usesWhiteStroke,
-        int regRank
+        int regRank,
+        ArtiProps artiProps
     ) {
-       super(name, acronym, country, UnitTypeEnum.PARA_ARTI, true, isElite, false, isCompany, usesWhiteStroke, regRank);
+       super(name, acronym, country, UnitTypeEnum.PARA_ARTI, true, isElite, false, isCompany, usesWhiteStroke, regRank, artiProps);
     }
 }

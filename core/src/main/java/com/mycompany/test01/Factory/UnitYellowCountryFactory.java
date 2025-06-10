@@ -21,7 +21,7 @@ public class UnitYellowCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MountainArtiUnit createMountainArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MountainArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MountainArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(6, 3, 2, 6));
     }
 
     @Override
@@ -76,27 +76,27 @@ public class UnitYellowCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MortarArtiUnit createMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(3, 3, 2, 3));
     }
 
     @Override
     public MotoMortarArtiUnit createMotoMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MotoMortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MotoMortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(3, 2, 1, 4));
     }
 
     @Override
     public RocketArtiUnit createRocketArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new RocketArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new RocketArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(7, 9, 3, 4));
     }
 
     @Override
     public ParaArtiUnit createParaArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new ParaArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new ParaArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(9, 4, 2, 6));
     }
 
     @Override
     public ParaMortarArtiUnit createParaMortarArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new ParaMortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new ParaMortarArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(4, 4, 2, 4));
     }
 
     @Override
@@ -148,12 +148,12 @@ public class UnitYellowCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MotoArtiUnit createMotoArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MotoArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MotoArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(10, 2, 1, 6));
     }
 
     @Override
     public MotoRocketArtiUnit createMotoRocketArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MotoRocketArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MotoRocketArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, new ArtiProps(5, 10,4, 4));
     }
 
     @Override
@@ -314,8 +314,8 @@ public class UnitYellowCountryFactory implements UnitFactoryInterface {
         ArtiUnit art_01 = new ArtiUnit(divName + " art 1", acronym + "•1", this.country, true, false, true, 1, new ArtiProps(14, 5, 3, 12));
         ArtiUnit art_02 = new ArtiUnit(divName + " art 2", acronym + "•2", this.country, true, false, true, 2, new ArtiProps(12, 3, 2, 6));
         ArtiUnit art_03 = new ArtiUnit(divName + " art 3", acronym + "•3", this.country, true, false, true, 3, new ArtiProps(12, 3, 2, 6));
-        MortarArtiUnit art_04 = new MortarArtiUnit(divName + " mortar art 4", acronym + "•4", this.country, true, false, true, 4);
-        MortarArtiUnit art_05 = new MortarArtiUnit(divName + " mortar art 5", acronym + "•5", this.country, true, false, true, 5);
+        MortarArtiUnit art_04 = new MortarArtiUnit(divName + " mortar art 4", acronym + "•4", this.country, true, false, true, 4,  new ArtiProps(3, 3, 2, 3));
+        MortarArtiUnit art_05 = new MortarArtiUnit(divName + " mortar art 5", acronym + "•5", this.country, true, false, true, 5,  new ArtiProps(3, 3, 2, 3));
 
         // 1 Anti tank
         AntiTankUnit anti_tank_01 = new AntiTankUnit(divName + " anti_tank", acronym, this.country, true, false, true, 0);
@@ -370,9 +370,9 @@ public class UnitYellowCountryFactory implements UnitFactoryInterface {
         TankUnit tank_02 = new TankUnit(divName + " tank 2", acronym + "•2", this.country, false, false, false, 2);
         TankUnit tank_03 = new TankUnit(divName + " tank 3", acronym + "•3", this.country, false, false, false, 3);
         // 3 art
-        MotoArtiUnit art_01 = new MotoArtiUnit(divName + " art 1", acronym + "•1", this.country, false, false, false, 1);
-        MotoArtiUnit art_02 = new MotoArtiUnit(divName + " art 2", acronym + "•2", this.country, false, false, false, 2);
-        MotoArtiUnit art_03 = new MotoArtiUnit(divName + " art 3", acronym + "•3", this.country, false, false, false, 3);
+        MotoArtiUnit art_01 = new MotoArtiUnit(divName + " art 1", acronym + "•1", this.country, false, false, false, 1, new ArtiProps(12, 4, 2, 12));
+        MotoArtiUnit art_02 = new MotoArtiUnit(divName + " art 2", acronym + "•2", this.country, false, false, false, 2, new ArtiProps(10, 2, 1, 6));
+        MotoArtiUnit art_03 = new MotoArtiUnit(divName + " art 3", acronym + "•3", this.country, false, false, false, 3, new ArtiProps(10, 2, 1, 6));
         // 1 Anti tank
         MotoAntiTankUnit anti_tank_01 = new MotoAntiTankUnit(divName + " anti_tank", acronym, this.country, false, false, false, 0);
         // 1 Eng

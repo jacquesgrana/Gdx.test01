@@ -1,10 +1,12 @@
 package com.mycompany.test01.Entity.Unit;
 
+import com.mycompany.test01.Entity.Unit.Abstract.ArtiAbstract;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
+import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public class MortarArtiUnit extends Unit {
+public class MortarArtiUnit extends ArtiAbstract {
 
     public MortarArtiUnit() {
         super();
@@ -17,7 +19,8 @@ public class MortarArtiUnit extends Unit {
         boolean isElite,
         boolean isCompany,
         boolean usesWhiteStroke,
-        int regRank) {
-        super(name, acronym, country, UnitTypeEnum.MORTAR_ARTI, false, isElite, false, isCompany, usesWhiteStroke, regRank);
+        int regRank,
+        ArtiProps artiProps) {
+        super(name, acronym, country, UnitTypeEnum.MORTAR_ARTI, false, isElite, false, isCompany, usesWhiteStroke, regRank, artiProps);
     }
 }
