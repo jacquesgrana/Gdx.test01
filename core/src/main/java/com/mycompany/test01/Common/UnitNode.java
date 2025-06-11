@@ -17,7 +17,7 @@ public class UnitNode extends Tree.Node<UnitNode, ElementInterface, Table> {
         Image unitImage = new Image(GraphicUtil.getCounterTextureFromUnit(unit));
         Label infoLabel = new Label(
             unit.getName() + " / "
-                + unit.getAcronym() + " / "
+                //+ unit.getAcronym() + " / "
                 + unit.getType().toString(),
             SkinUtil.getTreeNodeLabelSkin(310, 60)
         );

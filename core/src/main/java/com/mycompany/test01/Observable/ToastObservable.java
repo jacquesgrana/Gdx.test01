@@ -37,9 +37,9 @@ public class ToastObservable implements Observable<Toast> {
 
     @Override
     public void notifyObservers() {
-        System.out.println("notify observable");
+        //System.out.println("notify observable");
         //this.currentHealthData = newData;
-        System.out.println("observers size : " + observers.size);
+        //System.out.println("observers size : " + observers.size);
         for (Observer<Toast> observer : observers) {
             observer.update(this.observed);
         }

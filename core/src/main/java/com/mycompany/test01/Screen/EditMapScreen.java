@@ -642,7 +642,7 @@ public class EditMapScreen implements Screen {
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    System.out.println("Selected road : " + roadCategory.toString());
+                    //System.out.println("Selected road : " + roadCategory.toString());
                     selectedRoad = roadCategory;
                     selectedRoadLabel.setText("Selected Road : " + roadCategory.toString());
                     roadImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromRoadForButton(32, 32, 3, selectedRoad))));
@@ -687,7 +687,7 @@ public class EditMapScreen implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
 
                     selectedRiver = riverCategory;
-                    System.out.println("Selected river : " + riverCategory.toString());
+                    //System.out.println("Selected river : " + riverCategory.toString());
                     //System.out.println("is selectedRiverLabel exists ? : " + (selectedRiverLabel != null));
                     selectedRiverLabel.setText("Selected River : " + riverCategory.toString()); // TODO : marche pas !!!!!!
                     riverImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromRiverForButton(32, 32, selectedRiver))));
@@ -837,7 +837,7 @@ public class EditMapScreen implements Screen {
                 int newHeight = Integer.parseInt(sizeYField.getText());
                 newWidth = newWidth >= 50 ? Math.min(newWidth, 200) : 50;
                 newHeight = newHeight >= 50 ? Math.min(newHeight, 200) : 50;
-                System.out.println("width : " + newWidth + " / height : " + newHeight);
+                //System.out.println("width : " + newWidth + " / height : " + newHeight);
                 that.editMapService.setLimits(newWidth, newHeight);
                 that.editMapService.init();
                 that.editMapService.resetMap();

@@ -108,8 +108,7 @@ public class ArmyFileService {
 
             String jsonString = file.readString();
             try {
-                UnitGroup group = unitElementSerializer.deserialize(jsonString);
-                return group;
+                return unitElementSerializer.deserialize(jsonString);
             }
             catch (Exception e) {
                 //System.out.println(e.fillInStackTrace());

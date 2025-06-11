@@ -278,7 +278,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         EditArmyScreen that = this;
         tree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
             public void clicked (InputEvent event, float x, float y) {
-                System.out.println("click on root");
+                //System.out.println("click on root");
                 that.displayUnitInfos(that.editArmyService.getRootGroup());
                 //tree.getRootNodes().get(0).setExpanded(!tree.getRootNodes().get(0).isExpanded());
             }
@@ -470,7 +470,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                         && !acronymField.getText().isEmpty()
                         && !selectedRootCountryLabel.getText().toString().equals(CountryEnum.NO_COUNTRY.toString())
                 ) {
-                    System.out.println("unitType, nameField and acronymField ok !!");
+                    //System.out.println("unitType, nameField and acronymField ok !!");
                     String unitName = nameField.getText();
                     String unitAcronym = acronymField.getText();
                     boolean isUnitElite = isEliteCheckBox.isChecked();
@@ -567,13 +567,13 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         buttonValidateWrapper.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                System.out.println("click validate add unit");
+                //System.out.println("click validate add unit");
                 if(
                     !nameField.getText().isEmpty()
                         && !acronymField.getText().isEmpty()
                         && !Objects.equals(unitTypeLabel.getText().toString(), "Nothing Selected")
                 ) {
-                    System.out.println("unitType, nameField and acronymField ok !!");
+                    //System.out.println("unitType, nameField and acronymField ok !!");
                     String unitName = nameField.getText();
                     String unitAcronym = acronymField.getText();
                     boolean isUnitElite = isEliteCheckBox.isChecked();
@@ -624,7 +624,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
 
-                System.out.println("click delete unit");
+                //System.out.println("click delete unit");
                 if(that.editArmyService.getSelectedUnit() != null) {
                     that.removeSelectedUnitAndUpdateTree();
                 }
@@ -642,7 +642,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.buttonAddWrapper.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                System.out.println("click add unit");
+                //System.out.println("click add unit");
                 //if (selectedUnit instanceof )
                 that.rightSelectPanel.setVisible(true);
                 that.rightEditUnitPanel.setVisible(false);
@@ -663,7 +663,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.buttonAddGroupWrapper.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                System.out.println("click add group");
+                //System.out.println("click add group");
                 that.loadArmyGroupFromFile();
             }
         });
@@ -681,7 +681,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.buttonLoadAllWrapper.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                System.out.println("click load all");
+                //System.out.println("click load all");
                 //if (selectedUnit instanceof )
                 that.loadRootGroupFromFile();
             }
@@ -698,7 +698,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.buttonSaveAllWrapper.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                System.out.println("click save all");
+                //System.out.println("click save all");
                 //if (selectedUnit instanceof )
                 that.saveRootGroupToFile();
 
@@ -716,7 +716,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.buttonSaveGroupWrapper.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                System.out.println("click save group");
+                //System.out.println("click save group");
                 that.saveArmyGroupToFile();
             }
         });

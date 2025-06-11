@@ -87,9 +87,6 @@ public class UnitElementSerializer {
 
         String jsonData;
         try {
-            // Utilisez UnitGroup.class comme knownType.
-            // Si rootGroup est une instance d'une sous-classe (ex: FrontGroup),
-            // le champ "class" sera écrit dans le JSON.
             jsonData = json.toJson(rootGroup, UnitGroup.class);
             // Si vous préférez un JSON formaté pour la lisibilité (plus lourd) :
             // jsonData = json.prettyPrint(rootGroup, UnitGroup.class);
@@ -98,10 +95,6 @@ public class UnitElementSerializer {
             Gdx.app.error("UnitElementSerializer", "Erreur lors de la conversion de l'objet en JSON.", e);
             return null; // Retourne null si la sérialisation elle-même échoue
         }
-
-        // Appel de la méthode pour sauvegarder la chaîne JSON dans un fichier
-        // Vous pourriez vérifier le succès de la sauvegarde ici si saveJsonStringToFile retournait un booléen
-        //saveJsonStringToFile(jsonData, filePath);
 
         return jsonData; // Retourne la chaîne JSON
     }

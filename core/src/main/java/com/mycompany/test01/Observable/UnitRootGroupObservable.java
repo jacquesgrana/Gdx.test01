@@ -38,10 +38,10 @@ public class UnitRootGroupObservable implements Observable<UnitGroup> {
 
     @Override
     public void notifyObservers() {
-        System.out.println("notify observable");
+        //System.out.println("notify observable");
         GraphicUtil.printGroup(this.observed);
         //this.currentHealthData = newData;
-        System.out.println("observers size : " + observers.size);
+        //System.out.println("observers size : " + observers.size);
         for (Observer<UnitGroup> observer : observers) {
             observer.update(this.observed);
         }

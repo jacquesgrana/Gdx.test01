@@ -605,7 +605,7 @@ public class GraphicUtil {
             } else if (element instanceof Unit) {
 
             }
-            System.out.println("type : " + element.getType() + " / Name : " + element.getName());
+            //System.out.println("type : " + element.getType() + " / Name : " + element.getName());
         }
     }
 
