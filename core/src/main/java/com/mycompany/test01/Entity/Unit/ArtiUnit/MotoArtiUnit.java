@@ -20,6 +20,6 @@ public class MotoArtiUnit extends ArtiAbstract {
         boolean usesWhiteStroke,
         int regRank,
         ArtiProps artiProps) {
-        super(name, acronym, country, UnitTypeEnum.MOTORISED_ARTI, isElite, false, true, isCompany, usesWhiteStroke, regRank, artiProps);
+        super(name, acronym, country, UnitTypeEnum.MOTORISED_ARTI, false, isElite, true, isCompany, usesWhiteStroke, regRank, artiProps);
     }
 }

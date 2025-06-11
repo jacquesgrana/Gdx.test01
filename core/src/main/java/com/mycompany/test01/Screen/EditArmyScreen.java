@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -44,6 +45,7 @@ import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 import com.mycompany.test01.Util.UnitUtil;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -103,8 +105,11 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
     private TextField nameField;
     private TextField acronymField;
+    private TextField nameFieldRoot;
+    private TextField acronymFieldRoot;
 
     private CheckBox isEliteCheckBox;
+    private CheckBox isEliteCheckBoxRoot;
 
     private final Skin unitTreeSkin;
 
@@ -317,6 +322,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         //this.selectedUnit = (UnitElement) element;
         this.editArmyService.setSelectedUnit((UnitElement) element);
         this.setEditUnitValues();
+
         //System.out.println("selected unit : " + this.editArmyService.getSelectedUnit().toString());
 
         // TODO if inutiles ?!!
@@ -862,24 +868,24 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
         // Création des labels et champs de saisie
         Label nameLabel = new Label("Name:", SkinUtil.getLabelSkin(150, 30));
-        this.nameField = new TextField("", SkinUtil.getTextFieldSkin(150, 30));
+        this.nameFieldRoot = new TextField("", SkinUtil.getTextFieldSkin(150, 30));
         Label acronymLabel = new Label("Acronym:", SkinUtil.getLabelSkin(150, 30));
-        this.acronymField = new TextField("", SkinUtil.getTextFieldSkin(150, 30));
+        this.acronymFieldRoot = new TextField("", SkinUtil.getTextFieldSkin(150, 30));
 
         // Création de la table
         panel.add(nameLabel).padRight(10);
-        panel.add(this.nameField).width(150).padBottom(5);
+        panel.add(this.nameFieldRoot).width(150).padBottom(5);
         panel.row();
         panel.add(acronymLabel).padRight(10);
-        panel.add(this.acronymField).width(150);
+        panel.add(this.acronymFieldRoot).width(150);
         panel.row().padTop(10);
 
         Skin checkBoxSkin = SkinUtil.getCheckBoxSkin(24);
-        this.isEliteCheckBox = new CheckBox(" Elite", checkBoxSkin);
+        this.isEliteCheckBoxRoot = new CheckBox(" Elite", checkBoxSkin);
         //CheckBox isCompanyCheckBox = new CheckBox(" Company", checkBoxSkin);
-        panel.row().padTop(10);
-        panel.add(this.isEliteCheckBox).center().colspan(2);
 
+        panel.add(this.isEliteCheckBoxRoot).center().colspan(2);
+        panel.row().padTop(10);
         EditArmyScreen that = this;
         ButtonWrapper buttonValidateWrapper = new ButtonWrapper(
             "Validate",
@@ -889,13 +895,13 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 if(
-                    !nameField.getText().isEmpty()
-                        && !acronymField.getText().isEmpty()
+                    !nameFieldRoot.getText().isEmpty()
+                        && !acronymFieldRoot.getText().isEmpty()
                 ) {
 
-                    String unitName = nameField.getText();
-                    String unitAcronym = acronymField.getText();
-                    boolean isUnitElite = isEliteCheckBox.isChecked();
+                    String unitName = nameFieldRoot.getText();
+                    String unitAcronym = acronymFieldRoot.getText();
+                    boolean isUnitElite = isEliteCheckBoxRoot.isChecked();
                     //boolean isUnitCompany = isCompanyCheckBox.isChecked();
                     //CountryEnum unitCountry = that.editArmyService.getSelectedCountry();
                     //ElementSelectorType unitType = selectEditUnitBox.getSelected();
@@ -981,7 +987,10 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         ) {
             if(!this.editArmyService.getRootGroup().getName().equals(unitName)) this.editArmyService.getRootGroup().setName(unitName);
             if(!this.editArmyService.getRootGroup().getAcronym().equals(unitAcronym)) this.editArmyService.getRootGroup().setAcronym(unitAcronym);
-            if(this.editArmyService.getRootGroup().isElite() != isUnitElite) this.editArmyService.getRootGroup().setIsElite(isUnitElite);
+            if(this.editArmyService.getRootGroup().isElite() != isUnitElite) {
+                this.editArmyService.getRootGroup().setIsElite(isUnitElite);
+                this.editArmyService.getRootGroup().setUsesWhiteStroke(isUnitElite);
+            }
             isModified = true;
         }
 
@@ -1003,6 +1012,19 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.nameField.setText(this.editArmyService.getSelectedUnit().getName());
         this.acronymField.setText(this.editArmyService.getSelectedUnit().getAcronym());
         this.isEliteCheckBox.setChecked(this.editArmyService.getSelectedUnit().isElite());
+
+    }
+
+    private void setEditRootValues() {
+        this.nameFieldRoot.setText(this.editArmyService.getRootGroup().getName());
+        this.acronymFieldRoot.setText(this.editArmyService.getRootGroup().getAcronym());
+        this.isEliteCheckBoxRoot.setChecked(this.editArmyService.getRootGroup().isElite());
+    }
+
+    private void resetEditRootValues() {
+        this.nameFieldRoot.setText("");
+        this.acronymFieldRoot.setText("");
+        this.isEliteCheckBoxRoot.setChecked(false);
     }
 
     private Drawable getButtonPanelTexture() {
@@ -1113,6 +1135,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         //resetSelectedUnit();
         this.buttonSaveAllWrapper.getButton().setDisabled(false);
         this.buttonSaveGroupWrapper.getButton().setDisabled(true);
+        this.setEditRootValues();
     }
 
     /**
@@ -1175,6 +1198,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         updateTreeFromRoot();
         this.editArmyService.setTreeRootNodeDefined(true);
         this.updateLeftPanelFromBoolean();
+        this.setEditRootValues();
         Toast.showToast(this.stage, "New Root Unit Group created", ColorStyleEnum.SUCCESS, 2f);
     }
 
@@ -1201,6 +1225,8 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 resetSelectedUnit();
                 this.buttonSaveAllWrapper.getButton().setDisabled(true);
                 this.buttonSaveGroupWrapper.getButton().setDisabled(true);
+                this.resetEditRootValues();
+
                 Toast.showToast(this.stage, "Root Unit Group deleted", ColorStyleEnum.SUCCESS, 2f);
             }
             catch (Exception e) {
