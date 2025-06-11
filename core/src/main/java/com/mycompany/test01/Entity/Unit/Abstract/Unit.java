@@ -3,7 +3,7 @@ package com.mycompany.test01.Entity.Unit.Abstract;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
-public class Unit extends UnitElement {
+public abstract class Unit extends UnitElement {
     //private int id;
     //private String name;
 

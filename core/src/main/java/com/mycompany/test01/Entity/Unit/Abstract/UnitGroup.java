@@ -5,7 +5,7 @@ import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Interface.ElementInterface;
 
-public class UnitGroup extends UnitElement { // implements Element
+public abstract class UnitGroup extends UnitElement { // implements Element
     private int level;
     private OrderedSet<ElementInterface> units;
 

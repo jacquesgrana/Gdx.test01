@@ -47,7 +47,7 @@ public interface UnitFactoryInterface {
 
     public HeavyTankUnit createHeavyTankUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
-    public AssaultGun createAssaultGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
+    public AssaultGunUnit createAssaultGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 
     public MecaInfUnit createMecaInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank);
 

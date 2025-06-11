@@ -8,11 +8,11 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
-import com.mycompany.test01.Entity.Unit.ArtiUnit.ArtiUnit;
-import com.mycompany.test01.Entity.Unit.CombatUnit.AntiTankUnit;
-import com.mycompany.test01.Entity.Unit.CombatUnit.EngineerUnit;
-import com.mycompany.test01.Entity.Unit.CombatUnit.InfantryRecoCompanyUnit;
-import com.mycompany.test01.Entity.Unit.CombatUnit.InfantryUnit;
+import com.mycompany.test01.Entity.Unit.ArtiUnit.*;
+//import com.mycompany.test01.Entity.Unit.ArtiUnit.MecaArtiUnit;
+//import com.mycompany.test01.Entity.Unit.ArtiUnit.MortarArtiUnit;
+//import com.mycompany.test01.Entity.Unit.ArtiUnit.MotoArtiUnit;
+import com.mycompany.test01.Entity.Unit.CombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Group.*;
 import com.mycompany.test01.Interface.ElementInterface;
 
@@ -35,13 +35,45 @@ public class UnitElementSerializer {
         // Sans cela, les noms de classe complets (avec package) seront écrits dans le JSON.
 
         //json.addClassTag("Unit", Unit.class);
-        json.addClassTag("InfantryUnit", InfantryUnit.class);
-        json.addClassTag("EngineerUnit", EngineerUnit.class);
-        json.addClassTag("ArtiUnit", ArtiUnit.class);
+        json.addClassTag("AntiAirUnit", AntiAirUnit.class);
         json.addClassTag("AntiTankUnit", AntiTankUnit.class);
+        json.addClassTag("AssaultGunUnit", AssaultGunUnit.class);
+        json.addClassTag("BicycleInfUnit", BicycleInfUnit.class);
+        json.addClassTag("CavalryUnit", CavalryUnit.class);
+        json.addClassTag("EngineerUnit", EngineerUnit.class);
+        json.addClassTag("GliderInfantryUnit", GliderInfantryUnit.class);
+        json.addClassTag("HeavyAntiAirUnit", HeavyAntiAirUnit.class);
+        json.addClassTag("HeavyTankUnit", HeavyTankUnit.class);
         json.addClassTag("InfantryRecoCompanyUnit", InfantryRecoCompanyUnit.class);
-        // TODO ajouter les autres classes concrètes
-        //json.addClassTag("UnitGroup", UnitGroup.class);
+        json.addClassTag("InfantryUnit", InfantryUnit.class);
+        json.addClassTag("MachineGunUnit", MachineGunUnit.class);
+        json.addClassTag("MarineInfUnit", MarineInfUnit.class);
+        json.addClassTag("MecaInfUnit", MecaInfUnit.class);
+        json.addClassTag("MecaRecoUnit", MecaRecoUnit.class);
+        json.addClassTag("MotoAntiAirUnit", MotoAntiAirUnit.class);
+        json.addClassTag("MotoAntiTankUnit", MotoAntiTankUnit.class);
+        json.addClassTag("MotoEngineerUnit", MotoEngineerUnit.class);
+        json.addClassTag("MotoHeavyAntiAirUnit", MotoHeavyAntiAirUnit.class);
+        json.addClassTag("MotoInfRecoCompanyUnit", MotoInfRecoCompanyUnit.class);
+        json.addClassTag("MotoInfUnit", MotoInfUnit.class);
+        json.addClassTag("MotorcycleInfUnit", MotorcycleInfUnit.class);
+        json.addClassTag("MountainInfantryUnit", MountainInfantryUnit.class);
+        json.addClassTag("ParaInfUnit", ParaInfUnit.class);
+        json.addClassTag("SkiInfantryUnit", SkiInfantryUnit.class);
+        json.addClassTag("SkiMachineGunUnit", SkiMachineGunUnit.class);
+        json.addClassTag("TankUnit", TankUnit.class);
+
+        json.addClassTag("ArtiUnit", ArtiUnit.class);
+        json.addClassTag("MecaArtiUnit", MecaArtiUnit.class);
+        json.addClassTag("MortarArtiUnit", MortarArtiUnit.class);
+        json.addClassTag("MotoArtiUnit", MotoArtiUnit.class);
+        json.addClassTag("MotoMortarArtiUnit", MotoMortarArtiUnit.class);
+        json.addClassTag("MotoRocketArtiUnit", MotoRocketArtiUnit.class);
+        json.addClassTag("MountainArtiUnit", MountainArtiUnit.class);
+        json.addClassTag("ParaArtiUnit", ParaArtiUnit.class);
+        json.addClassTag("ParaMortarArtiUnit", ParaMortarArtiUnit.class);
+        json.addClassTag("RocketArtiUnit", RocketArtiUnit.class);
+
         json.addClassTag("FrontGroup", FrontGroup.class);
         json.addClassTag("ArmyGroupGroup", ArmyGroupGroup.class);
         json.addClassTag("ArmyGroup", ArmyGroup.class);
@@ -51,8 +83,6 @@ public class UnitElementSerializer {
         json.addClassTag("UnitGroup", UnitGroup.class);
         json.addClassTag("Unit", Unit.class);
 
-        // Vous n'avez généralement pas besoin d'enregistrer des alias pour les classes abstraites/interfaces
-        // si setElementType est utilisé correctement et que les types concrets ont des ClassTags ou sont écrits avec leur nom complet.
     }
 
     /*

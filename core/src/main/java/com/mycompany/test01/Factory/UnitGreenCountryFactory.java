@@ -114,8 +114,8 @@ public class UnitGreenCountryFactory implements UnitFactoryInterface {
 
 
     @Override
-    public AssaultGun createAssaultGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank){
-        return new AssaultGun(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+    public AssaultGunUnit createAssaultGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank){
+        return new AssaultGunUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
     }
 
 
