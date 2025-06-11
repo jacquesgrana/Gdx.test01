@@ -113,8 +113,8 @@ public class ArmyFileService {
             }
             catch (Exception e) {
                 //System.out.println(e.fillInStackTrace());
-                LoadArmyFileException newError = new LoadArmyFileException("File Datas unreadable", e);
-                throw newError;
+                //e.printStackTrace();
+                throw new LoadArmyFileException("File Datas unreadable", e);
             }
 
             //return null;

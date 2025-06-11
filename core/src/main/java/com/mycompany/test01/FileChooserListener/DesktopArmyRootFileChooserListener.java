@@ -30,6 +30,7 @@ public class DesktopArmyRootFileChooserListener implements FileChooserListenerIn
 
             // TODO mettre un try/catch avec gestion du catch ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             try {
+
                 UnitGroup rootGroup = this.armyFileService.loadArmyData(file.path());
                 if(rootGroup.getLevel() == 5) {
                     this.armyFileService.setRootLoaded(rootGroup);
@@ -46,10 +47,12 @@ public class DesktopArmyRootFileChooserListener implements FileChooserListenerIn
                     this.toastObservable.notifyObservers();
                 }
             }
-            catch (LoadArmyFileException e) {
+            catch (Exception e) {
+                //e.printStackTrace();
                 Toast toast = new Toast("Error :" + e.getMessage(), ColorStyleEnum.DANGER);
                 this.toastObservable.setObserved(toast);
                 this.toastObservable.notifyObservers();
+
             }
 
         }

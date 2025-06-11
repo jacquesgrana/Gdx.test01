@@ -55,12 +55,6 @@ public class UnitElementSerializer {
         // si setElementType est utilisé correctement et que les types concrets ont des ClassTags ou sont écrits avec leur nom complet.
     }
 
-    /**
-     * Sérialise le UnitGroup racine dans un fichier.
-     *
-     * @param rootGroup Le UnitGroup racine à sérialiser.
-     * @param filePath  Le chemin du fichier où sauvegarder les données (par exemple, "data/units.json").
-     */
     /*
     public <T extends UnitGroup> void serialize(T rootGroup, String filePath) {
         if (rootGroup == null) {
