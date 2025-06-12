@@ -9,11 +9,11 @@ import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Entity.Unit.ArtiUnit.*;
-//import com.mycompany.test01.Entity.Unit.ArtiUnit.MecaArtiUnit;
-//import com.mycompany.test01.Entity.Unit.ArtiUnit.MortarArtiUnit;
-//import com.mycompany.test01.Entity.Unit.ArtiUnit.MotoArtiUnit;
 import com.mycompany.test01.Entity.Unit.CombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Group.*;
+import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
+import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
+import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Interface.ElementInterface;
 
 public class UnitElementSerializer {
@@ -74,6 +74,12 @@ public class UnitElementSerializer {
         json.addClassTag("ParaMortarArtiUnit", ParaMortarArtiUnit.class);
         json.addClassTag("RocketArtiUnit", RocketArtiUnit.class);
 
+        json.addClassTag("BridgeEngineerUnit", BridgeEngineerUnit.class);
+        json.addClassTag("CivilEngineerUnit", CivilEngineerUnit.class);
+        json.addClassTag("LogisticUnit", LogisticUnit.class);
+        json.addClassTag("MotoBridgeEngineerUnit", MotoBridgeEngineerUnit.class);
+        json.addClassTag("MotoCivilEngineerUnit", MotoCivilEngineerUnit.class);
+
         json.addClassTag("FrontGroup", FrontGroup.class);
         json.addClassTag("ArmyGroupGroup", ArmyGroupGroup.class);
         json.addClassTag("ArmyGroup", ArmyGroup.class);
@@ -82,6 +88,9 @@ public class UnitElementSerializer {
 
         json.addClassTag("UnitGroup", UnitGroup.class);
         json.addClassTag("Unit", Unit.class);
+
+        json.addClassTag("ArtiProps", ArtiProps.class);
+        json.addClassTag("CombatProps", CombatProps.class);
 
     }
 
