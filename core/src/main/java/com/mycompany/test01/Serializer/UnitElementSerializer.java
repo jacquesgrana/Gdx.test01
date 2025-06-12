@@ -34,7 +34,6 @@ public class UnitElementSerializer {
         // Enregistre les alias de classe pour un JSON plus concis (facultatif mais recommandé)
         // Sans cela, les noms de classe complets (avec package) seront écrits dans le JSON.
 
-        //json.addClassTag("Unit", Unit.class);
         json.addClassTag("AntiAirUnit", AntiAirUnit.class);
         json.addClassTag("AntiTankUnit", AntiTankUnit.class);
         json.addClassTag("AssaultGunUnit", AssaultGunUnit.class);
@@ -93,30 +92,6 @@ public class UnitElementSerializer {
         json.addClassTag("CombatProps", CombatProps.class);
 
     }
-
-    /*
-    public <T extends UnitGroup> void serialize(T rootGroup, String filePath) {
-        if (rootGroup == null) {
-            System.err.println("Le rootGroup à sérialiser est null.");
-            return;
-        }
-        try {
-            FileHandle file = Gdx.files.local(filePath);
-            // MODIFICATION ICI:
-            // Utilisez UnitGroup.class comme knownType.
-            // Si rootGroup est une instance d'une sous-classe (ex: FrontGroup),
-            // le champ "class" sera écrit dans le JSON.
-            String jsonData = json.toJson(rootGroup, UnitGroup.class);
-            //String jsonData = json.prettyPrint(rootGroup, UnitGroup.class); // si vous préférez prettyPrint
-
-            file.writeString(jsonData, false);
-            System.out.println("Sérialisation terminée vers : " + file.path());
-        } catch (Exception e) {
-            System.err.println("Erreur lors de la sérialisation :");
-            e.printStackTrace();
-        }
-    }
-*/
 
     public <T extends UnitGroup> String serialize(T rootGroup) {
         if (rootGroup == null) {
