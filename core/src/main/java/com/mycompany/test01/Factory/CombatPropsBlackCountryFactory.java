@@ -9,8 +9,8 @@ public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterfa
     private final int MANPOWER_COMPANY = 330;
     private final int MANPOWER_LOW = 200;
 
-    private final int MORALE_LOW = 5;
-    private final int MORALE_MEDIUM = 6;
+    private final int MORALE_LOW = 6;
+    private final int MORALE_MEDIUM = 7;
     private final int MORALE_HIGH = 8;
     private final int MORALE_ELITE = 9;
 
@@ -19,7 +19,7 @@ public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterfa
     private final int SOFT_ATTACK_LOW = 6;
     private final int SOFT_ATTACK_NON_COMBAT = 0;
 
-    private final int HARD_ATTACK_ELITE = 16;
+    private final int HARD_ATTACK_ELITE = 14;
     private final int HARD_ATTACK_MEDIUM = 12;
     private final int HARD_ATTACK_LOW = 7;
     private final int HARD_ATTACK_NON_COMBAT = 0;
@@ -56,6 +56,15 @@ public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterfa
     private final int SPEED_MECA_ELITE = 14;
     private final int SPEED_MECA_MEDIUM = 12;
     private final int SPEED_MECA_LOW = 10;
+
+    private final int SPEED_BICYCLE_ELITE = 10;
+    private final int SPEED_BICYCLE_MEDIUM = 8;
+    private final int SPEED_BICYCLE_LOW = 7;
+
+    private final int SPEED_CAV_ELITE = 13;
+    private final int SPEED_CAV_MEDIUM = 11;
+    private final int SPEED_CAV_LOW = 10;
+
 
     @Override
     public CombatProps getArtiLowCombatProps() {
@@ -666,7 +675,7 @@ public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterfa
             false
         );
     }
-    
+
     @Override
     public CombatProps getRocketArtiHighCombatProps() {
         return new CombatProps(
@@ -705,182 +714,578 @@ public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterfa
 
     @Override
     public CombatProps getAntiAirLowCombatProps() {
-        return null;
+        return new CombatProps(
+          MORALE_LOW,
+          MANPOWER_MEDIUM,
+          SOFT_ATTACK_LOW,
+          HARD_ATTACK_LOW,
+          AIR_ATTACK_LOW,
+          SOFT_DEFENSE_LOW,
+          HARD_DEFENSE_LOW,
+          AIR_DEFENSE_MEDIUM,
+          SPEED_FOOT_MEDIUM,
+          true
+        );
     }
 
     @Override
     public CombatProps getAntiAirMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_MEDIUM,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_MEDIUM,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getAntiAirHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_ELITE,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_ELITE,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getAntiAirEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_ELITE,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_ELITE,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getAntiTankLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_NON_COMBAT,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getAntiTankMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_NON_COMBAT,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getAntiTankHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_ELITE,
+            AIR_DEFENSE_NON_COMBAT,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getAntiTankEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_ELITE,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_ELITE,
+            AIR_DEFENSE_NON_COMBAT,
+            SPEED_FOOT_ELITE,
+            true
+        );
     }
 
     @Override
     public CombatProps getAssaultGunLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_MEDIUM,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_MECA_LOW,
+            true
+        );
     }
 
     @Override
     public CombatProps getAssaultGunMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_MEDIUM,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_MECA_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getAssaultGunHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_ELITE,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_ELITE,
+            AIR_DEFENSE_LOW,
+            SPEED_MECA_ELITE,
+            true
+        );
     }
 
     @Override
     public CombatProps getAssaultGunEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_ELITE,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_ELITE,
+            AIR_DEFENSE_LOW,
+            SPEED_MECA_ELITE,
+            true
+        );
     }
 
     @Override
     public CombatProps getBicycleInfLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MAX,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_BICYCLE_LOW,
+            true
+        );
     }
 
     @Override
     public CombatProps getBicycleInfMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_BICYCLE_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getBicycleInfHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_BICYCLE_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getBicycleInfEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MAX,
+            SOFT_ATTACK_ELITE,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_ELITE,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_BICYCLE_ELITE,
+            true
+        );
     }
 
     @Override
     public CombatProps getCavalryLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MAX,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_CAV_LOW,
+            true
+        );
     }
 
     @Override
     public CombatProps getCavalryInfMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_CAV_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getCavalryInfHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_CAV_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getCavalryInfEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MAX,
+            SOFT_ATTACK_ELITE,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_ELITE,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_CAV_ELITE,
+            true
+        );
     }
 
     @Override
     public CombatProps getEngineerLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MAX,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_LOW,
+            true
+        );
     }
 
     @Override
     public CombatProps getEngineerInfMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getEngineerInfHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getEngineerInfEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MAX,
+            SOFT_ATTACK_ELITE,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_ELITE,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_ELITE,
+            true
+        );
     }
 
     @Override
     public CombatProps getGliderInfLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MAX,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_LOW,
+            true
+        );
     }
 
     @Override
     public CombatProps getGliderInfMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
-    public CombatProps getGliderInfInfHighCombatProps() {
-        return null;
+    public CombatProps getGliderInfHighCombatProps() {
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
-    public CombatProps getGliderInfInfEliteCombatProps() {
-        return null;
+    public CombatProps getGliderInfEliteCombatProps() {
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MAX,
+            SOFT_ATTACK_ELITE,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_ELITE,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_ELITE,
+            true
+        );
     }
 
     @Override
     public CombatProps getHeavyAntiAirLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_MEDIUM + 1,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getHeavyAntiAirMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_MEDIUM,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_MEDIUM + 2,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getHeavyAntiAirHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_ELITE,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_ELITE + 1,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getHeavyAntiAirEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_ELITE,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_ELITE + 2,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getHeavyTankLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_MEDIUM + 1,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM + 1,
+            AIR_DEFENSE_NON_COMBAT,
+            SPEED_MECA_LOW,
+            true
+        );
     }
 
     @Override
     public CombatProps getHeavyTankMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_MEDIUM + 2,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM + 2,
+            AIR_DEFENSE_NON_COMBAT,
+            SPEED_MECA_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getHeavyTankHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_ELITE + 1,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_ELITE + 1,
+            AIR_DEFENSE_NON_COMBAT,
+            SPEED_MECA_ELITE,
+            true
+        );
     }
 
     @Override
     public CombatProps getHeavyTankEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MEDIUM,
+            SOFT_ATTACK_MEDIUM + 1,
+            HARD_ATTACK_ELITE + 2,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM + 1,
+            HARD_DEFENSE_ELITE + 2,
+            AIR_DEFENSE_NON_COMBAT,
+            SPEED_MECA_ELITE,
+            true
+        );
     }
 
     @Override
@@ -905,22 +1310,66 @@ public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterfa
 
     @Override
     public CombatProps getInfantryLowCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_LOW,
+            MANPOWER_MAX,
+            SOFT_ATTACK_LOW,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_LOW,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_LOW,
+            true
+        );
     }
 
     @Override
     public CombatProps getInfantryMediumCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_MEDIUM,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_LOW,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getInfantryHighCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_HIGH,
+            MANPOWER_MAX,
+            SOFT_ATTACK_MEDIUM,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_MEDIUM,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_MEDIUM,
+            true
+        );
     }
 
     @Override
     public CombatProps getInfantryEliteCombatProps() {
-        return null;
+        return new CombatProps(
+            MORALE_ELITE,
+            MANPOWER_MAX,
+            SOFT_ATTACK_ELITE,
+            HARD_ATTACK_LOW,
+            AIR_ATTACK_LOW,
+            SOFT_DEFENSE_ELITE,
+            HARD_DEFENSE_MEDIUM,
+            AIR_DEFENSE_LOW,
+            SPEED_FOOT_ELITE,
+            true
+        );
     }
 
     @Override

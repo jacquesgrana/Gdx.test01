@@ -90,8 +90,8 @@ public interface CombatPropsFactoryInterface {
 
     public CombatProps getGliderInfLowCombatProps();
     public CombatProps getGliderInfMediumCombatProps();
-    public CombatProps getGliderInfInfHighCombatProps();
-    public CombatProps getGliderInfInfEliteCombatProps();
+    public CombatProps getGliderInfHighCombatProps();
+    public CombatProps getGliderInfEliteCombatProps();
 
     public CombatProps getHeavyAntiAirLowCombatProps();
     public CombatProps getHeavyAntiAirMediumCombatProps();
