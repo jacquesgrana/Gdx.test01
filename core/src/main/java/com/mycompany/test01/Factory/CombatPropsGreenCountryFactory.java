@@ -3,57 +3,57 @@ package com.mycompany.test01.Factory;
 import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Interface.CombatPropsFactoryInterface;
 
-public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterface {
-    private final int MANPOWER_MAX = 900;
+public class CombatPropsGreenCountryFactory implements CombatPropsFactoryInterface {
+    private final int MANPOWER_MAX = 1000;
     private final int MANPOWER_MEDIUM = 400;
-    private final int MANPOWER_COMPANY = 300;
+    private final int MANPOWER_COMPANY = 330;
     private final int MANPOWER_LOW = 200;
 
-    private final int MORALE_LOW = 6;
-    private final int MORALE_MEDIUM = 7;
-    private final int MORALE_HIGH = 8;
+    private final int MORALE_LOW = 5;
+    private final int MORALE_MEDIUM = 6;
+    private final int MORALE_HIGH = 7;
     private final int MORALE_ELITE = 9;
 
-    private final int SOFT_ATTACK_ELITE = 14;
-    private final int SOFT_ATTACK_MEDIUM = 10;
-    private final int SOFT_ATTACK_LOW = 6;
+    private final int SOFT_ATTACK_ELITE = 12;
+    private final int SOFT_ATTACK_MEDIUM = 9;
+    private final int SOFT_ATTACK_LOW = 5;
     private final int SOFT_ATTACK_NON_COMBAT = 0;
 
-    private final int HARD_ATTACK_ELITE = 14;
-    private final int HARD_ATTACK_MEDIUM = 12;
-    private final int HARD_ATTACK_LOW = 7;
+    private final int HARD_ATTACK_ELITE = 12;
+    private final int HARD_ATTACK_MEDIUM = 9;
+    private final int HARD_ATTACK_LOW = 5;
     private final int HARD_ATTACK_NON_COMBAT = 0;
 
 
-    private final int AIR_ATTACK_ELITE = 12;
-    private final int AIR_ATTACK_MEDIUM = 8;
-    private final int AIR_ATTACK_LOW = 4;
+    private final int AIR_ATTACK_ELITE = 13;
+    private final int AIR_ATTACK_MEDIUM = 9;
+    private final int AIR_ATTACK_LOW = 5;
     private final int AIR_ATTACK_NON_COMBAT = 0;
 
     private final int SOFT_DEFENSE_ELITE = 12;
-    private final int SOFT_DEFENSE_MEDIUM = 8;
-    private final int SOFT_DEFENSE_LOW = 4;
+    private final int SOFT_DEFENSE_MEDIUM = 9;
+    private final int SOFT_DEFENSE_LOW = 5;
     private final int SOFT_DEFENSE_NON_COMBAT = 3;
 
-    private final int HARD_DEFENSE_ELITE = 14;
-    private final int HARD_DEFENSE_MEDIUM = 10;
-    private final int HARD_DEFENSE_LOW = 4;
+    private final int HARD_DEFENSE_ELITE = 13;
+    private final int HARD_DEFENSE_MEDIUM = 9;
+    private final int HARD_DEFENSE_LOW = 5;
     private final int HARD_DEFENSE_NON_COMBAT = 2;
 
-    private final int AIR_DEFENSE_ELITE = 12;
-    private final int AIR_DEFENSE_MEDIUM = 8;
-    private final int AIR_DEFENSE_LOW = 4;
+    private final int AIR_DEFENSE_ELITE = 13;
+    private final int AIR_DEFENSE_MEDIUM = 9;
+    private final int AIR_DEFENSE_LOW = 5;
     private final int AIR_DEFENSE_NON_COMBAT = 0;
 
-    private final int SPEED_FOOT_ELITE = 8;
-    private final int SPEED_FOOT_MEDIUM = 6;
-    private final int SPEED_FOOT_LOW = 4;
+    private final int SPEED_FOOT_ELITE = 9;
+    private final int SPEED_FOOT_MEDIUM = 7;
+    private final int SPEED_FOOT_LOW = 5;
 
-    private final int SPEED_MOTO_ELITE = 12;
-    private final int SPEED_MOTO_MEDIUM = 10;
-    private final int SPEED_MOTO_LOW = 8;
+    private final int SPEED_MOTO_ELITE = 14;
+    private final int SPEED_MOTO_MEDIUM = 12;
+    private final int SPEED_MOTO_LOW = 9;
 
-    private final int SPEED_MECA_ELITE = 14;
+    private final int SPEED_MECA_ELITE = 15;
     private final int SPEED_MECA_MEDIUM = 12;
     private final int SPEED_MECA_LOW = 10;
 
@@ -61,8 +61,8 @@ public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterfa
     private final int SPEED_BICYCLE_MEDIUM = 8;
     private final int SPEED_BICYCLE_LOW = 7;
 
-    private final int SPEED_MOTORCYCLE_ELITE = 14;
-    private final int SPEED_MOTORCYCLE_MEDIUM = 12;
+    private final int SPEED_MOTORCYCLE_ELITE = 16;
+    private final int SPEED_MOTORCYCLE_MEDIUM = 13;
     private final int SPEED_MOTORCYCLE_LOW = 11;
 
     private final int SPEED_CAV_ELITE = 13;
