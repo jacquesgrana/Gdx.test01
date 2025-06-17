@@ -222,28 +222,8 @@ public interface CombatPropsFactoryInterface {
 
 
     // groups
-    public CombatProps getArmyLowCombatProps();
-    public CombatProps getArmyMediumCombatProps();
-    public CombatProps getArmyHighCombatProps();
-    public CombatProps getArmyEliteCombatProps();
-
-    public CombatProps getArmyGroupLowCombatProps();
-    public CombatProps getArmyGroupMediumCombatProps();
-    public CombatProps getArmyGroupHighCombatProps();
-    public CombatProps getArmyGroupEliteCombatProps();
-
-    public CombatProps getBrigadeLowCombatProps();
-    public CombatProps getBrigadeMediumCombatProps();
-    public CombatProps getBrigadeHighCombatProps();
-    public CombatProps getBrigadeEliteCombatProps();
-
-    public CombatProps getDivisionLowCombatProps();
-    public CombatProps getDivisionMediumCombatProps();
-    public CombatProps getDivisionHighCombatProps();
-    public CombatProps getDivisionEliteCombatProps();
-
-    public CombatProps getFrontLowCombatProps();
-    public CombatProps getFrontMediumCombatProps();
-    public CombatProps getFrontHighCombatProps();
-    public CombatProps getFrontEliteCombatProps();
+    public CombatProps getHeadQuarterLowCombatProps();
+    public CombatProps getHeadQuarterMediumCombatProps();
+    public CombatProps getHeadQuarterHighCombatProps();
+    public CombatProps getHeadQuarterEliteCombatProps();
 }
