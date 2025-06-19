@@ -1,5 +1,6 @@
 package com.mycompany.test01.Entity.Unit.Abstract;
 
+import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Interface.ElementInterface;
@@ -25,6 +26,8 @@ public abstract class UnitElement implements ElementInterface {
     protected boolean usesWhiteStroke;
     protected int regRank;
 
+    //protected CombatProps combatProps;
+
     public UnitElement() {
         this.id = unitCounter;
         this.parent = null;
@@ -38,6 +41,7 @@ public abstract class UnitElement implements ElementInterface {
         isCompany = false;
         usesWhiteStroke = false;
         regRank = 0;
+        //combatProps = new CombatProps();
         unitCounter++;
     }
 
@@ -52,6 +56,7 @@ public abstract class UnitElement implements ElementInterface {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank
+        //CombatProps combatProps
     ) {
         this.id = unitCounter;
         this.name = name;

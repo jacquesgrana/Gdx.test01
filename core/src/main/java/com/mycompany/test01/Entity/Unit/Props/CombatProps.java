@@ -17,6 +17,15 @@ public class CombatProps {
     private boolean isCombatUnit;
 
     public CombatProps() {
+        manpowerMax = 400;
+        softAttack = 0;
+        hardAttack = 0;
+        airAttack = 0;
+        softDefense = 2;
+        hardDefense = 1;
+        airDefense = 0;
+        speed = 5;
+        isCombatUnit = false;
     }
 
     public CombatProps(
