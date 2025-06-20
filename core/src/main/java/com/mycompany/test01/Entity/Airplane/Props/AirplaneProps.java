@@ -1,13 +1,6 @@
 package com.mycompany.test01.Entity.Airplane.Props;
 
-import com.mycompany.test01.Enum.AirplaneTypeEnum;
-import com.mycompany.test01.Enum.CountryEnum;
-
 public class AirplaneProps {
-    private String name;
-    private String acronym;
-    private CountryEnum country;
-    private AirplaneTypeEnum planeType;
     private int planeCountMax;
     private int airAttack;
     private int airDefense;
@@ -19,10 +12,6 @@ public class AirplaneProps {
     //private int accuracy;
 
     public AirplaneProps() {
-        this.name = "";
-        this.acronym = "";
-        this.country = CountryEnum.NO_COUNTRY;
-        this.planeType = AirplaneTypeEnum.NO_TYPE;
         this.planeCountMax = 1;
         this.airDefense = 1;
         this.airAttack = 1;
@@ -35,10 +24,6 @@ public class AirplaneProps {
     }
 
     public AirplaneProps(
-        String name,
-        String acronym,
-        CountryEnum country,
-        AirplaneTypeEnum planeType,
         int planeMaxCount,
         int airDefense,
         int airAttack,
@@ -48,10 +33,6 @@ public class AirplaneProps {
         int rangeMax,
         int visibility
     ) {
-        this.name = name;
-        this.acronym = acronym;
-        this.country = country;
-        this.planeType = planeType;
         this.planeCountMax = planeMaxCount;
         this.airDefense = airDefense;
         this.airAttack = airAttack;
@@ -61,38 +42,6 @@ public class AirplaneProps {
         this.rangeMax = rangeMax;
         this.visibility = visibility;
         //this.accuracy = accuracy;
-    }
-
-    public String getAcronym() {
-        return acronym;
-    }
-
-    public void setAcronym(String acronym) {
-        this.acronym = acronym;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public CountryEnum getCountry() {
-        return country;
-    }
-
-    public void setCountry(CountryEnum country) {
-        this.country = country;
-    }
-
-    public AirplaneTypeEnum getPlaneType() {
-        return planeType;
-    }
-
-    public void setPlaneType(AirplaneTypeEnum planeType) {
-        this.planeType = planeType;
     }
 
     public int getPlaneCountMax() {

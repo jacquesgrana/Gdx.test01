@@ -2,6 +2,8 @@ package com.mycompany.test01.Entity.Airplane.Abstract;
 
 import com.mycompany.test01.Entity.Airplane.Props.AirplaneProps;
 import com.mycompany.test01.Entity.Airplane.Props.BomberProps;
+import com.mycompany.test01.Enum.AirplaneTypeEnum;
+import com.mycompany.test01.Enum.CountryEnum;
 
 public abstract class BomberSquadronAbstract extends AirplaneSquadronAbstract {
 
@@ -11,8 +13,15 @@ public abstract class BomberSquadronAbstract extends AirplaneSquadronAbstract {
         super();
     }
 
-    public BomberSquadronAbstract(AirplaneProps airplaneProps, BomberProps bomberProps) {
-        super(airplaneProps);
+    public BomberSquadronAbstract(
+        String name,
+        String acronym,
+        CountryEnum country,
+        AirplaneTypeEnum planeType,
+        AirplaneProps airplaneProps,
+        BomberProps bomberProps
+    ) {
+        super(name, acronym, country, planeType, airplaneProps);
         this.bomberProps = bomberProps;
     }
 

@@ -4,7 +4,7 @@ public class TransportProps {
     private int capacity;
 
     public TransportProps() {
-        this.capacity = 1;
+        this.capacity = 10;
     }
 
     public TransportProps(int capacity) {
