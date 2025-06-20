@@ -1,28 +1,28 @@
-package com.mycompany.test01.Factory;
+package com.mycompany.test01.Factory.ArtiProps;
 
 import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Interface.ArtiPropsFactoryInterface;
 
-public class ArtiPropsBrownCountryFactory implements ArtiPropsFactoryInterface {
+public class ArtiPropsYellowCountryFactory implements ArtiPropsFactoryInterface {
 
-    private final int RANGE_SHORT = 7;
-    private final int RANGE_MEDIUM = 11;
-    private final int RANGE_LONG = 15;
-    private final int RANGE_VERY_LONG = 20;
+    private final int RANGE_SHORT = 4;
+    private final int RANGE_MEDIUM = 9;
+    private final int RANGE_LONG = 12;
+    private final int RANGE_VERY_LONG = 16;
 
-    private final int ART_ATTACK_LOW = 3;
-    private final int ART_ATTACK_MEDIUM = 7;
-    private final int ART_ATTACK_HIGH = 9;
-    private final int ART_ATTACK_ELITE = 12;
+    private final int ART_ATTACK_LOW = 1;
+    private final int ART_ATTACK_MEDIUM = 3;
+    private final int ART_ATTACK_HIGH = 5;
+    private final int ART_ATTACK_ELITE = 7;
 
-    private final int ART_DEFENSE_LOW = 2;
-    private final int ART_DEFENSE_MEDIUM = 4;
-    private final int ART_DEFENSE_HIGH = 5;
-    private final int ART_DEFENSE_ELITE = 7;
+    private final int ART_DEFENSE_LOW = 1;
+    private final int ART_DEFENSE_MEDIUM = 2;
+    private final int ART_DEFENSE_HIGH = 3;
+    private final int ART_DEFENSE_ELITE = 4;
 
-    private final int DELAY_SLOW = 3;
-    private final int DELAY_MEDIUM = 2;
-    private final int DELAY_FAST = 1;
+    private final int DELAY_SLOW = 18;
+    private final int DELAY_MEDIUM = 8;
+    private final int DELAY_FAST = 3;
 
 
     @Override

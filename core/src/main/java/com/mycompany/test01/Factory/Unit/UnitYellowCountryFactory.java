@@ -1,16 +1,17 @@
-package com.mycompany.test01.Factory;
+package com.mycompany.test01.Factory.Unit;
 
 import com.mycompany.test01.Entity.Unit.ArtiUnit.*;
 import com.mycompany.test01.Entity.Unit.CombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Group.*;
 import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
 import com.mycompany.test01.Enum.CountryEnum;
+import com.mycompany.test01.Factory.ArtiProps.ArtiPropsYellowCountryFactory;
 import com.mycompany.test01.Interface.ArtiPropsFactoryInterface;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
 
-public class UnitBlackCountryFactory implements UnitFactoryInterface {
-    private final CountryEnum country = CountryEnum.BLACK_COUNTRY;
-    private final ArtiPropsFactoryInterface artiPropsFactory = new ArtiPropsBlackCountryFactory();
+public class UnitYellowCountryFactory implements UnitFactoryInterface {
+    private final CountryEnum country = CountryEnum.YELLOW_COUNTRY;
+    private final ArtiPropsFactoryInterface artiPropsFactory = new ArtiPropsYellowCountryFactory();
 
     @Override
     public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke,  int regRank) {
@@ -23,8 +24,7 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
     }
 
     @Override
-    public MountainArtiUnit createMountainArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank)
-    {
+    public MountainArtiUnit createMountainArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new MountainArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, artiPropsFactory.getMountainArtiMedium());
     }
 
@@ -55,7 +55,7 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MarineInfUnit createMarineInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MarineInfUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MarineInfUnit(name, acronym, this.country, isElite,false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -75,15 +75,7 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
 
     @Override
     public ArtiUnit createArtiUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new ArtiUnit(
-            name, acronym,
-            this.country,
-            isElite,
-            false,
-            usesWhiteStroke,
-            regRank,
-            artiPropsFactory.getArtiMediumRangeMedium()
-            );
+        return new ArtiUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank, artiPropsFactory.getArtiMediumRangeMedium());
     }
 
     @Override
@@ -170,7 +162,7 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
 
     @Override
     public MecaRecoUnit createMecaRecoUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new MecaRecoUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new MecaRecoUnit(name, acronym, this.country, isElite,false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -202,7 +194,6 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
     public MotoHeavyAntiAirUnit createMotoHeavyAntiAirUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
         return new MotoHeavyAntiAirUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
     }
-
 
     @Override
     public MachineGunUnit createMachineGunUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
@@ -237,10 +228,9 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
 
 
 
-
     @Override
     public FrontGroup createFrontGroup(String name, String acronym, boolean isPara, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
-        return new FrontGroup(name, acronym, this.country, isPara, isElite, isMotorised, usesWhiteStroke);
+        return new FrontGroup(name, acronym, this.country,isPara, isElite, isMotorised, usesWhiteStroke);
     }
 
     @Override
@@ -285,6 +275,7 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         // 1 Eng
         EngineerUnit engineer_01 = new EngineerUnit(divName + " engineer", acronym, this.country, false, false, false, 0);
 
+        // todo 1 reco inf company
         InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, this.country, false, false, 0);
 
         division.addUnit(inf_01_01);
@@ -314,40 +305,50 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         InfantryUnit inf_01_01 = new InfantryUnit(divName + " inf 1-1", acronym + "•1•1", this.country, true, false, true, 1);
         InfantryUnit inf_02_01 = new InfantryUnit(divName + " inf 2-1", acronym + "•1•2", this.country, true, false, true, 2);
         InfantryUnit inf_03_01 = new InfantryUnit(divName + " inf 3-1", acronym + "•1•3", this.country, true, false, true, 3);
+        InfantryUnit inf_04_01 = new InfantryUnit(divName + " inf 4-1", acronym + "•1•4", this.country, true, false, true, 4);
         InfantryUnit inf_01_02 = new InfantryUnit(divName + " inf 1-2", acronym + "•2•1", this.country, true, false, true, 1);
         InfantryUnit inf_02_02 = new InfantryUnit(divName + " inf 2-2", acronym + "•2•2", this.country, true, false, true, 2);
         InfantryUnit inf_03_02 = new InfantryUnit(divName + " inf 3-2", acronym + "•2•3", this.country, true, false, true, 3);
+        InfantryUnit inf_04_02 = new InfantryUnit(divName + " inf 4-2", acronym + "•2•4", this.country, true, false, true, 4);
         InfantryUnit inf_01_03 = new InfantryUnit(divName + " inf 1-3", acronym + "•3•1", this.country, true, false, true, 1);
         InfantryUnit inf_02_03 = new InfantryUnit(divName + " inf 2-3", acronym + "•3•2", this.country, true, false, true, 2);
         InfantryUnit inf_03_03 = new InfantryUnit(divName + " inf 3-3", acronym + "•3•3", this.country, true, false, true, 3);
+        InfantryUnit inf_04_03 = new InfantryUnit(divName + " inf 4-3", acronym + "•3•4", this.country, true, false, true, 4);
         // 3 art
         ArtiUnit art_01 = new ArtiUnit(divName + " art 1", acronym + "•1", this.country, true, false, true, 1, artiPropsFactory.getArtiMediumRangeElite());
         ArtiUnit art_02 = new ArtiUnit(divName + " art 2", acronym + "•2", this.country, true, false, true, 2, artiPropsFactory.getArtiMediumRangeHigh());
         ArtiUnit art_03 = new ArtiUnit(divName + " art 3", acronym + "•3", this.country, true, false, true, 3, artiPropsFactory.getArtiMediumRangeHigh());
+        MortarArtiUnit art_04 = new MortarArtiUnit(divName + " mortar art 4", acronym + "•4", this.country, true, false, true, 4, artiPropsFactory.getMortarHigh());
+        MortarArtiUnit art_05 = new MortarArtiUnit(divName + " mortar art 5", acronym + "•5", this.country, true, false, true, 5, artiPropsFactory.getMortarHigh());
+
         // 1 Anti tank
         AntiTankUnit anti_tank_01 = new AntiTankUnit(divName + " anti_tank", acronym, this.country, true, false, true, 0);
         // 1 Eng
         EngineerUnit engineer_01 = new EngineerUnit(divName + " engineer", acronym, this.country, true, false, true, 0);
-        HeavyAntiAirUnit anti_air_01 = new HeavyAntiAirUnit(divName + " heavy_anti_air", acronym, this.country, true, false, true, 0);
 
+        // todo 1 reco inf company
         InfantryRecoCompanyUnit reco_company = new InfantryRecoCompanyUnit(divName + " reco", acronym, this.country, true, true, 0);
+
 
         division.addUnit(inf_01_01);
         division.addUnit(inf_02_01);
         division.addUnit(inf_03_01);
+        division.addUnit(inf_04_01);
         division.addUnit(inf_01_02);
         division.addUnit(inf_02_02);
         division.addUnit(inf_03_02);
+        division.addUnit(inf_04_02);
         division.addUnit(inf_01_03);
         division.addUnit(inf_02_03);
         division.addUnit(inf_03_03);
+        division.addUnit(inf_04_03);
 
         division.addUnit(art_01);
         division.addUnit(art_02);
         division.addUnit(art_03);
-
+        division.addUnit(art_04);
+        division.addUnit(art_05);
         division.addUnit(anti_tank_01);
-        division.addUnit(anti_air_01);
         division.addUnit(engineer_01);
 
         division.addUnit(reco_company);
@@ -355,7 +356,6 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         return division;
     }
 
-    @Override
     public DivisionGroup createMotoInfDivision(String divName, String acronym) {
         DivisionGroup division = new DivisionGroup(divName, acronym, this.country, false, false, true, false);
 
@@ -415,43 +415,5 @@ public class UnitBlackCountryFactory implements UnitFactoryInterface {
         division.addUnit(reco_company);
 
         return division;
-    }
-
-    public BrigadeGroup createEliteMecaBrigade(String name, String acronym) {
-        BrigadeGroup brigade = new BrigadeGroup(name, acronym, this.country, false, true, true, true);
-
-        MecaInfUnit mecaInfUnit01 = new MecaInfUnit(name + " meca inf 1-3", acronym, this.country, true, false, true, 1);
-        MecaInfUnit mecaInfUnit02 = new MecaInfUnit(name + " meca inf 2-3", acronym, this.country, true, false, true, 2);
-        MecaInfUnit mecaInfUnit03 = new MecaInfUnit(name + " meca inf 3-3", acronym, this.country, true, false, true, 3);
-
-        HeavyTankUnit heavyTankUnit = new HeavyTankUnit(name + " heavy tank 1-3", acronym, this.country, true, false, true, 1);
-        TankUnit tankUnit01 = new TankUnit(name + " tank 2-3", acronym, this.country, true, false, true, 2);
-        TankUnit tankUnit02 = new TankUnit(name + " tank 3-3", acronym, this.country, true, false, true, 3);
-
-        MecaArtiUnit mecaArtiUnit01 = new MecaArtiUnit(name + " meca arti 1-3", acronym, this.country, true, false, true, 1, artiPropsFactory.getMecaArtiElite());
-        MecaArtiUnit mecaArtiUnit02 = new MecaArtiUnit(name + " meca arti 2-3", acronym, this.country, true, false, true, 2, artiPropsFactory.getMecaArtiElite());
-        MotoRocketArtiUnit motoRocketArtiUnit = new MotoRocketArtiUnit(name + " moto rocket arti 3-3", acronym, this.country, true, false, true, 3, artiPropsFactory.getRocketHigh());
-
-        MotoHeavyAntiAirUnit motoHeavyAntiAirUnit = new MotoHeavyAntiAirUnit(name + " heavy moto anti air", acronym, this.country, true, false, true, 0);
-        MotoEngineerUnit motoEngineerUnit = new MotoEngineerUnit(name + " moto eng", acronym, this.country, true, false, true, 0);
-        MecaRecoUnit mecaRecoUnit = new MecaRecoUnit(name + " meca reco", acronym, this.country, true, true, true, 0);
-
-        brigade.addUnit(mecaInfUnit01);
-        brigade.addUnit(mecaInfUnit02);
-        brigade.addUnit(mecaInfUnit03);
-
-        brigade.addUnit(heavyTankUnit);
-        brigade.addUnit(tankUnit01);
-        brigade.addUnit(tankUnit02);
-
-        brigade.addUnit(mecaArtiUnit01);
-        brigade.addUnit(mecaArtiUnit02);
-        brigade.addUnit(motoRocketArtiUnit);
-
-        brigade.addUnit(motoHeavyAntiAirUnit);
-        brigade.addUnit(motoEngineerUnit);
-        brigade.addUnit(mecaRecoUnit);
-
-        return brigade;
     }
 }

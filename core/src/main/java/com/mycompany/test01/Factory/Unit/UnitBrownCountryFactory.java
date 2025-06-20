@@ -1,17 +1,19 @@
-package com.mycompany.test01.Factory;
+package com.mycompany.test01.Factory.Unit;
 
 import com.mycompany.test01.Entity.Unit.ArtiUnit.*;
 import com.mycompany.test01.Entity.Unit.CombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Group.*;
 import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
-import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Enum.CountryEnum;
+import com.mycompany.test01.Factory.ArtiProps.ArtiPropsBrownCountryFactory;
 import com.mycompany.test01.Interface.ArtiPropsFactoryInterface;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
 
-public class UnitBlueCountryFactory implements UnitFactoryInterface {
-    private final CountryEnum country = CountryEnum.BLUE_COUNTRY;
-    private final ArtiPropsFactoryInterface artiPropsFactory = new ArtiPropsBlueCountryFactory();
+public class UnitBrownCountryFactory implements UnitFactoryInterface {
+    private final CountryEnum country = CountryEnum.BROWN_COUNTRY;
+    private final ArtiPropsFactoryInterface artiPropsFactory = new ArtiPropsBrownCountryFactory();
+
+
     @Override
     public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke,  int regRank) {
         return new InfantryUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
@@ -50,7 +52,7 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
 
     @Override
     public ParaInfUnit createParaInfUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke, int regRank) {
-        return new ParaInfUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
+        return new ParaInfUnit(name, acronym, this.country, isElite,  false, usesWhiteStroke, regRank);
     }
 
     @Override
@@ -230,7 +232,7 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
 
     @Override
     public FrontGroup createFrontGroup(String name, String acronym, boolean isPara, boolean isElite, boolean isMotorised, boolean usesWhiteStroke) {
-        return new FrontGroup(name, acronym, this.country,isPara, isElite, isMotorised, usesWhiteStroke);
+        return new FrontGroup(name, acronym, this.country, isPara, isElite, isMotorised, usesWhiteStroke);
     }
 
     @Override
@@ -338,6 +340,7 @@ public class UnitBlueCountryFactory implements UnitFactoryInterface {
         division.addUnit(art_01);
         division.addUnit(art_02);
         division.addUnit(art_03);
+
         division.addUnit(anti_tank_01);
         division.addUnit(anti_air_01);
         division.addUnit(engineer_01);

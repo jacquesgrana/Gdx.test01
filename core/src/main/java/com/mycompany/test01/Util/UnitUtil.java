@@ -6,7 +6,7 @@ import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Enum.UnitTypeEnum;
-import com.mycompany.test01.Factory.*;
+import com.mycompany.test01.Factory.Unit.*;
 import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
 

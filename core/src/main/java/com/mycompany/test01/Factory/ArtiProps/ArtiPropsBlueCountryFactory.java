@@ -1,26 +1,26 @@
-package com.mycompany.test01.Factory;
+package com.mycompany.test01.Factory.ArtiProps;
 
 import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Interface.ArtiPropsFactoryInterface;
 
-public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
+public class ArtiPropsBlueCountryFactory implements ArtiPropsFactoryInterface {
 
-    private final int RANGE_SHORT = 5;
-    private final int RANGE_MEDIUM = 10;
-    private final int RANGE_LONG = 14;
-    private final int RANGE_VERY_LONG = 18;
+    private final int RANGE_SHORT = 6;
+    private final int RANGE_MEDIUM = 12;
+    private final int RANGE_LONG = 15;
+    private final int RANGE_VERY_LONG = 20;
 
     private final int ART_ATTACK_LOW = 3;
     private final int ART_ATTACK_MEDIUM = 7;
     private final int ART_ATTACK_HIGH = 9;
-    private final int ART_ATTACK_ELITE = 13;
+    private final int ART_ATTACK_ELITE = 11;
 
     private final int ART_DEFENSE_LOW = 2;
     private final int ART_DEFENSE_MEDIUM = 4;
     private final int ART_DEFENSE_HIGH = 5;
-    private final int ART_DEFENSE_ELITE = 8;
+    private final int ART_DEFENSE_ELITE = 6;
 
-    private final int DELAY_SLOW = 3;
+    private final int DELAY_SLOW = 4;
     private final int DELAY_MEDIUM = 2;
     private final int DELAY_FAST = 1;
 
@@ -111,7 +111,7 @@ public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
             RANGE_LONG,
             ART_ATTACK_LOW,
             ART_DEFENSE_LOW,
-            DELAY_MEDIUM
+            DELAY_SLOW
         );
     }
 
@@ -121,7 +121,7 @@ public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
             RANGE_LONG,
             ART_ATTACK_MEDIUM,
             ART_DEFENSE_MEDIUM,
-            DELAY_MEDIUM
+            DELAY_SLOW
         );
     }
 
@@ -131,7 +131,7 @@ public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
             RANGE_LONG,
             ART_ATTACK_HIGH,
             ART_DEFENSE_HIGH,
-            DELAY_MEDIUM
+            DELAY_SLOW
         );
     }
 
@@ -141,7 +141,7 @@ public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
             RANGE_LONG,
             ART_ATTACK_ELITE,
             ART_DEFENSE_ELITE,
-            DELAY_MEDIUM
+            DELAY_SLOW
         );
     }
 
@@ -151,7 +151,7 @@ public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
             RANGE_VERY_LONG,
             ART_ATTACK_LOW,
             ART_DEFENSE_LOW,
-            DELAY_SLOW
+            DELAY_MEDIUM
         );
     }
 
@@ -161,7 +161,7 @@ public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
             RANGE_VERY_LONG,
             ART_ATTACK_MEDIUM,
             ART_DEFENSE_MEDIUM,
-            DELAY_SLOW
+            DELAY_MEDIUM
         );
     }
 
@@ -171,7 +171,7 @@ public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
             RANGE_VERY_LONG,
             ART_ATTACK_HIGH,
             ART_DEFENSE_HIGH,
-            DELAY_SLOW
+            DELAY_MEDIUM
         );
     }
 
@@ -181,7 +181,7 @@ public class ArtiPropsGreenCountryFactory implements ArtiPropsFactoryInterface {
             RANGE_VERY_LONG,
             ART_ATTACK_ELITE,
             ART_DEFENSE_ELITE,
-            DELAY_SLOW
+            DELAY_MEDIUM
         );
     }
 

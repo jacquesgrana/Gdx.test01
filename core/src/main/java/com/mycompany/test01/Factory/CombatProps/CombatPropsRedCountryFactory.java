@@ -1,52 +1,52 @@
-package com.mycompany.test01.Factory;
+package com.mycompany.test01.Factory.CombatProps;
 
 import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Interface.CombatPropsFactoryInterface;
 
-public class CombatPropsYellowCountryFactory implements CombatPropsFactoryInterface {
-    private final int MANPOWER_MAX = 1500;
-    private final int MANPOWER_MEDIUM = 600;
-    private final int MANPOWER_COMPANY = 500;
-    private final int MANPOWER_LOW = 300;
+public class CombatPropsRedCountryFactory implements CombatPropsFactoryInterface {
+    private final int MANPOWER_MAX = 1200;
+    private final int MANPOWER_MEDIUM = 500;
+    private final int MANPOWER_COMPANY = 400;
+    private final int MANPOWER_LOW = 250;
 
-    private final int MORALE_LOW = 3;
-    private final int MORALE_MEDIUM = 4;
+    private final int MORALE_LOW = 4;
+    private final int MORALE_MEDIUM = 5;
     private final int MORALE_HIGH = 6;
-    private final int MORALE_ELITE = 8;
+    private final int MORALE_ELITE = 7;
 
-    private final int SOFT_ATTACK_ELITE = 13;
-    private final int SOFT_ATTACK_MEDIUM = 7;
+    private final int SOFT_ATTACK_ELITE = 12;
+    private final int SOFT_ATTACK_MEDIUM = 8;
     private final int SOFT_ATTACK_LOW = 4;
     private final int SOFT_ATTACK_NON_COMBAT = 0;
 
-    private final int HARD_ATTACK_ELITE = 11;
-    private final int HARD_ATTACK_MEDIUM = 9;
-    private final int HARD_ATTACK_LOW = 5;
+    private final int HARD_ATTACK_ELITE = 12;
+    private final int HARD_ATTACK_MEDIUM = 10;
+    private final int HARD_ATTACK_LOW = 6;
     private final int HARD_ATTACK_NON_COMBAT = 0;
 
-    private final int AIR_ATTACK_ELITE = 9;
-    private final int AIR_ATTACK_MEDIUM = 6;
+    private final int AIR_ATTACK_ELITE = 10;
+    private final int AIR_ATTACK_MEDIUM = 7;
     private final int AIR_ATTACK_LOW = 3;
     private final int AIR_ATTACK_NON_COMBAT = 0;
 
-    private final int SOFT_DEFENSE_ELITE = 13;
-    private final int SOFT_DEFENSE_MEDIUM = 7;
+    private final int SOFT_DEFENSE_ELITE = 12;
+    private final int SOFT_DEFENSE_MEDIUM = 8;
     private final int SOFT_DEFENSE_LOW = 4;
     private final int SOFT_DEFENSE_NON_COMBAT = 2;
 
-    private final int HARD_DEFENSE_ELITE = 11;
-    private final int HARD_DEFENSE_MEDIUM = 9;
-    private final int HARD_DEFENSE_LOW = 5;
+    private final int HARD_DEFENSE_ELITE = 12;
+    private final int HARD_DEFENSE_MEDIUM = 8;
+    private final int HARD_DEFENSE_LOW = 4;
     private final int HARD_DEFENSE_NON_COMBAT = 1;
 
-    private final int AIR_DEFENSE_ELITE = 10;
-    private final int AIR_DEFENSE_MEDIUM = 7;
-    private final int AIR_DEFENSE_LOW = 3;
+    private final int AIR_DEFENSE_ELITE = 12;
+    private final int AIR_DEFENSE_MEDIUM = 8;
+    private final int AIR_DEFENSE_LOW = 4;
     private final int AIR_DEFENSE_NON_COMBAT = 0;
 
-    private final int SPEED_FOOT_ELITE = 10;
-    private final int SPEED_FOOT_MEDIUM = 8;
-    private final int SPEED_FOOT_LOW = 6;
+    private final int SPEED_FOOT_ELITE = 9;
+    private final int SPEED_FOOT_MEDIUM = 7;
+    private final int SPEED_FOOT_LOW = 5;
 
     private final int SPEED_MOTO_ELITE = 12;
     private final int SPEED_MOTO_MEDIUM = 10;
@@ -56,16 +56,16 @@ public class CombatPropsYellowCountryFactory implements CombatPropsFactoryInterf
     private final int SPEED_MECA_MEDIUM = 13;
     private final int SPEED_MECA_LOW = 11;
 
-    private final int SPEED_BICYCLE_ELITE = 12;
-    private final int SPEED_BICYCLE_MEDIUM = 9;
-    private final int SPEED_BICYCLE_LOW = 8;
+    private final int SPEED_BICYCLE_ELITE = 10;
+    private final int SPEED_BICYCLE_MEDIUM = 8;
+    private final int SPEED_BICYCLE_LOW = 7;
 
     private final int SPEED_MOTORCYCLE_ELITE = 14;
     private final int SPEED_MOTORCYCLE_MEDIUM = 12;
     private final int SPEED_MOTORCYCLE_LOW = 11;
 
-    private final int SPEED_CAV_ELITE = 14;
-    private final int SPEED_CAV_MEDIUM = 12;
+    private final int SPEED_CAV_ELITE = 13;
+    private final int SPEED_CAV_MEDIUM = 11;
     private final int SPEED_CAV_LOW = 10;
 
 

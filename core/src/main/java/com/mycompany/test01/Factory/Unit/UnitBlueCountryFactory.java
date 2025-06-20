@@ -1,17 +1,17 @@
-package com.mycompany.test01.Factory;
+package com.mycompany.test01.Factory.Unit;
 
 import com.mycompany.test01.Entity.Unit.ArtiUnit.*;
 import com.mycompany.test01.Entity.Unit.CombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Group.*;
 import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
 import com.mycompany.test01.Enum.CountryEnum;
+import com.mycompany.test01.Factory.ArtiProps.ArtiPropsBlueCountryFactory;
 import com.mycompany.test01.Interface.ArtiPropsFactoryInterface;
 import com.mycompany.test01.Interface.UnitFactoryInterface;
 
-public class UnitGreenCountryFactory implements UnitFactoryInterface {
-    private final CountryEnum country = CountryEnum.GREEN_COUNTRY;
-    private final ArtiPropsFactoryInterface artiPropsFactory = new ArtiPropsBlackCountryFactory();
-
+public class UnitBlueCountryFactory implements UnitFactoryInterface {
+    private final CountryEnum country = CountryEnum.BLUE_COUNTRY;
+    private final ArtiPropsFactoryInterface artiPropsFactory = new ArtiPropsBlueCountryFactory();
     @Override
     public InfantryUnit createInfantryUnit(String name, String acronym, boolean isElite, boolean usesWhiteStroke,  int regRank) {
         return new InfantryUnit(name, acronym, this.country, isElite, false, usesWhiteStroke, regRank);
