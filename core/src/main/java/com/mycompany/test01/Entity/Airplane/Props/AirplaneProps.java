@@ -8,11 +8,11 @@ public class AirplaneProps {
     private String acronym;
     private CountryEnum country;
     private AirplaneTypeEnum planeType;
-    private int planeMaxCount;
+    private int planeCountMax;
     private int airAttack;
     private int airDefense;
     private int moralMax;
-    private int maneuverability;
+    private int agilityMax;
     private int speedMax;
     private int rangeMax;
     private int visibility;
@@ -23,11 +23,11 @@ public class AirplaneProps {
         this.acronym = "";
         this.country = CountryEnum.NO_COUNTRY;
         this.planeType = AirplaneTypeEnum.NO_TYPE;
-        this.planeMaxCount = 1;
+        this.planeCountMax = 1;
         this.airDefense = 1;
         this.airAttack = 1;
         this.moralMax = 2;
-        this.maneuverability = 1;
+        this.agilityMax = 1;
         this.speedMax = 2;
         this.rangeMax = 3;
         this.visibility = 1;
@@ -43,7 +43,7 @@ public class AirplaneProps {
         int airDefense,
         int airAttack,
         int moralMax,
-        int maneuverability,
+        int agilityMax,
         int speedMax,
         int rangeMax,
         int visibility
@@ -52,11 +52,11 @@ public class AirplaneProps {
         this.acronym = acronym;
         this.country = country;
         this.planeType = planeType;
-        this.planeMaxCount = planeMaxCount;
+        this.planeCountMax = planeMaxCount;
         this.airDefense = airDefense;
         this.airAttack = airAttack;
         this.moralMax = moralMax;
-        this.maneuverability = maneuverability;
+        this.agilityMax = agilityMax;
         this.speedMax = speedMax;
         this.rangeMax = rangeMax;
         this.visibility = visibility;
@@ -95,12 +95,12 @@ public class AirplaneProps {
         this.planeType = planeType;
     }
 
-    public int getPlaneMaxCount() {
-        return planeMaxCount;
+    public int getPlaneCountMax() {
+        return planeCountMax;
     }
 
-    public void setPlaneMaxCount(int planeMaxCount) {
-        this.planeMaxCount = planeMaxCount;
+    public void setPlaneCountMax(int planeCountMax) {
+        this.planeCountMax = planeCountMax;
     }
 
     public int getAirAttack() {
@@ -127,12 +127,12 @@ public class AirplaneProps {
         this.moralMax = moralMax;
     }
 
-    public int getManeuverability() {
-        return maneuverability;
+    public int getAgilityMax() {
+        return agilityMax;
     }
 
-    public void setManeuverability(int maneuverability) {
-        this.maneuverability = maneuverability;
+    public void setAgilityMax(int agilityMax) {
+        this.agilityMax = agilityMax;
     }
 
     public int getSpeedMax() {

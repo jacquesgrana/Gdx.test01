@@ -5,6 +5,7 @@ public enum AirplaneTypeEnum {
     MEDIUM_FIGHTER ("Medium Fighter"),
     HEAVY_FIGHTER ("Heavy Fighter"),
 
+    LIGHT_BOMBER ("Light Bomber"),
     MEDIUM_BOMBER ("Medium Bomber"),
     HEAVY_BOMBER ("Heavy Bomber"),
 
