@@ -8,9 +8,6 @@ import com.mycompany.test01.Interface.ElementInterface;
 import java.util.Objects;
 
 
-/*
-todo : ajouter booleen isElite + ajouter int regPosition (0 - 3) + ajouter booleen isCompany
- */
 public abstract class UnitElement implements ElementInterface {
     private static int unitCounter = 0;
     protected int id;
@@ -56,7 +53,7 @@ public abstract class UnitElement implements ElementInterface {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank
-        //CombatProps combatProps
+        //, CombatProps combatProps
     ) {
         this.id = unitCounter;
         this.name = name;
@@ -69,6 +66,7 @@ public abstract class UnitElement implements ElementInterface {
         this.isCompany = isCompany;
         this.usesWhiteStroke = usesWhiteStroke;
         this.regRank = regRank;
+        //this.combatProps = combatProps;
         unitCounter++;
     }
 
