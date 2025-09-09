@@ -1,6 +1,7 @@
 package com.mycompany.test01.Entity.Unit.Group;
 
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
@@ -16,8 +17,9 @@ public class BrigadeGroup extends UnitGroup {
         boolean isPara,
         boolean isElite,
         boolean isMotorised,
-        boolean usesWhiteStroke
+        boolean usesWhiteStroke,
+        CombatProps combatProps
     ) {
-        super(name, acronym, country, UnitTypeEnum.BRIGADE_HQ, isPara, isElite, isMotorised, false, usesWhiteStroke, 0, 1);
+        super(name, acronym, country, UnitTypeEnum.BRIGADE_HQ, isPara, isElite, isMotorised, false, usesWhiteStroke, 0, 1, combatProps);
     }
 }

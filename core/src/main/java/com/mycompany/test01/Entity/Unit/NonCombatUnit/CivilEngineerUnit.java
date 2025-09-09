@@ -1,6 +1,7 @@
 package com.mycompany.test01.Entity.Unit.NonCombatUnit;
 
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
+import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
@@ -17,7 +18,8 @@ public class CivilEngineerUnit extends Unit {
         boolean isElite,
         boolean isCompany,
         boolean usesWhiteStroke,
-        int regRank) {
-       super(name, acronym, country, UnitTypeEnum.CIVIL_ENGINEER, false, isElite, false, isCompany, usesWhiteStroke, regRank);
+        int regRank,
+        CombatProps combatProps) {
+       super(name, acronym, country, UnitTypeEnum.CIVIL_ENGINEER, false, isElite, false, isCompany, usesWhiteStroke, regRank, combatProps);
     }
 }

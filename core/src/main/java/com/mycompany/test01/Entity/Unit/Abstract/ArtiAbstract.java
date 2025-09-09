@@ -1,6 +1,7 @@
 package com.mycompany.test01.Entity.Unit.Abstract;
 
 import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
+import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
@@ -23,9 +24,10 @@ public abstract class ArtiAbstract extends Unit {
         boolean isCompany,
         boolean usesWhiteStroke,
         int regRank,
+        CombatProps combatProps,
         ArtiProps artiProps)
     {
-        super(name, acronym, country, type, isPara, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
+        super(name, acronym, country, type, isPara, isElite, isMotorised, isCompany, usesWhiteStroke, regRank, combatProps);
         this.artiProps = artiProps;
     }
 

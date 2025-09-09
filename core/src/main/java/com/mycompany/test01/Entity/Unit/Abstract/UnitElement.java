@@ -23,7 +23,7 @@ public abstract class UnitElement implements ElementInterface {
     protected boolean usesWhiteStroke;
     protected int regRank;
 
-    //protected CombatProps combatProps;
+    protected CombatProps combatProps;
 
     public UnitElement() {
         this.id = unitCounter;
@@ -38,7 +38,7 @@ public abstract class UnitElement implements ElementInterface {
         isCompany = false;
         usesWhiteStroke = false;
         regRank = 0;
-        //combatProps = new CombatProps();
+        combatProps = new CombatProps();
         unitCounter++;
     }
 
@@ -52,8 +52,8 @@ public abstract class UnitElement implements ElementInterface {
         boolean isMotorised,
         boolean isCompany,
         boolean usesWhiteStroke,
-        int regRank
-        //, CombatProps combatProps
+        int regRank,
+        CombatProps combatProps
     ) {
         this.id = unitCounter;
         this.name = name;
@@ -66,7 +66,7 @@ public abstract class UnitElement implements ElementInterface {
         this.isCompany = isCompany;
         this.usesWhiteStroke = usesWhiteStroke;
         this.regRank = regRank;
-        //this.combatProps = combatProps;
+        this.combatProps = combatProps;
         unitCounter++;
     }
 

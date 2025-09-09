@@ -973,7 +973,7 @@ public class CombatPropsBlueCountryFactory implements CombatPropsFactoryInterfac
     }
 
     @Override
-    public CombatProps getCavalryLowCombatProps() {
+    public CombatProps getCavalryInfLowCombatProps() {
         return new CombatProps(
             MORALE_LOW,
             MANPOWER_MAX,
@@ -1037,7 +1037,7 @@ public class CombatPropsBlueCountryFactory implements CombatPropsFactoryInterfac
     }
 
     @Override
-    public CombatProps getEngineerLowCombatProps() {
+    public CombatProps getEngineerInfLowCombatProps() {
         return new CombatProps(
             MORALE_LOW,
             MANPOWER_MAX,
@@ -1805,7 +1805,7 @@ public class CombatPropsBlueCountryFactory implements CombatPropsFactoryInterfac
     }
 
     @Override
-    public CombatProps getMotoEngineerLowCombatProps() {
+    public CombatProps getMotoEngineerInfLowCombatProps() {
         return new CombatProps(
             MORALE_LOW,
             MANPOWER_MAX,

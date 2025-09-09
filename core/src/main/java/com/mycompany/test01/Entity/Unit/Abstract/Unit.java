@@ -1,5 +1,6 @@
 package com.mycompany.test01.Entity.Unit.Abstract;
 
+import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
@@ -20,8 +21,9 @@ public abstract class Unit extends UnitElement {
                 boolean isMotorised,
                 boolean isCompany,
                 boolean usesWhiteStroke,
-                int regRank) {
-        super(name, acronym, country, type, isPara, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
+                int regRank,
+                CombatProps combatProps) {
+        super(name, acronym, country, type, isPara, isElite, isMotorised, isCompany, usesWhiteStroke, regRank, combatProps);
     }
 
     /*

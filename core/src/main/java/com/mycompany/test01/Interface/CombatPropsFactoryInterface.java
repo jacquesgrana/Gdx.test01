@@ -78,12 +78,12 @@ public interface CombatPropsFactoryInterface {
     public CombatProps getBicycleInfHighCombatProps();
     public CombatProps getBicycleInfEliteCombatProps();
 
-    public CombatProps getCavalryLowCombatProps();
+    public CombatProps getCavalryInfLowCombatProps();
     public CombatProps getCavalryInfMediumCombatProps();
     public CombatProps getCavalryInfHighCombatProps();
     public CombatProps getCavalryInfEliteCombatProps();
 
-    public CombatProps getEngineerLowCombatProps();
+    public CombatProps getEngineerInfLowCombatProps();
     public CombatProps getEngineerInfMediumCombatProps();
     public CombatProps getEngineerInfHighCombatProps();
     public CombatProps getEngineerInfEliteCombatProps();
@@ -143,7 +143,7 @@ public interface CombatPropsFactoryInterface {
     public CombatProps getMotoAntiTankHighCombatProps();
     public CombatProps getMotoAntiTankEliteCombatProps();
 
-    public CombatProps getMotoEngineerLowCombatProps();
+    public CombatProps getMotoEngineerInfLowCombatProps();
     public CombatProps getMotoEngineerInfMediumCombatProps();
     public CombatProps getMotoEngineerInfHighCombatProps();
     public CombatProps getMotoEngineerInfEliteCombatProps();

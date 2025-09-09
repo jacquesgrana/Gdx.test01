@@ -1,6 +1,7 @@
 package com.mycompany.test01.Entity.Unit.Abstract;
 
 import com.badlogic.gdx.utils.OrderedSet;
+import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Interface.ElementInterface;
@@ -25,8 +26,9 @@ public abstract class UnitGroup extends UnitElement { // implements Element
                      boolean isCompany,
                      boolean usesWhiteStroke,
                      int regRank,
-                     int level) {
-        super(name, acronym, country, type, isPara, isElite, isMotorised, isCompany, usesWhiteStroke, regRank);
+                     int level,
+                     CombatProps combatProps) {
+        super(name, acronym, country, type, isPara, isElite, isMotorised, isCompany, usesWhiteStroke, regRank, combatProps);
         this.level = level;
         this.units = new OrderedSet<>();
     }
