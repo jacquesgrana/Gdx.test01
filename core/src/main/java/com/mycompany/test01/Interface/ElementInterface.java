@@ -1,6 +1,7 @@
 package com.mycompany.test01.Interface;
 
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 
@@ -52,6 +53,10 @@ public interface ElementInterface {
     public int getRegRank();
 
     public void setRegRank(int regRank);
+
+    public CombatProps getCombatProps();
+
+    public void setCombatProps(CombatProps combatProps);
 
     public boolean equals(ElementInterface element);
 

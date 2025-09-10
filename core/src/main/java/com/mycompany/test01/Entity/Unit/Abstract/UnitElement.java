@@ -200,6 +200,16 @@ public abstract class UnitElement implements ElementInterface {
         this.regRank = regRank;
     }
 
+    @Override
+    public CombatProps getCombatProps() {
+        return this.combatProps;
+    }
+
+    @Override
+    public void setCombatProps(CombatProps combatProps){
+        this.combatProps = combatProps;
+    }
+
     public static int getUnitCounter() {
         return unitCounter;
     }

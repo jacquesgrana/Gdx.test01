@@ -36,6 +36,7 @@ import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Interface.ElementInterface;
 import com.mycompany.test01.Interface.ToastObserver;
 import com.mycompany.test01.Interface.UnitGroupObserver;
+import com.mycompany.test01.Library.UnitPriceCalculator;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
@@ -71,6 +72,31 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     private final Label selectedUnitTypeLabel;
     private final Label selectedUnitAcronymLabel;
     private final Label selectedUnitParentNameLabel;
+
+    // TODO ajouter les labels pour les combatProps
+
+    private final Label selectedUnitMoralLabel;
+    private final Label selectedUnitManpowerLabel;
+    private final Label selectedUnitSpeedLabel;
+
+    private final Label selectedUnitSoftAttackLabel;
+    private final Label selectedUnitSoftDefenseLabel;
+
+    private final Label selectedUnitHardAttackLabel;
+    private final Label selectedUnitHardDefenseLabel;
+
+    private final Label selectedUnitAirAttackLabel;
+    private final Label selectedUnitAirDefenseLabel;
+
+    private final Label selectedUnitIsCombatUnitLabel;
+    private final Label selectedUnitIsEliteUnitLabel;
+    private final Label selectedUnitIsParaUnitLabel;
+    private final Label selectedUnitIsMotorisedUnitLabel;
+    private final Label selectedUnitIsCompanyUnitLabel;
+
+    private final Label selectedUnitPriceLabel;
+    private final Label selectedUnitGroupPriceLabel;
+
     private Label editUnitTypeLabel;
     private Label editUnitRegRankLabel;
 
@@ -200,22 +226,87 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
 
         //Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
-        selectedUnitNameLabel = new Label("nothing selected", labelStyle);
+        selectedUnitNameLabel = new Label("Name : nothing selected", labelStyle);
         selectedUnitNameLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitNameLabel.getHeight() - 20f);
         this.centerPanel.addActor(selectedUnitNameLabel);
 
-
-        selectedUnitTypeLabel = new Label("nothing selected", labelStyle);
-        selectedUnitTypeLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 60f);
+        selectedUnitTypeLabel = new Label("Type : nothing selected", labelStyle);
+        selectedUnitTypeLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 50f);
         this.centerPanel.addActor(selectedUnitTypeLabel);
 
-        selectedUnitAcronymLabel = new Label("nothing selected", labelStyle);
-        selectedUnitAcronymLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 100f);
+        selectedUnitAcronymLabel = new Label("Acronym : nothing selected", labelStyle);
+        selectedUnitAcronymLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitAcronymLabel.getHeight() - 80f);
         this.centerPanel.addActor(selectedUnitAcronymLabel);
 
-        selectedUnitParentNameLabel = new Label("nothing selected", labelStyle);
-        selectedUnitParentNameLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitTypeLabel.getHeight() - 140f);
+        selectedUnitParentNameLabel = new Label("Parent Name : nothing selected", labelStyle);
+        selectedUnitParentNameLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitParentNameLabel.getHeight() - 110f);
         this.centerPanel.addActor(selectedUnitParentNameLabel);
+
+        // TODO ajouter nouveaux champs pour les combatProps
+
+        selectedUnitMoralLabel = new Label("Max Moral : nothing selected", labelStyle);
+        selectedUnitMoralLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitMoralLabel.getHeight() - 140f);
+        this.centerPanel.addActor(selectedUnitMoralLabel);
+
+        selectedUnitManpowerLabel = new Label("Max Manpower : nothing selected", labelStyle);
+        selectedUnitManpowerLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitManpowerLabel.getHeight() - 170f);
+        this.centerPanel.addActor(selectedUnitManpowerLabel);
+
+        selectedUnitSpeedLabel = new Label("Max Speed : nothing selected", labelStyle);
+        selectedUnitSpeedLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitSpeedLabel.getHeight() - 200f);
+        this.centerPanel.addActor(selectedUnitSpeedLabel);
+
+        selectedUnitSoftAttackLabel = new Label("Soft Attack : nothing selected", labelStyle);
+        selectedUnitSoftAttackLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitSoftAttackLabel.getHeight() - 230f);
+        this.centerPanel.addActor(selectedUnitSoftAttackLabel);
+
+        selectedUnitSoftDefenseLabel = new Label("Soft Defense : nothing selected", labelStyle);
+        selectedUnitSoftDefenseLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitSoftDefenseLabel.getHeight() - 260f);
+        this.centerPanel.addActor(selectedUnitSoftDefenseLabel);
+
+        selectedUnitHardAttackLabel = new Label("Hard Attack : nothing selected", labelStyle);
+        selectedUnitHardAttackLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitHardAttackLabel.getHeight() - 290f);
+        this.centerPanel.addActor(selectedUnitHardAttackLabel);
+
+        selectedUnitHardDefenseLabel = new Label("Hard Defense : nothing selected", labelStyle);
+        selectedUnitHardDefenseLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitHardDefenseLabel.getHeight() - 320f);
+        this.centerPanel.addActor(selectedUnitHardDefenseLabel);
+
+        selectedUnitAirAttackLabel = new Label("Air Attack : nothing selected", labelStyle);
+        selectedUnitAirAttackLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitAirAttackLabel.getHeight() - 350f);
+        this.centerPanel.addActor(selectedUnitAirAttackLabel);
+
+        selectedUnitAirDefenseLabel = new Label("Air Defense : nothing selected", labelStyle);
+        selectedUnitAirDefenseLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitAirDefenseLabel.getHeight() - 380f);
+        this.centerPanel.addActor(selectedUnitAirDefenseLabel);
+
+        selectedUnitIsCombatUnitLabel = new Label("Is Combat Unit : nothing selected", labelStyle);
+        selectedUnitIsCombatUnitLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitIsCombatUnitLabel.getHeight() - 410f);
+        this.centerPanel.addActor(selectedUnitIsCombatUnitLabel);
+
+        selectedUnitIsEliteUnitLabel = new Label("Is Elite Unit : nothing selected", labelStyle);
+        selectedUnitIsEliteUnitLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitIsEliteUnitLabel.getHeight() - 440f);
+        this.centerPanel.addActor(selectedUnitIsEliteUnitLabel);
+
+        selectedUnitIsParaUnitLabel = new Label("Is Para Unit : nothing selected", labelStyle);
+        selectedUnitIsParaUnitLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitIsParaUnitLabel.getHeight() - 470f);
+        this.centerPanel.addActor(selectedUnitIsParaUnitLabel);
+
+        selectedUnitIsMotorisedUnitLabel = new Label("Is Motorised Unit : nothing selected", labelStyle);
+        selectedUnitIsMotorisedUnitLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitIsMotorisedUnitLabel.getHeight() - 500f);
+        this.centerPanel.addActor(selectedUnitIsMotorisedUnitLabel);
+
+        selectedUnitIsCompanyUnitLabel = new Label("Is Company Unit : nothing selected", labelStyle);
+        selectedUnitIsCompanyUnitLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitIsCompanyUnitLabel.getHeight() - 530f);
+        this.centerPanel.addActor(selectedUnitIsCompanyUnitLabel);
+
+        selectedUnitPriceLabel = new Label("Unit Price : nothing selected", labelStyle);
+        selectedUnitPriceLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitPriceLabel.getHeight() - 560f);
+        this.centerPanel.addActor(selectedUnitPriceLabel);
+
+        selectedUnitGroupPriceLabel = new Label("Group Price : nothing selected", labelStyle);
+        selectedUnitGroupPriceLabel.setPosition(20f, centerPanel.getHeight() - selectedUnitGroupPriceLabel.getHeight() - 590f);
+        this.centerPanel.addActor(selectedUnitGroupPriceLabel);
 
         selectedUnitIcon = new Image(GraphicUtil.getEmptyTexture());
         selectedUnitIcon.setBounds(centerPanel.getWidth() - 128f - 20f,
@@ -256,11 +347,35 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.editArmyService.setSelectedUnit(null);
 
         //"nothing selected"
-        selectedUnitNameLabel.setText("nothing selected");
-        selectedUnitTypeLabel.setText("nothing selected");
-        selectedUnitAcronymLabel.setText("nothing selected");
-        selectedUnitParentNameLabel.setText("nothing selected");
+        selectedUnitNameLabel.setText("Name : nothing selected");
+        selectedUnitTypeLabel.setText("Type : nothing selected");
+        selectedUnitAcronymLabel.setText("Acronym : nothing selected");
+        selectedUnitParentNameLabel.setText("Parent Name : nothing selected");
+
+        selectedUnitMoralLabel.setText("Max Moral : nothing selected");
+        selectedUnitManpowerLabel.setText("Max Manpower : nothing selected");
+        selectedUnitSpeedLabel.setText("Max Speed : nothing selected");
+
+        selectedUnitSoftAttackLabel.setText("Soft Attack : nothing selected");
+        selectedUnitSoftDefenseLabel.setText("Soft Defense : nothing selected");
+
+        selectedUnitHardAttackLabel.setText("Hard Attack : nothing selected");
+        selectedUnitHardDefenseLabel.setText("Hard Defense : nothing selected");
+
+        selectedUnitAirAttackLabel.setText("Air Attack : nothing selected");
+        selectedUnitAirDefenseLabel.setText("Air Defense : nothing selected");
+
+        selectedUnitIsCombatUnitLabel.setText("Is Combat Unit : nothing selected");
+        selectedUnitIsEliteUnitLabel.setText("Is Elite Unit : nothing selected");
+        selectedUnitIsParaUnitLabel.setText("Is Para Unit : nothing selected");
+        selectedUnitIsMotorisedUnitLabel.setText("Is Motorised Unit : nothing selected");
+        selectedUnitIsCompanyUnitLabel.setText("Is Company Unit : nothing selected");
+
+        selectedUnitPriceLabel.setText("Unit Price : nothing selected");
+        selectedUnitGroupPriceLabel.setText("Group Price : nothing selected");
+
         selectedUnitIcon.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getEmptyTexture())));
+        // TODO raz des autres champs x15
 
         this.buttonDeleteWrapper.getButton().setDisabled(true);
         this.buttonEditUnitWrapper.getButton().setDisabled(true);
@@ -345,6 +460,36 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
                 selectedUnitParentNameLabel.setText("Parent Name : Root");
             }
         }
+
+        // TODO maj des champs pour les combat props ++
+        selectedUnitMoralLabel.setText("Max Moral : " + this.editArmyService.getSelectedUnit().getCombatProps().getMoralMax());
+        selectedUnitManpowerLabel.setText("Max Manpower : " + this.editArmyService.getSelectedUnit().getCombatProps().getManpowerMax());
+        selectedUnitSpeedLabel.setText("Max Speed : " + this.editArmyService.getSelectedUnit().getCombatProps().getSpeed());
+
+        selectedUnitSoftAttackLabel.setText("Soft Attack : " + this.editArmyService.getSelectedUnit().getCombatProps().getSoftAttack());
+        selectedUnitSoftDefenseLabel.setText("Soft Defense : " + this.editArmyService.getSelectedUnit().getCombatProps().getSoftDefense());
+
+        selectedUnitHardAttackLabel.setText("Hard Attack : " + this.editArmyService.getSelectedUnit().getCombatProps().getHardAttack());
+        selectedUnitHardDefenseLabel.setText("Hard Defense : " + this.editArmyService.getSelectedUnit().getCombatProps().getHardDefense());
+
+        selectedUnitAirAttackLabel.setText("Air Attack : " + this.editArmyService.getSelectedUnit().getCombatProps().getAirAttack());
+        selectedUnitAirDefenseLabel.setText("Air Defense : " + this.editArmyService.getSelectedUnit().getCombatProps().getAirDefense());
+
+        selectedUnitIsCombatUnitLabel.setText("Is Combat Unit : " + (this.editArmyService.getSelectedUnit().getCombatProps().isCombatUnit() ? "Yes" : "No"));
+        selectedUnitIsEliteUnitLabel.setText("Is Elite Unit : " + (this.editArmyService.getSelectedUnit().isElite() ? "Yes" : "No"));
+        selectedUnitIsParaUnitLabel.setText("Is Para Unit : " + (this.editArmyService.getSelectedUnit().isPara() ? "Yes" : "No"));
+        selectedUnitIsMotorisedUnitLabel.setText("Is Motorised Unit : " + (this.editArmyService.getSelectedUnit().isMotorised() ? "Yes" : "No"));
+        selectedUnitIsCompanyUnitLabel.setText("Is Company Unit : " + (this.editArmyService.getSelectedUnit().isCompany() ? "Yes" : "No"));
+
+        int unitPrice = UnitPriceCalculator.getUnitPrice(this.editArmyService.getSelectedUnit());
+        selectedUnitPriceLabel.setText("Unit Price : " + unitPrice);
+
+        int groupPrice = 0;
+         if (this.editArmyService.getSelectedUnit() instanceof UnitGroup) {
+             groupPrice = UnitPriceCalculator.getGroupPrice((UnitGroup) this.editArmyService.getSelectedUnit());
+         }
+        selectedUnitGroupPriceLabel.setText("Group Price : " + groupPrice);
+
         Texture counterTexture = GraphicUtil.getCounterTextureFromUnit(this.editArmyService.getSelectedUnit());
         //System.out.println("texture : " + counterTexture);
         if (selectedUnitIcon != null) {
@@ -374,7 +519,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
             //this.selectedCountryLabel.setText(this.getSelectedCountry().toString());
         }
         */
-
         //System.out.println("nom : " + element.getName());
     }
 
@@ -616,7 +760,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         Table panel = new Table();
         //panel.defaults().pad(2);
         panel.setBackground(this.getButtonPanelTexture());
-        panel.setBounds(padding, Gdx.graphics.getHeight() - 580f, (Gdx.graphics.getWidth() - 200f) / 3 - 2 * padding, 230);
+        panel.setBounds(padding, padding, (Gdx.graphics.getWidth() - 200f) / 3 - 2 * padding, 230);
 
 
         //buttonSaveAllWrapper
