@@ -1,12 +1,15 @@
 package com.mycompany.test01.Library;
 
+import com.mycompany.test01.Entity.Unit.Abstract.ArtiAbstract;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.Interface.ElementInterface;
+
+import static java.lang.Math.round;
 
 public class UnitPriceCalculator {
 
     public static int getUnitPrice(UnitElement unit) {
-        int toReturn = 0;
         /*
         System.out.println("type : " + unit.getType());
 
@@ -25,10 +28,32 @@ public class UnitPriceCalculator {
         System.out.println("is motorised unit : " + unit.isMotorised());
         System.out.println("is company : " + unit.isCompany());
          */
-        return toReturn;
+        double toReturn = 100
+            * (unit.getCombatProps().getMoralMax() / 10f)
+            * (unit.getCombatProps().getManpowerMax() / 1000f)
+            * (unit.getCombatProps().getSpeed() / 10f)
+            * (unit.getCombatProps().isCombatUnit() ? 1.0 : 0.5)
+            * (unit.isElite() ? 1.5 : 1.0)
+            * (unit.isPara() ? 1.25 : 1.0)
+            * (unit.isMotorised() ? 1.10 : 1.0)
+            * (unit.isCompany() ? 0.33 : 1.0)
+            * (ArtiAbstract.class.isAssignableFrom(unit.getClass()) ? 3.0 : 1.0)
+        ;
+        return Math.toIntExact(round(toReturn));
     }
 
+
     public static int getGroupPrice(UnitGroup group) {
-        return 0;
+        int toReturn  = getUnitPrice((UnitElement) group);
+        for (ElementInterface unit : group.getUnits() ) {
+            //toReturn += getUnitPrice((UnitElement) unit);
+            if(unit instanceof UnitGroup) {
+                toReturn += getGroupPrice((UnitGroup) unit);
+            }
+            else {
+                toReturn += getUnitPrice((UnitElement) unit);
+            }
+        }
+        return toReturn;
     }
 }
