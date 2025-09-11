@@ -499,7 +499,6 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         this.buttonEditUnitWrapper.getButton().setDisabled(false);
         this.buttonAddWrapper.getButton().setDisabled(!(element instanceof UnitGroup));
         this.buttonAddGroupWrapper.getButton().setDisabled(!(element instanceof UnitGroup));
-        // TODO simplifier en une seule ligne
         if((element instanceof UnitGroup) && (!element.equals(this.editArmyService.getRootGroup()))) {
             UnitGroup unitGroup = (UnitGroup) element;
             this.buttonSaveGroupWrapper.getButton().setDisabled(unitGroup.getUnits().size <= 0);
