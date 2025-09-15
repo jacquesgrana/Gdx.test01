@@ -1,5 +1,6 @@
 package com.mycompany.test01.Entity.Map;
 
+import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Enum.FortificationCategory;
 import com.mycompany.test01.Enum.HexagonCategory;
 import com.mycompany.test01.Enum.RiverCategory;
@@ -100,4 +101,68 @@ public class Hexagon {
     public void setCliffs(Cliff[] cliffs) {
         this.cliffs = cliffs;
     }
+
+    private int getBaseMovementCost(Unit unit) {
+        switch (category) {
+            case GRASS:
+                return 1;
+            case FOREST:
+                return 2;
+            case WATER:
+                return Integer.MAX_VALUE;
+            case SWAMP:
+                return 3;
+            case SAND:
+                return 1;
+            default:
+                return 1;
+        }
+    }
+
+    /**
+     * Calcule le coût total pour entrer dans cet hexagone depuis un voisin.
+     * @param fromDirection Direction d'où vient l'unité (0-5, où 0=N, 1=NE, etc.).
+     * @param unit Unité concernée (peut être null).
+     * @return Coût total (1 = normal, >1 = difficile, Integer.MAX_VALUE = bloqué).
+     */
+    public int getMovementCost(int fromDirection, Unit unit) {
+        // 1. Coût de base selon le terrain
+        int cost = getBaseMovementCost(unit);
+
+        /*
+        // 2. Vérifie les rivières (sans pont = bloqué, sauf unité amphibie)
+        if (this.rivers[fromDirection] != RiverCategory.NO_RIVER) {
+            if (!this.bridges.getEdges()[fromDirection]) {
+                if (unit == null || !unit.isAmphibious()) {
+                    return Integer.MAX_VALUE; // Bloqué
+                } else {
+                    cost *= 1.5f; // Unité amphibie : coût doublé (ex: traversée lente)
+                }
+            }
+            // Sinon, il y a un pont : pas de malus supplémentaire
+        }
+
+        // 3. Vérifie les falaises (bloquant sauf unité volante)
+        if (this.cliffs[fromDirection].isBlocking()) {
+            if (unit == null || !unit.isFlying()) {
+                return Integer.MAX_VALUE; // Bloqué
+            }
+            // Unité volante : ignore les falaises
+        }
+
+        // 4. Bonus si route dans la direction d'entrée
+        if (this.roads.hasRoad(fromDirection)) {
+            cost = Math.max(1, cost / 2); // Réduit le coût de moitié (minimum 1)
+        }
+
+        // 5. Malus si fortification (sauf si unité est propriétaire)
+        if (this.fortification != FortificationCategory.NONE) {
+            if (unit == null || !unit.ownsFortification(this)) {
+                cost *= 2; // Coût doublé pour traverser une fortification ennemie
+            }
+        }
+        */
+        return cost;
+    }
+
 }

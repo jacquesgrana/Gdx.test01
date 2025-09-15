@@ -19,8 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
+import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.ZoomLevelEnum;
 import com.mycompany.test01.Interface.ToastObserver;
+import com.mycompany.test01.Library.HexPathfinder;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Service.EditScenarService;
@@ -29,6 +31,8 @@ import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditScenarScreen implements Screen {
     private final Main game;
@@ -52,7 +56,13 @@ public class EditScenarScreen implements Screen {
 
     private boolean isScenarPresent = false;
 
+    private Hexagon pathStart, pathEnd;
+    private List<Hexagon> path;
+
     public EditScenarScreen(Main game) {
+        this.pathStart = null;
+        this.pathEnd = null;
+        this.path = new ArrayList<>();
 
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
@@ -226,12 +236,33 @@ public class EditScenarScreen implements Screen {
         drawingMapPixmap.setColor(GraphicUtil.backgroundColorMedium);
         drawingMapPixmap.fill();
 
+
+
+        // TODO dessin path
+        /*
+        if(!this.path.isEmpty()) {
+            for (Hexagon hex : path ) {
+                System.out.println("path hex : i : " + hex.getX() + " : j : " + hex.getY());
+                this.editScenarService.renderHex(hex.getX() - this.editScenarService.getStartI(), hex.getY() - this.editScenarService.getStartJ() , GraphicUtil.redTexture, this.drawingMapPixmap);
+            }
+        }
+        */
+
         // Redraw the map to the pixmap
         editScenarService.drawMap(drawingMapPixmap);
 
         // Create a new texture from the pixmap
         drawingTexture = new Texture(drawingMapPixmap);
 
+    }
+
+    private void drawPath() {
+        if(!this.path.isEmpty()) {
+            for (Hexagon hex : path ) {
+                System.out.println("path hex : i : " + hex.getX() + " : j : " + hex.getY());
+                this.editScenarService.renderHex(hex.getX(), hex.getY(), GraphicUtil.redTexture, this.drawingMapPixmap);
+            }
+        }
     }
 
 
@@ -336,6 +367,37 @@ public class EditScenarScreen implements Screen {
                         //System.out.println("hex terrain : " + clickedHexagon.getCategory());
                         screen.stage.setKeyboardFocus(null);
 
+                        // TODO ajouter test pathfinder
+                        if(screen.isScenarPresent) {
+                            if (screen.pathStart == null) {
+                                screen.pathStart = this.screen.editScenarService.getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
+                            }
+                            else if (screen.pathEnd == null) {
+                                screen.pathEnd = this.screen.editScenarService.getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
+
+                                // TODO chercher path
+                                HexPathfinder pathfinder = new HexPathfinder(
+                                    this.screen.editScenarService.getHexesArray(),
+                                    this.screen.editScenarService.getLimitI(),
+                                    this.screen.editScenarService.getLimitJ(),
+                                    this.screen.editScenarService.getStartI(),
+                                    this.screen.editScenarService.getStartJ()
+                                );
+                                this.screen.path = pathfinder.findPath(
+                                    this.screen.pathStart,
+                                    this.screen.pathEnd,
+                                    null
+                                );
+                                //System.out.println("path : " + this.screen.path.toString());
+                                // afficher path
+                                this.screen.drawPath();
+                            }
+                            else {
+                                this.screen.pathStart = null;
+                                this.screen.pathEnd = null;
+                                this.screen.path = new ArrayList<>();
+                            }
+                        }
                         this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
                         this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
                         return true;

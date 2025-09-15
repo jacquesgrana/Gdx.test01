@@ -40,7 +40,7 @@ public class UnitPriceCalculator {
             * (unit.isCompany() ? 0.33 : 1.0)
             * getUnitTypeRatio(unit.getType())
             //* (ArtiAbstract.class.isAssignableFrom(unit.getClass()) ? 4.0 : 1.0)
-            //* (ArtiAbstract.class.isAssignableFrom(unit.getClass()) ? (double) ((ArtiAbstract) unit).getArtiProps().getRange() / 6.0 : 1.0)
+            * (ArtiAbstract.class.isAssignableFrom(unit.getClass()) ? (double) ((ArtiAbstract) unit).getArtiProps().getRange() / 6.0 : 1.0)
         ;
         return Math.toIntExact(round(toReturn));
     }
