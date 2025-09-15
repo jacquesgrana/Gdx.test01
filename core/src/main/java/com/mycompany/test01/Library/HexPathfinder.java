@@ -61,12 +61,12 @@ public class HexPathfinder {
                 }
 
                 // Calcule le coût en tenant compte de la direction d'entrée
-                int movementCost = neighbor.getMovementCost((direction + 3) % 6, unit);
-                if (movementCost == Integer.MAX_VALUE) {
+                float movementCost = neighbor.getMovementCost((direction + 3) % 6, unit);
+                if (movementCost >= Float.POSITIVE_INFINITY) {
                     continue; // Case bloquée
                 }
 
-                int tentativeG = current.g + movementCost;
+                float tentativeG = current.g + movementCost;
 
                 PathNode neighborNode = nodeMap.get(neighbor);
                 if (neighborNode == null || tentativeG < neighborNode.g) {
@@ -81,13 +81,26 @@ public class HexPathfinder {
     }
 
     // Heuristique pour A* (distance hexagonale)
-    private int heuristic(Hexagon a, Hexagon b) {
+    private float heuristic(Hexagon a, Hexagon b) {
+        /*
         int dx = Math.abs(a.getX() - b.getX());
         int dy = Math.abs(a.getY() - b.getY());
         return (dx + Math.max(0, dy - dx / 2)); // Approximation de la distance hexagonale
+        */
+        return Hexagon.distance(a, b) * 1.0f; // Coût = distance × 1.0 (ajustable)
     }
 
     // Reconstruit le chemin à partir du nœud final
+    /*
+    private List<Hexagon> reconstructPath(PathNode current) {
+        List<Hexagon> path = new ArrayList<>();
+        while (current != null) {
+            path.add(0, current.hexagon);
+            current = current.parent;
+        }
+        return path;
+    }*/
+
     private List<Hexagon> reconstructPath(PathNode current) {
         List<Hexagon> path = new ArrayList<>();
         while (current != null) {
@@ -96,6 +109,7 @@ public class HexPathfinder {
         }
         return path;
     }
+
 
 
 }

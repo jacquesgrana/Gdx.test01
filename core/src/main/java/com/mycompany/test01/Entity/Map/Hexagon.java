@@ -102,20 +102,24 @@ public class Hexagon {
         this.cliffs = cliffs;
     }
 
-    private int getBaseMovementCost(Unit unit) {
+    private float getBaseMovementCost(Unit unit) {
         switch (category) {
             case GRASS:
-                return 1;
+                return 1.2f;
             case FOREST:
-                return 2;
+                return 2.5f;
             case WATER:
-                return Integer.MAX_VALUE;
+                return Float.POSITIVE_INFINITY;
             case SWAMP:
-                return 3;
+                return 3.5f;
             case SAND:
-                return 1;
+                return 1.4f;
+            case CITY_DENSE:
+                return 1.2f;
+            case CITY_LIGHT:
+                return 1.0f;
             default:
-                return 1;
+                return 1.0f;
         }
     }
 
@@ -125,9 +129,9 @@ public class Hexagon {
      * @param unit Unité concernée (peut être null).
      * @return Coût total (1 = normal, >1 = difficile, Integer.MAX_VALUE = bloqué).
      */
-    public int getMovementCost(int fromDirection, Unit unit) {
+    public float getMovementCost(int fromDirection, Unit unit) {
         // 1. Coût de base selon le terrain
-        int cost = getBaseMovementCost(unit);
+        float cost = getBaseMovementCost(unit);
 
         /*
         // 2. Vérifie les rivières (sans pont = bloqué, sauf unité amphibie)
@@ -164,5 +168,20 @@ public class Hexagon {
         */
         return cost;
     }
+
+    /**
+     * Calcule la distance entre deux hexagones (en coordonnées cubiques).
+     * Retourne un float pour plus de précision.
+     */
+    public static float distance(Hexagon a, Hexagon b) {
+        // Conversion en coordonnées cubiques (q, r, s)
+        float q1 = a.getX();
+        float r1 = a.getY() - (a.getX() - (a.getX() & 1)) / 2f; // Décalage pour les lignes paires
+        float q2 = b.getX();
+        float r2 = b.getY() - (b.getX() - (b.getX() & 1)) / 2f;
+
+        return (Math.abs(q1 - q2) + Math.abs(q1 + r1 - q2 - r2) + Math.abs(r1 - r2)) / 2f;
+    }
+
 
 }

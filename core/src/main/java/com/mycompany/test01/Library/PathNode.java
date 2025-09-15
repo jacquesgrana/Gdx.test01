@@ -5,11 +5,11 @@ import com.mycompany.test01.Entity.Map.Hexagon;
 class PathNode implements Comparable<PathNode> {
     Hexagon hexagon;
     PathNode parent;
-    int g; // Coût depuis le départ
-    int h; // Heuristique
-    int f; // f = g + h
+    float g; // Coût depuis le départ
+    float h; // Heuristique
+    float f; // f = g + h
 
-    public PathNode(Hexagon hexagon, PathNode parent, int g, int h) {
+    public PathNode(Hexagon hexagon, PathNode parent, float g, float h) {
         this.hexagon = hexagon;
         this.parent = parent;
         this.g = g;
@@ -19,7 +19,7 @@ class PathNode implements Comparable<PathNode> {
 
     @Override
     public int compareTo(PathNode other) {
-        return Integer.compare(this.f, other.f);
+        return Float.compare(this.f, other.f);
     }
 }
 
