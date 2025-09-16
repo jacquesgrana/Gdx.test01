@@ -259,7 +259,7 @@ public class EditScenarScreen implements Screen {
     private void drawPath() {
         if(!this.path.isEmpty()) {
             for (Hexagon hex : path ) {
-                System.out.println("path hex : i : " + hex.getX() + " : j : " + hex.getY());
+                //System.out.println("path hex : i : " + hex.getX() + " : j : " + hex.getY());
                 this.editScenarService.renderHex(hex.getX(), hex.getY(), GraphicUtil.redTexture, this.drawingMapPixmap);
             }
         }

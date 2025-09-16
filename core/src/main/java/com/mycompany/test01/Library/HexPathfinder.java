@@ -61,7 +61,7 @@ public class HexPathfinder {
                 }
 
                 // Calcule le coût en tenant compte de la direction d'entrée
-                float movementCost = neighbor.getMovementCost((direction + 3) % 6, unit);
+                float movementCost = neighbor.getMovementCost(5 - direction, unit);
                 if (movementCost >= Float.POSITIVE_INFINITY) {
                     continue; // Case bloquée
                 }
@@ -87,7 +87,7 @@ public class HexPathfinder {
         int dy = Math.abs(a.getY() - b.getY());
         return (dx + Math.max(0, dy - dx / 2)); // Approximation de la distance hexagonale
         */
-        return Hexagon.distance(a, b) * 1.0f; // Coût = distance × 1.0 (ajustable)
+        return Hexagon.distance(a, b) * 0.7f; // Coût = distance × 1.0 (ajustable)
     }
 
     // Reconstruit le chemin à partir du nœud final
