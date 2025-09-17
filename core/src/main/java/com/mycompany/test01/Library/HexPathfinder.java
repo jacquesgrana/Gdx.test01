@@ -8,11 +8,11 @@ import com.mycompany.test01.Util.MovementUtil;
 
 
 public class HexPathfinder {
-    private Array<Array<Hexagon>> hexesArray;
-    private int limitI;
-    private int limitJ;
-    private int startI;
-    private int startJ;
+    private final Array<Array<Hexagon>> hexesArray;
+    private final int limitI;
+    private final int limitJ;
+    private final int startI;
+    private final int startJ;
 
     public HexPathfinder(Array<Array<Hexagon>> hexesArray, int limitI, int limitJ, int startI, int startJ) {
         this.hexesArray = hexesArray;
@@ -24,6 +24,7 @@ public class HexPathfinder {
 
     /**
      * Trouve le chemin le plus court entre deux hexagones.
+     * (Algo A* from Mistral AI adapté)
      * @param start Hexagone de départ.
      * @param goal Hexagone d'arrivée.
      * @param unit Unité pour laquelle calculer le chemin (optionnel, peut être null).
@@ -104,6 +105,12 @@ public class HexPathfinder {
         return path;
     }*/
 
+    /**
+     * Génère/Construit un path (List<Hexagon>)
+     * à partir du node current en "remontant" les parents des nodes
+     * @param current
+     * @return List<Hexagon> path généré
+     */
     private List<Hexagon> reconstructPath(PathNode current) {
         List<Hexagon> path = new ArrayList<>();
         while (current != null) {

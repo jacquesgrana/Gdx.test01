@@ -52,7 +52,7 @@ public class MovementUtil {
         if(hex.getBridges().getEdges()[fromDirection].getBridgeType() == BridgeTypeEnum.NO_BRIDGE) {
             if(hex.getRivers()[fromDirection] != RiverCategory.NO_RIVER ) {
                 if(hex.getRivers()[fromDirection] == RiverCategory.NARROW) {
-                    cost += 2.0f;
+                    cost += 4.0f;
                 }
                 else {
                     cost = Float.POSITIVE_INFINITY;

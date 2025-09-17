@@ -256,6 +256,7 @@ public class EditScenarScreen implements Screen {
 
     }
 
+/*
     private void drawPath() {
         if(!this.path.isEmpty()) {
             for (Hexagon hex : path ) {
@@ -264,6 +265,79 @@ public class EditScenarScreen implements Screen {
             }
         }
     }
+*/
+
+    /**
+     * Dessine le chemin en reliant les hexagones par des lignes épaisses continues
+     * @param lineColor Couleur des lignes
+     * @param lineWidth Épaisseur des lignes en pixels
+     */
+    private void drawPath(Color lineColor, int lineWidth) {
+        if (this.path.isEmpty()) return;
+
+        /*
+        // Dessiner d'abord les hexagones du chemin
+        for (Hexagon hex : path) {
+            this.editScenarService.renderHex(hex.getX(), hex.getY(), GraphicUtil.redTexture, this.drawingMapPixmap);
+        }
+        */
+
+        // Relier les centres des hexagones par des lignes épaisses
+        for (int i = 0; i < path.size() - 1; i++) {
+            Hexagon current = path.get(i);
+            Hexagon next = path.get(i + 1);
+
+            int x1 = this.editScenarService.getXFromIJ(current.getX() - editScenarService.getStartI(), current.getY() - editScenarService.getStartJ());
+            int y1 = this.editScenarService.getYFromJ(current.getY() - editScenarService.getStartJ());
+            int x2 = this.editScenarService.getXFromIJ(next.getX() - editScenarService.getStartI(), next.getY() - editScenarService.getStartJ());
+            int y2 = this.editScenarService.getYFromJ(next.getY() - editScenarService.getStartJ());
+
+            drawThickLine(x1, y1, x2, y2, lineColor, lineWidth);
+        }
+    }
+
+    /**
+     * Algorithme de Bresenham modifié pour dessiner des lignes épaisses continues
+     */
+    private void drawThickLine(int x1, int y1, int x2, int y2, Color color, int width) {
+        // Calculer la distance entre les points
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        int sx = x1 < x2 ? 1 : -1;
+        int sy = y1 < y2 ? 1 : -1;
+        int err = dx - dy;
+
+        // Sauvegarder la couleur actuelle
+        //Color oldColor = new Color(drawingMapPixmap.getColor());
+        drawingMapPixmap.setColor(color);
+
+        while (true) {
+            // Dessiner un cercle (ou un carré) autour du point pour créer l'épaisseur
+            for (int w = -width/2; w <= width/2; w++) {
+                for (int h = -width/2; h <= width/2; h++) {
+                    if (w*w + h*h <= (width/2)*(width/2)) { // Cercle pour des bords lisses
+                        drawingMapPixmap.drawPixel(x1 + w, y1 + h);
+                    }
+                }
+            }
+
+            if (x1 == x2 && y1 == y2) break;
+
+            int e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                x1 += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y1 += sy;
+            }
+        }
+
+        // Restaurer la couleur précédente
+        //drawingMapPixmap.setColor(oldColor);
+    }
+
 
 
     private void subscribeToObservables() {
@@ -390,7 +464,9 @@ public class EditScenarScreen implements Screen {
                                 );
                                 //System.out.println("path : " + this.screen.path.toString());
                                 // afficher path
-                                this.screen.drawPath();
+                                this.screen.drawPath(
+                                    Color.GREEN,
+                                    this.screen.editScenarService.getZoomLevel().getPathThickness());
                             }
                             else {
                                 this.screen.pathStart = null;
