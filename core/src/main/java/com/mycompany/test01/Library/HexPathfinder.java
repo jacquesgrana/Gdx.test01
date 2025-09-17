@@ -4,6 +4,7 @@ import java.util.*;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Util.MapUtil;
+import com.mycompany.test01.Util.MovementUtil;
 
 
 public class HexPathfinder {
@@ -61,7 +62,9 @@ public class HexPathfinder {
                 }
 
                 // Calcule le coût en tenant compte de la direction d'entrée
-                float movementCost = neighbor.getMovementCost(5 - direction, unit);
+                //float movementCost = neighbor.getMovementCost(5 - direction, unit);
+                float movementCost = MovementUtil.getMovementCost(5 - direction, unit, neighbor);
+
                 if (movementCost >= Float.POSITIVE_INFINITY) {
                     continue; // Case bloquée
                 }
@@ -87,7 +90,7 @@ public class HexPathfinder {
         int dy = Math.abs(a.getY() - b.getY());
         return (dx + Math.max(0, dy - dx / 2)); // Approximation de la distance hexagonale
         */
-        return Hexagon.distance(a, b) * 0.7f; // Coût = distance × 1.0 (ajustable)
+        return MovementUtil.distance(a, b) * 0.7f; // Coût = distance × 1.0 (ajustable)
     }
 
     // Reconstruit le chemin à partir du nœud final

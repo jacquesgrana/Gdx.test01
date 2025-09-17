@@ -1,13 +1,13 @@
 package com.mycompany.test01.Enum;
 
 public enum HexagonCategory {
-    GRASS("Grass" , 1.0f, 0.8f),
-    FOREST("Forest", 0.6f, 0.25f),
-    SWAMP("Swamp", 0.4f, 0.2f),
-    SAND("Sand", 0.75f, 0.5f),
-    WATER("Water", 0.0f, 0.0f),
-    CITY_LIGHT("City Light", 0.9f, 0.7f),
-    CITY_DENSE("City Dense", 0.8f, 0.6f);
+    GRASS("Grass" , 1.5f, 1.5f),
+    FOREST("Forest", 2.5f, 3.0f),
+    SWAMP("Swamp", 3.0f, Float.POSITIVE_INFINITY),
+    SAND("Sand", 1.5f, 1.7f),
+    WATER("Water", Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY),
+    CITY_LIGHT("City Light", 1.2f, 1.75f),
+    CITY_DENSE("City Dense", 1.3f, 2.0f);
 
     private final String name;
     private final float costLeg;
