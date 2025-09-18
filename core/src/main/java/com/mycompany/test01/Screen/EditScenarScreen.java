@@ -22,7 +22,7 @@ import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.ZoomLevelEnum;
 import com.mycompany.test01.Interface.ToastObserver;
-import com.mycompany.test01.Library.HexPathfinder;
+import com.mycompany.test01.Library.HexPathfinderCalculator;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Service.EditScenarService;
@@ -30,7 +30,6 @@ import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -434,7 +433,7 @@ public class EditScenarScreen implements Screen {
 
                 if (x >= 0 && x <= mapWidth - margin &&
                     y >= 0 && y <= mapHeight - margin) {
-                    System.out.println("clic in !!");
+                    //System.out.println("clic in !!");
 
                     if(i >= 0 && i < this.screen.editScenarService.getMaxI() && j >= 0 && j < this.screen.editScenarService.getMaxJ()) {
                         //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
@@ -442,7 +441,10 @@ public class EditScenarScreen implements Screen {
                         screen.stage.setKeyboardFocus(null);
 
                         // TODO ajouter test pathfinder
+
                         if(screen.isScenarPresent) {
+                            this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
+
                             if (screen.pathStart == null) {
                                 screen.pathStart = this.screen.editScenarService.getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
                             }
@@ -450,7 +452,7 @@ public class EditScenarScreen implements Screen {
                                 screen.pathEnd = this.screen.editScenarService.getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
 
                                 // TODO chercher path
-                                HexPathfinder pathfinder = new HexPathfinder(
+                                HexPathfinderCalculator pathfinder = new HexPathfinderCalculator(
                                     this.screen.editScenarService.getHexesArray(),
                                     this.screen.editScenarService.getLimitI(),
                                     this.screen.editScenarService.getLimitJ(),
@@ -474,7 +476,9 @@ public class EditScenarScreen implements Screen {
                                 this.screen.path = new ArrayList<>();
                             }
                         }
+                        /*
                         this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
+                         */
                         this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
                         return true;
                     }

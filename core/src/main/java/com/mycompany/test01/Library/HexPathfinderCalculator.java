@@ -2,19 +2,20 @@ package com.mycompany.test01.Library;
 import com.badlogic.gdx.utils.Array;
 import java.util.*;
 import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Entity.Pathfinding.PathNode;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Util.MapUtil;
 import com.mycompany.test01.Util.MovementUtil;
 
 
-public class HexPathfinder {
+public class HexPathfinderCalculator {
     private final Array<Array<Hexagon>> hexesArray;
     private final int limitI;
     private final int limitJ;
     private final int startI;
     private final int startJ;
 
-    public HexPathfinder(Array<Array<Hexagon>> hexesArray, int limitI, int limitJ, int startI, int startJ) {
+    public HexPathfinderCalculator(Array<Array<Hexagon>> hexesArray, int limitI, int limitJ, int startI, int startJ) {
         this.hexesArray = hexesArray;
         this.limitI = limitI;
         this.limitJ = limitJ;
@@ -43,16 +44,16 @@ public class HexPathfinder {
         while (!openSet.isEmpty()) {
             PathNode current = openSet.poll();
 
-            if (current.hexagon == goal) {
+            if (current.getHexagon() == goal) {
                 return reconstructPath(current);
             }
 
-            closedSet.add(current.hexagon);
+            closedSet.add(current.getHexagon());
 
             // Récupère les voisins avec votre méthode existante
             Hexagon[] neighbors = MapUtil.getNeighborhoodHexes(
-                current.hexagon.getX() - startI,  // i relatif
-                current.hexagon.getY() - startJ,  // j relatif
+                current.getHexagon().getX() - startI,  // i relatif
+                current.getHexagon().getY() - startJ,  // j relatif
                 startI, startJ, limitI, limitJ, hexesArray
             );
 
@@ -70,10 +71,10 @@ public class HexPathfinder {
                     continue; // Case bloquée
                 }
 
-                float tentativeG = current.g + movementCost;
+                float tentativeG = current.getG() + movementCost;
 
                 PathNode neighborNode = nodeMap.get(neighbor);
-                if (neighborNode == null || tentativeG < neighborNode.g) {
+                if (neighborNode == null || tentativeG < neighborNode.getG()) {
                     neighborNode = new PathNode(neighbor, current, tentativeG, heuristic(neighbor, goal));
                     nodeMap.put(neighbor, neighborNode);
                     openSet.add(neighborNode);
@@ -114,8 +115,8 @@ public class HexPathfinder {
     private List<Hexagon> reconstructPath(PathNode current) {
         List<Hexagon> path = new ArrayList<>();
         while (current != null) {
-            path.add(0, current.hexagon);
-            current = current.parent;
+            path.add(0, current.getHexagon());
+            current = current.getParent();
         }
         return path;
     }
