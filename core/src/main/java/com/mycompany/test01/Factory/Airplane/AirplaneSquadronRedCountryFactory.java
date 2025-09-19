@@ -11,15 +11,11 @@ import com.mycompany.test01.Entity.Airplane.Observer.MediumObserverSquadron;
 import com.mycompany.test01.Entity.Airplane.Transport.HeavyTransportSquadron;
 import com.mycompany.test01.Entity.Airplane.Transport.MediumTransportSquadron;
 import com.mycompany.test01.Enum.CountryEnum;
-import com.mycompany.test01.Factory.AirplaneProps.AirplanePropsBlackCountryFactory;
 import com.mycompany.test01.Factory.AirplaneProps.AirplanePropsRedCountryFactory;
-import com.mycompany.test01.Factory.BomberProps.BomberPropsBlackCountryFactory;
 import com.mycompany.test01.Factory.BomberProps.BomberPropsRedCountryFactory;
-import com.mycompany.test01.Factory.ObserverProps.ObserverPropsBlackCountryFactory;
 import com.mycompany.test01.Factory.ObserverProps.ObserverPropsRedCountryFactory;
-import com.mycompany.test01.Factory.TransportProps.TransportPropsBlackCountryFactory;
 import com.mycompany.test01.Factory.TransportProps.TransportPropsRedCountryFactory;
-import com.mycompany.test01.Interface.*;
+import com.mycompany.test01.Interface.airplane.*;
 
 public class AirplaneSquadronRedCountryFactory implements AirplaneSquadronFactoryInterface {
     private final CountryEnum country = CountryEnum.RED_COUNTRY;

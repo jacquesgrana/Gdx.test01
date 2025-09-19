@@ -33,9 +33,9 @@ import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Enum.UnitTypeEnum;
-import com.mycompany.test01.Interface.ElementInterface;
-import com.mycompany.test01.Interface.ToastObserver;
-import com.mycompany.test01.Interface.UnitGroupObserver;
+import com.mycompany.test01.Interface.unit.ElementInterface;
+import com.mycompany.test01.Interface.observer.ToastObserver;
+import com.mycompany.test01.Interface.observer.UnitGroupObserver;
 import com.mycompany.test01.Library.UnitPriceCalculator;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.ToastObservable;
@@ -46,7 +46,6 @@ import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 import com.mycompany.test01.Util.UnitUtil;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
 

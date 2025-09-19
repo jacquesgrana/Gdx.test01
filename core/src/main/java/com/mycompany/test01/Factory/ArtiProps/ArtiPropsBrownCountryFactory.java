@@ -1,7 +1,7 @@
 package com.mycompany.test01.Factory.ArtiProps;
 
 import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
-import com.mycompany.test01.Interface.ArtiPropsFactoryInterface;
+import com.mycompany.test01.Interface.unit.ArtiPropsFactoryInterface;
 
 public class ArtiPropsBrownCountryFactory implements ArtiPropsFactoryInterface {
 

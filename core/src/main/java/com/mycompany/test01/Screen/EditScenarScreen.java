@@ -21,7 +21,7 @@ import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.ZoomLevelEnum;
-import com.mycompany.test01.Interface.ToastObserver;
+import com.mycompany.test01.Interface.observer.ToastObserver;
 import com.mycompany.test01.Library.HexPathfinderCalculator;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.ToastObservable;

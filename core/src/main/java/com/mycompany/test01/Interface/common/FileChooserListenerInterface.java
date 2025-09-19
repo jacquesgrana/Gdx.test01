@@ -1,4 +1,4 @@
-package com.mycompany.test01.Interface;
+package com.mycompany.test01.Interface.common;
 
 import com.badlogic.gdx.files.FileHandle;
 

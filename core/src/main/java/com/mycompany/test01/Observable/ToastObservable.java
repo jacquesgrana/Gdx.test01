@@ -2,8 +2,8 @@ package com.mycompany.test01.Observable;
 
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Common.Toast;
-import com.mycompany.test01.Interface.Observable;
-import com.mycompany.test01.Interface.Observer;
+import com.mycompany.test01.Interface.observer.Observable;
+import com.mycompany.test01.Interface.observer.Observer;
 
 public class ToastObservable implements Observable<Toast> {
 

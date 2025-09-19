@@ -17,7 +17,7 @@ import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.*;
-import com.mycompany.test01.Interface.ToastObserver;
+import com.mycompany.test01.Interface.observer.ToastObserver;
 import com.mycompany.test01.Main;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;

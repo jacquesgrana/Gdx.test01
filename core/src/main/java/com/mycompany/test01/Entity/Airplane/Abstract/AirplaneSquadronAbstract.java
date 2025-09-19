@@ -3,8 +3,9 @@ package com.mycompany.test01.Entity.Airplane.Abstract;
 import com.mycompany.test01.Entity.Airplane.Props.AirplaneProps;
 import com.mycompany.test01.Enum.AirplaneTypeEnum;
 import com.mycompany.test01.Enum.CountryEnum;
+import com.mycompany.test01.Interface.airplane.AirplaneSquadronElementInterface;
 
-public abstract class AirplaneSquadronAbstract {
+public abstract class AirplaneSquadronAbstract implements AirplaneSquadronElementInterface {
 
     private static int airplaneSquadronCounter = 0;
 
@@ -37,8 +38,10 @@ public abstract class AirplaneSquadronAbstract {
         this.country = country;
         this.planeType = planeType;
         this.airplaneProps = airplaneProps;
+        AirplaneSquadronAbstract.airplaneSquadronCounter++;
     }
 
+    @Override
     public int getId() {
         return id;
     }
@@ -49,9 +52,12 @@ public abstract class AirplaneSquadronAbstract {
     }
     */
 
-    public static int getAirplaneSquadronCounter() {
+    /*
+    @Override
+    public int getAirplaneSquadronCounter() {
         return airplaneSquadronCounter;
     }
+    */
 
     /*
     public static void setAirplaneSquadronCounter(int airplaneSquadronCounter) {
@@ -59,42 +65,50 @@ public abstract class AirplaneSquadronAbstract {
     }
     */
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getAcronym() {
         return acronym;
     }
 
+    @Override
     public void setAcronym(String acronym) {
         this.acronym = acronym;
     }
 
-    public CountryEnum getCountry() {
-        return country;
-    }
+    @Override
+    public CountryEnum getCountry() { return country; }
 
+    @Override
     public void setCountry(CountryEnum country) {
         this.country = country;
     }
 
+    @Override
     public AirplaneTypeEnum getPlaneType() {
         return planeType;
     }
 
+    @Override
     public void setPlaneType(AirplaneTypeEnum planeType) {
         this.planeType = planeType;
     }
 
+    @Override
     public AirplaneProps getAirplaneProps() {
         return airplaneProps;
     }
 
+    @Override
     public void setAirplaneProps(AirplaneProps airplaneProps) {
         this.airplaneProps = airplaneProps;
     }

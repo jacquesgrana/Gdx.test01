@@ -34,13 +34,14 @@ public class MovementUtil {
             return hex.getCategory().getCostVehicle();
         }
         else {
-            return hex.getCategory().getCostLeg();
+            return UnitUtil.hasVehicle(unit) ? hex.getCategory().getCostVehicle() : hex.getCategory().getCostLeg();
         }
     }
 
     /**
      * Calcule le coût total pour entrer dans cet hexagone depuis un voisin.
-     * @param fromDirection Direction d'où vient l'unité (0-5, où 0=N, 1=NE, etc.).
+     * @param fromDirection Direction d'où vient l'unité (0-5 :
+     * 0:NW, 1:NE, 2:W, 3:E, 4:SW, 5:SE)
      * @param unit Unité concernée (peut être null).
      * @return Coût total (1 = normal, >1 = difficile, Float.POSITIVE_INFINITY = bloqué).
      */
@@ -77,13 +78,13 @@ public class MovementUtil {
 
         // routes
         if(hex.getRoads().getEdges()[fromDirection].isRoadway()){
-            cost = 1.0f;
+            cost = 0.9f;
         }
         else if(hex.getRoads().getEdges()[fromDirection].isRailway()) {
-            cost = 1.25f;
+            cost = 1.0f;
         }
         else if(hex.getRoads().getEdges()[fromDirection].isPathway()) {
-            cost = 1.5f;
+            cost = 1.1f;
         }
 
         return cost;

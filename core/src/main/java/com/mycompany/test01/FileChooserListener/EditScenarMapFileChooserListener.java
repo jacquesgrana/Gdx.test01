@@ -4,9 +4,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Enum.ColorStyleEnum;
-import com.mycompany.test01.Interface.FileChooserListenerInterface;
+import com.mycompany.test01.Interface.common.FileChooserListenerInterface;
 import com.mycompany.test01.Observable.ToastObservable;
-import com.mycompany.test01.Service.EditMapService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.MapFileService;
 

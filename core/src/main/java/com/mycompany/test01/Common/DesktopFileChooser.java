@@ -2,8 +2,8 @@ package com.mycompany.test01.Common;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.mycompany.test01.Interface.FileChooserInterface;
-import com.mycompany.test01.Interface.FileChooserListenerInterface;
+import com.mycompany.test01.Interface.common.FileChooserInterface;
+import com.mycompany.test01.Interface.common.FileChooserListenerInterface;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;

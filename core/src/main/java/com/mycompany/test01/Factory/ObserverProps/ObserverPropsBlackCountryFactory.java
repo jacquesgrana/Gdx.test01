@@ -1,7 +1,7 @@
 package com.mycompany.test01.Factory.ObserverProps;
 
 import com.mycompany.test01.Entity.Airplane.Props.ObserverProps;
-import com.mycompany.test01.Interface.ObserverPropsFactoryInterface;
+import com.mycompany.test01.Interface.airplane.ObserverPropsFactoryInterface;
 
 public class ObserverPropsBlackCountryFactory implements ObserverPropsFactoryInterface {
 

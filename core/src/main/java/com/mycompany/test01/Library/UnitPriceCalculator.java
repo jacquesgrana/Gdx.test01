@@ -4,7 +4,7 @@ import com.mycompany.test01.Entity.Unit.Abstract.ArtiAbstract;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.UnitTypeEnum;
-import com.mycompany.test01.Interface.ElementInterface;
+import com.mycompany.test01.Interface.unit.ElementInterface;
 
 import static java.lang.Math.round;
 

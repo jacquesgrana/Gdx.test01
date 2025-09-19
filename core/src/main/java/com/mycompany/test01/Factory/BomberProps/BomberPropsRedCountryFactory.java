@@ -1,7 +1,7 @@
 package com.mycompany.test01.Factory.BomberProps;
 
 import com.mycompany.test01.Entity.Airplane.Props.BomberProps;
-import com.mycompany.test01.Interface.BomberPropsFactoryInterface;
+import com.mycompany.test01.Interface.airplane.BomberPropsFactoryInterface;
 
 public class BomberPropsRedCountryFactory implements BomberPropsFactoryInterface {
 

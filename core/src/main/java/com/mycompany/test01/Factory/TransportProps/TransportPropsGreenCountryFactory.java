@@ -1,7 +1,7 @@
 package com.mycompany.test01.Factory.TransportProps;
 
 import com.mycompany.test01.Entity.Airplane.Props.TransportProps;
-import com.mycompany.test01.Interface.TransportPropsFactoryInterface;
+import com.mycompany.test01.Interface.airplane.TransportPropsFactoryInterface;
 
 public class TransportPropsGreenCountryFactory implements TransportPropsFactoryInterface {
 

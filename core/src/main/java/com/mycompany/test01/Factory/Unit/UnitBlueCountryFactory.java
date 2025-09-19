@@ -7,9 +7,9 @@ import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Factory.ArtiProps.ArtiPropsBlueCountryFactory;
 import com.mycompany.test01.Factory.CombatProps.CombatPropsBlueCountryFactory;
-import com.mycompany.test01.Interface.ArtiPropsFactoryInterface;
-import com.mycompany.test01.Interface.CombatPropsFactoryInterface;
-import com.mycompany.test01.Interface.UnitFactoryInterface;
+import com.mycompany.test01.Interface.unit.ArtiPropsFactoryInterface;
+import com.mycompany.test01.Interface.unit.CombatPropsFactoryInterface;
+import com.mycompany.test01.Interface.unit.UnitFactoryInterface;
 
 public class UnitBlueCountryFactory implements UnitFactoryInterface {
     private final CountryEnum country = CountryEnum.BLUE_COUNTRY;

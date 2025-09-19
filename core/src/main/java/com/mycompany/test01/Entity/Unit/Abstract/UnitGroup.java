@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Entity.Unit.Props.CombatProps;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.UnitTypeEnum;
-import com.mycompany.test01.Interface.ElementInterface;
+import com.mycompany.test01.Interface.unit.ElementInterface;
 
 public abstract class UnitGroup extends UnitElement { // implements Element
     private int level;

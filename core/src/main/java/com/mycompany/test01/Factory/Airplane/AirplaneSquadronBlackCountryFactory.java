@@ -15,7 +15,7 @@ import com.mycompany.test01.Factory.AirplaneProps.AirplanePropsBlackCountryFacto
 import com.mycompany.test01.Factory.BomberProps.BomberPropsBlackCountryFactory;
 import com.mycompany.test01.Factory.ObserverProps.ObserverPropsBlackCountryFactory;
 import com.mycompany.test01.Factory.TransportProps.TransportPropsBlackCountryFactory;
-import com.mycompany.test01.Interface.*;
+import com.mycompany.test01.Interface.airplane.*;
 
 public class AirplaneSquadronBlackCountryFactory implements AirplaneSquadronFactoryInterface {
     private final CountryEnum country = CountryEnum.BLACK_COUNTRY;

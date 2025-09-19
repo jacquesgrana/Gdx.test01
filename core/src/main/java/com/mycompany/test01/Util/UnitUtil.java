@@ -7,8 +7,8 @@ import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ElementSelectorType;
 import com.mycompany.test01.Enum.UnitTypeEnum;
 import com.mycompany.test01.Factory.Unit.*;
-import com.mycompany.test01.Interface.ElementInterface;
-import com.mycompany.test01.Interface.UnitFactoryInterface;
+import com.mycompany.test01.Interface.unit.ElementInterface;
+import com.mycompany.test01.Interface.unit.UnitFactoryInterface;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -544,6 +544,19 @@ public class UnitUtil {
         return type.equals(UnitTypeEnum.FRONT_HQ) || type.equals(UnitTypeEnum.ARMY_GROUP_HQ)
             || type.equals(UnitTypeEnum.ARMY_HQ) || type.equals(UnitTypeEnum.DIVISION_HQ)
             || type.equals(UnitTypeEnum.BRIGADE_HQ);
+    }
+
+    public static boolean hasVehicle(UnitElement unit) {
+        boolean toReturn = isGroupType(unit.getType());
+        if(unit.isMotorised()) toReturn = true;
+        if(unit.getType() == UnitTypeEnum.MECHANISED_ARTI ||
+            unit.getType() == UnitTypeEnum.MECHANISED_INF ||
+            unit.getType() == UnitTypeEnum.MECHANISED_RECO ||
+            unit.getType() == UnitTypeEnum.CIVIL_ENGINEER ||
+            unit.getType() == UnitTypeEnum.MOTORCYCLE_INF ||
+            unit.getType() == UnitTypeEnum.LOGISTIC
+        ) toReturn = true;
+        return toReturn;
     }
 
     /**

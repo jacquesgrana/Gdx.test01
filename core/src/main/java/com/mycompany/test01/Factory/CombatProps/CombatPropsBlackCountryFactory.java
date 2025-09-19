@@ -1,7 +1,7 @@
 package com.mycompany.test01.Factory.CombatProps;
 
 import com.mycompany.test01.Entity.Unit.Props.CombatProps;
-import com.mycompany.test01.Interface.CombatPropsFactoryInterface;
+import com.mycompany.test01.Interface.unit.CombatPropsFactoryInterface;
 
 public class CombatPropsBlackCountryFactory implements CombatPropsFactoryInterface {
     private final int MANPOWER_MAX = 900;

@@ -1,7 +1,7 @@
 package com.mycompany.test01.Common;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.mycompany.test01.Interface.ElementInterface;
+import com.mycompany.test01.Interface.unit.ElementInterface;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Json;
 import com.mycompany.test01.Common.DesktopFileChooser;
 import com.mycompany.test01.FileChooserListener.DesktopMapFileChooserListener;
 import com.mycompany.test01.Entity.Map.MapData;
-import com.mycompany.test01.Interface.FileChooserInterface;
+import com.mycompany.test01.Interface.common.FileChooserInterface;
 
 public class MapFileService {
     private static MapFileService instance = null;

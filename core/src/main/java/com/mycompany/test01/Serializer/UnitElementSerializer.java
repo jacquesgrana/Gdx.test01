@@ -14,7 +14,7 @@ import com.mycompany.test01.Entity.Unit.Group.*;
 import com.mycompany.test01.Entity.Unit.NonCombatUnit.*;
 import com.mycompany.test01.Entity.Unit.Props.ArtiProps;
 import com.mycompany.test01.Entity.Unit.Props.CombatProps;
-import com.mycompany.test01.Interface.ElementInterface;
+import com.mycompany.test01.Interface.unit.ElementInterface;
 
 public class UnitElementSerializer {
 

@@ -1,4 +1,4 @@
-package com.mycompany.test01.Interface;
+package com.mycompany.test01.Interface.airplane;
 
 import com.mycompany.test01.Entity.Airplane.Props.BomberProps;
 
