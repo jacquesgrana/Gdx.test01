@@ -8,21 +8,24 @@ import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Map.Cliff;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Map.MapData;
+import com.mycompany.test01.Entity.Scenario.Scenario;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
 
 public class EditScenarService {
     private static EditScenarService instance = null;
 
-    private Array<Array<Hexagon>> hexesArray;
-    private int limitI;
-    private int limitJ;
+    //private Array<Array<Hexagon>> hexesArray;
+    //private int limitI;
+    //private int limitJ;
     private int gapX, gapY, margin;
     private int maxI, maxJ, startI, startJ;
     private float mapX, mapY, mapWidth, mapHeight;
     private int hexSize;
 
     private ZoomLevelEnum zoomLevel;
+
+    private Scenario scenario = null;
 
     public EditScenarService() {
         this.zoomLevel = ZoomLevelEnum.NORMAL_VIEW;
@@ -35,10 +38,14 @@ public class EditScenarService {
         return instance;
     }
 
+    public void initScenar() {
+        this.scenario = new Scenario();
+    }
+
     // TODO : rendre limitI, limitJ, maxI, maxJ pairs !!!
-
-
     public void initMap() {
+        int limitI = this.getScenario().getLimitI();
+        int limitJ = this.getScenario().getLimitJ();
         this.hexSize = this.zoomLevel.getHexSize();
         this.gapX = (int) this.hexSize * 5 / 3;
         this.gapY = (int) this.hexSize * 3 / 2;
@@ -48,14 +55,14 @@ public class EditScenarService {
         this.mapHeight = Gdx.graphics.getHeight() - 230f; // TODO : chercher valeur juste
         this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
         this.maxI = this.maxI % 2 == 0 ? this.maxI : this.maxI - 1;
-        this.maxI = Math.min(this.maxI, this.limitI);
+        this.maxI = Math.min(this.maxI, this.getScenario().getLimitI());
         this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY);
         this.maxJ = this.maxJ % 2 == 0 ? this.maxJ : this.maxJ - 1;
-        this.maxJ = Math.min(this.maxJ, this.limitJ);
+        this.maxJ = Math.min(this.maxJ, this.getScenario().getLimitJ());
         this.mapX = 50;
         this.mapY = 180;
 
-        this.startI = (int) (this.limitI - this.maxI) / 2;
+        this.startI = (int) (limitI - this.maxI) / 2;
         //this.startI = this.startI % 2 == 0 ? startI : startI - 1;
         //this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
         this.startI = this.startI % 2 == 0 ? this.startI : this.startI + 1;
@@ -64,7 +71,7 @@ public class EditScenarService {
         this.startI = Math.min(startI, limitI - maxI);
 
 
-        this.startJ = (int) (this.limitJ - this.maxJ) / 2;
+        this.startJ = (int) (limitJ - this.maxJ) / 2;
         //this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
         //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
         this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ + 1;
@@ -74,6 +81,8 @@ public class EditScenarService {
     }
 
     public void initMapFromZoom() {
+        int limitI = this.getScenario().getLimitI();
+        int limitJ = this.getScenario().getLimitJ();
         int middleI = this.startI + ( this.maxI / 2 );
         //middleI = middleI % 2 == 0 ? middleI : middleI - 1;
         middleI -= middleI % 2;
@@ -90,10 +99,10 @@ public class EditScenarService {
         this.mapHeight = Gdx.graphics.getHeight() - 230f;
         this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
         this.maxI = this.maxI % 2 == 0 ? this.maxI : this.maxI - 1;
-        this.maxI = Math.min(this.maxI, this.limitI);
+        this.maxI = Math.min(this.maxI, limitI);
         this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY);
         this.maxJ = this.maxJ % 2 == 0 ? this.maxJ : this.maxJ - 1;
-        this.maxJ = Math.min(this.maxJ, this.limitJ);
+        this.maxJ = Math.min(this.maxJ, limitJ);
         this.mapX = 50;
         this.mapY = 180;
 
@@ -115,15 +124,18 @@ public class EditScenarService {
     }
 
     public void SetMapData(MapData mapData) {
-        limitI = mapData.getLimitI();
-        limitJ = mapData.getLimitJ();
-        this.hexesArray = new Array<Array<Hexagon>>(limitI);
+        this.getScenario().setLimitI(mapData.getLimitI());
+        this.getScenario().setLimitJ(mapData.getLimitJ());
+
+        int limitI = this.getScenario().getLimitI();
+        int limitJ = this.getScenario().getLimitJ();
+        this.getScenario().setHexesArray(new Array<Array<Hexagon>>(limitI));
         for (int i = 0; i < limitI; i++) {
             Array<Hexagon> row = new Array<Hexagon>(limitJ);
             for (int j = 0; j < limitJ; j++) {
                 row.add(mapData.getDataTab()[i][j]);
             }
-            this.hexesArray.add(row);
+            this.getScenario().getHexesArray().add(row);
         }
         //System.out.println("limitI : " + limitI + " / limitJ : " + limitJ);
         initMap();
@@ -136,35 +148,35 @@ public class EditScenarService {
                 int x = getXFromIJ(i, j);
                 int y = getYFromJ(j);
 
-                Texture texture = GraphicUtil.getTextureFromTerrain(this.hexesArray.get(i + startI).get(j + startJ).getCategory());
+                Texture texture = GraphicUtil.getTextureFromTerrain(this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getCategory());
 
                 drawHexagon(drawingPixmap, x, y, hexSize, texture, Color.BLACK);
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
                 for (int k = 0; k < 6; k++) {
-                    if(this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k].isCliff()) {
-                        drawCliffSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k], k);
+                    if(this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getCliffs()[k].isCliff()) {
+                        drawCliffSide(drawingPixmap, i, j, this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getCliffs()[k], k);
                     }
-                    if(this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k] != RiverCategory.NO_RIVER) {
-                        drawRiverSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k], k);
+                    if(this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getRivers()[k] != RiverCategory.NO_RIVER) {
+                        drawRiverSide(drawingPixmap, i, j, this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getRivers()[k], k);
                     }
-                    if(!this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
-                        drawBridgeSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType(), k);
+                    if(!this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
+                        drawBridgeSide(drawingPixmap, i, j, this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType(), k);
                     }
-                    if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
+                    if(this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
                         drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
                     }
-                    if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isRoadway()) {
+                    if(this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getRoads().getEdges()[k].isRoadway()) {
                         drawRoadSegment(drawingPixmap, i, j, RoadCategory.ROADWAY, k);
                     }
-                    if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isRailway()) {
+                    if(this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getRoads().getEdges()[k].isRailway()) {
                         drawRoadSegment(drawingPixmap, i, j, RoadCategory.RAILWAY, k);
                     }
-                    if(!this.hexesArray.get(i + startI).get(j + startJ).getFortification().equals(FortificationCategory.NO_FORTIFICATION)) {
+                    if(!this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getFortification().equals(FortificationCategory.NO_FORTIFICATION)) {
                         drawFortification(
                             drawingPixmap,
                             x, y, hexSize * 2, // ajouté !!
-                            GraphicUtil.getTextureFromFortification(this.hexesArray.get(i + startI).get(j + startJ).getFortification()));
+                            GraphicUtil.getTextureFromFortification(this.getScenario().getHexesArray().get(i + startI).get(j + startJ).getFortification()));
 
                     }
                 }
@@ -372,6 +384,7 @@ public class EditScenarService {
         return this.gapY * j + this.hexSize + this.margin;
     }
 
+    /*
     public Array<Array<Hexagon>> getHexesArray() {
         return hexesArray;
     }
@@ -394,7 +407,7 @@ public class EditScenarService {
 
     public void setLimitJ(int limitJ) {
         this.limitJ = limitJ;
-    }
+    }*/
 
     public ZoomLevelEnum getZoomLevel() {
         return zoomLevel;
@@ -410,8 +423,8 @@ public class EditScenarService {
 
     public void setStartI(int startI) {
         if(startI%2 != 0) startI--;
-        if(startI > this.limitI - this.maxI - 1) {
-            this.startI = this.limitI - this.maxI - 1;
+        if(startI > this.getScenario().getLimitI() - this.maxI - 1) {
+            this.startI = this.getScenario().getLimitI() - this.maxI - 1;
         }
         else if (startI < 0) {
             this.startI = 0;
@@ -428,8 +441,8 @@ public class EditScenarService {
 
     public void setStartJ(int startJ) {
         if(startJ%2 != 0) startJ--;
-        if(startJ > this.limitJ - this.maxJ - 1) {
-            this.startJ = this.limitJ - this.maxJ - 1;
+        if(startJ > this.getScenario().getLimitJ() - this.maxJ - 1) {
+            this.startJ = this.getScenario().getLimitJ() - this.maxJ - 1;
         }
         else if (startJ < 0) {
             this.startJ = 0;
@@ -496,5 +509,13 @@ public class EditScenarService {
 
     public int getMaxI() {
         return maxI;
+    }
+
+    public Scenario getScenario() {
+        return scenario;
+    }
+
+    public void setScenario(Scenario scenario) {
+        this.scenario = scenario;
     }
 }

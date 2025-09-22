@@ -69,7 +69,7 @@ public class MovementUtil {
         Hexagon[] neighbours = MapUtil.getNeighborhoodHexes(
             hex.getX() - editScenarService.getStartI(),  // i relatif
             hex.getY() - editScenarService.getStartJ(),  // j relatif
-            editScenarService.getStartI(), editScenarService.getStartJ(), editScenarService.getLimitI(), editScenarService.getLimitJ(), editScenarService.getHexesArray()
+            editScenarService.getStartI(), editScenarService.getStartJ(), editScenarService.getScenario().getLimitI(), editScenarService.getScenario().getLimitJ(), editScenarService.getScenario().getHexesArray()
         );
         Hexagon next = neighbours[fromDirection]; // (fromDirection + 3) % 6
         if(next.getCliffs()[5 - fromDirection].isCliff() || hex.getCliffs()[fromDirection].isCliff()) {

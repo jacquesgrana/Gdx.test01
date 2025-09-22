@@ -1,5 +1,7 @@
 package com.mycompany.test01.Entity.Scenario;
 
+import com.badlogic.gdx.utils.Array;
+import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 
 public class Scenario {
@@ -8,8 +10,9 @@ public class Scenario {
     private OpponentSideEnum[] sides;
     private int sidesCount;
     private Opponent[] opponents;
-
     private MapObjective[] objectives;
+    private Array<Array<Hexagon>> hexesArray;
+    private int limitI, limitJ;
 
     public Scenario() {
     }
@@ -19,13 +22,19 @@ public class Scenario {
         OpponentSideEnum[] sides,
         int sidesCount,
         Opponent[] opponents,
-        MapObjective[] objectives
+        MapObjective[] objectives,
+        Array<Array<Hexagon>> hexesArray,
+        int limitI,
+        int limitJ
     ) {
         this.name = name;
         this.sides = sides;
         this.sidesCount = sidesCount;
         this.opponents = opponents;
         this.objectives = objectives;
+        this.hexesArray = hexesArray;
+        this.limitI = limitI;
+        this.limitJ = limitJ;
     }
 
     public String getName() {
@@ -66,5 +75,29 @@ public class Scenario {
 
     public void setObjectives(MapObjective[] objectives) {
         this.objectives = objectives;
+    }
+
+    public Array<Array<Hexagon>> getHexesArray() {
+        return hexesArray;
+    }
+
+    public void setHexesArray(Array<Array<Hexagon>> hexesArray) {
+        this.hexesArray = hexesArray;
+    }
+
+    public int getLimitI() {
+        return limitI;
+    }
+
+    public void setLimitI(int limitI) {
+        this.limitI = limitI;
+    }
+
+    public int getLimitJ() {
+        return limitJ;
+    }
+
+    public void setLimitJ(int limitJ) {
+        this.limitJ = limitJ;
     }
 }

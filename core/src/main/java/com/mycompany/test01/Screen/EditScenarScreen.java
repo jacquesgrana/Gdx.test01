@@ -159,6 +159,8 @@ public class EditScenarScreen implements Screen {
                 System.out.println("click new scenario");
                 that.rightLoadMapPanel.setVisible(true);
 
+                //TODO creer scenario
+                that.editScenarService.initScenar();
             }
         });
         panel.addActor(buttonNewScenarWrapper.getButton());
@@ -204,7 +206,7 @@ public class EditScenarScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("click load map");
                 scenarFileService.openLoadMapFileChooser();
-                if(editScenarService.getHexesArray() != null) that.isScenarPresent = true;
+                if(editScenarService.getScenario().getHexesArray() != null) that.isScenarPresent = true;
                 redrawMap();
             }
         });
@@ -446,16 +448,16 @@ public class EditScenarScreen implements Screen {
                             this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
 
                             if (screen.pathStart == null) {
-                                screen.pathStart = this.screen.editScenarService.getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
+                                screen.pathStart = this.screen.editScenarService.getScenario().getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
                             }
                             else if (screen.pathEnd == null) {
-                                screen.pathEnd = this.screen.editScenarService.getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
+                                screen.pathEnd = this.screen.editScenarService.getScenario().getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
 
                                 // TODO chercher path
                                 HexPathfinderCalculator pathfinder = new HexPathfinderCalculator(
-                                    this.screen.editScenarService.getHexesArray(),
-                                    this.screen.editScenarService.getLimitI(),
-                                    this.screen.editScenarService.getLimitJ(),
+                                    this.screen.editScenarService.getScenario().getHexesArray(),
+                                    this.screen.editScenarService.getScenario().getLimitI(),
+                                    this.screen.editScenarService.getScenario().getLimitJ(),
                                     this.screen.editScenarService.getStartI(),
                                     this.screen.editScenarService.getStartJ()
                                 );
