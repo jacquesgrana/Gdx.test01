@@ -67,9 +67,9 @@ public class MovementUtil {
 
         // falaises
         Hexagon[] neighbours = MapUtil.getNeighborhoodHexes(
-            hex.getX() - editScenarService.getStartI(),  // i relatif
-            hex.getY() - editScenarService.getStartJ(),  // j relatif
-            editScenarService.getStartI(), editScenarService.getStartJ(), editScenarService.getScenario().getLimitI(), editScenarService.getScenario().getLimitJ(), editScenarService.getScenario().getHexesArray()
+            hex.getX() - editScenarService.getScenario().getMap().getStartI(),  // i relatif
+            hex.getY() - editScenarService.getScenario().getMap().getStartJ(),  // j relatif
+            editScenarService.getScenario().getMap().getStartI(), editScenarService.getScenario().getMap().getStartJ(), editScenarService.getScenario().getMap().getLimitI(), editScenarService.getScenario().getMap().getLimitJ(), editScenarService.getScenario().getMap().getHexesArray()
         );
         Hexagon next = neighbours[fromDirection]; // (fromDirection + 3) % 6
         if(next.getCliffs()[5 - fromDirection].isCliff() || hex.getCliffs()[fromDirection].isCliff()) {

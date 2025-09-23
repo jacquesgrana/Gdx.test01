@@ -10,6 +10,7 @@ import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Util.MapUtil;
 
 public class EditMapService {
     private static EditMapService instance = null;
@@ -837,7 +838,7 @@ public class EditMapService {
         if (texturePixmap != null) {
             for (int y = centerY - size; y <= centerY + size; y++) {
                 for (int x = centerX - size; x <= centerX + size; x++) {
-                    if (isInsideHexagon(x, y, xPoints, yPoints)) {
+                    if (MapUtil.isInsideHexagon(x, y, xPoints, yPoints)) {
                         // Sample the texture
                         int textureX = (int) (((x - (centerX - size)) / (double) (2 * size)) * texturePixmap.getWidth());
                         int textureY = (int) (((y - (centerY - size)) / (double) (2 * size)) * texturePixmap.getHeight());
@@ -902,6 +903,7 @@ public class EditMapService {
         }
     }
 
+    /*
     private boolean isInsideHexagon(int x, int y, int[] xPoints, int[] yPoints) {
         boolean inside = false;
         for (int i = 0, j = 5; i < 6; j = i++) {
@@ -911,7 +913,7 @@ public class EditMapService {
             }
         }
         return inside;
-    }
+    }*/
 
     public boolean isInNeighboursByMode(int i, int j, EditMapMode mode) {
         //if(this.roadStartHex != null) {

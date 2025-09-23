@@ -5,14 +5,19 @@ import com.mycompany.test01.Screen.WelcomeScreen;
 import com.mycompany.test01.Service.EditMapService;
 
 public class Main extends Game {
-    EditMapService editMapService;
+    //EditMapService editMapService;
     @Override
     public void create() {
         //this.editMapService = EditMapService.getInstance();
         //editMapService.firstInit();
         //editMapService.initRandomMapArray();
         //editMapService.resetMap();
-        setScreen(new WelcomeScreen(this));
+        try {
+            setScreen(new WelcomeScreen(this));
+        }
+        catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
     }
 }
 

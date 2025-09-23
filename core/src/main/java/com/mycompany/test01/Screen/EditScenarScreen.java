@@ -160,7 +160,7 @@ public class EditScenarScreen implements Screen {
                 that.rightLoadMapPanel.setVisible(true);
 
                 //TODO creer scenario
-                that.editScenarService.initScenar();
+                //that.editScenarService.initScenar();
             }
         });
         panel.addActor(buttonNewScenarWrapper.getButton());
@@ -206,7 +206,7 @@ public class EditScenarScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("click load map");
                 scenarFileService.openLoadMapFileChooser();
-                if(editScenarService.getScenario().getHexesArray() != null) that.isScenarPresent = true;
+                if(editScenarService.getScenario().getMap().getHexesArray() != null) that.isScenarPresent = true;
                 redrawMap();
             }
         });
@@ -288,10 +288,10 @@ public class EditScenarScreen implements Screen {
             Hexagon current = path.get(i);
             Hexagon next = path.get(i + 1);
 
-            int x1 = this.editScenarService.getXFromIJ(current.getX() - editScenarService.getStartI(), current.getY() - editScenarService.getStartJ());
-            int y1 = this.editScenarService.getYFromJ(current.getY() - editScenarService.getStartJ());
-            int x2 = this.editScenarService.getXFromIJ(next.getX() - editScenarService.getStartI(), next.getY() - editScenarService.getStartJ());
-            int y2 = this.editScenarService.getYFromJ(next.getY() - editScenarService.getStartJ());
+            int x1 = this.editScenarService.getXFromIJ(current.getX() - editScenarService.getScenario().getMap().getStartI(), current.getY() - editScenarService.getScenario().getMap().getStartJ());
+            int y1 = this.editScenarService.getYFromJ(current.getY() - editScenarService.getScenario().getMap().getStartJ());
+            int x2 = this.editScenarService.getXFromIJ(next.getX() - editScenarService.getScenario().getMap().getStartI(), next.getY() - editScenarService.getScenario().getMap().getStartJ());
+            int y2 = this.editScenarService.getYFromJ(next.getY() - editScenarService.getScenario().getMap().getStartJ());
 
             drawThickLine(x1, y1, x2, y2, lineColor, lineWidth);
         }
@@ -415,13 +415,13 @@ public class EditScenarScreen implements Screen {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             if (this.screen.isScenarPresent) {
-                float mapX = this.screen.editScenarService.getMapX();
-                float mapY = this.screen.editScenarService.getMapY();
-                float mapWidth = this.screen.editScenarService.getMapWidth();
-                float mapHeight = this.screen.editScenarService.getMapHeight();
-                int margin = this.screen.editScenarService.getMargin();
-                int hexagonSize = this.screen.editScenarService.getHexSize();
-                int gapY = this.screen.editScenarService.getGapY();
+                float mapX = this.screen.editScenarService.getScenario().getMap().getMapX();
+                float mapY = this.screen.editScenarService.getScenario().getMap().getMapY();
+                float mapWidth = this.screen.editScenarService.getScenario().getMap().getMapWidth();
+                float mapHeight = this.screen.editScenarService.getScenario().getMap().getMapHeight();
+                int margin = this.screen.editScenarService.getScenario().getMap().getMargin();
+                int hexagonSize = this.screen.editScenarService.getScenario().getMap().getHexagonSize();
+                int gapY = this.screen.editScenarService.getScenario().getMap().getGapY();
 
                 //System.out.println("worldCoords.x : " + worldCoords.x + " / worldCoords.y : " + worldCoords.y);
                 //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
@@ -437,7 +437,7 @@ public class EditScenarScreen implements Screen {
                     y >= 0 && y <= mapHeight - margin) {
                     //System.out.println("clic in !!");
 
-                    if(i >= 0 && i < this.screen.editScenarService.getMaxI() && j >= 0 && j < this.screen.editScenarService.getMaxJ()) {
+                    if(i >= 0 && i < this.screen.editScenarService.getScenario().getMap().getMaxI() && j >= 0 && j < this.screen.editScenarService.getScenario().getMap().getMaxJ()) {
                         //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
                         //System.out.println("hex terrain : " + clickedHexagon.getCategory());
                         screen.stage.setKeyboardFocus(null);
@@ -445,21 +445,21 @@ public class EditScenarScreen implements Screen {
                         // TODO ajouter test pathfinder
 
                         if(screen.isScenarPresent) {
-                            this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
+                            this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getScenario().getMap().getStartI(), j + this.screen.editScenarService.getScenario().getMap().getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
 
                             if (screen.pathStart == null) {
-                                screen.pathStart = this.screen.editScenarService.getScenario().getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
+                                screen.pathStart = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
                             }
                             else if (screen.pathEnd == null) {
-                                screen.pathEnd = this.screen.editScenarService.getScenario().getHexesArray().get(i + this.screen.editScenarService.getStartI()).get(j + this.screen.editScenarService.getStartJ());
+                                screen.pathEnd = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
 
                                 // TODO chercher path
                                 HexPathfinderCalculator pathfinder = new HexPathfinderCalculator(
-                                    this.screen.editScenarService.getScenario().getHexesArray(),
-                                    this.screen.editScenarService.getScenario().getLimitI(),
-                                    this.screen.editScenarService.getScenario().getLimitJ(),
-                                    this.screen.editScenarService.getStartI(),
-                                    this.screen.editScenarService.getStartJ()
+                                    this.screen.editScenarService.getScenario().getMap().getHexesArray(),
+                                    this.screen.editScenarService.getScenario().getMap().getLimitI(),
+                                    this.screen.editScenarService.getScenario().getMap().getLimitJ(),
+                                    this.screen.editScenarService.getScenario().getMap().getStartI(),
+                                    this.screen.editScenarService.getScenario().getMap().getStartJ()
                                 );
                                 this.screen.path = pathfinder.findPath(
                                     this.screen.pathStart,
@@ -470,7 +470,7 @@ public class EditScenarScreen implements Screen {
                                 // afficher path
                                 this.screen.drawPath(
                                     Color.GREEN,
-                                    this.screen.editScenarService.getZoomLevel().getPathThickness());
+                                    this.screen.editScenarService.getScenario().getMap().getZoomLevel().getPathThickness());
                             }
                             else {
                                 this.screen.pathStart = null;
@@ -499,7 +499,7 @@ public class EditScenarScreen implements Screen {
         @Override
         public boolean keyDown(int keycode) {
             int delta = 0;
-            switch (this.screen.editScenarService.getZoomLevel()) {
+            switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                 case CLOSE_VIEW:
                 case NORMAL_VIEW:
                     delta = 2;
@@ -514,38 +514,38 @@ public class EditScenarScreen implements Screen {
             //System.out.println("keycode : " + keycode);
             switch (keycode) {
                 case Input.Keys.LEFT:
-                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getStartI() - delta);
+                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getScenario().getMap().getStartI() - delta);
                     this.screen.redrawMap();
                     break;
                 case Input.Keys.RIGHT:
-                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getStartI() + delta);
+                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getScenario().getMap().getStartI() + delta);
                     this.screen.redrawMap();
                     break;
                 case Input.Keys.UP:
-                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getStartJ() - delta);
+                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getScenario().getMap().getStartJ() - delta);
                     this.screen.redrawMap();
                     break;
                 case Input.Keys.DOWN:
-                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getStartJ() + delta);
+                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getScenario().getMap().getStartJ() + delta);
                     this.screen.redrawMap();
                     break;
                 case 157: //Input.Keys.PLUS
                     //System.out.println("+ key");
-                    switch (this.screen.editScenarService.getZoomLevel()) {
+                    switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
                             break;
                         case NORMAL_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
@@ -553,19 +553,19 @@ public class EditScenarScreen implements Screen {
                     break;
                 case 156: //Input.Keys.MINUS
                     //System.out.println("- key");
-                    switch (this.screen.editScenarService.getZoomLevel()) {
+                    switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case NORMAL_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
@@ -603,19 +603,19 @@ public class EditScenarScreen implements Screen {
                     // La molette est déplacée vers le bas
                     //System.out.println("molette dezoom");
 
-                    switch (this.screen.editScenarService.getZoomLevel()) {
+                    switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case NORMAL_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
@@ -626,21 +626,21 @@ public class EditScenarScreen implements Screen {
                     // La molette est déplacée vers le haut
                     //System.out.println("molette zoom");
 
-                    switch (this.screen.editScenarService.getZoomLevel()) {
+                    switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
                             break;
                         case NORMAL_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
-                            this.screen.editScenarService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
                             this.screen.editScenarService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;

@@ -1,7 +1,8 @@
 package com.mycompany.test01.Entity.Scenario;
 
-import com.badlogic.gdx.utils.Array;
-import com.mycompany.test01.Entity.Map.Hexagon;
+//import com.badlogic.gdx.utils.Array;
+//import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Entity.Map.Map;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 
 public class Scenario {
@@ -11,10 +12,15 @@ public class Scenario {
     private int sidesCount;
     private Opponent[] opponents;
     private MapObjective[] objectives;
-    private Array<Array<Hexagon>> hexesArray;
-    private int limitI, limitJ;
+
+    // TODO déplacer dans la map
+    //private Array<Array<Hexagon>> hexesArray;
+    //private int limitI, limitJ;
+
+    private Map map;
 
     public Scenario() {
+        this.map = new Map();
     }
 
     public Scenario(
@@ -22,19 +28,19 @@ public class Scenario {
         OpponentSideEnum[] sides,
         int sidesCount,
         Opponent[] opponents,
-        MapObjective[] objectives,
-        Array<Array<Hexagon>> hexesArray,
-        int limitI,
-        int limitJ
+        MapObjective[] objectives
+        //Array<Array<Hexagon>> hexesArray
+        //int limitI,
+        //int limitJ
     ) {
         this.name = name;
         this.sides = sides;
         this.sidesCount = sidesCount;
         this.opponents = opponents;
         this.objectives = objectives;
-        this.hexesArray = hexesArray;
-        this.limitI = limitI;
-        this.limitJ = limitJ;
+        //this.hexesArray = hexesArray;
+        //this.limitI = limitI;
+        //this.limitJ = limitJ;
     }
 
     public String getName() {
@@ -77,6 +83,7 @@ public class Scenario {
         this.objectives = objectives;
     }
 
+    /*
     public Array<Array<Hexagon>> getHexesArray() {
         return hexesArray;
     }
@@ -84,7 +91,9 @@ public class Scenario {
     public void setHexesArray(Array<Array<Hexagon>> hexesArray) {
         this.hexesArray = hexesArray;
     }
+     */
 
+/*
     public int getLimitI() {
         return limitI;
     }
@@ -99,5 +108,14 @@ public class Scenario {
 
     public void setLimitJ(int limitJ) {
         this.limitJ = limitJ;
+    }
+ */
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 }
