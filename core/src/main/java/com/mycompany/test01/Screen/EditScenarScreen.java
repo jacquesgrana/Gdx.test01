@@ -250,7 +250,7 @@ public class EditScenarScreen implements Screen {
         */
 
         // Redraw the map to the pixmap
-        editScenarService.drawMap(drawingMapPixmap);
+        editScenarService.getScenario().getMap().drawMap(drawingMapPixmap);
 
         // Create a new texture from the pixmap
         drawingTexture = new Texture(drawingMapPixmap);
@@ -283,15 +283,17 @@ public class EditScenarScreen implements Screen {
         }
         */
 
+        // ****************************************************
+
         // Relier les centres des hexagones par des lignes épaisses
         for (int i = 0; i < path.size() - 1; i++) {
             Hexagon current = path.get(i);
             Hexagon next = path.get(i + 1);
 
-            int x1 = this.editScenarService.getXFromIJ(current.getX() - editScenarService.getScenario().getMap().getStartI(), current.getY() - editScenarService.getScenario().getMap().getStartJ());
-            int y1 = this.editScenarService.getYFromJ(current.getY() - editScenarService.getScenario().getMap().getStartJ());
-            int x2 = this.editScenarService.getXFromIJ(next.getX() - editScenarService.getScenario().getMap().getStartI(), next.getY() - editScenarService.getScenario().getMap().getStartJ());
-            int y2 = this.editScenarService.getYFromJ(next.getY() - editScenarService.getScenario().getMap().getStartJ());
+            int x1 = this.editScenarService.getScenario().getMap().getXFromIJ(current.getX() - editScenarService.getScenario().getMap().getStartI(), current.getY() - editScenarService.getScenario().getMap().getStartJ());
+            int y1 = this.editScenarService.getScenario().getMap().getYFromJ(current.getY() - editScenarService.getScenario().getMap().getStartJ());
+            int x2 = this.editScenarService.getScenario().getMap().getXFromIJ(next.getX() - editScenarService.getScenario().getMap().getStartI(), next.getY() - editScenarService.getScenario().getMap().getStartJ());
+            int y2 = this.editScenarService.getScenario().getMap().getYFromJ(next.getY() - editScenarService.getScenario().getMap().getStartJ());
 
             drawThickLine(x1, y1, x2, y2, lineColor, lineWidth);
         }
@@ -429,8 +431,8 @@ public class EditScenarScreen implements Screen {
                 int x = (int) (screenX - mapX - margin);
                 int y = (int) (screenY - mapX - margin); // mapX : 50 meme valeur que le y du haut de la map
                 //System.out.println("x : " + x + " / y : " + y);
-                int i = this.screen.editScenarService.getIFromXY(x, y);
-                int j = this.screen.editScenarService.getJFromY(y);
+                int i = this.screen.editScenarService.getScenario().getMap().getIFromXY(x, y);
+                int j = this.screen.editScenarService.getScenario().getMap().getJFromY(y);
                 //System.out.println("i : " + i + " / j : " + j);
 
                 if (x >= 0 && x <= mapWidth - margin &&
@@ -445,7 +447,7 @@ public class EditScenarScreen implements Screen {
                         // TODO ajouter test pathfinder
 
                         if(screen.isScenarPresent) {
-                            this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getScenario().getMap().getStartI(), j + this.screen.editScenarService.getScenario().getMap().getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
+                            this.screen.editScenarService.getScenario().getMap().renderHex( i + this.screen.editScenarService.getScenario().getMap().getStartI(), j + this.screen.editScenarService.getScenario().getMap().getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
 
                             if (screen.pathStart == null) {
                                 screen.pathStart = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
@@ -514,19 +516,19 @@ public class EditScenarScreen implements Screen {
             //System.out.println("keycode : " + keycode);
             switch (keycode) {
                 case Input.Keys.LEFT:
-                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getScenario().getMap().getStartI() - delta);
+                    this.screen.editScenarService.getScenario().getMap().setStartI(this.screen.editScenarService.getScenario().getMap().getStartI() - delta);
                     this.screen.redrawMap();
                     break;
                 case Input.Keys.RIGHT:
-                    this.screen.editScenarService.setStartI(this.screen.editScenarService.getScenario().getMap().getStartI() + delta);
+                    this.screen.editScenarService.getScenario().getMap().setStartI(this.screen.editScenarService.getScenario().getMap().getStartI() + delta);
                     this.screen.redrawMap();
                     break;
                 case Input.Keys.UP:
-                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getScenario().getMap().getStartJ() - delta);
+                    this.screen.editScenarService.getScenario().getMap().setStartJ(this.screen.editScenarService.getScenario().getMap().getStartJ() - delta);
                     this.screen.redrawMap();
                     break;
                 case Input.Keys.DOWN:
-                    this.screen.editScenarService.setStartJ(this.screen.editScenarService.getScenario().getMap().getStartJ() + delta);
+                    this.screen.editScenarService.getScenario().getMap().setStartJ(this.screen.editScenarService.getScenario().getMap().getStartJ() + delta);
                     this.screen.redrawMap();
                     break;
                 case 157: //Input.Keys.PLUS
@@ -536,17 +538,17 @@ public class EditScenarScreen implements Screen {
                             break;
                         case NORMAL_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                     }
@@ -556,17 +558,17 @@ public class EditScenarScreen implements Screen {
                     switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case NORMAL_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
@@ -606,17 +608,17 @@ public class EditScenarScreen implements Screen {
                     switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case NORMAL_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
@@ -631,17 +633,17 @@ public class EditScenarScreen implements Screen {
                             break;
                         case NORMAL_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                            this.screen.editScenarService.initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                     }
