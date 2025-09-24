@@ -341,7 +341,7 @@ public class EditMapScreen implements Screen {
         //panel.add(newMapPanel);
         stage.addActor(newMapPanel);
 
-        drawingMapPixmap = new Pixmap((int) editMapService.getMapWidth(),(int) editMapService.getMapHeight(), Pixmap.Format.RGBA8888);
+        drawingMapPixmap = new Pixmap((int) editMapService.getMap().getMapWidth(),(int) editMapService.getMap().getMapHeight(), Pixmap.Format.RGBA8888);
         drawingMapPixmap.setColor(GraphicUtil.backgroundColorMedium);
         drawingMapPixmap.fill();
         editMapService.drawMap(drawingMapPixmap, mode);
@@ -370,7 +370,7 @@ public class EditMapScreen implements Screen {
         if (drawingMapPixmap != null) drawingMapPixmap.dispose();
 
         // Create a new pixmap
-        drawingMapPixmap = new Pixmap((int) editMapService.getMapWidth(),(int) editMapService.getMapHeight(), Pixmap.Format.RGBA8888);
+        drawingMapPixmap = new Pixmap((int) editMapService.getMap().getMapWidth(),(int) editMapService.getMap().getMapHeight(), Pixmap.Format.RGBA8888);
         drawingMapPixmap.setColor(GraphicUtil.backgroundColorMedium);
         drawingMapPixmap.fill();
 
@@ -392,7 +392,7 @@ public class EditMapScreen implements Screen {
         //redrawMap();
 
         batch.begin();
-        batch.draw(drawingTexture, editMapService.getMapX(), editMapService.getMapY());
+        batch.draw(drawingTexture, editMapService.getMap().getMapX(), editMapService.getMap().getMapY());
         batch.end();
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -453,7 +453,7 @@ public class EditMapScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //System.out.println("change river checkbox");
-                that.editMapService.setRiverVisible(!that.editMapService.isRiverVisible());
+                that.editMapService.getMap().getDisplayFlags().setRiverVisible(!that.editMapService.getMap().getDisplayFlags().isRiverVisible());
                 that.redrawMap();
             }
         });
@@ -464,7 +464,7 @@ public class EditMapScreen implements Screen {
         checkBoxRoad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                that.editMapService.setRoadVisible(!that.editMapService.isRoadVisible());
+                that.editMapService.getMap().getDisplayFlags().setRoadVisible(!that.editMapService.getMap().getDisplayFlags().isRoadVisible());
                 that.redrawMap();
             }
         });
@@ -475,7 +475,7 @@ public class EditMapScreen implements Screen {
         checkBoxFort.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                that.editMapService.setFortificationVisible(!that.editMapService.isFortificationVisible());
+                that.editMapService.getMap().getDisplayFlags().setFortificationVisible(!that.editMapService.getMap().getDisplayFlags().isFortificationVisible());
                 that.redrawMap();
             }
         });
@@ -486,7 +486,7 @@ public class EditMapScreen implements Screen {
         checkBoxCliff.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                that.editMapService.setCliffVisible(!that.editMapService.isCliffVisible());
+                that.editMapService.getMap().getDisplayFlags().setCliffVisible(!that.editMapService.getMap().getDisplayFlags().isCliffVisible());
                 that.redrawMap();
             }
         });
@@ -497,7 +497,7 @@ public class EditMapScreen implements Screen {
         checkBoxBridge.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                that.editMapService.setBridgeVisible(!that.editMapService.isBridgeVisible());
+                that.editMapService.getMap().getDisplayFlags().setBridgeVisible(!that.editMapService.getMap().getDisplayFlags().isBridgeVisible());
                 that.redrawMap();
             }
         });
@@ -814,7 +814,7 @@ public class EditMapScreen implements Screen {
                 return Character.isDigit(c); // Accepte uniquement les chiffres
             }
         });
-        this.sizeXField.setMessageText("" + this.editMapService.getLimitI());
+        this.sizeXField.setMessageText("" + this.editMapService.getMap().getLimitI());
 
         panel.add(sizeXField);
 
@@ -825,7 +825,7 @@ public class EditMapScreen implements Screen {
                 return Character.isDigit(c); // Accepte uniquement les chiffres
             }
         });
-        sizeYField.setMessageText("" + this.editMapService.getLimitJ());
+        sizeYField.setMessageText("" + this.editMapService.getMap().getLimitJ());
         panel.add(sizeYField);
 
         TextButton validateNewMapButton = new TextButton("Validate", SkinUtil.getButtonSkin(80, 30));
@@ -940,13 +940,13 @@ public class EditMapScreen implements Screen {
             //Vector3 worldCoords = this.screen.stage.getCamera().unproject(new Vector3(screenX, screenY, 0));
 
             // Vérifier si le clic est dans la zone de la carte
-            float mapX = this.screen.editMapService.getMapX();
-            float mapY = this.screen.editMapService.getMapY();
-            float mapWidth = this.screen.editMapService.getMapWidth();
-            float mapHeight = this.screen.editMapService.getMapHeight();
-            int margin = this.screen.editMapService.getMargin();
-            int hexagonSize = this.screen.editMapService.getHexagonSize();
-            int gapY = this.screen.editMapService.getGapY();
+            float mapX = this.screen.editMapService.getMap().getMapX();
+            float mapY = this.screen.editMapService.getMap().getMapY();
+            float mapWidth = this.screen.editMapService.getMap().getMapWidth();
+            float mapHeight = this.screen.editMapService.getMap().getMapHeight();
+            int margin = this.screen.editMapService.getMap().getMargin();
+            int hexagonSize = this.screen.editMapService.getMap().getHexagonSize();
+            int gapY = this.screen.editMapService.getMap().getGapY();
 
             //System.out.println("worldCoords.x : " + worldCoords.x + " / worldCoords.y : " + worldCoords.y);
             //System.out.println("screenX : " + screenX + " / screenY : " + screenY);
@@ -986,30 +986,30 @@ public class EditMapScreen implements Screen {
                     //int i = (int) x / mapService.getGapX();
                     //System.out.println("i : " + i);
 
-                    if(i >= 0 && i < this.screen.editMapService.getMaxI() && j >= 0 && j < this.screen.editMapService.getMaxJ()) {
+                    if(i >= 0 && i < this.screen.editMapService.getMap().getMaxI() && j >= 0 && j < this.screen.editMapService.getMap().getMaxJ()) {
                         //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
                         //System.out.println("hex terrain : " + clickedHexagon.getCategory());
-                        this.screen.editMapService.renderHex( i + this.screen.editMapService.getStartI(), j + this.screen.editMapService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
+                        this.screen.editMapService.renderHex( i + this.screen.editMapService.getMap().getStartI(), j + this.screen.editMapService.getMap().getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
                         this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
                     }
 
                     Hexagon[] neighbours = MapUtil.getNeighborhoodHexes(
                         i,
                         j,
-                        this.screen.editMapService.getStartI(),
-                        this.screen.editMapService.getStartJ(),
-                        this.screen.editMapService.getLimitI(),
-                        this.screen.editMapService.getLimitJ(),
-                        this.screen.editMapService.getHexesArray()
+                        this.screen.editMapService.getMap().getStartI(),
+                        this.screen.editMapService.getMap().getStartJ(),
+                        this.screen.editMapService.getMap().getLimitI(),
+                        this.screen.editMapService.getMap().getLimitJ(),
+                        this.screen.editMapService.getMap().getHexesArray()
                     );
                     for(int k=0; k<6; k++) {
                         if(neighbours[k] != null) {
                             int ii = neighbours[k].getX();
                             int jj = neighbours[k].getY();
-                            if (ii - this.screen.editMapService.getStartI() >= 0 &&
-                                ii - this.screen.editMapService.getStartI() < this.screen.editMapService.getMaxI() &&
-                                jj - this.screen.editMapService.getStartJ() >= 0 &&
-                                jj - this.screen.editMapService.getStartJ() < this.screen.editMapService.getMaxJ()
+                            if (ii - this.screen.editMapService.getMap().getStartI() >= 0 &&
+                                ii - this.screen.editMapService.getMap().getStartI() < this.screen.editMapService.getMap().getMaxI() &&
+                                jj - this.screen.editMapService.getMap().getStartJ() >= 0 &&
+                                jj - this.screen.editMapService.getMap().getStartJ() < this.screen.editMapService.getMap().getMaxJ()
                             ) {
                                 this.screen.editMapService.renderHex( ii, jj, GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
                                 this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
@@ -1026,8 +1026,8 @@ public class EditMapScreen implements Screen {
 
                     //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
                     if(this.screen.editMapService.isClickInMap(i, j)) {
-                        if(this.screen.editMapService.getHexesArray().get(i+ this.screen.editMapService.getStartI()).get(j+ this.screen.editMapService.getStartJ()).getCategory() != this.screen.selectedTerrain) {
-                            this.screen.editMapService.getHexesArray().get(i+ this.screen.editMapService.getStartI()).get(j+ this.screen.editMapService.getStartJ()).setCategory(this.screen.selectedTerrain);
+                        if(this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).getCategory() != this.screen.selectedTerrain) {
+                            this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).setCategory(this.screen.selectedTerrain);
                         }
                         this.screen.redrawMap();
                     }
@@ -1039,8 +1039,8 @@ public class EditMapScreen implements Screen {
                     //System.out.println("i : " + i);
                     //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
                     if(this.screen.editMapService.isClickInMap(i, j)) {
-                        if(this.screen.editMapService.getHexesArray().get(i+ this.screen.editMapService.getStartI()).get(j+ this.screen.editMapService.getStartJ()).getFortification() != this.screen.selectedFortification) {
-                            this.screen.editMapService.getHexesArray().get(i+ this.screen.editMapService.getStartI()).get(j+ this.screen.editMapService.getStartJ()).setFortification(this.screen.selectedFortification);
+                        if(this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).getFortification() != this.screen.selectedFortification) {
+                            this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).setFortification(this.screen.selectedFortification);
                         }
                         this.screen.redrawMap();
                     }
@@ -1051,23 +1051,23 @@ public class EditMapScreen implements Screen {
                     //int j = mapService.getJFromY(y);
                     //Hexagon clickedHexagon = null; // TODO transformer en variable globale : roadStartHex
                     //Hexagon[] neighboursForRoad = null; // TODO transformer en variable globale : roadStartHexNeighbours
-                    if(i >= 0 && i < this.screen.editMapService.getMaxI() && j >= 0 && j < this.screen.editMapService.getMaxJ()) {
+                    if(i >= 0 && i < this.screen.editMapService.getMap().getMaxI() && j >= 0 && j < this.screen.editMapService.getMap().getMaxJ()) {
 
                         //System.out.println("hex terrain : " + clickedHexagon.getCategory());
-                        if(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
+                        if(this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             //System.out.println("old roadDrawFlag : " + roadDrawFlag.toString());
 
                             if(this.screen.editMapService.getRoadDrawFlag() == DrawFlagCategory.EMPTY || this.screen.editMapService.getRoadDrawFlag() == DrawFlagCategory.SECOND_CLICK_DONE) {
-                                this.screen.editMapService.setRoadStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
+                                this.screen.editMapService.setRoadStartHex(this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ()));
 
                                 this.screen.editMapService.setRoadStartHexNeighbours(MapUtil.getNeighborhoodHexes(
                                     i,
                                     j,
-                                    this.screen.editMapService.getStartI(),
-                                    this.screen.editMapService.getStartJ(),
-                                    this.screen.editMapService.getLimitI(),
-                                    this.screen.editMapService.getLimitJ(),
-                                    this.screen.editMapService.getHexesArray()
+                                    this.screen.editMapService.getMap().getStartI(),
+                                    this.screen.editMapService.getMap().getStartJ(),
+                                    this.screen.editMapService.getMap().getLimitI(),
+                                    this.screen.editMapService.getMap().getLimitJ(),
+                                    this.screen.editMapService.getMap().getHexesArray()
                                 ));
                                 this.screen.redrawMap();
 
@@ -1076,7 +1076,7 @@ public class EditMapScreen implements Screen {
                             }
                             else if(this.screen.editMapService.getRoadDrawFlag() == DrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.ROAD)) {
                                 Hexagon startHex = this.screen.editMapService.getRoadStartHex();
-                                Hexagon endHex = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ());
+                                Hexagon endHex = this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ());
                                 // -> set les routes pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
                                 int k = this.screen.editMapService.getKFromRoadNeighbours(endHex);
                                 this.screen.editMapService.setRoadForHexes(startHex, endHex, this.screen.selectedRoad, k);
@@ -1084,11 +1084,11 @@ public class EditMapScreen implements Screen {
                                 this.screen.editMapService.setRoadStartHexNeighbours(MapUtil.getNeighborhoodHexes(
                                     i,
                                     j,
-                                    this.screen.editMapService.getStartI(),
-                                    this.screen.editMapService.getStartJ(),
-                                    this.screen.editMapService.getLimitI(),
-                                    this.screen.editMapService.getLimitJ(),
-                                    this.screen.editMapService.getHexesArray()
+                                    this.screen.editMapService.getMap().getStartI(),
+                                    this.screen.editMapService.getMap().getStartJ(),
+                                    this.screen.editMapService.getMap().getLimitI(),
+                                    this.screen.editMapService.getMap().getLimitJ(),
+                                    this.screen.editMapService.getMap().getHexesArray()
                                 ));
 
                                 this.screen.redrawMap();
@@ -1107,24 +1107,24 @@ public class EditMapScreen implements Screen {
                 else if(this.screen.mode == EditMapMode.RIVER) {
                     //System.out.println("clic mode river");
                     this.screen.redrawMap();
-                    if(i >= 0 && i < this.screen.editMapService.getMaxI() && j >= 0 && j < this.screen.editMapService.getMaxJ()) {
+                    if(i >= 0 && i < this.screen.editMapService.getMap().getMaxI() && j >= 0 && j < this.screen.editMapService.getMap().getMaxJ()) {
                         //System.out.println("clic mode river indices ok");
 
-                        if(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
+                        if(this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             //System.out.println("clic mode river indices ok pas water");
 
                             if(this.screen.editMapService.getRiverDrawFlag() == DrawFlagCategory.EMPTY || this.screen.editMapService.getRiverDrawFlag() == DrawFlagCategory.SECOND_CLICK_DONE) {
                                 //System.out.println("old river flag : " + riverDrawFlag.toString());
 
-                                this.screen.editMapService.setRiverStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
+                                this.screen.editMapService.setRiverStartHex(this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ()));
                                 this.screen.editMapService.setRiverStartHexNeighbours(MapUtil.getNeighborhoodHexes(
                                     i,
                                     j,
-                                    this.screen.editMapService.getStartI(),
-                                    this.screen.editMapService.getStartJ(),
-                                    this.screen.editMapService.getLimitI(),
-                                    this.screen.editMapService.getLimitJ(),
-                                    this.screen.editMapService.getHexesArray()
+                                    this.screen.editMapService.getMap().getStartI(),
+                                    this.screen.editMapService.getMap().getStartJ(),
+                                    this.screen.editMapService.getMap().getLimitI(),
+                                    this.screen.editMapService.getMap().getLimitJ(),
+                                    this.screen.editMapService.getMap().getHexesArray()
                                 ));
                                 this.screen.redrawMap();
                                 //this.screen.riverDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
@@ -1135,7 +1135,7 @@ public class EditMapScreen implements Screen {
                             else if(this.screen.editMapService.getRiverDrawFlag() == DrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.RIVER)) {
                                 //System.out.println("old river flag : " + riverDrawFlag.toString());
                                 Hexagon startHex = this.screen.editMapService.getRiverStartHex();
-                                Hexagon endHex = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ());
+                                Hexagon endHex = this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ());
                                 // -> set les rivers pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
                                 int k = this.screen.editMapService.getKFromRiverNeighbours(endHex);
                                 this.screen.editMapService.setRiverForHexes(startHex, endHex, this.screen.selectedRiver, k);
@@ -1143,11 +1143,11 @@ public class EditMapScreen implements Screen {
                                 this.screen.editMapService.setRiverStartHexNeighbours(MapUtil.getNeighborhoodHexes(
                                     i,
                                     j,
-                                    this.screen.editMapService.getStartI(),
-                                    this.screen.editMapService.getStartJ(),
-                                    this.screen.editMapService.getLimitI(),
-                                    this.screen.editMapService.getLimitJ(),
-                                    this.screen.editMapService.getHexesArray()
+                                    this.screen.editMapService.getMap().getStartI(),
+                                    this.screen.editMapService.getMap().getStartJ(),
+                                    this.screen.editMapService.getMap().getLimitI(),
+                                    this.screen.editMapService.getMap().getLimitJ(),
+                                    this.screen.editMapService.getMap().getHexesArray()
                                 ));
 
                                 this.screen.redrawMap();
@@ -1165,19 +1165,19 @@ public class EditMapScreen implements Screen {
                 }
                 else if(this.screen.mode == EditMapMode.CLIFF) {
                     this.screen.redrawMap();
-                    if(i >= 0 && i < this.screen.editMapService.getMaxI() && j >= 0 && j < this.screen.editMapService.getMaxJ()) {
+                    if(i >= 0 && i < this.screen.editMapService.getMap().getMaxI() && j >= 0 && j < this.screen.editMapService.getMap().getMaxJ()) {
                         //System.out.println("click in map for add cliff");
-                        if(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()).getCategory() != HexagonCategory.WATER) {
+                        if(this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             if(this.screen.editMapService.getCliffDrawFlag() == DrawFlagCategory.EMPTY || this.screen.editMapService.getCliffDrawFlag() == DrawFlagCategory.SECOND_CLICK_DONE) {
-                                this.screen.editMapService.setCliffStartHex(this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ()));
+                                this.screen.editMapService.setCliffStartHex(this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ()));
                                 this.screen.editMapService.setCliffStartHexNeighbours(MapUtil.getNeighborhoodHexes(
                                     i,
                                     j,
-                                    this.screen.editMapService.getStartI(),
-                                    this.screen.editMapService.getStartJ(),
-                                    this.screen.editMapService.getLimitI(),
-                                    this.screen.editMapService.getLimitJ(),
-                                    this.screen.editMapService.getHexesArray()
+                                    this.screen.editMapService.getMap().getStartI(),
+                                    this.screen.editMapService.getMap().getStartJ(),
+                                    this.screen.editMapService.getMap().getLimitI(),
+                                    this.screen.editMapService.getMap().getLimitJ(),
+                                    this.screen.editMapService.getMap().getHexesArray()
                                 ));
                                 this.screen.redrawMap();
                                 //this.screen.cliffDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
@@ -1185,7 +1185,7 @@ public class EditMapScreen implements Screen {
                             }
                             else if(this.screen.editMapService.getCliffDrawFlag() == DrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.CLIFF)) {
                                 Hexagon startHex = this.screen.editMapService.getCliffStartHex();
-                                Hexagon endHex = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + this.screen.editMapService.getStartJ());
+                                Hexagon endHex = this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ());
                                 // -> set les rivers pour les deux hex en fonction du roadStartHex, du selectedRoad et de k
                                 int k = this.screen.editMapService.getKFromCliffNeighbours(endHex);
                                 //this.screen.editMapService.setRiverForHexes(startHex, endHex, this.screen.selectedRiver, k);
@@ -1194,11 +1194,11 @@ public class EditMapScreen implements Screen {
                                 this.screen.editMapService.setCliffStartHexNeighbours(MapUtil.getNeighborhoodHexes(
                                     i,
                                     j,
-                                    this.screen.editMapService.getStartI(),
-                                    this.screen.editMapService.getStartJ(),
-                                    this.screen.editMapService.getLimitI(),
-                                    this.screen.editMapService.getLimitJ(),
-                                    this.screen.editMapService.getHexesArray()
+                                    this.screen.editMapService.getMap().getStartI(),
+                                    this.screen.editMapService.getMap().getStartJ(),
+                                    this.screen.editMapService.getMap().getLimitI(),
+                                    this.screen.editMapService.getMap().getLimitJ(),
+                                    this.screen.editMapService.getMap().getHexesArray()
                                 ));
 
                                 this.screen.redrawMap();
@@ -1249,26 +1249,26 @@ public class EditMapScreen implements Screen {
             switch (keycode) {
                 case Input.Keys.LEFT:
                     if(!this.screen.isMiniMapVisible) {
-                        this.screen.editMapService.setStartI(this.screen.editMapService.getStartI() - delta);
+                        this.screen.editMapService.getMap().setStartI(this.screen.editMapService.getMap().getStartI() - delta);
                         this.screen.redrawMap();
                     }
 
                     break;
                 case Input.Keys.RIGHT:
                     if(!this.screen.isMiniMapVisible) {
-                        this.screen.editMapService.setStartI(this.screen.editMapService.getStartI() + delta);
+                        this.screen.editMapService.getMap().setStartI(this.screen.editMapService.getMap().getStartI() + delta);
                         this.screen.redrawMap();
                     }
                     break;
                 case Input.Keys.UP:
                     if(!this.screen.isMiniMapVisible) {
-                        this.screen.editMapService.setStartJ(this.screen.editMapService.getStartJ() - delta);
+                        this.screen.editMapService.getMap().setStartJ(this.screen.editMapService.getMap().getStartJ() - delta);
                         this.screen.redrawMap();
                     }
                     break;
                 case Input.Keys.DOWN:
                     if(!this.screen.isMiniMapVisible) {
-                        this.screen.editMapService.setStartJ(this.screen.editMapService.getStartJ() + delta);
+                        this.screen.editMapService.getMap().setStartJ(this.screen.editMapService.getMap().getStartJ() + delta);
                         this.screen.redrawMap();
                     }
                     break;
@@ -1287,21 +1287,21 @@ public class EditMapScreen implements Screen {
 
                 case 157: //Input.Keys.PLUS
                     //System.out.println("+ key");
-                    switch (this.screen.editMapService.getZoomLevel()) {
+                    switch (this.screen.editMapService.getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
                             break;
                         case NORMAL_VIEW:
-                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                            this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
                             this.screen.editMapService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
-                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
                             this.screen.editMapService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
-                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
                             this.screen.editMapService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
@@ -1309,19 +1309,19 @@ public class EditMapScreen implements Screen {
                     break;
                 case 156: //Input.Keys.MINUS
                     //System.out.println("- key");
-                    switch (this.screen.editMapService.getZoomLevel()) {
+                    switch (this.screen.editMapService.getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
-                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                            this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
                             this.screen.editMapService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case NORMAL_VIEW:
-                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                            this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
                             this.screen.editMapService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
-                            this.screen.editMapService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                            this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
                             this.screen.editMapService.initMapFromZoom();
                             this.screen.redrawMap();
                             break;
@@ -1343,19 +1343,19 @@ public class EditMapScreen implements Screen {
             // < 0 signifie que la molette est déplacée vers le haut
             if (amountY > 0) {
                 // La molette est déplacée vers le bas
-                switch (this.screen.editMapService.getZoomLevel()) {
+                switch (this.screen.editMapService.getMap().getZoomLevel()) {
                     case CLOSE_VIEW :
-                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                        this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
                         this.screen.editMapService.initMapFromZoom();
                         this.screen.redrawMap();
                         break;
                     case NORMAL_VIEW:
-                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                        this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
                         this.screen.editMapService.initMapFromZoom();
                         this.screen.redrawMap();
                         break;
                     case DISTANT_VIEW:
-                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
+                        this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
                         this.screen.editMapService.initMapFromZoom();
                         this.screen.redrawMap();
                         break;
@@ -1364,21 +1364,21 @@ public class EditMapScreen implements Screen {
                 }
             } else if (amountY < 0) {
                 // La molette est déplacée vers le haut
-                switch (this.screen.editMapService.getZoomLevel()) {
+                switch (this.screen.editMapService.getMap().getZoomLevel()) {
                     case CLOSE_VIEW :
                         break;
                     case NORMAL_VIEW:
-                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
+                        this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
                         this.screen.editMapService.initMapFromZoom();
                         this.screen.redrawMap();
                         break;
                     case DISTANT_VIEW:
-                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+                        this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
                         this.screen.editMapService.initMapFromZoom();
                         this.screen.redrawMap();
                         break;
                     case VERY_DISTANT_VIEW:
-                        this.screen.editMapService.setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
+                        this.screen.editMapService.getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
                         this.screen.editMapService.initMapFromZoom();
                         this.screen.redrawMap();
                         break;

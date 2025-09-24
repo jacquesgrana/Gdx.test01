@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
-import com.mycompany.test01.Entity.Map.Cliff;
-import com.mycompany.test01.Entity.Map.Hexagon;
-import com.mycompany.test01.Entity.Map.MapData;
+import com.mycompany.test01.Entity.Map.*;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.MapUtil;
@@ -15,18 +13,36 @@ import com.mycompany.test01.Util.MapUtil;
 public class EditMapService {
     private static EditMapService instance = null;
 
-    private Array<Array<Hexagon>> hexesArray;
-    private int hexagonSize; // La moitié de 60px
-    private int gapX;
-    private int gapY;
-    private int maxI, maxJ;
-    private float mapX, mapY, mapWidth, mapHeight;
-    private int startI;
-    private int startJ;
-    private int limitI;
-    private int limitJ;
-    private int margin;
+    //private Array<Array<Hexagon>> hexesArray;
+    //private int hexagonSize; // La moitié de 60px
+    //private int gapX;
+    //private int gapY;
+    //private int maxJ;
+    //private int maxI, maxJ;
 
+    //private float mapX, mapY, mapWidth, mapHeight;
+
+    //private int startI;
+    //private int startJ;
+    //private int limitI;
+    //private int limitJ;
+    //private int margin;
+
+    //private ZoomLevelEnum zoomLevel;
+
+    //private MapDisplayFlags displayFlags;
+
+    private Map map;
+
+    /*
+    private boolean isRiverVisible = true;
+    private boolean isRoadVisible = true;
+    private boolean isFortificationVisible = true;
+    private boolean isCliffVisible = true;
+    private boolean isBridgeVisible = true;
+    */
+
+    // TODO faire objet MiniMap
     private int miniHexSize;
     private int miniMapMargin;
     //calcul des coordonnées et dimensions de la minimap
@@ -35,7 +51,6 @@ public class EditMapService {
     private int miniMapX;
     private int miniMapY;
 
-    private ZoomLevelEnum zoomLevel;
 
 
     //roadStartHex
@@ -53,15 +68,20 @@ public class EditMapService {
     private DrawFlagCategory riverDrawFlag = DrawFlagCategory.EMPTY;
     private DrawFlagCategory cliffDrawFlag = DrawFlagCategory.EMPTY;
 
-    private boolean isRiverVisible = true;
-    private boolean isRoadVisible = true;
-    private boolean isFortificationVisible = true;
-    private boolean isCliffVisible = true;
-    private boolean isBridgeVisible = true;
+    //private boolean isRiverVisible = true;
+    //private boolean isRoadVisible = true;
+    //private boolean isFortificationVisible = true;
+    //private boolean isCliffVisible = true;
+    //private boolean isBridgeVisible = true;
 
     public EditMapService() {
-        this.zoomLevel = ZoomLevelEnum.NORMAL_VIEW;
+        //this.displayFlags = new MapDisplayFlags();
+        //this.getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
+        this.map = new Map();
+        //this.getMap().setDisplayFlags(new MapDisplayFlags());
     }
+
+    //****************************************************************
 
     public static EditMapService getInstance() {
         if (instance == null) {
@@ -72,10 +92,10 @@ public class EditMapService {
     // TODO : rendre limitI, limitJ, maxI, maxJ pairs !!!
 
     public void initRandomMapArray() {
-        this.hexesArray = new Array<Array<Hexagon>>(limitI);
-        for (int i = 0; i < limitI; i++) {
-            Array<Hexagon> row = new Array<Hexagon>(limitJ);
-            for (int j = 0; j < limitJ; j++) {
+        this.getMap().setHexesArray(new Array<Array<Hexagon>>(this.getMap().getLimitI()));
+        for (int i = 0; i < this.getMap().getLimitI(); i++) {
+            Array<Hexagon> row = new Array<Hexagon>(this.getMap().getLimitJ());
+            for (int j = 0; j < this.getMap().getLimitJ(); j++) {
                 HexagonCategory terrainCategory = HexagonCategory.getRandomCategory();
                 FortificationCategory fortificationCategory = terrainCategory != HexagonCategory.WATER
                     ? FortificationCategory.getRandomFortification() : FortificationCategory.NO_FORTIFICATION;
@@ -91,15 +111,15 @@ public class EditMapService {
                 // Créer un nouvel objet de type Hexagon
                 row.add(hexagon);
             }
-            this.hexesArray.add(row);
+            this.getMap().getHexesArray().add(row);
         }
     }
 
     public void resetMap() {
-        this.hexesArray = new Array<Array<Hexagon>>(limitI);
-        for (int i = 0; i < limitI; i++) {
-            Array<Hexagon> row = new Array<Hexagon>(limitJ);
-            for (int j = 0; j < limitJ; j++) {
+        this.getMap().setHexesArray(new Array<Array<Hexagon>>(this.getMap().getLimitI()));
+        for (int i = 0; i < this.getMap().getLimitI(); i++) {
+            Array<Hexagon> row = new Array<Hexagon>(this.getMap().getLimitJ());
+            for (int j = 0; j < this.getMap().getLimitJ(); j++) {
 
 
                 Hexagon hexagon = new Hexagon(i, j,
@@ -108,30 +128,38 @@ public class EditMapService {
                 // Créer un nouvel objet de type Hexagon
                 row.add(hexagon);
             }
-            this.hexesArray.add(row);
+            this.getMap().getHexesArray().add(row);
         }
     }
 
+    /*
     public Array<Array<Hexagon>> getHexesArray() {
         return this.hexesArray;
     }
+    */
 
+    /*
     public int getMaxI() {
         return this.maxI;
     }
+     */
 
+    /*
     public int getMaxJ() {
         return this.maxJ;
     }
+     */
 
+
+    /*
     public int getStartI() {
         return startI;
     }
 
     public void setStartI(int startI) {
         if(startI%2 != 0) startI--;
-        if(startI > this.limitI - this.maxI - 1) {
-            this.startI = this.limitI - this.maxI - 1;
+        if(startI > this.limitI - this.getMap().getMaxI() - 1) {
+            this.startI = this.limitI - this.getMap().getMaxI() - 1;
         }
         else if (startI < 0) {
             this.startI = 0;
@@ -139,17 +167,17 @@ public class EditMapService {
         else {
             this.startI = startI;
         }
-        //this.startI = startI + this.maxI > this.limitI ? this.limitI - this.maxI : this.startI < 0 ? 0 : startI;
-    }
+    }*/
 
+    /*
     public int getStartJ() {
         return startJ;
     }
 
     public void setStartJ(int startJ) {
         if(startJ%2 != 0) startJ--;
-        if(startJ > this.limitJ - this.maxJ - 1) {
-            this.startJ = this.limitJ - this.maxJ - 1;
+        if(startJ > this.limitJ - this.getMap().getMaxJ() - 1) {
+            this.startJ = this.limitJ - this.getMap().getMaxJ() - 1;
         }
         else if (startJ < 0) {
             this.startJ = 0;
@@ -157,55 +185,78 @@ public class EditMapService {
         else {
             this.startJ = startJ;
         }
-    }
+    }*/
 
+    /*
     public float getMapWidth() {
         return mapWidth;
     }
+     */
 
+    /*
     public float getMapHeight() {
         return mapHeight;
     }
+     */
 
+    /*
     public void setMapWidth(float mapWidth) {
         this.mapWidth = mapWidth;
     }
+     */
 
+    /*
     public void setMapHeight(float mapHeight) {
         this.mapHeight = mapHeight;
     }
+     */
 
+    /*
     public float getMapX() {
         return mapX;
     }
+     */
 
+    /*
     public float getMapY() {
         return mapY;
-    }
+    }*/
 
+    /*
     public int getGapX() {
         return gapX;
     }
+    */
 
+    /*
     public int getGapY() {
         return gapY;
     }
+     */
 
+    /*
     public int getLimitI() {
         return limitI;
     }
+    */
 
+    /*
     public int getLimitJ() {
         return limitJ;
     }
+     */
 
+    /*
     public int getMargin() {
         return margin;
     }
+    */
 
+    /*
     public int getHexagonSize() {
         return hexagonSize;
     }
+    */
 
     public int getMiniHexSize() {
         return miniHexSize;
@@ -304,13 +355,15 @@ public class EditMapService {
     }
 
     public void firstInit() {
-        this.limitI = 100;
-        this.limitJ = 100;
+        //this.limitI = 100;
+        this.getMap().setLimitI(100);
+        //this.limitJ = 100;
+        this.getMap().setLimitJ(100);
     }
 
     public void setLimits(int limitI, int limitJ) {
-        this.limitI = limitI % 2 == 0 ? limitI : limitI - 1;
-        this.limitJ = limitJ % 2 == 0 ? limitJ : limitJ - 1;
+        this.getMap().setLimitI(limitI % 2 == 0 ? limitI : limitI - 1);
+        this.getMap().setLimitJ(limitJ % 2 == 0 ? limitJ : limitJ - 1);
     }
 
     public void init() {
@@ -321,19 +374,20 @@ public class EditMapService {
         //this.gapX = 50;
         //this.gapY = 45;
         //this.margin = 10;
-        this.hexagonSize = this.zoomLevel.getHexSize();
-        this.gapX = (int) this.hexagonSize * 5 / 3;
-        this.gapY = (int) this.hexagonSize * 3 / 2;
-        this.margin = 10;
+        this.getMap().setHexagonSize(this.getMap().getZoomLevel().getHexSize());
+        this.getMap().setGapX((int) this.getMap().getHexagonSize() * 5 / 3);
+        this.getMap().setGapY((int) this.getMap().getHexagonSize() * 3 / 2);
+        this.getMap().setMargin(10);
 
-        this.mapWidth = Gdx.graphics.getWidth() - 80f;
-        this.mapHeight = Gdx.graphics.getHeight() - 210f;
-        this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
-        this.maxI = this.maxI % 2 == 0 ? this.maxI : this.maxI - 1;
-        this.maxI = Math.min(this.maxI, this.limitI);
-        this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
-        this.maxJ = this.maxJ % 2 == 0 ? this.maxJ : this.maxJ - 1;
-        this.maxJ = Math.min(this.maxJ, this.limitJ);
+        this.getMap().setMapWidth(Gdx.graphics.getWidth() - 80f);
+        this.getMap().setMapHeight(Gdx.graphics.getHeight() - 210f);
+        this.getMap().setMaxI((int) (this.getMap().getMapWidth() - this.getMap().getMargin() * 2) / (this.getMap().getGapX()));
+        this.getMap().setMaxI(this.getMap().getMaxI() % 2 == 0 ? this.getMap().getMaxI() : this.getMap().getMaxI() - 1);
+        this.getMap().setMaxI(Math.min(this.getMap().getMaxI(), this.getMap().getLimitI()));
+
+        this.getMap().setMaxJ((int) (this.getMap().getMapHeight() - this.getMap().getMargin() * 2) / (this.getMap().getGapY())); // TODO verifier si this.hexagonSize n'est pas mieux
+        this.getMap().setMaxJ(this.getMap().getMaxJ() % 2 == 0 ? this.getMap().getMaxJ() : this.getMap().getMaxJ() - 1);
+        this.getMap().setMaxJ(Math.min(this.getMap().getMaxJ(), this.getMap().getLimitJ()));
 
         /*
         this.startI = (int) (this.limitI - this.maxI) / 2;
@@ -346,34 +400,28 @@ public class EditMapService {
         this.startJ = startJ - maxJ > limitJ ? maxJ - limitJ : startJ;
         this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
 */
-        this.startI = (int) (this.limitI - this.maxI) / 2;
-        //this.startI = this.startI % 2 == 0 ? startI : startI - 1;
-        //this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
-        this.startI = this.startI % 2 == 0 ? this.startI : this.startI + 1;
-        this.startI = Math.max(this.startI, 0);
-       //this.startI = maxI + startI > limitI ? maxI + limitI : startI;
-        this.startI = Math.min(startI, limitI - maxI);
+        this.getMap().setStartI((int) (this.getMap().getLimitI() - this.getMap().getMaxI()) / 2);
+        this.getMap().setStartI(this.getMap().getStartI() % 2 == 0 ? this.getMap().getStartI() : this.getMap().getStartI() + 1);
+        this.getMap().setStartI(Math.max(this.getMap().getStartI(), 0));
+        this.getMap().setStartI(Math.min(this.getMap().getStartI(), this.getMap().getLimitI() - this.getMap().getMaxI()));
 
 
-        this.startJ = (int) (this.limitJ - this.maxJ) / 2;
-        //this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
-        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
-        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ + 1;
-        this.startJ = Math.max(this.startJ, 0);
-        //this.startJ = maxJ + startJ > limitJ ? maxJ + limitJ : startJ;
-        this.startJ = Math.min(startJ, limitJ - maxJ);
+        this.getMap().setStartJ((int) (this.getMap().getLimitJ() - this.getMap().getMaxJ()) / 2);
+        this.getMap().setStartJ(this.getMap().getStartJ() % 2 == 0 ? this.getMap().getStartJ() : this.getMap().getStartJ() + 1);
+        this.getMap().setStartJ(Math.max(this.getMap().getStartJ(), 0));
+        this.getMap().setStartJ(Math.min(getMap().getStartJ(), this.getMap().getLimitJ() - this.getMap().getMaxJ()));
 
 
-        this.mapX = Gdx.graphics.getWidth() / 2f - this.mapWidth / 2f;
-        this.mapY = 160f;
+        this.getMap().setMapX(Gdx.graphics.getWidth() / 2f - this.getMap().getMapWidth() / 2f);
+        this.getMap().setMapY(160f);
 
         this.miniHexSize = 2;
         this.miniMapMargin = 10;
         //calcul des coordonnées et dimensions de la minimap
-        this.miniMapWidth = this.limitI * miniHexSize + 2 * miniMapMargin;
-        this.miniMapHeight = this.limitJ * miniHexSize + 2 * miniMapMargin;
-        this.miniMapX = (int) this.mapWidth - miniMapWidth;
-        this.miniMapY = (int) this.mapHeight - miniMapHeight;
+        this.miniMapWidth = this.getMap().getLimitI() * miniHexSize + 2 * miniMapMargin;
+        this.miniMapHeight = this.getMap().getLimitJ() * miniHexSize + 2 * miniMapMargin;
+        this.miniMapX = (int) this.getMap().getMapWidth() - miniMapWidth;
+        this.miniMapY = (int) this.getMap().getMapHeight() - miniMapHeight;
 
         this.roadStartHex = null;
         this.roadStartHexNeighbours = new Hexagon[6];
@@ -386,38 +434,39 @@ public class EditMapService {
     }
 
     public void initMapFromZoom() {
-        int middleI = this.startI + ( this.maxI / 2 );
+        int middleI = this.getMap().getStartI() + ( this.getMap().getMaxI() / 2 );
         //middleI = middleI % 2 == 0 ? middleI : middleI - 1;
         middleI -= middleI % 2;
-        int middleJ = this.startJ + ( this.maxJ / 2 );
+        int middleJ = this.getMap().getStartJ() + ( this.getMap().getMaxJ() / 2 );
         //middleJ = middleJ % 2 == 0 ? middleJ : middleJ - 1;
         middleJ -= middleJ % 2;
 
-        this.hexagonSize = this.zoomLevel.getHexSize();
-        this.gapX = (int) this.hexagonSize * 5 / 3;
-        this.gapY = (int) this.hexagonSize * 3 / 2;
-        this.margin = 10;
+        this.getMap().setHexagonSize(this.getMap().getZoomLevel().getHexSize());
+        this.getMap().setGapX((int) this.getMap().getHexagonSize() * 5 / 3);
+        this.getMap().setGapY((int) this.getMap().getHexagonSize() * 3 / 2);
+        this.getMap().setMargin(10);
 
-        this.mapWidth = Gdx.graphics.getWidth() - 80f;
-        this.mapHeight = Gdx.graphics.getHeight() - 210f;
-        this.maxI = (int) (this.mapWidth - this.margin * 2) / (this.gapX);
-        this.maxI = this.maxI % 2 == 0 ? this.maxI : this.maxI - 1;
-        this.maxI = Math.min(this.maxI, this.limitI);
-        this.maxJ = (int) (this.mapHeight - this.margin * 2) / (this.gapY); // TODO verifier si this.hexagonSize n'est pas mieux
-        this.maxJ = this.maxJ % 2 == 0 ? this.maxJ : this.maxJ - 1;
-        this.maxJ = Math.min(this.maxJ, this.limitJ);
+        this.getMap().setMapWidth(Gdx.graphics.getWidth() - 80f);
+        this.getMap().setMapHeight(Gdx.graphics.getHeight() - 210f);
+        this.getMap().setMaxI((int) (this.getMap().getMapWidth() - this.getMap().getMargin() * 2) / (this.getMap().getGapX()));
+        this.getMap().setMaxI(this.getMap().getMaxI() % 2 == 0 ? this.getMap().getMaxI() : this.getMap().getMaxI() - 1);
+        this.getMap().setMaxI(Math.min(this.getMap().getMaxI(), this.getMap().getLimitI()));
+
+        this.getMap().setMaxJ((int) (this.getMap().getMapHeight() - this.getMap().getMargin() * 2) / (this.getMap().getGapY())); // TODO verifier si this.hexagonSize n'est pas mieux
+        this.getMap().setMaxJ(this.getMap().getMaxJ() % 2 == 0 ? this.getMap().getMaxJ() : this.getMap().getMaxJ() - 1);
+        this.getMap().setMaxJ(Math.min(this.getMap().getMaxJ(), this.getMap().getLimitJ()));
 
 
-        this.mapX = Gdx.graphics.getWidth() / 2f - this.mapWidth / 2f;
-        this.mapY = 160f;
+        this.getMap().setMapX(Gdx.graphics.getWidth() / 2f - this.getMap().getMapWidth() / 2f);
+        this.getMap().setMapY(160f);
 
         this.miniHexSize = 2;
         this.miniMapMargin = 10;
         //calcul des coordonnées et dimensions de la minimap
-        this.miniMapWidth = this.limitI * miniHexSize + 2 * miniMapMargin;
-        this.miniMapHeight = this.limitJ * miniHexSize + 2 * miniMapMargin;
-        this.miniMapX = (int) this.mapWidth - miniMapWidth;
-        this.miniMapY = (int) this.mapHeight - miniMapHeight;
+        this.miniMapWidth = this.getMap().getLimitI() * miniHexSize + 2 * miniMapMargin;
+        this.miniMapHeight = this.getMap().getLimitJ() * miniHexSize + 2 * miniMapMargin;
+        this.miniMapX = (int) this.getMap().getMapWidth() - miniMapWidth;
+        this.miniMapY = (int) this.getMap().getMapHeight() - miniMapHeight;
 
         this.roadStartHex = null;
         this.roadStartHexNeighbours = new Hexagon[6];
@@ -429,69 +478,65 @@ public class EditMapService {
         this.cliffStartHexNeighbours = new Hexagon[6];
 
 
-        this.startI = middleI - ( this.maxI / 2 );
-        //this.startI = this.startI % 2 == 0 ? this.startI : this.startI % 2 <= 0.5 ? this.startI - 1 : this.startI + 1;
-        this.startI = this.startI % 2 == 0 ? this.startI : this.startI + 1;
-        this.startI = Math.max(this.startI, 0);
-        this.startI = Math.min(startI, limitI - maxI);
+        this.getMap().setStartI(middleI - ( this.getMap().getMaxI() / 2 ));
+        this.getMap().setStartI(this.getMap().getStartI() % 2 == 0 ? this.getMap().getStartI() : this.getMap().getStartI() + 1);
+        this.getMap().setStartI(Math.max(this.getMap().getStartI(), 0));
+        this.getMap().setStartI(Math.min(this.getMap().getStartI(), this.getMap().getLimitI() - this.getMap().getMaxI()));
 
-        this.startJ = middleJ - ( this.maxJ / 2 );
-        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ % 2 <= 0.5 ? this.startJ - 1 : this.startJ + 1;
-        this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ + 1;
-
-        this.startJ = Math.max(this.startJ, 0);
-        this.startJ = Math.min(startJ, limitJ - maxJ);
-        //this.startJ = this.startJ % 2 == 0 ? this.startJ : this.startJ - 1;
+        this.getMap().setStartJ(middleJ - ( this.getMap().getMaxJ() / 2 ));
+        this.getMap().setStartJ(this.getMap().getStartJ() % 2 == 0 ? this.getMap().getStartJ() : this.getMap().getStartJ() + 1);
+        this.getMap().setStartJ(Math.max(this.getMap().getStartJ(), 0));
+        this.getMap().setStartJ(Math.min(this.getMap().getStartJ(), this.getMap().getLimitJ() - this.getMap().getMaxJ()));
 
     }
 
     public int getXFromIJ(int i, int j) {
-        int toReturn = (int) this.gapX * i + this.gapX / 2 + this.margin;
+        int toReturn = (int) this.getMap().getGapX() * i + this.getMap().getGapX() / 2 + this.getMap().getMargin();
         if( j % 2 == 0) {
-            toReturn += (int) this.gapX / 2;
+            toReturn += (int) this.getMap().getGapX() / 2;
         }
         return toReturn;
     }
 
     public int getYFromJ (int j) {
-        return this.gapY * j + this.hexagonSize + this.margin;
+        return this.getMap().getGapY() * j + this.getMap().getHexagonSize() + this.getMap().getMargin();
     }
 
     public int getIFromXY(int x, int y) {
-        int j = (int) ((y - this.hexagonSize * 0.5) / (this.hexagonSize * 1.5));
+        int j = (int) ((y - this.getMap().getHexagonSize() * 0.5) / (this.getMap().getHexagonSize() * 1.5));
         //System.out.println("j : " + j);
         int i = 0;
         if(j % 2 == 0) {
-            i = (int) (x - this.gapX / 2) / this.gapX;
+            i = (int) (x - this.getMap().getGapX() / 2) / this.getMap().getGapX();
         }
         else {
-            i = (int) x / this.gapX;
+            i = (int) x / this.getMap().getGapX();
         }
         return i;
     }
 
     public int getJFromY(int y) {
-        return (int) ((y - this.hexagonSize * 0.5) / (this.hexagonSize * 1.475));
+        return (int) ((y - this.getMap().getHexagonSize() * 0.5) / (this.getMap().getHexagonSize() * 1.475));
     }
 
     public void drawMap(Pixmap drawingPixmap, EditMapMode mapMode) {
         // Dessiner les hexagones
-        for(int i=0; i < maxI; i++) {
-            for (int j=0; j < maxJ; j++) {
+        for(int i=0; i < this.getMap().getMaxI(); i++) {
+            for (int j=0; j < this.getMap().getMaxJ(); j++) {
                 int x = getXFromIJ(i, j);
                 int y = getYFromJ(j);
                 //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
                 // faire méthode dans enum ou GraphicUtil qui renvoie la texture en fonction du terrain
 
-                Texture texture = GraphicUtil.getTextureFromTerrain(this.hexesArray.get(i + startI).get(j + startJ).getCategory());
+                Texture texture = GraphicUtil.getTextureFromTerrain(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory());
 
                 // dessine l'hex actif et ses voisins dans le mode Road
                 if(roadStartHex != null) {
-                    if(i + startI == roadStartHex.getX() && j + startJ == roadStartHex.getY()) texture = GraphicUtil.redTexture;
+                    if(i + this.getMap().getStartI() == roadStartHex.getX() && j + this.getMap().getStartJ() == roadStartHex.getY()) texture = GraphicUtil.redTexture;
                     boolean isInRoadStartNeighbours = false;
                     for(int k=0; k<6; k++) {
-                        if (i + startI == roadStartHexNeighbours[k].getX() && j + startJ == roadStartHexNeighbours[k].getY()
-                        && this.hexesArray.get(i + startI).get(j + startJ).getCategory() != HexagonCategory.WATER) {
+                        if (i + this.getMap().getStartI() == roadStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == roadStartHexNeighbours[k].getY()
+                        && this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             isInRoadStartNeighbours = true;
                         }
                     }
@@ -500,102 +545,85 @@ public class EditMapService {
 
                 // dessine l'hex actif et ses voisins dans le mode River
                 if(riverStartHex != null) {
-                    if(i + startI == riverStartHex.getX() && j + startJ == riverStartHex.getY()) texture = GraphicUtil.redTexture;
+                    if(i + this.getMap().getStartI() == riverStartHex.getX() && j + this.getMap().getStartJ() == riverStartHex.getY()) texture = GraphicUtil.redTexture;
                     boolean isInRiverStartNeighbours = false;
                     for(int k=0; k<6; k++) {
-                        if (i + startI == riverStartHexNeighbours[k].getX() && j + startJ == riverStartHexNeighbours[k].getY()
-                            && this.hexesArray.get(i + startI).get(j + startJ).getCategory() != HexagonCategory.WATER) {
+                        if (i + this.getMap().getStartI() == riverStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == riverStartHexNeighbours[k].getY()
+                            && this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             isInRiverStartNeighbours = true;
                         }
                     }
                     if(isInRiverStartNeighbours) texture = GraphicUtil.orangeTexture;
                 }
 
+                // dessine l'hex actif et ses voisins dans le mode Cliff
                 if(cliffStartHex != null) {
-                    if(i + startI == cliffStartHex.getX() && j + startJ == cliffStartHex.getY()) texture = GraphicUtil.redTexture;
+                    if(i + this.getMap().getStartI() == cliffStartHex.getX() && j + this.getMap().getStartJ() == cliffStartHex.getY()) texture = GraphicUtil.redTexture;
                     boolean isInCliffStartNeighbours = false;
                     for(int k=0; k<6; k++) {
-                        if (i + startI == cliffStartHexNeighbours[k].getX() && j + startJ == cliffStartHexNeighbours[k].getY()
-                            && this.hexesArray.get(i + startI).get(j + startJ).getCategory() != HexagonCategory.WATER) {
+                        if (i + this.getMap().getStartI() == cliffStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == cliffStartHexNeighbours[k].getY()
+                            && this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             isInCliffStartNeighbours = true;
                         }
                     }
                     if(isInCliffStartNeighbours) texture = GraphicUtil.orangeTexture;
                 }
 
-                drawHexagon(drawingPixmap, x, y, hexagonSize, texture, Color.BLACK);
+                drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), texture, Color.BLACK);
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
                 // dessin des falaises
-                /*
-                if(
-                    mapMode == EditMapMode.CLIFF ||
-                        mapMode == EditMapMode.ROAD ||
-                        mapMode == EditMapMode.RIVER ||
-                        mapMode == EditMapMode.TERRAIN ||
-                        mapMode == EditMapMode.MISC ||
-                        mapMode == EditMapMode.NO_ACTION
-                ) */
-                if(this.isCliffVisible)
+                if(this.getMap().getDisplayFlags().isCliffVisible())
                 {
                     for (int k = 0; k < 6; k++) {
-                        if(this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k].isCliff()) {
-                            drawCliffSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getCliffs()[k], k);
+                        if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCliffs()[k].isCliff()) {
+                            drawCliffSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCliffs()[k], k);
                         }
                     }
                 }
 
 
                 // dessin des rivières
-                /*
-                if(
-                    mapMode == EditMapMode.CLIFF ||
-                    mapMode == EditMapMode.RIVER ||
-                        mapMode == EditMapMode.ROAD ||
-                        mapMode == EditMapMode.TERRAIN ||
-                        mapMode == EditMapMode.MISC ||
-                        mapMode == EditMapMode.NO_ACTION
-                )*/
-                if(this.isRiverVisible)
+                if(this.getMap().getDisplayFlags().isRiverVisible())
                 {
                     for (int k = 0; k < 6; k++) {
-                        if(this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k] != RiverCategory.NO_RIVER) {
-                            drawRiverSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getRivers()[k], k);
+                        if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRivers()[k] != RiverCategory.NO_RIVER) {
+                            drawRiverSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRivers()[k], k);
                         }
                     }
                 }
 
                 // dessin des ponts
-                if(isBridgeVisible) {
+                if(this.getMap().getDisplayFlags().isBridgeVisible()) {
                     for (int k = 0; k < 6; k++) {
-                        if(!this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
-                            drawBridgeSide(drawingPixmap, i, j, this.hexesArray.get(i + startI).get(j + startJ).getBridges().getEdges()[k].getBridgeType(), k);
+                        if(!this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
+                            drawBridgeSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getBridges().getEdges()[k].getBridgeType(), k);
                         }
                     }
                 }
 
                 // dessin des routes
-                if(isRoadVisible) {
+                if(this.getMap().getDisplayFlags().isRoadVisible()) {
                     for(int k=0; k<6; k++) {
-                        if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isPathway()) {
+                        if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRoads().getEdges()[k].isPathway()) {
                             drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
                         }
-                        if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isRoadway()) {
+                        if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRoads().getEdges()[k].isRoadway()) {
                             drawRoadSegment(drawingPixmap, i, j, RoadCategory.ROADWAY, k);
                         }
-                        if(this.hexesArray.get(i + startI).get(j + startJ).getRoads().getEdges()[k].isRailway()) {
+                        if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRoads().getEdges()[k].isRailway()) {
                             drawRoadSegment(drawingPixmap, i, j, RoadCategory.RAILWAY, k);
                         }
                     }
                 }
 
                 // dessin des fortifications
-                if(this.hexesArray.get(i + startI).get(j + startJ).getFortification() != FortificationCategory.NO_FORTIFICATION
-                && isFortificationVisible) {
+                if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification() != FortificationCategory.NO_FORTIFICATION
+                && this.getMap().getDisplayFlags().isFortificationVisible()) {
                     drawFortification(
                         drawingPixmap,
-                        x, y, hexagonSize * 2, // ajouté !!
-                        GraphicUtil.getTextureFromFortification(this.hexesArray.get(i + startI).get(j + startJ).getFortification()));
+                        x, y, this.getMap().getHexagonSize() * 2, // ajouté !!
+                        GraphicUtil.getTextureFromFortification(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification()));
                 }
 
             }
@@ -603,9 +631,9 @@ public class EditMapService {
     }
 
     public void generateBridgesFromRiversAndRoads() {
-        for(int i=0; i < limitI; i++) {
-            for (int j=0; j < limitJ; j++) {
-                Hexagon hex = this.hexesArray.get(i).get(j);
+        for(int i=0; i < this.getMap().getLimitI(); i++) {
+            for (int j=0; j < this.getMap().getLimitJ(); j++) {
+                Hexagon hex = this.getMap().getHexesArray().get(i).get(j);
                 for(int k=0; k<6; k++) {
                     if(
                         !(hex.getRivers()[k].equals(RiverCategory.NO_RIVER)) &&
@@ -617,10 +645,10 @@ public class EditMapService {
                         BridgeTypeEnum bridgeType = hex.getRoads().getEdges()[k].isRailway() ? BridgeTypeEnum.HEAVY_BRIDGE :
                             hex.getRoads().getEdges()[k].isRoadway() ? BridgeTypeEnum.MEDIUM_BRIDGE :
                                 hex.getRoads().getEdges()[k].isPathway() ? BridgeTypeEnum.LIGHT_BRIDGE : BridgeTypeEnum.NO_BRIDGE;
-                        this.hexesArray.get(i).get(j).getBridges().getEdges()[k].setBridgeType(bridgeType);
+                        this.getMap().getHexesArray().get(i).get(j).getBridges().getEdges()[k].setBridgeType(bridgeType);
                     }
                     else {
-                        this.hexesArray.get(i).get(j).getBridges().getEdges()[k].setBridgeType(BridgeTypeEnum.NO_BRIDGE);
+                        this.getMap().getHexesArray().get(i).get(j).getBridges().getEdges()[k].setBridgeType(BridgeTypeEnum.NO_BRIDGE);
                     }
                 }
             }
@@ -640,8 +668,8 @@ public class EditMapService {
                 texturePixmap, // Source Pixmap
                 0, 0,            // Source X,Y (top-left of source)
                 texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
-                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+                x - this.getMap().getHexagonSize(), y - this.getMap().getHexagonSize(),            // Dest X,Y (top-left of destination)
+                this.getMap().getHexagonSize() * 2, this.getMap().getHexagonSize() * 2    // Dest width & height (scaling)
             );
 
             texturePixmap.dispose();
@@ -661,8 +689,8 @@ public class EditMapService {
                 texturePixmap, // Source Pixmap
                 0, 0,            // Source X,Y (top-left of source)
                 texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
-                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+                x - this.getMap().getHexagonSize(), y - this.getMap().getHexagonSize(),            // Dest X,Y (top-left of destination)
+                this.getMap().getHexagonSize() * 2, this.getMap().getHexagonSize() * 2    // Dest width & height (scaling)
             );
             texturePixmap.dispose();
         }
@@ -682,8 +710,8 @@ public class EditMapService {
                 texturePixmap, // Source Pixmap
                 0, 0,            // Source X,Y (top-left of source)
                 texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
-                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+                x - this.getMap().getHexagonSize(), y - this.getMap().getHexagonSize(),            // Dest X,Y (top-left of destination)
+                this.getMap().getHexagonSize() * 2, this.getMap().getHexagonSize() * 2    // Dest width & height (scaling)
             );
             texturePixmap.dispose();
         }
@@ -702,8 +730,8 @@ public class EditMapService {
                 texturePixmap, // Source Pixmap
                 0, 0,            // Source X,Y (top-left of source)
                 texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
-                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
+                x - this.getMap().getHexagonSize(), y - this.getMap().getHexagonSize(),            // Dest X,Y (top-left of destination)
+                this.getMap().getHexagonSize() * 2, this.getMap().getHexagonSize() * 2    // Dest width & height (scaling)
             );
             texturePixmap.dispose();
         }
@@ -728,18 +756,21 @@ public class EditMapService {
             i = (int) x / miniHexSize;
         }
 
+        //this.getMap().getStartI()
         // 'cappage'
         // TODO modifier le calcul pour que le rectangle de sélection soit centré sur le clic
         // TODO ajouter la moitié de MaxI et MaxJ ?
-        this.startI = i < 0 ? 0 : i >= this.limitI - this.maxI ? this.limitI - this.maxI - 1 : i;
-        this.startJ = j < 0 ? 0 : j >= this.limitJ - this.maxJ ? this.limitJ - this.maxJ - 1 : j;
+        this.getMap().setStartI(i < 0 ? 0 : i >= this.getMap().getLimitI() - this.getMap().getMaxI() ? this.getMap().getLimitI() - this.getMap().getMaxI() - 1 : i);
+        this.getMap().setStartJ(j < 0 ? 0 : j >= this.getMap().getLimitJ() - this.getMap().getMaxJ() ? this.getMap().getLimitJ() - this.getMap().getMaxJ() - 1 : j);
         // utiliser des valeurs paires
-        this.startI -= this.startI%2;
-        this.startJ -= this.startJ%2;
+        this.getMap().setStartI(this.getMap().getStartI() - this.getMap().getStartI()%2);
+        this.getMap().setStartJ(this.getMap().getStartJ() - this.getMap().getStartJ()%2);
         //this.startI = i;
         //this.startJ = j;
         // dessin du rectangle (faire méthode ?)
         //this.showMiniMap(drawingMapPixmap);
+
+        //this.getMap().getStartJ()
     }
 
     public void showMiniMap(Pixmap drawingMapPixmap) {
@@ -747,9 +778,9 @@ public class EditMapService {
         drawingMapPixmap.fillRectangle(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
 
         // dessin de la miniMap
-        for(int i=0; i<this.limitI; i++) {
-            for(int j=0; j<this.limitJ; j++) {
-                Color fillColor = GraphicUtil.getColorFromTerrain(this.hexesArray.get(i).get(j).getCategory());
+        for(int i=0; i<this.getMap().getLimitI(); i++) {
+            for(int j=0; j<this.getMap().getLimitJ(); j++) {
+                Color fillColor = GraphicUtil.getColorFromTerrain(this.getMap().getHexesArray().get(i).get(j).getCategory());
                 drawingMapPixmap.setColor(fillColor);
 
 
@@ -765,11 +796,11 @@ public class EditMapService {
         }
 
         drawingMapPixmap.setColor(Color.WHITE);
-        int selectRectWidth =  miniHexSize * this.maxI;
-        int selectRectHeight = miniHexSize * this.maxJ;
+        int selectRectWidth =  miniHexSize * this.getMap().getMaxI();
+        int selectRectHeight = miniHexSize * this.getMap().getMaxJ();
 
-        int rectX = miniMapX + miniMapMargin + miniHexSize * this.startI;
-        int rectY = miniMapY + miniMapMargin + miniHexSize * this.startJ;
+        int rectX = miniMapX + miniMapMargin + miniHexSize * this.getMap().getStartI();
+        int rectY = miniMapY + miniMapMargin + miniHexSize * this.getMap().getStartJ();
         drawingMapPixmap.drawRectangle(rectX, rectY, selectRectWidth, selectRectHeight);
     }
 
@@ -803,11 +834,11 @@ public class EditMapService {
             centerX += gapX / 2; // Décalage pour les lignes paires
         }
         */
-        int centerX = getXFromIJ(hexI - startI, hexJ - startJ);
-        int centerY = getYFromJ(hexJ - startJ);
+        int centerX = getXFromIJ(hexI - this.getMap().getStartI(), hexJ - this.getMap().getStartJ());
+        int centerY = getYFromJ(hexJ - this.getMap().getStartJ());
         // Dessiner l'hexagone avec la couleur spécifiée
         //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
-        drawHexagon(pixmap, centerX, centerY, hexagonSize, texture, Color.BLACK);
+        drawHexagon(pixmap, centerX, centerY, this.getMap().getHexagonSize(), texture, Color.BLACK);
     }
     /**
      * Draws a textured hexagon onto the provided Pixmap.
@@ -895,7 +926,7 @@ public class EditMapService {
     }
 
     public boolean isClickInMap(int i, int j) {
-        if(i >= 0 && i < this.maxI && j >= 0 && j < this.maxJ) {
+        if(i >= 0 && i < this.getMap().getMaxI() && j >= 0 && j < this.getMap().getMaxJ()) {
             return true;
         }
         else {
@@ -922,8 +953,8 @@ public class EditMapService {
                     case ROAD:
                         if(this.roadStartHex != null
                             && this.roadStartHexNeighbours[k] != null
-                            && this.roadStartHexNeighbours[k].getX() == i + this.startI
-                            &&  this.roadStartHexNeighbours[k].getY() == j + this.startJ) {
+                            && this.roadStartHexNeighbours[k].getX() == i + this.getMap().getStartI()
+                            &&  this.roadStartHexNeighbours[k].getY() == j + this.getMap().getStartJ()) {
                             return true;
                         }
                         break;
@@ -931,8 +962,8 @@ public class EditMapService {
                         //System.out.println("k : " + k);
                         if(this.riverStartHex != null
                             && this.riverStartHexNeighbours[k] != null
-                            && this.riverStartHexNeighbours[k].getX() == i + this.startI
-                            &&  this.riverStartHexNeighbours[k].getY() == j + this.startJ) {
+                            && this.riverStartHexNeighbours[k].getX() == i + this.getMap().getStartI()
+                            &&  this.riverStartHexNeighbours[k].getY() == j + this.getMap().getStartJ()) {
                             return true;
                         }
                         break;
@@ -940,8 +971,8 @@ public class EditMapService {
                         //System.out.println("k : " + k);
                         if(this.cliffStartHex != null
                             && this.cliffStartHexNeighbours[k] != null
-                            && this.cliffStartHexNeighbours[k].getX() == i + this.startI
-                            &&  this.cliffStartHexNeighbours[k].getY() == j + this.startJ) {
+                            && this.cliffStartHexNeighbours[k].getX() == i + this.getMap().getStartI()
+                            &&  this.cliffStartHexNeighbours[k].getY() == j + this.getMap().getStartJ()) {
                             return true;
                         }
                         break;
@@ -1001,24 +1032,24 @@ public class EditMapService {
         int l = 5 - k;
         switch(selectedRoad) {
             case NO_ROAD:
-                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setPathway(false);
-                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setRoadway(false);
-                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setRailway(false);
-                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setPathway(false);
-                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setRoadway(false);
-                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setRailway(false);
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRoads().getEdges()[k].setPathway(false);
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRoads().getEdges()[k].setRoadway(false);
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRoads().getEdges()[k].setRailway(false);
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRoads().getEdges()[l].setPathway(false);
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRoads().getEdges()[l].setRoadway(false);
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRoads().getEdges()[l].setRailway(false);
                 break;
             case PATHWAY:
-                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setPathway(true);
-                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setPathway(true);
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRoads().getEdges()[k].setPathway(true);
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRoads().getEdges()[l].setPathway(true);
                 break;
             case ROADWAY:
-                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setRoadway(true);
-                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setRoadway(true);
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRoads().getEdges()[k].setRoadway(true);
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRoads().getEdges()[l].setRoadway(true);
                 break;
             case RAILWAY:
-                this.hexesArray.get(iStart).get(jStart).getRoads().getEdges()[k].setRailway(true);
-                this.hexesArray.get(iEnd).get(jEnd).getRoads().getEdges()[l].setRailway(true);
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRoads().getEdges()[k].setRailway(true);
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRoads().getEdges()[l].setRailway(true);
                 break;
         }
         /*
@@ -1041,43 +1072,44 @@ public class EditMapService {
         int l = 5 - k;
         switch(selectedRiver) {
             case NO_RIVER:
-                this.hexesArray.get(iStart).get(jStart).getRivers()[k] = RiverCategory.NO_RIVER;
-                this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.NO_RIVER;
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRivers()[k] = RiverCategory.NO_RIVER;
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.NO_RIVER;
                 break;
             case NARROW:
-                this.hexesArray.get(iStart).get(jStart).getRivers()[k] = RiverCategory.NARROW;
-                this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.NARROW;
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRivers()[k] = RiverCategory.NARROW;
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.NARROW;
                 break;
             case MEDIUM:
-                this.hexesArray.get(iStart).get(jStart).getRivers()[k] = RiverCategory.MEDIUM;
-                this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.MEDIUM;
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRivers()[k] = RiverCategory.MEDIUM;
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.MEDIUM;
                 break;
             case WIDE:
-                this.hexesArray.get(iStart).get(jStart).getRivers()[k] = RiverCategory.WIDE;
-                this.hexesArray.get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.WIDE;
+                this.getMap().getHexesArray().get(iStart).get(jStart).getRivers()[k] = RiverCategory.WIDE;
+                this.getMap().getHexesArray().get(iEnd).get(jEnd).getRivers()[l] = RiverCategory.WIDE;
                 break;
         }
     }
 
     public MapData getMapData() {
-        return new MapData("test", this.limitI, this.limitJ, this.hexesArray);
+        return new MapData("test", this.getMap().getLimitI(), this.getMap().getLimitJ(), this.getMap().getHexesArray());
     }
 
     public void SetMapData(MapData mapData) {
-        limitI = mapData.getLimitI();
-        limitJ = mapData.getLimitJ();
-        this.hexesArray = new Array<Array<Hexagon>>(limitI);
-        for (int i = 0; i < limitI; i++) {
-            Array<Hexagon> row = new Array<Hexagon>(limitJ);
-            for (int j = 0; j < limitJ; j++) {
+        this.getMap().setLimitI(mapData.getLimitI());
+        this.getMap().setLimitJ(mapData.getLimitJ());
+        this.getMap().setHexesArray(new Array<Array<Hexagon>>(this.getMap().getLimitI()));
+        for (int i = 0; i < this.getMap().getLimitI(); i++) {
+            Array<Hexagon> row = new Array<Hexagon>(this.getMap().getLimitJ());
+            for (int j = 0; j < this.getMap().getLimitJ(); j++) {
                 row.add(mapData.getDataTab()[i][j]);
             }
-            this.hexesArray.add(row);
+            this.getMap().getHexesArray().add(row);
         }
         init();
         generateBridgesFromRiversAndRoads();
     }
 
+    /*
     public ZoomLevelEnum getZoomLevel() {
         return zoomLevel;
     }
@@ -1086,43 +1118,23 @@ public class EditMapService {
         this.zoomLevel = zoomLevel;
     }
 
-    public boolean isBridgeVisible() {
-        return isBridgeVisible;
+     */
+
+    /*
+    public MapDisplayFlags getDisplayFlags() {
+        return displayFlags;
     }
 
-    public void setBridgeVisible(boolean bridgeVisible) {
-        isBridgeVisible = bridgeVisible;
+    public void setDisplayFlags(MapDisplayFlags displayFlags) {
+        this.displayFlags = displayFlags;
+    }
+     */
+
+    public Map getMap() {
+        return map;
     }
 
-    public boolean isCliffVisible() {
-        return isCliffVisible;
-    }
-
-    public void setCliffVisible(boolean cliffVisible) {
-        isCliffVisible = cliffVisible;
-    }
-
-    public boolean isFortificationVisible() {
-        return isFortificationVisible;
-    }
-
-    public void setFortificationVisible(boolean fortificationVisible) {
-        isFortificationVisible = fortificationVisible;
-    }
-
-    public boolean isRoadVisible() {
-        return isRoadVisible;
-    }
-
-    public void setRoadVisible(boolean roadVisible) {
-        isRoadVisible = roadVisible;
-    }
-
-    public boolean isRiverVisible() {
-        return isRiverVisible;
-    }
-
-    public void setRiverVisible(boolean riverVisible) {
-        isRiverVisible = riverVisible;
+    public void setMap(Map map) {
+        this.map = map;
     }
 }

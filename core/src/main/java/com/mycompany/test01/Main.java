@@ -8,15 +8,11 @@ public class Main extends Game {
     //EditMapService editMapService;
     @Override
     public void create() {
-        //this.editMapService = EditMapService.getInstance();
-        //editMapService.firstInit();
-        //editMapService.initRandomMapArray();
-        //editMapService.resetMap();
         try {
             setScreen(new WelcomeScreen(this));
         }
         catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
         }
     }
 }

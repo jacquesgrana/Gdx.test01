@@ -20,8 +20,11 @@ public class Map {
     private int hexagonSize = 0;
     private ZoomLevelEnum zoomLevel;
 
+    private MapDisplayFlags displayFlags;
+
     public Map() {
         this.zoomLevel = ZoomLevelEnum.NORMAL_VIEW;
+        this.displayFlags = new MapDisplayFlags();
     }
 
     public Map(
@@ -35,7 +38,8 @@ public class Map {
         float mapX, float mapY,
         float mapWidth, float mapHeight,
         int hexagonSize,
-        ZoomLevelEnum zoomLevel
+        ZoomLevelEnum zoomLevel,
+        MapDisplayFlags displayFlags
     ) {
         this.name = name;
         this.hexesArray = hexesArray;
@@ -54,6 +58,7 @@ public class Map {
         this.mapHeight = mapHeight;
         this.hexagonSize = hexagonSize;
         this.zoomLevel = zoomLevel;
+        this.displayFlags = displayFlags;
     }
 
     // méthodes d'instance
@@ -160,25 +165,32 @@ public class Map {
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
                 for (int k = 0; k < 6; k++) {
-                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCliffs()[k].isCliff()) {
+                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCliffs()[k].isCliff()
+                        && this.displayFlags.isCliffVisible()) {
                         drawCliffSide(drawingPixmap, i, j, this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCliffs()[k], k);
                     }
-                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRivers()[k] != RiverCategory.NO_RIVER) {
+                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRivers()[k] != RiverCategory.NO_RIVER
+                        && this.displayFlags.isRiverVisible()) {
                         drawRiverSide(drawingPixmap, i, j, this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRivers()[k], k);
                     }
-                    if(!this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
+                    if(!this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)
+                        && this.displayFlags.isBridgeVisible()) {
                         drawBridgeSide(drawingPixmap, i, j, this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getBridges().getEdges()[k].getBridgeType(), k);
                     }
-                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRoads().getEdges()[k].isPathway()) {
+                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRoads().getEdges()[k].isPathway()
+                        && this.displayFlags.isRoadVisible()) {
                         drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
                     }
-                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRoads().getEdges()[k].isRoadway()) {
+                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRoads().getEdges()[k].isRoadway()
+                        && this.displayFlags.isRoadVisible()) {
                         drawRoadSegment(drawingPixmap, i, j, RoadCategory.ROADWAY, k);
                     }
-                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRoads().getEdges()[k].isRailway()) {
+                    if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getRoads().getEdges()[k].isRailway()
+                        && this.displayFlags.isRoadVisible()) {
                         drawRoadSegment(drawingPixmap, i, j, RoadCategory.RAILWAY, k);
                     }
-                    if(!this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification().equals(FortificationCategory.NO_FORTIFICATION)) {
+                    if(!this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification().equals(FortificationCategory.NO_FORTIFICATION)
+                        && this.displayFlags.isFortificationVisible()) {
                         drawFortification(
                             drawingPixmap,
                             x, y, this.getHexagonSize() * 2, // ajouté !!
@@ -401,6 +413,8 @@ public class Map {
     // Getters et Setters
 
     public void setStartI(int startI) {
+        this.startI = startI;
+        /*
         if(startI%2 != 0) startI--;
         if(startI > this.getLimitI() - this.getMaxI() - 1) {
             this.startI = this.getLimitI() - this.getMaxI() - 1;
@@ -413,10 +427,12 @@ public class Map {
         else {
             this.startI = startI;
             //this.setStartI(startI);
-        }
+        }*/
     }
 
     public void setStartJ(int startJ) {
+        this.startJ = startJ;
+        /*
         if(startJ%2 != 0) startJ--;
         if(startJ > this.getLimitJ() - this.getMaxJ() - 1) {
             //this.setStartJ(this.getLimitJ() - this.getMaxJ() - 1);
@@ -429,7 +445,7 @@ public class Map {
         else {
             //this.setStartJ(startJ);
             this.startJ = startJ;
-        }
+        }*/
     }
 
     public String getName() {
@@ -568,5 +584,13 @@ public class Map {
 
     public void setZoomLevel(ZoomLevelEnum zoomLevel) {
         this.zoomLevel = zoomLevel;
+    }
+
+    public MapDisplayFlags getDisplayFlags() {
+        return displayFlags;
+    }
+
+    public void setDisplayFlags(MapDisplayFlags displayFlags) {
+        this.displayFlags = displayFlags;
     }
 }
