@@ -538,17 +538,17 @@ public class EditScenarScreen implements Screen {
                             break;
                         case NORMAL_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                     }
@@ -558,17 +558,17 @@ public class EditScenarScreen implements Screen {
                     switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case NORMAL_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
@@ -608,17 +608,17 @@ public class EditScenarScreen implements Screen {
                     switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
                         case CLOSE_VIEW :
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case NORMAL_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.VERY_DISTANT_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
@@ -633,17 +633,17 @@ public class EditScenarScreen implements Screen {
                             break;
                         case NORMAL_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.CLOSE_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                         case VERY_DISTANT_VIEW:
                             this.screen.editScenarService.getScenario().getMap().setZoomLevel(ZoomLevelEnum.DISTANT_VIEW);
-                            this.screen.editScenarService.getScenario().getMap().initMapFromZoom();
+                            this.screen.editScenarService.getScenario().getMap().initMapFromZoomWrapper();
                             this.screen.redrawMap();
                             break;
                     }

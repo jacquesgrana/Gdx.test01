@@ -63,7 +63,10 @@ public class Map {
 
     // méthodes d'instance
 
-    public void initMap() {
+    public void initMap(
+        float mapX, float mapY,
+        float mapWidth, float mapHeight
+    ) {
         int limitI = this.getLimitI();
         int limitJ = this.getLimitJ();
         this.setHexagonSize(this.getZoomLevel().getHexSize());
@@ -71,9 +74,18 @@ public class Map {
         this.setGapY((int) this.getHexagonSize() * 3 / 2);
         this.setMargin(10);
 
-        this.setMapWidth( Gdx.graphics.getWidth() - 500f);
-
+        /*
+        this.setMapWidth(Gdx.graphics.getWidth() - 500f);
         this.setMapHeight(Gdx.graphics.getHeight() - 230f);
+
+        this.setMapX(50);
+        this.setMapY(180);
+         */
+        this.setMapWidth(mapWidth);
+        this.setMapHeight(mapHeight);
+
+        this.setMapX(mapX);
+        this.setMapY(mapY);
 
         this.setMaxI((int) (this.getMapWidth() - this.getMargin() * 2) / (this.getGapX()));
         this.setMaxI(this.getMaxI() % 2 == 0 ? this.getMaxI() : this.getMaxI() - 1);
@@ -82,9 +94,6 @@ public class Map {
         this.setMaxJ((int) (this.getMapHeight() - this.getMargin() * 2) / (this.getGapY()));
         this.setMaxJ(this.getMaxJ() % 2 == 0 ? this.getMaxJ() : this.getMaxJ() - 1);
         this.setMaxJ(Math.min(this.getMaxJ(), this.getLimitJ()));
-
-        this.setMapX(50);
-        this.setMapY(180);
 
         this.setStartI((int) (limitI - this.getMaxI()) / 2);
         this.setStartI(this.getStartI() % 2 == 0 ? this.getStartI() : this.getStartI() + 1);
@@ -97,7 +106,23 @@ public class Map {
         this.setStartJ(Math.min(this.getStartJ(), limitJ - this.getMaxJ()));
     }
 
-    public void initMapFromZoom() {
+    public void initMapFromZoomWrapper() {
+        /*
+        this.setMapWidth(Gdx.graphics.getWidth() - 500f);
+        this.setMapHeight(Gdx.graphics.getHeight() - 230f);
+
+        this.setMapX(50);
+        this.setMapY(180);
+         */
+        this.initMapFromZoom(
+            50f,
+            180f,
+            Gdx.graphics.getWidth() - 500f,
+            Gdx.graphics.getHeight() - 230f
+            );
+    }
+
+    public void initMapFromZoom(float mapX, float mapY, float mapWidth, float mapHeight) {
         int limitI = this.getLimitI();
         int limitJ = this.getLimitJ();
         int middleI = this.getStartI() + ( this.getMaxI() / 2 );
@@ -110,8 +135,11 @@ public class Map {
         this.setGapY((int) this.getHexagonSize() * 3 / 2);
         this.setMargin(10);
 
-        this.setMapWidth(Gdx.graphics.getWidth() - 500f);
-        this.setMapHeight(Gdx.graphics.getHeight() - 230f);
+        this.setMapWidth(mapWidth);
+        this.setMapHeight(mapHeight);
+
+        this.setMapX(mapX);
+        this.setMapY(mapY);
 
         this.setMaxI((int) (this.getMapWidth() - this.getMargin() * 2) / (this.getGapX()));
         this.setMaxI(this.getMaxI() % 2 == 0 ? this.getMaxI() : this.getMaxI() - 1);
@@ -120,9 +148,6 @@ public class Map {
         this.setMaxJ((int) (this.getMapHeight() - this.getMargin() * 2) / (this.getGapY()));
         this.setMaxJ(this.getMaxJ() % 2 == 0 ? this.getMaxJ() : this.getMaxJ() - 1);
         this.setMaxJ(Math.min(this.getMaxJ(), limitJ));
-
-        this.setMapX(50);
-        this.setMapY(180);
 
         this.setStartI(middleI - ( this.getMaxI() / 2 ));
         this.setStartI( this.getStartI() % 2 == 0 ? this.getStartI() : this.getStartI() + 1);
@@ -152,6 +177,10 @@ public class Map {
         //System.out.println("limitI : " + limitI + " / limitJ : " + limitJ);
         //this.initMap();
         //this.generateBridgesFromRiversAndRoads();
+    }
+
+    public MapData getMapData() {
+        return new MapData("test", this.getLimitI(), this.getLimitJ(), this.getHexesArray());
     }
 
     public void drawMap(Pixmap drawingPixmap) {

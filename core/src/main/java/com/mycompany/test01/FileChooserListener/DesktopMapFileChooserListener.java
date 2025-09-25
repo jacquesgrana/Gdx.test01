@@ -29,14 +29,14 @@ public class DesktopMapFileChooserListener implements FileChooserListenerInterfa
         if(Objects.equals(mode, "LOAD")) {
             MapData mapData = mapFileService.loadMapData(file.path());
             editMapService.getMap().setMapData(mapData);
-            editMapService.init();
             editMapService.getMap().generateBridgesFromRiversAndRoads();
+            editMapService.init();
             Toast toast = new Toast("Map Loaded", ColorStyleEnum.SUCCESS);
             this.toastObservable.setObserved(toast);
             this.toastObservable.notifyObservers();
         }
         else if(Objects.equals(mode, "SAVE")) {
-            MapData mapData = editMapService.getMapData();
+            MapData mapData = editMapService.getMap().getMapData();
             mapFileService.saveMapData(mapData, file.path());
             Toast toast = new Toast("Map Saved", ColorStyleEnum.SUCCESS);
             this.toastObservable.setObserved(toast);

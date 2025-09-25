@@ -205,96 +205,32 @@ public class EditMapService {
     public void init() {
         //this.hexagonSize = 30;
         // La moitié de 60px
-        //this.hexagonSize = this.zoomLevel.getHexSize();
 
-        //this.gapX = 50;
-        //this.gapY = 45;
-        //this.margin = 10;
-        this.getMap().setHexagonSize(this.getMap().getZoomLevel().getHexSize());
-        this.getMap().setGapX((int) this.getMap().getHexagonSize() * 5 / 3);
-        this.getMap().setGapY((int) this.getMap().getHexagonSize() * 3 / 2);
-        this.getMap().setMargin(10);
+        this.getMap().initMap(40f, 160f, Gdx.graphics.getWidth() - 80f, Gdx.graphics.getHeight() - 210f);
 
-        this.getMap().setMapWidth(Gdx.graphics.getWidth() - 80f);
-        this.getMap().setMapHeight(Gdx.graphics.getHeight() - 210f);
-
-        this.getMap().setMaxI((int) (this.getMap().getMapWidth() - this.getMap().getMargin() * 2) / (this.getMap().getGapX()));
-        this.getMap().setMaxI(this.getMap().getMaxI() % 2 == 0 ? this.getMap().getMaxI() : this.getMap().getMaxI() - 1);
-        this.getMap().setMaxI(Math.min(this.getMap().getMaxI(), this.getMap().getLimitI()));
-
-        this.getMap().setMaxJ((int) (this.getMap().getMapHeight() - this.getMap().getMargin() * 2) / (this.getMap().getGapY())); // TODO verifier si this.hexagonSize n'est pas mieux
-        this.getMap().setMaxJ(this.getMap().getMaxJ() % 2 == 0 ? this.getMap().getMaxJ() : this.getMap().getMaxJ() - 1);
-        this.getMap().setMaxJ(Math.min(this.getMap().getMaxJ(), this.getMap().getLimitJ()));
-
-        this.getMap().setStartI((int) (this.getMap().getLimitI() - this.getMap().getMaxI()) / 2);
-        this.getMap().setStartI(this.getMap().getStartI() % 2 == 0 ? this.getMap().getStartI() : this.getMap().getStartI() + 1);
-        this.getMap().setStartI(Math.max(this.getMap().getStartI(), 0));
-        this.getMap().setStartI(Math.min(this.getMap().getStartI(), this.getMap().getLimitI() - this.getMap().getMaxI()));
-
-
-        this.getMap().setStartJ((int) (this.getMap().getLimitJ() - this.getMap().getMaxJ()) / 2);
-        this.getMap().setStartJ(this.getMap().getStartJ() % 2 == 0 ? this.getMap().getStartJ() : this.getMap().getStartJ() + 1);
-        this.getMap().setStartJ(Math.max(this.getMap().getStartJ(), 0));
-        this.getMap().setStartJ(Math.min(getMap().getStartJ(), this.getMap().getLimitJ() - this.getMap().getMaxJ()));
-
-
-        this.getMap().setMapX(Gdx.graphics.getWidth() / 2f - this.getMap().getMapWidth() / 2f);
-        this.getMap().setMapY(160f);
-
-        this.miniHexSize = 2;
-        this.miniMapMargin = 10;
-        //calcul des coordonnées et dimensions de la minimap
-        this.miniMapWidth = this.getMap().getLimitI() * miniHexSize + 2 * miniMapMargin;
-        this.miniMapHeight = this.getMap().getLimitJ() * miniHexSize + 2 * miniMapMargin;
-        this.miniMapX = (int) this.getMap().getMapWidth() - miniMapWidth;
-        this.miniMapY = (int) this.getMap().getMapHeight() - miniMapHeight;
-
-        this.roadStartHex = null;
-        this.roadStartHexNeighbours = new Hexagon[6];
-
-        this.riverStartHex = null;
-        this.riverStartHexNeighbours = new Hexagon[6];
-
-        this.cliffStartHex = null;
-        this.cliffStartHexNeighbours = new Hexagon[6];
+        this.initMiniMap();
+        this.initStartHexes();
     }
 
     public void initMapFromZoom() {
-        int middleI = this.getMap().getStartI() + ( this.getMap().getMaxI() / 2 );
-        //middleI = middleI % 2 == 0 ? middleI : middleI - 1;
-        middleI -= middleI % 2;
-        int middleJ = this.getMap().getStartJ() + ( this.getMap().getMaxJ() / 2 );
-        //middleJ = middleJ % 2 == 0 ? middleJ : middleJ - 1;
-        middleJ -= middleJ % 2;
 
-        this.getMap().setHexagonSize(this.getMap().getZoomLevel().getHexSize());
-        this.getMap().setGapX((int) this.getMap().getHexagonSize() * 5 / 3);
-        this.getMap().setGapY((int) this.getMap().getHexagonSize() * 3 / 2);
-        this.getMap().setMargin(10);
+        this.getMap().initMapFromZoom(40f, 160f, Gdx.graphics.getWidth() - 80f, Gdx.graphics.getHeight() - 210f);
 
-        this.getMap().setMapWidth(Gdx.graphics.getWidth() - 80f);
-        this.getMap().setMapHeight(Gdx.graphics.getHeight() - 210f);
-        this.getMap().setMaxI((int) (this.getMap().getMapWidth() - this.getMap().getMargin() * 2) / (this.getMap().getGapX()));
-        this.getMap().setMaxI(this.getMap().getMaxI() % 2 == 0 ? this.getMap().getMaxI() : this.getMap().getMaxI() - 1);
-        this.getMap().setMaxI(Math.min(this.getMap().getMaxI(), this.getMap().getLimitI()));
+        this.initMiniMap();
+        this.initStartHexes();
+    }
 
-        this.getMap().setMaxJ((int) (this.getMap().getMapHeight() - this.getMap().getMargin() * 2) / (this.getMap().getGapY())); // TODO verifier si this.hexagonSize n'est pas mieux
-        this.getMap().setMaxJ(this.getMap().getMaxJ() % 2 == 0 ? this.getMap().getMaxJ() : this.getMap().getMaxJ() - 1);
-        this.getMap().setMaxJ(Math.min(this.getMap().getMaxJ(), this.getMap().getLimitJ()));
-
-
-        this.getMap().setMapX(Gdx.graphics.getWidth() / 2f - this.getMap().getMapWidth() / 2f);
-        this.getMap().setMapY(160f);
-
+    public void initMiniMap() {
         this.miniHexSize = 2;
         this.miniMapMargin = 10;
-
         //calcul des coordonnées et dimensions de la minimap
         this.miniMapWidth = this.getMap().getLimitI() * miniHexSize + 2 * miniMapMargin;
         this.miniMapHeight = this.getMap().getLimitJ() * miniHexSize + 2 * miniMapMargin;
         this.miniMapX = (int) this.getMap().getMapWidth() - miniMapWidth;
         this.miniMapY = (int) this.getMap().getMapHeight() - miniMapHeight;
+    }
 
+    public void initStartHexes() {
         this.roadStartHex = null;
         this.roadStartHexNeighbours = new Hexagon[6];
 
@@ -303,17 +239,6 @@ public class EditMapService {
 
         this.cliffStartHex = null;
         this.cliffStartHexNeighbours = new Hexagon[6];
-
-        this.getMap().setStartI(middleI - ( this.getMap().getMaxI() / 2 ));
-        this.getMap().setStartI(this.getMap().getStartI() % 2 == 0 ? this.getMap().getStartI() : this.getMap().getStartI() + 1);
-        this.getMap().setStartI(Math.max(this.getMap().getStartI(), 0));
-        this.getMap().setStartI(Math.min(this.getMap().getStartI(), this.getMap().getLimitI() - this.getMap().getMaxI()));
-
-        this.getMap().setStartJ(middleJ - ( this.getMap().getMaxJ() / 2 ));
-        this.getMap().setStartJ(this.getMap().getStartJ() % 2 == 0 ? this.getMap().getStartJ() : this.getMap().getStartJ() + 1);
-        this.getMap().setStartJ(Math.max(this.getMap().getStartJ(), 0));
-        this.getMap().setStartJ(Math.min(this.getMap().getStartJ(), this.getMap().getLimitJ() - this.getMap().getMaxJ()));
-
     }
 
     public void drawMap(Pixmap drawingPixmap, EditMapMode mapMode) {
@@ -673,48 +598,6 @@ public class EditMapService {
                 break;
         }
     }
-
-    public MapData getMapData() {
-        return new MapData("test", this.getMap().getLimitI(), this.getMap().getLimitJ(), this.getMap().getHexesArray());
-    }
-
-    /*
-    public void setMapData(MapData mapData) {
-        this.getMap().setLimitI(mapData.getLimitI());
-        this.getMap().setLimitJ(mapData.getLimitJ());
-        this.getMap().setHexesArray(new Array<Array<Hexagon>>(this.getMap().getLimitI()));
-        for (int i = 0; i < this.getMap().getLimitI(); i++) {
-            Array<Hexagon> row = new Array<Hexagon>(this.getMap().getLimitJ());
-            for (int j = 0; j < this.getMap().getLimitJ(); j++) {
-                row.add(mapData.getDataTab()[i][j]);
-            }
-            this.getMap().getHexesArray().add(row);
-        }
-        //init();
-        //this.getMap().generateBridgesFromRiversAndRoads();
-    }
-    */
-
-    /*
-    public ZoomLevelEnum getZoomLevel() {
-        return zoomLevel;
-    }
-
-    public void setZoomLevel(ZoomLevelEnum zoomLevel) {
-        this.zoomLevel = zoomLevel;
-    }
-
-     */
-
-    /*
-    public MapDisplayFlags getDisplayFlags() {
-        return displayFlags;
-    }
-
-    public void setDisplayFlags(MapDisplayFlags displayFlags) {
-        this.displayFlags = displayFlags;
-    }
-     */
 
     public Map getMap() {
         return map;
