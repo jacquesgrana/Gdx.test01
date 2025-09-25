@@ -768,7 +768,7 @@ public class EditMapScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 //System.out.println("clic load");
                 //mapFileService.openLoadMapFileChooser();
-                editMapService.generateBridgesFromRiversAndRoads();
+                editMapService.getMap().generateBridgesFromRiversAndRoads();
                 redrawMap();
                 Toast.showToast(that.stage, "Brigde(s) generated", ColorStyleEnum.SUCCESS, 2f);
             }
@@ -954,8 +954,8 @@ public class EditMapScreen implements Screen {
             int x = (int) (screenX - mapX - margin);
             int y = (int) (screenY - mapX - margin); // 45
 
-            int i = this.screen.editMapService.getIFromXY(x, y);
-            int j = this.screen.editMapService.getJFromY(y);
+            int i = this.screen.editMapService.getMap().getIFromXY(x, y);
+            int j = this.screen.editMapService.getMap().getJFromY(y);
             //System.out.println("x : " + x + " / y : " + y);
 
             // tester si miniMap visible et clic dans minimap
@@ -1025,7 +1025,7 @@ public class EditMapScreen implements Screen {
                     //System.out.println("i : " + i);
 
                     //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
-                    if(this.screen.editMapService.isClickInMap(i, j)) {
+                    if(this.screen.editMapService.getMap().isClickInMap(i, j)) {
                         if(this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).getCategory() != this.screen.selectedTerrain) {
                             this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).setCategory(this.screen.selectedTerrain);
                         }
@@ -1038,7 +1038,7 @@ public class EditMapScreen implements Screen {
                     //int i = (int) x / mapService.getGapX();
                     //System.out.println("i : " + i);
                     //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
-                    if(this.screen.editMapService.isClickInMap(i, j)) {
+                    if(this.screen.editMapService.getMap().isClickInMap(i, j)) {
                         if(this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).getFortification() != this.screen.selectedFortification) {
                             this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).setFortification(this.screen.selectedFortification);
                         }

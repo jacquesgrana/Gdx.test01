@@ -28,7 +28,9 @@ public class DesktopMapFileChooserListener implements FileChooserListenerInterfa
     public void selected(FileHandle file, String mode) {
         if(Objects.equals(mode, "LOAD")) {
             MapData mapData = mapFileService.loadMapData(file.path());
-            editMapService.SetMapData(mapData);
+            editMapService.getMap().setMapData(mapData);
+            editMapService.init();
+            editMapService.getMap().generateBridgesFromRiversAndRoads();
             Toast toast = new Toast("Map Loaded", ColorStyleEnum.SUCCESS);
             this.toastObservable.setObserved(toast);
             this.toastObservable.notifyObservers();

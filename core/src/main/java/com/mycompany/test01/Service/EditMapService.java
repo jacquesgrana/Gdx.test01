@@ -13,34 +13,7 @@ import com.mycompany.test01.Util.MapUtil;
 public class EditMapService {
     private static EditMapService instance = null;
 
-    //private Array<Array<Hexagon>> hexesArray;
-    //private int hexagonSize; // La moitié de 60px
-    //private int gapX;
-    //private int gapY;
-    //private int maxJ;
-    //private int maxI, maxJ;
-
-    //private float mapX, mapY, mapWidth, mapHeight;
-
-    //private int startI;
-    //private int startJ;
-    //private int limitI;
-    //private int limitJ;
-    //private int margin;
-
-    //private ZoomLevelEnum zoomLevel;
-
-    //private MapDisplayFlags displayFlags;
-
     private Map map;
-
-    /*
-    private boolean isRiverVisible = true;
-    private boolean isRoadVisible = true;
-    private boolean isFortificationVisible = true;
-    private boolean isCliffVisible = true;
-    private boolean isBridgeVisible = true;
-    */
 
     // TODO faire objet MiniMap
     private int miniHexSize;
@@ -51,10 +24,6 @@ public class EditMapService {
     private int miniMapX;
     private int miniMapY;
 
-
-
-    //roadStartHex
-    //roadStartHexNeighbours
     private Hexagon roadStartHex;
     private Hexagon[] roadStartHexNeighbours;
 
@@ -68,12 +37,6 @@ public class EditMapService {
     private DrawFlagCategory riverDrawFlag = DrawFlagCategory.EMPTY;
     private DrawFlagCategory cliffDrawFlag = DrawFlagCategory.EMPTY;
 
-    //private boolean isRiverVisible = true;
-    //private boolean isRoadVisible = true;
-    //private boolean isFortificationVisible = true;
-    //private boolean isCliffVisible = true;
-    //private boolean isBridgeVisible = true;
-
     public EditMapService() {
         //this.displayFlags = new MapDisplayFlags();
         //this.getMap().setZoomLevel(ZoomLevelEnum.NORMAL_VIEW);
@@ -81,7 +44,6 @@ public class EditMapService {
         //this.getMap().setDisplayFlags(new MapDisplayFlags());
     }
 
-    //****************************************************************
 
     public static EditMapService getInstance() {
         if (instance == null) {
@@ -131,132 +93,6 @@ public class EditMapService {
             this.getMap().getHexesArray().add(row);
         }
     }
-
-    /*
-    public Array<Array<Hexagon>> getHexesArray() {
-        return this.hexesArray;
-    }
-    */
-
-    /*
-    public int getMaxI() {
-        return this.maxI;
-    }
-     */
-
-    /*
-    public int getMaxJ() {
-        return this.maxJ;
-    }
-     */
-
-
-    /*
-    public int getStartI() {
-        return startI;
-    }
-
-    public void setStartI(int startI) {
-        if(startI%2 != 0) startI--;
-        if(startI > this.limitI - this.getMap().getMaxI() - 1) {
-            this.startI = this.limitI - this.getMap().getMaxI() - 1;
-        }
-        else if (startI < 0) {
-            this.startI = 0;
-        }
-        else {
-            this.startI = startI;
-        }
-    }*/
-
-    /*
-    public int getStartJ() {
-        return startJ;
-    }
-
-    public void setStartJ(int startJ) {
-        if(startJ%2 != 0) startJ--;
-        if(startJ > this.limitJ - this.getMap().getMaxJ() - 1) {
-            this.startJ = this.limitJ - this.getMap().getMaxJ() - 1;
-        }
-        else if (startJ < 0) {
-            this.startJ = 0;
-        }
-        else {
-            this.startJ = startJ;
-        }
-    }*/
-
-    /*
-    public float getMapWidth() {
-        return mapWidth;
-    }
-     */
-
-    /*
-    public float getMapHeight() {
-        return mapHeight;
-    }
-     */
-
-    /*
-    public void setMapWidth(float mapWidth) {
-        this.mapWidth = mapWidth;
-    }
-     */
-
-    /*
-    public void setMapHeight(float mapHeight) {
-        this.mapHeight = mapHeight;
-    }
-     */
-
-    /*
-    public float getMapX() {
-        return mapX;
-    }
-     */
-
-    /*
-    public float getMapY() {
-        return mapY;
-    }*/
-
-    /*
-    public int getGapX() {
-        return gapX;
-    }
-    */
-
-    /*
-    public int getGapY() {
-        return gapY;
-    }
-     */
-
-    /*
-    public int getLimitI() {
-        return limitI;
-    }
-    */
-
-    /*
-    public int getLimitJ() {
-        return limitJ;
-    }
-     */
-
-    /*
-    public int getMargin() {
-        return margin;
-    }
-    */
-
-    /*
-    public int getHexagonSize() {
-        return hexagonSize;
-    }
-    */
 
     public int getMiniHexSize() {
         return miniHexSize;
@@ -381,6 +217,7 @@ public class EditMapService {
 
         this.getMap().setMapWidth(Gdx.graphics.getWidth() - 80f);
         this.getMap().setMapHeight(Gdx.graphics.getHeight() - 210f);
+
         this.getMap().setMaxI((int) (this.getMap().getMapWidth() - this.getMap().getMargin() * 2) / (this.getMap().getGapX()));
         this.getMap().setMaxI(this.getMap().getMaxI() % 2 == 0 ? this.getMap().getMaxI() : this.getMap().getMaxI() - 1);
         this.getMap().setMaxI(Math.min(this.getMap().getMaxI(), this.getMap().getLimitI()));
@@ -389,17 +226,6 @@ public class EditMapService {
         this.getMap().setMaxJ(this.getMap().getMaxJ() % 2 == 0 ? this.getMap().getMaxJ() : this.getMap().getMaxJ() - 1);
         this.getMap().setMaxJ(Math.min(this.getMap().getMaxJ(), this.getMap().getLimitJ()));
 
-        /*
-        this.startI = (int) (this.limitI - this.maxI) / 2;
-        this.startI = Math.max(this.startI, 0);
-        this.startI = startI - maxI > limitI ? maxI - limitI : startI;
-        this.startI = this.startI % 2 == 0 ? startI : startI - 1;
-
-        this.startJ = (int) (this.limitJ - this.maxJ) / 2;
-        this.startJ = Math.max(this.startJ, 0);
-        this.startJ = startJ - maxJ > limitJ ? maxJ - limitJ : startJ;
-        this.startJ = this.startJ % 2 == 0 ? startJ : startJ - 1;
-*/
         this.getMap().setStartI((int) (this.getMap().getLimitI() - this.getMap().getMaxI()) / 2);
         this.getMap().setStartI(this.getMap().getStartI() % 2 == 0 ? this.getMap().getStartI() : this.getMap().getStartI() + 1);
         this.getMap().setStartI(Math.max(this.getMap().getStartI(), 0));
@@ -462,6 +288,7 @@ public class EditMapService {
 
         this.miniHexSize = 2;
         this.miniMapMargin = 10;
+
         //calcul des coordonnées et dimensions de la minimap
         this.miniMapWidth = this.getMap().getLimitI() * miniHexSize + 2 * miniMapMargin;
         this.miniMapHeight = this.getMap().getLimitJ() * miniHexSize + 2 * miniMapMargin;
@@ -477,7 +304,6 @@ public class EditMapService {
         this.cliffStartHex = null;
         this.cliffStartHexNeighbours = new Hexagon[6];
 
-
         this.getMap().setStartI(middleI - ( this.getMap().getMaxI() / 2 ));
         this.getMap().setStartI(this.getMap().getStartI() % 2 == 0 ? this.getMap().getStartI() : this.getMap().getStartI() + 1);
         this.getMap().setStartI(Math.max(this.getMap().getStartI(), 0));
@@ -490,41 +316,12 @@ public class EditMapService {
 
     }
 
-    public int getXFromIJ(int i, int j) {
-        int toReturn = (int) this.getMap().getGapX() * i + this.getMap().getGapX() / 2 + this.getMap().getMargin();
-        if( j % 2 == 0) {
-            toReturn += (int) this.getMap().getGapX() / 2;
-        }
-        return toReturn;
-    }
-
-    public int getYFromJ (int j) {
-        return this.getMap().getGapY() * j + this.getMap().getHexagonSize() + this.getMap().getMargin();
-    }
-
-    public int getIFromXY(int x, int y) {
-        int j = (int) ((y - this.getMap().getHexagonSize() * 0.5) / (this.getMap().getHexagonSize() * 1.5));
-        //System.out.println("j : " + j);
-        int i = 0;
-        if(j % 2 == 0) {
-            i = (int) (x - this.getMap().getGapX() / 2) / this.getMap().getGapX();
-        }
-        else {
-            i = (int) x / this.getMap().getGapX();
-        }
-        return i;
-    }
-
-    public int getJFromY(int y) {
-        return (int) ((y - this.getMap().getHexagonSize() * 0.5) / (this.getMap().getHexagonSize() * 1.475));
-    }
-
     public void drawMap(Pixmap drawingPixmap, EditMapMode mapMode) {
         // Dessiner les hexagones
         for(int i=0; i < this.getMap().getMaxI(); i++) {
             for (int j=0; j < this.getMap().getMaxJ(); j++) {
-                int x = getXFromIJ(i, j);
-                int y = getYFromJ(j);
+                int x = this.getMap().getXFromIJ(i, j);
+                int y = this.getMap().getYFromJ(j);
                 //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
                 // faire méthode dans enum ou GraphicUtil qui renvoie la texture en fonction du terrain
 
@@ -569,7 +366,7 @@ public class EditMapService {
                     if(isInCliffStartNeighbours) texture = GraphicUtil.orangeTexture;
                 }
 
-                drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), texture, Color.BLACK);
+                this.getMap().drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), texture, Color.BLACK);
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
 
                 // dessin des falaises
@@ -577,7 +374,7 @@ public class EditMapService {
                 {
                     for (int k = 0; k < 6; k++) {
                         if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCliffs()[k].isCliff()) {
-                            drawCliffSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCliffs()[k], k);
+                            this.getMap().drawCliffSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCliffs()[k], k);
                         }
                     }
                 }
@@ -588,7 +385,7 @@ public class EditMapService {
                 {
                     for (int k = 0; k < 6; k++) {
                         if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRivers()[k] != RiverCategory.NO_RIVER) {
-                            drawRiverSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRivers()[k], k);
+                            this.getMap().drawRiverSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRivers()[k], k);
                         }
                     }
                 }
@@ -597,7 +394,7 @@ public class EditMapService {
                 if(this.getMap().getDisplayFlags().isBridgeVisible()) {
                     for (int k = 0; k < 6; k++) {
                         if(!this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getBridges().getEdges()[k].getBridgeType().equals(BridgeTypeEnum.NO_BRIDGE)) {
-                            drawBridgeSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getBridges().getEdges()[k].getBridgeType(), k);
+                            this.getMap().drawBridgeSide(drawingPixmap, i, j, this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getBridges().getEdges()[k].getBridgeType(), k);
                         }
                     }
                 }
@@ -606,13 +403,13 @@ public class EditMapService {
                 if(this.getMap().getDisplayFlags().isRoadVisible()) {
                     for(int k=0; k<6; k++) {
                         if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRoads().getEdges()[k].isPathway()) {
-                            drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
+                            this.getMap().drawRoadSegment(drawingPixmap, i, j, RoadCategory.PATHWAY, k);
                         }
                         if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRoads().getEdges()[k].isRoadway()) {
-                            drawRoadSegment(drawingPixmap, i, j, RoadCategory.ROADWAY, k);
+                            this.getMap().drawRoadSegment(drawingPixmap, i, j, RoadCategory.ROADWAY, k);
                         }
                         if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getRoads().getEdges()[k].isRailway()) {
-                            drawRoadSegment(drawingPixmap, i, j, RoadCategory.RAILWAY, k);
+                            this.getMap().drawRoadSegment(drawingPixmap, i, j, RoadCategory.RAILWAY, k);
                         }
                     }
                 }
@@ -620,7 +417,7 @@ public class EditMapService {
                 // dessin des fortifications
                 if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification() != FortificationCategory.NO_FORTIFICATION
                 && this.getMap().getDisplayFlags().isFortificationVisible()) {
-                    drawFortification(
+                    Map.drawFortification(
                         drawingPixmap,
                         x, y, this.getMap().getHexagonSize() * 2, // ajouté !!
                         GraphicUtil.getTextureFromFortification(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification()));
@@ -628,114 +425,6 @@ public class EditMapService {
 
             }
         }
-    }
-
-    public void generateBridgesFromRiversAndRoads() {
-        for(int i=0; i < this.getMap().getLimitI(); i++) {
-            for (int j=0; j < this.getMap().getLimitJ(); j++) {
-                Hexagon hex = this.getMap().getHexesArray().get(i).get(j);
-                for(int k=0; k<6; k++) {
-                    if(
-                        !(hex.getRivers()[k].equals(RiverCategory.NO_RIVER)) &&
-                            (hex.getRoads().getEdges()[k].isPathway() ||
-                                hex.getRoads().getEdges()[k].isRoadway() ||
-                                hex.getRoads().getEdges()[k].isRailway()
-                            )
-                    ) {
-                        BridgeTypeEnum bridgeType = hex.getRoads().getEdges()[k].isRailway() ? BridgeTypeEnum.HEAVY_BRIDGE :
-                            hex.getRoads().getEdges()[k].isRoadway() ? BridgeTypeEnum.MEDIUM_BRIDGE :
-                                hex.getRoads().getEdges()[k].isPathway() ? BridgeTypeEnum.LIGHT_BRIDGE : BridgeTypeEnum.NO_BRIDGE;
-                        this.getMap().getHexesArray().get(i).get(j).getBridges().getEdges()[k].setBridgeType(bridgeType);
-                    }
-                    else {
-                        this.getMap().getHexesArray().get(i).get(j).getBridges().getEdges()[k].setBridgeType(BridgeTypeEnum.NO_BRIDGE);
-                    }
-                }
-            }
-        }
-    }
-
-    private void drawRoadSegment(Pixmap drawingPixmap, int i, int j, RoadCategory roadCategory, int k) {
-        int x = getXFromIJ(i, j);
-        int y = getYFromJ(j);
-        Texture texture = GraphicUtil.getRoadTextureFromRoadCatAndK(roadCategory, k);
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        // TODO faire méthode !!?
-        if (texturePixmap != null) {
-            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - this.getMap().getHexagonSize(), y - this.getMap().getHexagonSize(),            // Dest X,Y (top-left of destination)
-                this.getMap().getHexagonSize() * 2, this.getMap().getHexagonSize() * 2    // Dest width & height (scaling)
-            );
-
-            texturePixmap.dispose();
-        }
-        texture.dispose();
-    }
-
-    private void drawRiverSide(Pixmap drawingPixmap, int i, int j, RiverCategory riverCategory, int k) {
-        int x = getXFromIJ(i, j);
-        int y = getYFromJ(j);
-        Texture texture = GraphicUtil.getRiverTextureFromRiverCatAndK(riverCategory, k);
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        // TODO faire méthode !!?
-        if (texturePixmap != null) {
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - this.getMap().getHexagonSize(), y - this.getMap().getHexagonSize(),            // Dest X,Y (top-left of destination)
-                this.getMap().getHexagonSize() * 2, this.getMap().getHexagonSize() * 2    // Dest width & height (scaling)
-            );
-            texturePixmap.dispose();
-        }
-        texture.dispose();
-
-    }
-
-    private void drawBridgeSide(Pixmap drawingPixmap, int i, int j, BridgeTypeEnum bridgeType, int k) {
-        int x = getXFromIJ(i, j);
-        int y = getYFromJ(j);
-        Texture texture = GraphicUtil.getTextureSideFromBridge(bridgeType, k);
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        // TODO faire méthode !!?
-        if (texturePixmap != null) {
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - this.getMap().getHexagonSize(), y - this.getMap().getHexagonSize(),            // Dest X,Y (top-left of destination)
-                this.getMap().getHexagonSize() * 2, this.getMap().getHexagonSize() * 2    // Dest width & height (scaling)
-            );
-            texturePixmap.dispose();
-        }
-        texture.dispose();
-    }
-
-    private void drawCliffSide(Pixmap drawingPixmap, int i, int j, Cliff cliff, int k) {
-        int x = getXFromIJ(i, j);
-        int y = getYFromJ(j);
-        Texture texture = GraphicUtil.getTextureSideFromCliff(cliff, k);
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        // TODO faire méthode !!?
-        if (texturePixmap != null) {
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - this.getMap().getHexagonSize(), y - this.getMap().getHexagonSize(),            // Dest X,Y (top-left of destination)
-                this.getMap().getHexagonSize() * 2, this.getMap().getHexagonSize() * 2    // Dest width & height (scaling)
-            );
-            texturePixmap.dispose();
-        }
-        texture.dispose();
     }
 
     public void updateMiniMap(int x, int y, Pixmap drawingMapPixmap) {
@@ -834,117 +523,12 @@ public class EditMapService {
             centerX += gapX / 2; // Décalage pour les lignes paires
         }
         */
-        int centerX = getXFromIJ(hexI - this.getMap().getStartI(), hexJ - this.getMap().getStartJ());
-        int centerY = getYFromJ(hexJ - this.getMap().getStartJ());
+        int centerX = this.getMap().getXFromIJ(hexI - this.getMap().getStartI(), hexJ - this.getMap().getStartJ());
+        int centerY = this.getMap().getYFromJ(hexJ - this.getMap().getStartJ());
         // Dessiner l'hexagone avec la couleur spécifiée
         //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
-        drawHexagon(pixmap, centerX, centerY, this.getMap().getHexagonSize(), texture, Color.BLACK);
+        this.getMap().drawHexagon(pixmap, centerX, centerY, this.getMap().getHexagonSize(), texture, Color.BLACK);
     }
-    /**
-     * Draws a textured hexagon onto the provided Pixmap.
-     *
-     * @param pixmap       The Pixmap to draw on.
-     * @param centerX      The x-coordinate of the hexagon's center.
-     * @param centerY      The y-coordinate of the hexagon's center.
-     * @param size         The size (radius) of the hexagon.
-     * @param texture      The texture to fill the hexagon with.  Must be non-null
-     * @param borderColor  The color of the hexagon's border.
-     */
-    public void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Texture texture, Color borderColor) {
-        int[] xPoints = new int[6];
-        int[] yPoints = new int[6];
-
-        for (int i = 0; i < 6; i++) {
-            double angle = 2 * Math.PI / 6 * (i + 0.5);
-            xPoints[i] = (int) (centerX + size * Math.cos(angle));
-            yPoints[i] = (int) (centerY + size * Math.sin(angle));
-        }
-
-        // Fill with texture
-        pixmap.setColor(Color.WHITE); // Important: set to white for texture drawing
-
-        //Get the pixel data from the texture
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        if (texturePixmap != null) {
-            for (int y = centerY - size; y <= centerY + size; y++) {
-                for (int x = centerX - size; x <= centerX + size; x++) {
-                    if (MapUtil.isInsideHexagon(x, y, xPoints, yPoints)) {
-                        // Sample the texture
-                        int textureX = (int) (((x - (centerX - size)) / (double) (2 * size)) * texturePixmap.getWidth());
-                        int textureY = (int) (((y - (centerY - size)) / (double) (2 * size)) * texturePixmap.getHeight());
-
-                        //Adjust textureX and textureY in case they are out of bounds
-                        textureX = Math.max(0, Math.min(textureX, texturePixmap.getWidth() - 1));
-                        textureY = Math.max(0, Math.min(textureY, texturePixmap.getHeight() - 1));
-
-                        int pixelColor = texturePixmap.getPixel(textureX, textureY);
-                        pixmap.drawPixel(x, y, pixelColor);
-                    }
-                }
-            }
-            texturePixmap.dispose();
-        }
-
-
-        // Contour
-        pixmap.setColor(borderColor);
-        for (int i = 0; i < 6; i++) {
-            int j = (i + 1) % 6;
-            pixmap.drawLine(xPoints[i], yPoints[i], xPoints[j], yPoints[j]);
-        }
-    }
-
-    public static void drawFortification(
-        Pixmap drawingPixmap,
-        int x, int y, int hexagonSize,
-        Texture fortifTexture) {
-
-        // Check for null texture to avoid NullPointerException
-        if (fortifTexture == null) {
-            System.err.println("Error: fortifTexture is null.  Cannot draw fortification.");
-            return; // Exit the method if the texture is null
-        }
-
-        // Get the pixel data from the texture
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(fortifTexture);
-
-        if (texturePixmap != null) {
-            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - hexagonSize/2, y - hexagonSize/2,            // Dest X,Y (top-left of destination)
-                hexagonSize, hexagonSize    // Dest width & height (scaling)
-            );
-
-            texturePixmap.dispose();
-        } else {
-            System.err.println("Error: Could not convert fortifTexture to Pixmap.");
-        }
-    }
-
-    public boolean isClickInMap(int i, int j) {
-        if(i >= 0 && i < this.getMap().getMaxI() && j >= 0 && j < this.getMap().getMaxJ()) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    /*
-    private boolean isInsideHexagon(int x, int y, int[] xPoints, int[] yPoints) {
-        boolean inside = false;
-        for (int i = 0, j = 5; i < 6; j = i++) {
-            if (((yPoints[i] > y) != (yPoints[j] > y)) &&
-                (x < (xPoints[j] - xPoints[i]) * (y - yPoints[i]) / (yPoints[j] - yPoints[i]) + xPoints[i])) {
-                inside = !inside;
-            }
-        }
-        return inside;
-    }*/
 
     public boolean isInNeighboursByMode(int i, int j, EditMapMode mode) {
         //if(this.roadStartHex != null) {
@@ -1094,7 +678,8 @@ public class EditMapService {
         return new MapData("test", this.getMap().getLimitI(), this.getMap().getLimitJ(), this.getMap().getHexesArray());
     }
 
-    public void SetMapData(MapData mapData) {
+    /*
+    public void setMapData(MapData mapData) {
         this.getMap().setLimitI(mapData.getLimitI());
         this.getMap().setLimitJ(mapData.getLimitJ());
         this.getMap().setHexesArray(new Array<Array<Hexagon>>(this.getMap().getLimitI()));
@@ -1105,9 +690,10 @@ public class EditMapService {
             }
             this.getMap().getHexesArray().add(row);
         }
-        init();
-        generateBridgesFromRiversAndRoads();
+        //init();
+        //this.getMap().generateBridgesFromRiversAndRoads();
     }
+    */
 
     /*
     public ZoomLevelEnum getZoomLevel() {

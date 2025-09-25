@@ -78,6 +78,7 @@ public class Map {
         this.setMaxI((int) (this.getMapWidth() - this.getMargin() * 2) / (this.getGapX()));
         this.setMaxI(this.getMaxI() % 2 == 0 ? this.getMaxI() : this.getMaxI() - 1);
         this.setMaxI(Math.min(this.getMaxI(), this.getLimitI()));
+
         this.setMaxJ((int) (this.getMapHeight() - this.getMargin() * 2) / (this.getGapY()));
         this.setMaxJ(this.getMaxJ() % 2 == 0 ? this.getMaxJ() : this.getMaxJ() - 1);
         this.setMaxJ(Math.min(this.getMaxJ(), this.getLimitJ()));
@@ -149,8 +150,8 @@ public class Map {
             this.getHexesArray().add(row);
         }
         //System.out.println("limitI : " + limitI + " / limitJ : " + limitJ);
-        this.initMap();
-        //generateBridgesFromRiversAndRoads();
+        //this.initMap();
+        //this.generateBridgesFromRiversAndRoads();
     }
 
     public void drawMap(Pixmap drawingPixmap) {
@@ -202,7 +203,7 @@ public class Map {
         }
     }
 
-    private void drawRoadSegment(Pixmap drawingPixmap, int i, int j, RoadCategory roadCategory, int k) {
+    public void drawRoadSegment(Pixmap drawingPixmap, int i, int j, RoadCategory roadCategory, int k) {
         int x = getXFromIJ(i, j);
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getRoadTextureFromRoadCatAndK(roadCategory, k);
@@ -224,7 +225,7 @@ public class Map {
         texture.dispose();
     }
 
-    private void drawRiverSide(Pixmap drawingPixmap, int i, int j, RiverCategory riverCategory, int k) {
+    public void drawRiverSide(Pixmap drawingPixmap, int i, int j, RiverCategory riverCategory, int k) {
         int x = getXFromIJ(i, j);
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getRiverTextureFromRiverCatAndK(riverCategory, k);
@@ -245,7 +246,7 @@ public class Map {
 
     }
 
-    private void drawBridgeSide(Pixmap drawingPixmap, int i, int j, BridgeTypeEnum bridgeType, int k) {
+    public void drawBridgeSide(Pixmap drawingPixmap, int i, int j, BridgeTypeEnum bridgeType, int k) {
         int x = getXFromIJ(i, j);
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getTextureSideFromBridge(bridgeType, k);
@@ -265,7 +266,7 @@ public class Map {
         texture.dispose();
     }
 
-    private void drawCliffSide(Pixmap drawingPixmap, int i, int j, Cliff cliff, int k) {
+    public void drawCliffSide(Pixmap drawingPixmap, int i, int j, Cliff cliff, int k) {
         int x = getXFromIJ(i, j);
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getTextureSideFromCliff(cliff, k);
@@ -379,6 +380,31 @@ public class Map {
         drawHexagon(pixmap, centerX, centerY, this.getHexagonSize(), texture, Color.BLACK);
     }
 
+    public void generateBridgesFromRiversAndRoads() {
+        for(int i=0; i < this.getLimitI(); i++) {
+            for (int j=0; j < this.getLimitJ(); j++) {
+                Hexagon hex = this.getHexesArray().get(i).get(j);
+                for(int k=0; k<6; k++) {
+                    if(
+                        !(hex.getRivers()[k].equals(RiverCategory.NO_RIVER)) &&
+                            (hex.getRoads().getEdges()[k].isPathway() ||
+                                hex.getRoads().getEdges()[k].isRoadway() ||
+                                hex.getRoads().getEdges()[k].isRailway()
+                            )
+                    ) {
+                        BridgeTypeEnum bridgeType = hex.getRoads().getEdges()[k].isRailway() ? BridgeTypeEnum.HEAVY_BRIDGE :
+                            hex.getRoads().getEdges()[k].isRoadway() ? BridgeTypeEnum.MEDIUM_BRIDGE :
+                                hex.getRoads().getEdges()[k].isPathway() ? BridgeTypeEnum.LIGHT_BRIDGE : BridgeTypeEnum.NO_BRIDGE;
+                        this.getHexesArray().get(i).get(j).getBridges().getEdges()[k].setBridgeType(bridgeType);
+                    }
+                    else {
+                        this.getHexesArray().get(i).get(j).getBridges().getEdges()[k].setBridgeType(BridgeTypeEnum.NO_BRIDGE);
+                    }
+                }
+            }
+        }
+    }
+
     public int getXFromIJ(int i, int j) {
         int toReturn = (int) this.getGapX() * i + this.getGapX() / 2 + this.getMargin();
         if( j % 2 == 0) {
@@ -408,6 +434,15 @@ public class Map {
 
     public int getJFromY(int y) {
         return (int) ((y - this.getHexagonSize() * 0.5) / (this.getHexagonSize() * 1.475)); // !!!!!!!!!!!!!!!!!!
+    }
+
+    public boolean isClickInMap(int i, int j) {
+        if(i >= 0 && i < this.getMaxI() && j >= 0 && j < this.getMaxJ()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     // Getters et Setters

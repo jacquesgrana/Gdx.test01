@@ -29,6 +29,8 @@ public class EditScenarMapFileChooserListener implements FileChooserListenerInte
         if(Objects.equals(mode, "LOAD")) {
             MapData mapData = mapFileService.loadMapData(file.path());
             this.editScenarService.getScenario().getMap().setMapData(mapData);
+            this.editScenarService.getScenario().getMap().initMap();
+            this.editScenarService.getScenario().getMap().generateBridgesFromRiversAndRoads();
             Toast toast = new Toast("Map Loaded", ColorStyleEnum.SUCCESS);
             this.toastObservable.setObserved(toast);
             this.toastObservable.notifyObservers();
