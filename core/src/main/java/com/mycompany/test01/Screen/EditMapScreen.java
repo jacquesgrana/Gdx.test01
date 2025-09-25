@@ -989,7 +989,7 @@ public class EditMapScreen implements Screen {
                     if(i >= 0 && i < this.screen.editMapService.getMap().getMaxI() && j >= 0 && j < this.screen.editMapService.getMap().getMaxJ()) {
                         //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
                         //System.out.println("hex terrain : " + clickedHexagon.getCategory());
-                        this.screen.editMapService.renderHex( i + this.screen.editMapService.getMap().getStartI(), j + this.screen.editMapService.getMap().getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
+                        this.screen.editMapService.getMap().renderHex( i + this.screen.editMapService.getMap().getStartI(), j + this.screen.editMapService.getMap().getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
                         this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
                     }
 
@@ -1011,7 +1011,7 @@ public class EditMapScreen implements Screen {
                                 jj - this.screen.editMapService.getMap().getStartJ() >= 0 &&
                                 jj - this.screen.editMapService.getMap().getStartJ() < this.screen.editMapService.getMap().getMaxJ()
                             ) {
-                                this.screen.editMapService.renderHex( ii, jj, GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
+                                this.screen.editMapService.getMap().renderHex( ii, jj, GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
                                 this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
                             }
 

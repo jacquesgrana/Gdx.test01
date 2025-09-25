@@ -396,8 +396,7 @@ public class EditMapService {
             for(int j=0; j<this.getMap().getLimitJ(); j++) {
                 Color fillColor = GraphicUtil.getColorFromTerrain(this.getMap().getHexesArray().get(i).get(j).getCategory());
                 drawingMapPixmap.setColor(fillColor);
-
-
+                
                 for(int k=0; k<miniHexSize; k++) {
                     int x = miniMapX + miniMapMargin + k + i * miniHexSize;
                     if(j%2==0) x += (int) miniHexSize / 2;
@@ -439,21 +438,16 @@ public class EditMapService {
         drawingTexture.draw(drawingMapPixmap, 0, 0);
     }*/
 
+    /*
     public void renderHex(int hexI, int hexJ, Texture texture, Pixmap pixmap) {
         // Calculer les coordonnées du centre de l'hexagone
-        /*
-        int centerX = (hexI - startI) * gapX + gapX / 2 + 10; // Ajouter la marge de 10
-        int centerY = (hexJ - startJ) * gapY + hexagonSize + 10; // Ajouter la marge de 10
-        if ((hexJ - startJ) % 2 == 0) {
-            centerX += gapX / 2; // Décalage pour les lignes paires
-        }
-        */
         int centerX = this.getMap().getXFromIJ(hexI - this.getMap().getStartI(), hexJ - this.getMap().getStartJ());
         int centerY = this.getMap().getYFromJ(hexJ - this.getMap().getStartJ());
         // Dessiner l'hexagone avec la couleur spécifiée
         //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
         this.getMap().drawHexagon(pixmap, centerX, centerY, this.getMap().getHexagonSize(), texture, Color.BLACK);
     }
+     */
 
     public boolean isInNeighboursByMode(int i, int j, EditMapMode mode) {
         //if(this.roadStartHex != null) {
