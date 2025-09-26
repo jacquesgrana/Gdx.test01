@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Map.*;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
-import com.mycompany.test01.Util.MapUtil;
 
 public class EditMapService {
     private static EditMapService instance = null;
@@ -16,13 +15,12 @@ public class EditMapService {
     private Map map;
 
     // TODO faire objet MiniMap
-    private int miniHexSize;
-    private int miniMapMargin;
-    //calcul des coordonnées et dimensions de la minimap
-    private int miniMapWidth;
-    private int miniMapHeight;
-    private int miniMapX;
-    private int miniMapY;
+    //private int miniHexSize;
+    //private int miniMapMargin;
+    //private int miniMapWidth;
+    //private int miniMapHeight;
+    //private int miniMapX;
+    //private int miniMapY;
 
     private Hexagon roadStartHex;
     private Hexagon[] roadStartHexNeighbours;
@@ -94,29 +92,39 @@ public class EditMapService {
         }
     }
 
+    /*
     public int getMiniHexSize() {
         return miniHexSize;
-    }
+    }*/
 
+    /*
     public int getMiniMapMargin() {
         return miniMapMargin;
-    }
+    }*/
 
+    /*
     public int getMiniMapWidth() {
         return miniMapWidth;
     }
+     */
 
+    /*
     public int getMiniMapHeight() {
         return miniMapHeight;
     }
+     */
 
+    /*
     public int getMiniMapX() {
         return miniMapX;
     }
+     */
 
+    /*
     public int getMiniMapY() {
         return miniMapY;
     }
+     */
 
     public Hexagon getRoadStartHex() {
         return roadStartHex;
@@ -208,26 +216,15 @@ public class EditMapService {
 
         this.getMap().initMap(40f, 160f, Gdx.graphics.getWidth() - 80f, Gdx.graphics.getHeight() - 210f);
 
-        this.initMiniMap();
+        this.getMap().initMiniMap();
         this.initStartHexes();
     }
 
     public void initMapFromZoom() {
-
         this.getMap().initMapFromZoom(40f, 160f, Gdx.graphics.getWidth() - 80f, Gdx.graphics.getHeight() - 210f);
 
-        this.initMiniMap();
+        this.getMap().initMiniMap();
         this.initStartHexes();
-    }
-
-    public void initMiniMap() {
-        this.miniHexSize = 2;
-        this.miniMapMargin = 10;
-        //calcul des coordonnées et dimensions de la minimap
-        this.miniMapWidth = this.getMap().getLimitI() * miniHexSize + 2 * miniMapMargin;
-        this.miniMapHeight = this.getMap().getLimitJ() * miniHexSize + 2 * miniMapMargin;
-        this.miniMapX = (int) this.getMap().getMapWidth() - miniMapWidth;
-        this.miniMapY = (int) this.getMap().getMapHeight() - miniMapHeight;
     }
 
     public void initStartHexes() {
@@ -352,71 +349,6 @@ public class EditMapService {
         }
     }
 
-    public void updateMiniMap(int x, int y, Pixmap drawingMapPixmap) {
-        x = x - miniMapX - miniMapMargin;
-        y = y - miniMapY - miniMapMargin;
-        // calcul des coordonnées du coin gauche du rectangle de sélection
-        //x = (int) x - miniMapWidth / 2;
-        //y = (int) y - miniMapHeight / 2;
-
-        // calcul de j
-        int j = (int) y / miniHexSize;
-        int i=0;
-        // calcul de i en tenant compte de j%2
-        if(j % 2 == 0) {
-            i = (int) ((x + miniHexSize/2) / miniHexSize);
-        }
-        else {
-            i = (int) x / miniHexSize;
-        }
-
-        //this.getMap().getStartI()
-        // 'cappage'
-        // TODO modifier le calcul pour que le rectangle de sélection soit centré sur le clic
-        // TODO ajouter la moitié de MaxI et MaxJ ?
-        this.getMap().setStartI(i < 0 ? 0 : i >= this.getMap().getLimitI() - this.getMap().getMaxI() ? this.getMap().getLimitI() - this.getMap().getMaxI() - 1 : i);
-        this.getMap().setStartJ(j < 0 ? 0 : j >= this.getMap().getLimitJ() - this.getMap().getMaxJ() ? this.getMap().getLimitJ() - this.getMap().getMaxJ() - 1 : j);
-        // utiliser des valeurs paires
-        this.getMap().setStartI(this.getMap().getStartI() - this.getMap().getStartI()%2);
-        this.getMap().setStartJ(this.getMap().getStartJ() - this.getMap().getStartJ()%2);
-        //this.startI = i;
-        //this.startJ = j;
-        // dessin du rectangle (faire méthode ?)
-        //this.showMiniMap(drawingMapPixmap);
-
-        //this.getMap().getStartJ()
-    }
-
-    public void showMiniMap(Pixmap drawingMapPixmap) {
-        drawingMapPixmap.setColor(Color.BLACK);
-        drawingMapPixmap.fillRectangle(miniMapX, miniMapY, miniMapWidth, miniMapHeight);
-
-        // dessin de la miniMap
-        for(int i=0; i<this.getMap().getLimitI(); i++) {
-            for(int j=0; j<this.getMap().getLimitJ(); j++) {
-                Color fillColor = GraphicUtil.getColorFromTerrain(this.getMap().getHexesArray().get(i).get(j).getCategory());
-                drawingMapPixmap.setColor(fillColor);
-
-                for(int k=0; k<miniHexSize; k++) {
-                    int x = miniMapX + miniMapMargin + k + i * miniHexSize;
-                    if(j%2==0) x += (int) miniHexSize / 2;
-                    for(int l=0; l<miniHexSize; l++) {
-                        int y = miniMapY + miniMapMargin + l + j * miniHexSize;
-                        drawingMapPixmap.drawPixel(x, y);
-                    }
-                }
-            }
-        }
-
-        drawingMapPixmap.setColor(Color.WHITE);
-        int selectRectWidth =  miniHexSize * this.getMap().getMaxI();
-        int selectRectHeight = miniHexSize * this.getMap().getMaxJ();
-
-        int rectX = miniMapX + miniMapMargin + miniHexSize * this.getMap().getStartI();
-        int rectY = miniMapY + miniMapMargin + miniHexSize * this.getMap().getStartJ();
-        drawingMapPixmap.drawRectangle(rectX, rectY, selectRectWidth, selectRectHeight);
-    }
-
     /*
     public void renderNeighbours(Texture drawingTexture, Pixmap drawingMapPixmap) {
         for(int k=0; k<6; k++) {
@@ -437,17 +369,6 @@ public class EditMapService {
         }
         drawingTexture.draw(drawingMapPixmap, 0, 0);
     }*/
-
-    /*
-    public void renderHex(int hexI, int hexJ, Texture texture, Pixmap pixmap) {
-        // Calculer les coordonnées du centre de l'hexagone
-        int centerX = this.getMap().getXFromIJ(hexI - this.getMap().getStartI(), hexJ - this.getMap().getStartJ());
-        int centerY = this.getMap().getYFromJ(hexJ - this.getMap().getStartJ());
-        // Dessiner l'hexagone avec la couleur spécifiée
-        //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
-        this.getMap().drawHexagon(pixmap, centerX, centerY, this.getMap().getHexagonSize(), texture, Color.BLACK);
-    }
-     */
 
     public boolean isInNeighboursByMode(int i, int j, EditMapMode mode) {
         //if(this.roadStartHex != null) {

@@ -22,9 +22,12 @@ public class Map {
 
     private MapDisplayFlags displayFlags;
 
+    private MiniMap minimap;
+
     public Map() {
         this.zoomLevel = ZoomLevelEnum.NORMAL_VIEW;
         this.displayFlags = new MapDisplayFlags();
+        this.minimap = new MiniMap();
     }
 
     public Map(
@@ -160,6 +163,50 @@ public class Map {
         this.setStartJ(Math.min(this.getStartJ(), limitJ - this.getMaxJ()));
     }
 
+
+    public void initMiniMap() {
+        this.getMinimap().setMiniHexSize(2);
+        this.getMinimap().setMiniMapMargin(10);
+        //calcul des coordonnées et dimensions de la minimap
+        this.getMinimap().setMiniMapWidth(this.getLimitI() * this.getMinimap().getMiniHexSize() + 2 * this.getMinimap().getMiniMapMargin());
+        this.getMinimap().setMiniMapHeight(this.getLimitJ() * this.getMinimap().getMiniHexSize() + 2 * this.getMinimap().getMiniMapMargin());
+        this.getMinimap().setMiniMapX((int) this.getMapWidth() - this.getMinimap().getMiniMapWidth());
+        this.getMinimap().setMiniMapY((int) this.getMapHeight() - this.getMinimap().getMiniMapHeight());
+    }
+
+
+    public void updateMiniMap(int x, int y, Pixmap drawingMapPixmap) {
+        x = x - this.getMinimap().getMiniMapX() - this.getMinimap().getMiniMapMargin();
+        y = y - this.getMinimap().getMiniMapY() - this.getMinimap().getMiniMapMargin();
+
+        // calcul de j
+        int j = (int) y / this.getMinimap().getMiniHexSize();
+        int i=0;
+        // calcul de i en tenant compte de j%2
+        if(j % 2 == 0) {
+            i = (int) ((x + this.getMinimap().getMiniHexSize()/2) / this.getMinimap().getMiniHexSize());
+        }
+        else {
+            i = (int) x / this.getMinimap().getMiniHexSize();
+        }
+
+        //this.getMap().getStartI()
+        // 'cappage'
+        // TODO modifier le calcul pour que le rectangle de sélection soit centré sur le clic
+        // TODO ajouter la moitié de MaxI et MaxJ ?
+        this.setStartI(i < 0 ? 0 : i >= this.getLimitI() - this.getMaxI() ? this.getLimitI() - this.getMaxI() - 1 : i);
+        this.setStartJ(j < 0 ? 0 : j >= this.getLimitJ() - this.getMaxJ() ? this.getLimitJ() - this.getMaxJ() - 1 : j);
+        // utiliser des valeurs paires
+        this.setStartI(this.getStartI() - this.getStartI()%2);
+        this.setStartJ(this.getStartJ() - this.getStartJ()%2);
+        //this.startI = i;
+        //this.startJ = j;
+        // dessin du rectangle (faire méthode ?)
+        //this.showMiniMap(drawingMapPixmap);
+
+        //this.getMap().getStartJ()
+    }
+
     public void setMapData(MapData mapData) {
         this.setLimitI(mapData.getLimitI());
         this.setLimitJ(mapData.getLimitJ());
@@ -225,7 +272,6 @@ public class Map {
                             drawingPixmap,
                             x, y, this.getHexagonSize() * 2, // ajouté !!
                             GraphicUtil.getTextureFromFortification(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification()));
-
                     }
                 }
             }
@@ -399,6 +445,36 @@ public class Map {
                 }
             }
         }
+    }
+
+    public void showMiniMap(Pixmap drawingMapPixmap) {
+        drawingMapPixmap.setColor(Color.BLACK);
+        drawingMapPixmap.fillRectangle(this.getMinimap().getMiniMapX(), this.getMinimap().getMiniMapY(), this.getMinimap().getMiniMapWidth(), this.getMinimap().getMiniMapHeight());
+
+        // dessin de la miniMap
+        for(int i=0; i<this.getLimitI(); i++) {
+            for(int j=0; j<this.getLimitJ(); j++) {
+                Color fillColor = GraphicUtil.getColorFromTerrain(this.getHexesArray().get(i).get(j).getCategory());
+                drawingMapPixmap.setColor(fillColor);
+
+                for(int k=0; k<this.getMinimap().getMiniHexSize(); k++) {
+                    int x = this.getMinimap().getMiniMapX() + this.getMinimap().getMiniMapMargin() + k + i * this.getMinimap().getMiniHexSize();
+                    if(j%2==0) x += (int) this.getMinimap().getMiniHexSize() / 2;
+                    for(int l=0; l<this.getMinimap().getMiniHexSize(); l++) {
+                        int y = this.getMinimap().getMiniMapY() + this.getMinimap().getMiniMapMargin() + l + j * this.getMinimap().getMiniHexSize();
+                        drawingMapPixmap.drawPixel(x, y);
+                    }
+                }
+            }
+        }
+
+        drawingMapPixmap.setColor(Color.WHITE);
+        int selectRectWidth =  this.getMinimap().getMiniHexSize() * this.getMaxI();
+        int selectRectHeight = this.getMinimap().getMiniHexSize() * this.getMaxJ();
+
+        int rectX = this.getMinimap().getMiniMapX() + this.getMinimap().getMiniMapMargin() + this.getMinimap().getMiniHexSize() * this.getStartI();
+        int rectY = this.getMinimap().getMiniMapY() + this.getMinimap().getMiniMapMargin() + this.getMinimap().getMiniHexSize() * this.getStartJ();
+        drawingMapPixmap.drawRectangle(rectX, rectY, selectRectWidth, selectRectHeight);
     }
 
     public int getXFromIJ(int i, int j) {
@@ -623,5 +699,13 @@ public class Map {
 
     public void setDisplayFlags(MapDisplayFlags displayFlags) {
         this.displayFlags = displayFlags;
+    }
+
+    public MiniMap getMinimap() {
+        return minimap;
+    }
+
+    public void setMinimap(MiniMap minimap) {
+        this.minimap = minimap;
     }
 }

@@ -960,18 +960,18 @@ public class EditMapScreen implements Screen {
 
             // tester si miniMap visible et clic dans minimap
             if(this.screen.isMiniMapVisible) {
-                if( x > this.screen.editMapService.getMiniMapX()
-                    && x < this.screen.editMapService.getMiniMapX() + this.screen.editMapService.getMiniMapWidth() - 2 * this.screen.editMapService.getMiniMapMargin()
-                    && y > this.screen.editMapService.getMiniMapY()
-                    && y < this.screen.editMapService.getMiniMapY() + this.screen.editMapService.getMiniMapHeight() - 2 * this.screen.editMapService.getMiniMapMargin())
+                if( x > this.screen.editMapService.getMap().getMinimap().getMiniMapX()
+                    && x < this.screen.editMapService.getMap().getMinimap().getMiniMapX() + this.screen.editMapService.getMap().getMinimap().getMiniMapWidth() - 2 * this.screen.editMapService.getMap().getMinimap().getMiniMapMargin()
+                    && y > this.screen.editMapService.getMap().getMinimap().getMiniMapY()
+                    && y < this.screen.editMapService.getMap().getMinimap().getMiniMapY() + this.screen.editMapService.getMap().getMinimap().getMiniMapHeight() - 2 * this.screen.editMapService.getMap().getMinimap().getMiniMapMargin())
                 {
                     screen.stage.setKeyboardFocus(null);
                     //System.out.println("clic in minimap");
-                    this.screen.editMapService.updateMiniMap(x, y, this.screen.drawingMapPixmap);
+                    this.screen.editMapService.getMap().updateMiniMap(x, y, this.screen.drawingMapPixmap);
                     //mapService.showMiniMap(drawingMapPixmap);
                     //drawingTexture.draw(drawingMapPixmap, 0, 0);
                     this.screen.redrawMap();
-                    this.screen.editMapService.showMiniMap(this.screen.drawingMapPixmap);
+                    this.screen.editMapService.getMap().showMiniMap(this.screen.drawingMapPixmap);
                     this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
 
                 }
@@ -1277,7 +1277,7 @@ public class EditMapScreen implements Screen {
                     //System.out.println("isMiniMapVisible : " + this.isMiniMapVisible);
                     if(this.screen.isMiniMapVisible) {
                         //System.out.println("Showing miniMap");
-                        this.screen.editMapService.showMiniMap(this.screen.drawingMapPixmap);
+                        this.screen.editMapService.getMap().showMiniMap(this.screen.drawingMapPixmap);
                         this.screen.drawingTexture.draw(this.screen.drawingMapPixmap, 0, 0);
                     }
                     else {
