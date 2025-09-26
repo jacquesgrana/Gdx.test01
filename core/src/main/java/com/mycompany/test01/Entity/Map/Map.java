@@ -237,20 +237,7 @@ public class Map {
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getRoadTextureFromRoadCatAndK(roadCategory, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        // TODO faire méthode !!?
-        if (texturePixmap != null) {
-            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - this.getHexagonSize(), y - this.getHexagonSize(),            // Dest X,Y (top-left of destination)
-                this.getHexagonSize() * 2, this.getHexagonSize() * 2    // Dest width & height (scaling)
-            );
-
-            texturePixmap.dispose();
-        }
+        this.drawPixmapFromTexturePixmap(drawingPixmap, texturePixmap, x, y);
         texture.dispose();
     }
 
@@ -259,18 +246,7 @@ public class Map {
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getRiverTextureFromRiverCatAndK(riverCategory, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        // TODO faire méthode !!?
-        if (texturePixmap != null) {
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - this.getHexagonSize(), y - this.getHexagonSize(),            // Dest X,Y (top-left of destination)
-                this.getHexagonSize() * 2, this.getHexagonSize() * 2    // Dest width & height (scaling)
-            );
-            texturePixmap.dispose();
-        }
+        this.drawPixmapFromTexturePixmap(drawingPixmap, texturePixmap, x, y);
         texture.dispose();
 
     }
@@ -280,18 +256,7 @@ public class Map {
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getTextureSideFromBridge(bridgeType, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        // TODO faire méthode !!?
-        if (texturePixmap != null) {
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - this.getHexagonSize(), y - this.getHexagonSize(),            // Dest X,Y (top-left of destination)
-                this.getHexagonSize() * 2, this.getHexagonSize() * 2    // Dest width & height (scaling)
-            );
-            texturePixmap.dispose();
-        }
+        this.drawPixmapFromTexturePixmap(drawingPixmap, texturePixmap, x, y);
         texture.dispose();
     }
 
@@ -300,8 +265,11 @@ public class Map {
         int y = getYFromJ(j);
         Texture texture = GraphicUtil.getTextureSideFromCliff(cliff, k);
         Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
+        this.drawPixmapFromTexturePixmap(drawingPixmap, texturePixmap, x, y);
+        texture.dispose();
+    }
 
-        // TODO faire méthode !!?
+    private void drawPixmapFromTexturePixmap(Pixmap drawingPixmap, Pixmap texturePixmap, int x, int y) {
         if (texturePixmap != null) {
             drawingPixmap.drawPixmap(
                 texturePixmap, // Source Pixmap
@@ -312,7 +280,6 @@ public class Map {
             );
             texturePixmap.dispose();
         }
-        texture.dispose();
     }
 
     public static void drawFortification(

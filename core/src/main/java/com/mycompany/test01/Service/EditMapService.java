@@ -396,7 +396,7 @@ public class EditMapService {
             for(int j=0; j<this.getMap().getLimitJ(); j++) {
                 Color fillColor = GraphicUtil.getColorFromTerrain(this.getMap().getHexesArray().get(i).get(j).getCategory());
                 drawingMapPixmap.setColor(fillColor);
-                
+
                 for(int k=0; k<miniHexSize; k++) {
                     int x = miniMapX + miniMapMargin + k + i * miniHexSize;
                     if(j%2==0) x += (int) miniHexSize / 2;
