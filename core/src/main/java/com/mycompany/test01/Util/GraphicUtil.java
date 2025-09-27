@@ -1141,6 +1141,56 @@ public class GraphicUtil {
         return texture;
     }
 
+    /**
+     * Algorithme de Bresenham modifié pour dessiner des lignes épaisses continues
+     * TODO : deplace dans un util ou ailleurs
+     * ajouter drawingMapPixmap en paramètre
+     */
+    public static void drawThickLine(
+        int x1, int y1,
+        int x2, int y2,
+        Color color,
+        int width,
+        Pixmap drawingMapPixmap
+    ) {
+        // Calculer la distance entre les points
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        int sx = x1 < x2 ? 1 : -1;
+        int sy = y1 < y2 ? 1 : -1;
+        int err = dx - dy;
+
+        // Sauvegarder la couleur actuelle
+        //Color oldColor = new Color(drawingMapPixmap.getColor());
+        drawingMapPixmap.setColor(color);
+
+        while (true) {
+            // Dessiner un cercle (ou un carré) autour du point pour créer l'épaisseur
+            for (int w = -width/2; w <= width/2; w++) {
+                for (int h = -width/2; h <= width/2; h++) {
+                    if (w*w + h*h <= (width/2)*(width/2)) { // Cercle pour des bords lisses
+                        drawingMapPixmap.drawPixel(x1 + w, y1 + h);
+                    }
+                }
+            }
+
+            if (x1 == x2 && y1 == y2) break;
+
+            int e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                x1 += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y1 += sy;
+            }
+        }
+
+        // Restaurer la couleur précédente
+        //drawingMapPixmap.setColor(oldColor);
+    }
+
     /*
             moo1.getActor().addListener(new ClickListener() {
             public void clicked (InputEvent event, float x, float y) {

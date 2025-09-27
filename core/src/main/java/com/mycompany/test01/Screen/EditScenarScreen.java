@@ -21,9 +21,11 @@ import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.ZoomLevelEnum;
+import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
 import com.mycompany.test01.Interface.observer.ToastObserver;
 import com.mycompany.test01.Library.HexPathfinderCalculator;
 import com.mycompany.test01.Main;
+import com.mycompany.test01.Observable.EditScenarLoadMapObservable;
 import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
@@ -41,6 +43,7 @@ public class EditScenarScreen implements Screen {
     private Pixmap drawingMapPixmap;
     private Texture drawingTexture = null;
     private final ToastObservable toastObservable;
+    private final EditScenarLoadMapObservable editScenarLoadMapObservable;
 
     private final ScenarFileService scenarFileService;
 
@@ -49,7 +52,9 @@ public class EditScenarScreen implements Screen {
     private final EditScenarScreen.EditScenarScreenInputAdapter screenInputAdapter; // Pour la logique d'entrée de l'écran
 
     private final Table leftMapPanel, rightPanel, bottomRightButtonPanel;
+    private Table rightPanelContainer;
     private Table  rightLoadMapPanel;
+    private Table rightEditScenarPanel;
 
     private ScrollPane rightScrollPane;
 
@@ -70,6 +75,7 @@ public class EditScenarScreen implements Screen {
         this.scenarFileService = ScenarFileService.getInstance();
         this.editScenarService = EditScenarService.getInstance();
         this.toastObservable = ToastObservable.getInstance();
+        this.editScenarLoadMapObservable = EditScenarLoadMapObservable.getInstance();
         this.subscribeToObservables();
 
         this.screenInputAdapter = new EditScenarScreen.EditScenarScreenInputAdapter(this);
@@ -127,28 +133,60 @@ public class EditScenarScreen implements Screen {
         Table panel = new Table();
         panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
         panel.setBounds(Gdx.graphics.getWidth() - 430f, 50f, 380f, Gdx.graphics.getHeight() - 100f);
-        panel.pad(20f); // Définir le padding après avoir défini le fond
+        panel.pad(20f);
+
+        // 1. Crée un conteneur vide pour héberger les panneaux dynamiques
+        this.rightPanelContainer = new Table(); // <-- Conteneur unique
+        panel.add(this.rightPanelContainer)
+            .expandX()  // Occupe toute la largeur disponible
+            .fillX()// Étire le contenu horizontalement
+            .expandY()
+            //.fillY()
+            //.height(300f) // Hauteur fixe (ajuste selon tes besoins)
+            .top();      // Alignement en haut
+
+        // 2. Initialise les panneaux (mais ne les ajoute pas encore)
         this.rightLoadMapPanel = createRightLoadMapPanel();
         this.rightLoadMapPanel.setVisible(false);
-        //Table rightLoadMapPanel = createRightLoadMapPanel();
-        //panel.add(rightLoadMapPanel).expand().fill().height(150f); // Utiliser add() et configurer le layout
-        panel.add(rightLoadMapPanel).expand().fill().height(150f).top(); // Fixer la hauteur
+
+        this.rightEditScenarPanel = createRightEditScenarPanel();
+        this.rightEditScenarPanel.setVisible(false);
+
         return panel;
     }
 
+    // Méthodes pour basculer entre les panneaux
+    public void showLoadMapPanel() {
+        this.rightPanelContainer.clear(); // Vide le conteneur
+        this.rightPanelContainer.add(this.rightLoadMapPanel)
+            .expand()  // Occupe tout l'espace
+            .fill();   // Étire le panneau
+        this.rightLoadMapPanel.setVisible(true);
+        this.rightEditScenarPanel.setVisible(false);
+    }
 
-    private Table createBottomRightButtonPanel() { // TODO : corriger nom !!!
+    public void showEditScenarPanel() {
+        this.rightPanelContainer.clear(); // Vide le conteneur
+        this.rightPanelContainer.add(this.rightEditScenarPanel)
+            .expand()  // Occupe tout l'espace
+            .fill();   // Étire le panneau
+        this.rightEditScenarPanel.setVisible(true);
+        this.rightLoadMapPanel.setVisible(false);
+    }
+
+
+    private Table createBottomRightButtonPanel() { // TODO : corriger nom !!! en ...Left...
 
         int padding = 20;
         int panelHeight = 60;
         int buttonHeight = 40;
         int buttonWidth = 140;
+        EditScenarScreen that = this;
         Table panel = new Table();
         panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
         panel.setBounds(50f, 100f, Gdx.graphics.getWidth() - 500f, panelHeight);
         //panel.columnDefaults(3);
         int posY = (panelHeight - buttonHeight) / 2;
-        EditScenarScreen that =this;
         ButtonWrapper buttonNewScenarWrapper = new ButtonWrapper(
             "New Scenario",
             padding, posY, buttonWidth, buttonHeight);
@@ -157,8 +195,9 @@ public class EditScenarScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("click new scenario");
-                that.rightLoadMapPanel.setVisible(true);
-
+                //that.rightLoadMapPanel.setVisible(true);
+                //that.rightEditScenarPanel.setVisible(false);
+                that.showLoadMapPanel();
                 //TODO creer scenario
                 //that.editScenarService.initScenar();
             }
@@ -192,21 +231,33 @@ public class EditScenarScreen implements Screen {
         return panel;
     }
 
+    private Table createRightEditScenarPanel() {
+        Table panel = new Table();
+        panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
+        //panel.setHeight(300);
+        panel.pad(20);
+
+        //panel.setBounds(50f, 100f, Gdx.graphics.getWidth() - 500f, panelHeight);
+        return panel;
+    }
+
     private Table createRightLoadMapPanel() {
         Table panel = new Table();
         panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
         //panel.setBounds(20, 20, 340, 150);
         //panel.setWidth(340);
-        //panel.setHeight(150);
+        //panel.setHeight(150f);
         //panel.pad(20);
-        EditScenarScreen that = this;
+        //EditScenarScreen that = this;
+        panel.pad(20);
+        
         ButtonWrapper buttonLoadMapWrapper = new ButtonWrapper("Load Map", 0, 0, 140, 40);
         buttonLoadMapWrapper.getButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("click load map");
+                //System.out.println("click load map");
                 scenarFileService.openLoadMapFileChooser();
-                if(editScenarService.getScenario().getMap().getHexesArray() != null) that.isScenarPresent = true;
+                //if(editScenarService.getScenario().getMap().getHexesArray() != null) that.isScenarPresent = true;
                 redrawMap();
             }
         });
@@ -295,13 +346,16 @@ public class EditScenarScreen implements Screen {
             int x2 = this.editScenarService.getScenario().getMap().getXFromIJ(next.getX() - editScenarService.getScenario().getMap().getStartI(), next.getY() - editScenarService.getScenario().getMap().getStartJ());
             int y2 = this.editScenarService.getScenario().getMap().getYFromJ(next.getY() - editScenarService.getScenario().getMap().getStartJ());
 
-            drawThickLine(x1, y1, x2, y2, lineColor, lineWidth);
+            GraphicUtil.drawThickLine(x1, y1, x2, y2, lineColor, lineWidth, drawingMapPixmap);
         }
     }
 
     /**
      * Algorithme de Bresenham modifié pour dessiner des lignes épaisses continues
+     * TODO : deplace dans un util ou ailleurs
+     * ajouter drawingMapPixmap en paramètre
      */
+    /*
     private void drawThickLine(int x1, int y1, int x2, int y2, Color color, int width) {
         // Calculer la distance entre les points
         int dx = Math.abs(x2 - x1);
@@ -340,16 +394,33 @@ public class EditScenarScreen implements Screen {
         // Restaurer la couleur précédente
         //drawingMapPixmap.setColor(oldColor);
     }
+    */
 
+    private void hideLoadMapAndDisplayScenarRightPanel(Boolean isScenarPresent) {
+        this.isScenarPresent = isScenarPresent;
+        //this.rightLoadMapPanel.setVisible(!isScenarPresent);
+        //this.rightEditScenarPanel.setVisible(isScenarPresent);
+        this.showEditScenarPanel();
+    }
 
 
     private void subscribeToObservables() {
+        EditScenarScreen that = this;
         if (toastObservable != null) {
             // Création d'un Observer<Toast> anonyme
             toastObservable.subscribe(new ToastObserver() {
                 @Override
                 public void update(Toast newValue) {
                     EditScenarScreen.this.displayToastFromObservable(newValue);
+                }
+            });
+        }
+        if (editScenarLoadMapObservable != null) {
+            editScenarLoadMapObservable.subscribe(new EditScenarLoadMapObserver() {
+                @Override
+                public void update(Boolean newValue) {
+                    //System.out.println("update observer editscenarscreen");
+                    that.hideLoadMapAndDisplayScenarRightPanel(newValue);
                 }
             });
         }

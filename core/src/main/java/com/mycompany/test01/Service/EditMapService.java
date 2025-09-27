@@ -200,9 +200,10 @@ public class EditMapService {
 
     public void firstInit() {
         //this.limitI = 100;
-        this.getMap().setLimitI(100);
+        //this.getMap().setLimitI(100);
         //this.limitJ = 100;
-        this.getMap().setLimitJ(100);
+        //this.getMap().setLimitJ(100);
+        setLimits(100, 100);
     }
 
     public void setLimits(int limitI, int limitJ) {
