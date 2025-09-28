@@ -1,7 +1,5 @@
 package com.mycompany.test01.Entity.Scenario;
 
-//import com.badlogic.gdx.utils.Array;
-//import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Map.Map;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 
@@ -12,10 +10,6 @@ public class Scenario {
     private int sidesCount;
     private Opponent[] opponents;
     private MapObjective[] objectives;
-
-    // TODO déplacer dans la map
-    //private Array<Array<Hexagon>> hexesArray;
-    //private int limitI, limitJ;
 
     private Map map;
 

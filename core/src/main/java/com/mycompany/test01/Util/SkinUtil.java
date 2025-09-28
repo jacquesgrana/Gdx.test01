@@ -567,4 +567,55 @@ public class SkinUtil {
         return skin;
     }
 
+    public static Skin getSliderSkin(int width, int height, int knobSize) {
+        Skin skin = new Skin();
+
+        // 1. Générer une police par défaut (optionnel, utile si le slider a des labels)
+        BitmapFont font = new BitmapFont();
+        skin.add("default-font", font);
+
+        // 2. Créer le RAIL (background) du slider
+        //    - État normal (background)
+        Pixmap railPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        railPixmap.setColor(GraphicUtil.buttonColorMedium); // Couleur de base (gris moyen)
+        railPixmap.fill();
+        // Bordure noire
+        railPixmap.setColor(GraphicUtil.buttonBorderColorDark);
+        railPixmap.drawRectangle(0, 0, width, height);
+        skin.add("slider-rail", new Texture(railPixmap));
+        railPixmap.dispose();
+
+        // 3. Créer le CURSEUR (knob) du slider
+        //    - État normal
+        Pixmap knobPixmap = new Pixmap(knobSize, knobSize, Pixmap.Format.RGBA8888);
+        knobPixmap.setColor(GraphicUtil.buttonHoverColorMedium); // Couleur légèrement plus claire
+        knobPixmap.fillCircle(knobSize / 2, knobSize / 2, knobSize / 2);
+        // Bordure noire
+        knobPixmap.setColor(GraphicUtil.buttonBorderColorDark);
+        knobPixmap.drawCircle(knobSize / 2, knobSize / 2, knobSize / 2);
+        skin.add("slider-knob", new Texture(knobPixmap));
+        knobPixmap.dispose();
+
+        //    - État "over" (optionnel, si vous voulez un effet au survol)
+        Pixmap knobOverPixmap = new Pixmap(knobSize, knobSize, Pixmap.Format.RGBA8888);
+        knobOverPixmap.setColor(GraphicUtil.buttonDownColorMedium); // Couleur encore plus claire
+        knobOverPixmap.fillCircle(knobSize / 2, knobSize / 2, knobSize / 2);
+        knobOverPixmap.setColor(GraphicUtil.buttonBorderColorDark);
+        knobOverPixmap.drawCircle(knobSize / 2, knobSize / 2, knobSize / 2);
+        skin.add("slider-knob-over", new Texture(knobOverPixmap));
+        knobOverPixmap.dispose();
+
+        // 4. Créer le style du slider
+        Slider.SliderStyle sliderStyle = new Slider.SliderStyle();
+        sliderStyle.background = new TextureRegionDrawable(skin.get("slider-rail", Texture.class));
+        sliderStyle.knob = new TextureRegionDrawable(skin.get("slider-knob", Texture.class));
+        sliderStyle.knobOver = new TextureRegionDrawable(skin.get("slider-knob-over", Texture.class));
+
+        // 5. Ajouter le style au skin
+        skin.add("default-horizontal", sliderStyle);
+
+        return skin;
+    }
+
+
 }

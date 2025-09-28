@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -237,7 +237,40 @@ public class EditScenarScreen implements Screen {
         //panel.setHeight(300);
         panel.pad(20);
 
+
+        Label scenarNameLabel = new Label("Scenar Name : ", SkinUtil.getLabelSkin(100, 30));
+        TextField scenarNameField = new TextField(this.editScenarService.getScenario().getName(), SkinUtil.getTextFieldSkin(150, 30));
+
+        //scenarNameLabel.setPosition(20f, -20f);
+        panel.pad(20f)
+            .add(scenarNameLabel);
+        panel.add(scenarNameField).row();
+
+        Label scenarMapNameLabel = new Label("Map name : " + this.editScenarService.getScenario().getMap().getName(), SkinUtil.getLabelSkin(260, 30));
+
+        //scenarNameLabel.setPosition(20f, -20f);
+        panel.add(scenarMapNameLabel).colspan(2);
+        panel.row();
+
+        // TODO : ajouter panel pour la gestion des camps/opposants
+
+        Label scenarSidesCountLabel = new Label("Sides count : " + this.editScenarService.getScenario().getSidesCount(), SkinUtil.getLabelSkin(100, 30));
+
+        Slider scenarSidesCountSlider = new Slider(2f, 6f, 1f, false, SkinUtil.getSliderSkin(200, 30, 20)); // min, max, step, vertical
+        scenarSidesCountSlider.setValue(this.editScenarService.getScenario().getSidesCount()); // Valeur par défaut
+        EditScenarScreen that = this;
+        scenarSidesCountSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                scenarSidesCountLabel.setText("Sides count : " + (int) scenarSidesCountSlider.getValue());
+                that.editScenarService.getScenario().setSidesCount((int) scenarSidesCountSlider.getValue());
+            }
+        });
+        panel.add(scenarSidesCountLabel);
+        panel.add(scenarSidesCountSlider);
+        panel.row();
         //panel.setBounds(50f, 100f, Gdx.graphics.getWidth() - 500f, panelHeight);
+
         return panel;
     }
 
@@ -250,7 +283,7 @@ public class EditScenarScreen implements Screen {
         //panel.pad(20);
         //EditScenarScreen that = this;
         panel.pad(20);
-        
+
         ButtonWrapper buttonLoadMapWrapper = new ButtonWrapper("Load Map", 0, 0, 140, 40);
         buttonLoadMapWrapper.getButton().addListener(new ClickListener() {
             @Override
@@ -549,6 +582,7 @@ public class EditScenarScreen implements Screen {
                                 this.screen.pathStart = null;
                                 this.screen.pathEnd = null;
                                 this.screen.path = new ArrayList<>();
+                                this.screen.redrawMap();
                             }
                         }
                         /*
