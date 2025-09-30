@@ -3,6 +3,8 @@ package com.mycompany.test01.Entity.Scenario;
 import com.mycompany.test01.Entity.Map.Map;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 
+import java.util.Arrays;
+
 public class Scenario {
 
     private String name;
@@ -11,7 +13,13 @@ public class Scenario {
     private Opponent[] opponents;
     private MapObjective[] objectives;
 
+    // TODO ajouter date de départ et la durée
+    private DayDate startDate;
+    private int duration;
+
     private Map map;
+
+    private OpponentSideEnum[] sidesAll = OpponentSideEnum.values();
 
     public Scenario() {
         this.map = new Map();
@@ -35,6 +43,26 @@ public class Scenario {
         //this.hexesArray = hexesArray;
         //this.limitI = limitI;
         //this.limitJ = limitJ;
+    }
+
+    public void setSidesFromCount() {
+        this.setSides(new OpponentSideEnum[6]);
+        for (int i=0; i<6; i++) {
+            this.getSides()[i] = OpponentSideEnum.NO_SIDE;
+            if(i < this.getSidesCount()) {
+                this.getSides()[i] = this.sidesAll[i];
+            }
+            //System.out.println("side n°" + i + " : " +  this.getSides()[i].toString());
+        }
+    }
+
+    public void initOpponentsFromSidesCount() {
+        this.setOpponents(new Opponent[this.getSidesCount()]);
+        for (int i=0; i<this.getSidesCount(); i++) {
+            this.getOpponents()[i] = new Opponent();
+            OpponentSideEnum side = OpponentSideEnum.values()[i];
+            this.getOpponents()[i].setSide(side);
+        }
     }
 
     public String getName() {
@@ -77,39 +105,31 @@ public class Scenario {
         this.objectives = objectives;
     }
 
-    /*
-    public Array<Array<Hexagon>> getHexesArray() {
-        return hexesArray;
-    }
-
-    public void setHexesArray(Array<Array<Hexagon>> hexesArray) {
-        this.hexesArray = hexesArray;
-    }
-     */
-
-/*
-    public int getLimitI() {
-        return limitI;
-    }
-
-    public void setLimitI(int limitI) {
-        this.limitI = limitI;
-    }
-
-    public int getLimitJ() {
-        return limitJ;
-    }
-
-    public void setLimitJ(int limitJ) {
-        this.limitJ = limitJ;
-    }
- */
-
     public Map getMap() {
         return map;
     }
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public OpponentSideEnum[] getSidesAll() {
+        return sidesAll;
+    }
+
+    public DayDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(DayDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

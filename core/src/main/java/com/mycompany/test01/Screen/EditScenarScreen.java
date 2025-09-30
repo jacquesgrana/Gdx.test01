@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ZoomLevelEnum;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
 import com.mycompany.test01.Interface.observer.ToastObserver;
@@ -55,6 +56,10 @@ public class EditScenarScreen implements Screen {
     private Table rightPanelContainer;
     private Table  rightLoadMapPanel;
     private Table rightEditScenarPanel;
+
+    private Table opponentsSidesListPanel;
+
+    private Table opponentsEditPanel;
 
     private ScrollPane rightScrollPane;
 
@@ -252,7 +257,18 @@ public class EditScenarScreen implements Screen {
         panel.add(scenarMapNameLabel).colspan(2);
         panel.row();
 
-        // TODO : ajouter panel pour la gestion des camps/opposants
+
+        Table opponentsPanel = createOpponentsPanel();
+        panel.add(opponentsPanel).colspan(2);
+        //panel.setBounds(50f, 100f, Gdx.graphics.getWidth() - 500f, panelHeight);
+
+        return panel;
+    }
+
+    private Table createOpponentsPanel() {
+        Table panel = new Table();
+        panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
+        //panel.setHeight(300);
 
         Label scenarSidesCountLabel = new Label("Sides count : " + this.editScenarService.getScenario().getSidesCount(), SkinUtil.getLabelSkin(100, 30));
 
@@ -264,15 +280,124 @@ public class EditScenarScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 scenarSidesCountLabel.setText("Sides count : " + (int) scenarSidesCountSlider.getValue());
                 that.editScenarService.getScenario().setSidesCount((int) scenarSidesCountSlider.getValue());
+                that.editScenarService.getScenario().setSidesFromCount();
+                //that.opponentsSidesListPanel = createOpponentsSidesListPanel();
+                that.editScenarService.getScenario().initOpponentsFromSidesCount();
+                rebuildOpponentsSidesListPanel();
+
+                //that.displaySidesPanel();
             }
         });
+        panel.pad(20);
         panel.add(scenarSidesCountLabel);
         panel.add(scenarSidesCountSlider);
         panel.row();
-        //panel.setBounds(50f, 100f, Gdx.graphics.getWidth() - 500f, panelHeight);
+
+        //this.opponentsSidesListPanel = createOpponentsSidesListPanel();
+        this.editScenarService.getScenario().initOpponentsFromSidesCount();
+        rebuildOpponentsSidesListPanel();
+        panel.add(this.opponentsSidesListPanel).colspan(2);
+        panel.row();
 
         return panel;
     }
+
+    private void rebuildOpponentsSidesListPanel() {
+        // 1. Nettoyer l'ancien panel
+        if (this.opponentsSidesListPanel != null) {
+            this.opponentsSidesListPanel.clear();
+        } else {
+            this.opponentsSidesListPanel = new Table();
+            this.opponentsSidesListPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
+        }
+
+        // 2. Ajouter un titre
+        Label titleLabel = new Label(
+            "Sides (" + this.editScenarService.getScenario().getSidesCount() + "):",
+            SkinUtil.getLabelSkin(100, 30)
+        );
+        this.opponentsSidesListPanel.add(titleLabel).colspan(2).padBottom(10).row();
+
+        // 3. Ajouter un bloc par side (exemple : un Label + un bouton par side)
+        EditScenarScreen that = this;
+        for (int i = 0; i < this.editScenarService.getScenario().getSidesCount(); i++) {
+            Table container = new Table();
+            Label sideLabel = new Label(this.editScenarService.getScenario().getSides()[i].toString(), SkinUtil.getLabelSkin(80, 25));
+            //Button sideButton = new Button(SkinUtil.getButtonSkin(100, 25));
+            container.add(sideLabel).row();
+
+            SelectBox<CountryEnum> countryOneSelector = new SelectBox<>(SkinUtil.getSelectorSkin(200, 30));
+            CountryEnum[] items = CountryEnum.values();
+            countryOneSelector.setItems(items);
+            countryOneSelector.setSelected(CountryEnum.NO_COUNTRY);
+
+            int finalI = i;
+            countryOneSelector.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    // Pas de cast nécessaire : on utilise directement countryOneSelector
+                    CountryEnum selectedCountry = countryOneSelector.getSelected();
+                    that.editScenarService.getScenario().getOpponents()[finalI].setCountry(selectedCountry);
+
+                    System.out.println("Country chosen for side: " +
+                        that.editScenarService.getScenario().getSides()[finalI] + " : " + selectedCountry);
+                    System.out.println("country's side : " + that.editScenarService.getScenario().getOpponents()[finalI].getSide().toString());
+                }
+            });
+
+            container.add(countryOneSelector).row();
+
+            this.opponentsSidesListPanel.add(container).colspan(2).row();
+            //this.opponentsSidesListPanel.add(sideButton).row();
+        }
+
+        ButtonWrapper buttonValidateOpponents = new ButtonWrapper(
+            "Validate",
+            0, 0,
+            100, 30);
+
+        buttonValidateOpponents.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                boolean isOpponentsOk = that.isScenarPresent;
+                for(int i=0; i<that.editScenarService.getScenario().getSidesCount(); i++) {
+                    boolean isOpponentOk = that.editScenarService.getScenario().getOpponents()[i].getCountry() != CountryEnum.NO_COUNTRY;
+                    if(i<that.editScenarService.getScenario().getSidesCount() - 1) {
+                        for(int j=i+1; j<that.editScenarService.getScenario().getSidesCount(); j++) {
+                            isOpponentOk &= that.editScenarService.getScenario().getOpponents()[i].getCountry() != that.editScenarService.getScenario().getOpponents()[j].getCountry();
+                        }
+                    }
+
+                    isOpponentsOk &= isOpponentOk;
+                    if(isOpponentsOk) {
+
+                    }
+
+                }
+                System.out.println("isOpponentsOk : " + isOpponentsOk);
+            }
+        });
+
+        // TODO ajouter listener et methode qui affiche le bloc d'edition des opponents
+
+        this.opponentsSidesListPanel.add(buttonValidateOpponents.getButton());
+    }
+
+    private void rebuildOpponentsEditPanel() {
+        this.opponentsEditPanel = new Table();
+    }
+
+/*
+    private Table createOpponentsSidesListPanel() {
+        Table panel = new Table();
+        panel.padTop(20);
+        panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
+        System.out.println("sides count : " + this.editScenarService.getScenario().getSidesCount());
+        Label titleLabel =  new Label("Sides : " + this.editScenarService.getScenario().getSidesCount(), SkinUtil.getLabelSkin(100, 30));
+        panel.add(titleLabel);
+        return panel;
+    }
+ */
 
     private Table createRightLoadMapPanel() {
         Table panel = new Table();
