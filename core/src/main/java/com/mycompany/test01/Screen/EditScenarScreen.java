@@ -359,22 +359,9 @@ public class EditScenarScreen implements Screen {
         buttonValidateOpponents.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                boolean isOpponentsOk = that.isScenarPresent;
-                for(int i=0; i<that.editScenarService.getScenario().getSidesCount(); i++) {
-                    boolean isOpponentOk = that.editScenarService.getScenario().getOpponents()[i].getCountry() != CountryEnum.NO_COUNTRY;
-                    if(i<that.editScenarService.getScenario().getSidesCount() - 1) {
-                        for(int j=i+1; j<that.editScenarService.getScenario().getSidesCount(); j++) {
-                            isOpponentOk &= that.editScenarService.getScenario().getOpponents()[i].getCountry() != that.editScenarService.getScenario().getOpponents()[j].getCountry();
-                        }
-                    }
-
-                    isOpponentsOk &= isOpponentOk;
-                    if(isOpponentsOk) {
-
-                    }
-
+                if(that.isScenarPresent && that.editScenarService.isOpponentsOk()) {
+                    System.out.println("opponents validated !");
                 }
-                System.out.println("isOpponentsOk : " + isOpponentsOk);
             }
         });
 
