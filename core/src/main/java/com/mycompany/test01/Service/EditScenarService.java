@@ -28,20 +28,6 @@ public class EditScenarService {
         return instance;
     }
 
-    public boolean isOpponentsOk() {
-        boolean isOpponentsOk = true;
-        for(int i=0; i<this.getScenario().getSidesCount(); i++) {
-            boolean isOpponentOk = this.getScenario().getOpponents()[i].getCountry() != CountryEnum.NO_COUNTRY;
-            if(i<this.getScenario().getSidesCount() - 1) {
-                for(int j=i+1; j<this.getScenario().getSidesCount(); j++) {
-                    isOpponentOk &= this.getScenario().getOpponents()[i].getCountry() != this.getScenario().getOpponents()[j].getCountry();
-                }
-            }
-            isOpponentsOk &= isOpponentOk;
-        }
-        return isOpponentsOk;
-    }
-
     public Scenario getScenario() {
         return scenario;
     }

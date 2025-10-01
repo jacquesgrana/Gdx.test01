@@ -180,4 +180,12 @@ public class Opponent {
     public void setReinfRatio(float reinfRatio) {
         this.reinfRatio = reinfRatio;
     }
+
+    @Override
+    public String toString() {
+        return
+            country + " / " +
+            side + " / " +
+            name;
+    }
 }

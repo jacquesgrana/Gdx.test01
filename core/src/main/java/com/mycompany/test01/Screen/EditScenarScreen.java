@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Entity.Scenario.Opponent;
+import com.mycompany.test01.Enum.ColorStyleEnum;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ZoomLevelEnum;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
@@ -298,6 +300,9 @@ public class EditScenarScreen implements Screen {
         rebuildOpponentsSidesListPanel();
         panel.add(this.opponentsSidesListPanel).colspan(2);
         panel.row();
+        this.rebuildOpponentsEditPanel();
+        panel.add(opponentsEditPanel).spaceTop(20).fillX().expandX().colspan(2);
+        panel.row();
 
         return panel;
     }
@@ -338,10 +343,10 @@ public class EditScenarScreen implements Screen {
                     // Pas de cast nécessaire : on utilise directement countryOneSelector
                     CountryEnum selectedCountry = countryOneSelector.getSelected();
                     that.editScenarService.getScenario().getOpponents()[finalI].setCountry(selectedCountry);
+                    that.editScenarService.getScenario().getOpponents()[finalI].setName("Opponent " + (finalI+1));
 
-                    System.out.println("Country chosen for side: " +
-                        that.editScenarService.getScenario().getSides()[finalI] + " : " + selectedCountry);
-                    System.out.println("country's side : " + that.editScenarService.getScenario().getOpponents()[finalI].getSide().toString());
+                    //System.out.println("Country chosen for side: " + that.editScenarService.getScenario().getSides()[finalI] + " : " + selectedCountry);
+                    //System.out.println("country's side : " + that.editScenarService.getScenario().getOpponents()[finalI].getSide().toString());
                 }
             });
 
@@ -359,19 +364,48 @@ public class EditScenarScreen implements Screen {
         buttonValidateOpponents.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                if(that.isScenarPresent && that.editScenarService.isOpponentsOk()) {
-                    System.out.println("opponents validated !");
+                if(that.isScenarPresent && that.editScenarService.getScenario().isOpponentsOk()) {
+                    //System.out.println("opponents ok !");
+                    Toast.showToast(that.stage, "Opponents ok", ColorStyleEnum.SUCCESS, 2f);
+                    // TODO afficher editOpponentPanel
+                    that.rebuildOpponentsEditPanel();
+                }
+                else {
+                    //System.out.println("opponents ko !");
+                    Toast.showToast(that.stage, "Opponents ko", ColorStyleEnum.WARNING, 2f);
                 }
             }
         });
 
-        // TODO ajouter listener et methode qui affiche le bloc d'edition des opponents
 
-        this.opponentsSidesListPanel.add(buttonValidateOpponents.getButton());
+        this.opponentsSidesListPanel.add(buttonValidateOpponents.getButton()).spaceTop(20);
     }
 
     private void rebuildOpponentsEditPanel() {
-        this.opponentsEditPanel = new Table();
+        if (this.opponentsEditPanel != null) {
+            this.opponentsEditPanel.clear();
+        } else {
+            this.opponentsEditPanel = new Table();
+            this.opponentsEditPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
+        }
+
+        this.opponentsEditPanel.pad(20);
+        SelectBox<Opponent> opponentSelector = new SelectBox<>(SkinUtil.getSelectorSkin(200, 30));
+        if(this.editScenarService.getScenario().getOpponents().length > 0) {
+            Opponent[] items = this.editScenarService.getScenario().getOpponents();
+            opponentSelector.setItems(items);
+        }
+        //opponentSelector.setSelected(CountryEnum.NO_COUNTRY);
+
+        opponentSelector.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Opponent selectedOpponent = opponentSelector.getSelected();
+
+            }
+        });
+
+        this.opponentsEditPanel.add(opponentSelector).row();
     }
 
 /*

@@ -1,6 +1,7 @@
 package com.mycompany.test01.Entity.Scenario;
 
 import com.mycompany.test01.Entity.Map.Map;
+import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 
 import java.util.Arrays;
@@ -63,6 +64,20 @@ public class Scenario {
             OpponentSideEnum side = OpponentSideEnum.values()[i];
             this.getOpponents()[i].setSide(side);
         }
+    }
+
+    public boolean isOpponentsOk() {
+        boolean isOpponentsOk = true;
+        for(int i=0; i<this.getSidesCount(); i++) {
+            boolean isOpponentOk = this.getOpponents()[i].getCountry() != CountryEnum.NO_COUNTRY;
+            if(i<this.getSidesCount() - 1) {
+                for(int j=i+1; j<this.getSidesCount(); j++) {
+                    isOpponentOk &= this.getOpponents()[i].getCountry() != this.getOpponents()[j].getCountry();
+                }
+            }
+            isOpponentsOk &= isOpponentOk;
+        }
+        return isOpponentsOk;
     }
 
     public String getName() {
