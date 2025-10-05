@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
@@ -62,6 +63,8 @@ public class EditScenarScreen implements Screen {
     private Table opponentsSidesListPanel;
 
     private Table opponentsEditPanel;
+
+    private Table selectedOpponentEditPanel;
 
     private ScrollPane rightScrollPane;
 
@@ -241,23 +244,39 @@ public class EditScenarScreen implements Screen {
     private Table createRightEditScenarPanel() {
         Table panel = new Table();
         panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
-        //panel.setHeight(300);
-        panel.pad(20);
+        //panel.pad(20); // Padding global du panel (optionnel)
+
+        // --- Solution pour coller Label + TextField ---
+        // Désactive TOUT padding/espacement par défaut
+        panel.defaults().pad(0).space(0);
+
+        // Crée les éléments avec des styles minimalistes
+        Label scenarNameLabel = new Label("Scenar Name :", SkinUtil.getLabelSkin(80, 30));
+        TextField scenarNameField = new TextField(
+            this.editScenarService.getScenario().getName(),
+            SkinUtil.getTextFieldSkin(80, 30)
+        );
+
+        // Ajoute une Table imbriquée pour contrôler précisément l'alignement
+        Table nameRow = new Table();
+        nameRow.defaults().pad(0).space(0); // Pas d'espace ni padding
+
+        // Ajoute le Label et le TextField dans la sous-Table
+        nameRow.add(scenarNameLabel).left(); // Aligné à gauche
+        nameRow.add(scenarNameField)
+            .left()  // Aligné à gauche
+            .width(120) // Largeur fixe (ajustable)
+            .expandX(); // Occupe l'espace restant
+
+        // Ajoute la sous-Table au panel principal
+        panel.add(nameRow).colspan(2).padTop(20).fillX().row();
 
 
-        Label scenarNameLabel = new Label("Scenar Name : ", SkinUtil.getLabelSkin(100, 30));
-        TextField scenarNameField = new TextField(this.editScenarService.getScenario().getName(), SkinUtil.getTextFieldSkin(150, 30));
-
-        //scenarNameLabel.setPosition(20f, -20f);
-        panel.pad(20f)
-            .add(scenarNameLabel);
-        panel.add(scenarNameField).row();
-
-        Label scenarMapNameLabel = new Label("Map name : " + this.editScenarService.getScenario().getMap().getName(), SkinUtil.getLabelSkin(260, 30));
-
-        //scenarNameLabel.setPosition(20f, -20f);
-        panel.add(scenarMapNameLabel).colspan(2);
-        panel.row();
+        Label scenarMapNameLabel = new Label(
+            "Map name : " + this.editScenarService.getScenario().getMap().getName(),
+            SkinUtil.getLabelSkin(200, 30)
+        );
+        panel.add(scenarMapNameLabel).colspan(2).row();
 
 
         Table opponentsPanel = createOpponentsPanel();
@@ -329,7 +348,7 @@ public class EditScenarScreen implements Screen {
             Table container = new Table();
             Label sideLabel = new Label(this.editScenarService.getScenario().getSides()[i].toString(), SkinUtil.getLabelSkin(80, 25));
             //Button sideButton = new Button(SkinUtil.getButtonSkin(100, 25));
-            container.add(sideLabel).row();
+            container.add(sideLabel).colspan(1);
 
             SelectBox<CountryEnum> countryOneSelector = new SelectBox<>(SkinUtil.getSelectorSkin(200, 30));
             CountryEnum[] items = CountryEnum.values();
@@ -350,7 +369,7 @@ public class EditScenarScreen implements Screen {
                 }
             });
 
-            container.add(countryOneSelector).row();
+            container.add(countryOneSelector).colspan(1).row();
 
             this.opponentsSidesListPanel.add(container).colspan(2).row();
             //this.opponentsSidesListPanel.add(sideButton).row();
@@ -369,6 +388,7 @@ public class EditScenarScreen implements Screen {
                     Toast.showToast(that.stage, "Opponents ok", ColorStyleEnum.SUCCESS, 2f);
                     // TODO afficher editOpponentPanel
                     that.rebuildOpponentsEditPanel();
+                    that.rebuildSelectedOpponentEditPanel();
                 }
                 else {
                     //System.out.println("opponents ko !");
@@ -394,18 +414,45 @@ public class EditScenarScreen implements Screen {
         if(this.editScenarService.getScenario().getOpponents().length > 0) {
             Opponent[] items = this.editScenarService.getScenario().getOpponents();
             opponentSelector.setItems(items);
+            this.editScenarService.setSelectedOpponent(items[0]);
         }
         //opponentSelector.setSelected(CountryEnum.NO_COUNTRY);
 
+        EditScenarScreen that = this;
         opponentSelector.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Opponent selectedOpponent = opponentSelector.getSelected();
-
+                that.editScenarService.setSelectedOpponent(selectedOpponent);
+                that.rebuildSelectedOpponentEditPanel();
             }
         });
+        this.opponentsEditPanel.add(opponentSelector).colspan(2).row();
 
-        this.opponentsEditPanel.add(opponentSelector).row();
+        this.rebuildSelectedOpponentEditPanel();
+        this.opponentsEditPanel.add(this.selectedOpponentEditPanel).row();
+    }
+
+    private void rebuildSelectedOpponentEditPanel() {
+        if (this.selectedOpponentEditPanel != null) {
+            this.selectedOpponentEditPanel.clear();
+        } else {
+            this.selectedOpponentEditPanel = new Table();
+            this.selectedOpponentEditPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
+        }
+
+        if(this.editScenarService.getSelectedOpponent() != null) {
+            Label selectedOpponentNameLabel = new Label("Name : ", SkinUtil.getLabelSkin(80, 25));
+            this.selectedOpponentEditPanel.add(selectedOpponentNameLabel).colspan(1).padTop(20);
+            TextField selectedOpponentNameTextField = new TextField(this.editScenarService.getSelectedOpponent().getName(), SkinUtil.getTextFieldSkin(150, 30));
+            this.selectedOpponentEditPanel.add(selectedOpponentNameTextField).colspan(1).padTop(20).row();
+
+            Label selectedOpponentSideLabel = new Label("Side : " + this.editScenarService.getSelectedOpponent().getSide().getName(), SkinUtil.getLabelSkin(80, 25));
+            this.selectedOpponentEditPanel.add(selectedOpponentSideLabel).colspan(2).align(Align.left).row();
+
+            Label selectedOpponentCountryLabel = new Label("Country : " + this.editScenarService.getSelectedOpponent().getCountry().getName(), SkinUtil.getLabelSkin(80, 25));
+            this.selectedOpponentEditPanel.add(selectedOpponentCountryLabel).colspan(2).align(Align.left).row();
+        }
     }
 
 /*

@@ -38,6 +38,7 @@ public class Opponent {
         OrderedSet<ReinfElement> reinfProgram,
         OrderedSet<UnitReinfElement> unitReinProgram,
         OrderedSet<SupplyElement> supplyProgram,
+        // TODO : utiliser List?
         OrderedSet<Hexagon> ownedBorderHexes,
         OrderedSet<Hexagon> ownedHexes,
         SupplyElement initialRootSupplyStock,
@@ -183,9 +184,6 @@ public class Opponent {
 
     @Override
     public String toString() {
-        return
-            country + " / " +
-            side + " / " +
-            name;
+        return name;
     }
 }

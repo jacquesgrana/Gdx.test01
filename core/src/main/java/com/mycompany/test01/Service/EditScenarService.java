@@ -1,9 +1,7 @@
 package com.mycompany.test01.Service;
 
-import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
-import com.mycompany.test01.Enum.CountryEnum;
-import com.mycompany.test01.Enum.OpponentSideEnum;
 
 public class EditScenarService {
     private final int DEFAULT_SIDE_COUNT = 2;
@@ -11,6 +9,8 @@ public class EditScenarService {
     private static EditScenarService instance = null;
 
     private Scenario scenario = null;
+
+    private Opponent selectedOpponent = null;
 
     //private OpponentSideEnum[] sidesAll = OpponentSideEnum.values();
 
@@ -34,6 +34,14 @@ public class EditScenarService {
 
     public void setScenario(Scenario scenario) {
         this.scenario = scenario;
+    }
+
+    public Opponent getSelectedOpponent() {
+        return selectedOpponent;
+    }
+
+    public void setSelectedOpponent(Opponent selectedOpponent) {
+        this.selectedOpponent = selectedOpponent;
     }
 
     /*
