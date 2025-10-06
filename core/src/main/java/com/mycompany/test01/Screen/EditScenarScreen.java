@@ -35,6 +35,7 @@ import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
+import com.mycompany.test01.Util.TextUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,7 +146,6 @@ public class EditScenarScreen implements Screen {
         panel.setBounds(Gdx.graphics.getWidth() - 430f, 50f, 380f, Gdx.graphics.getHeight() - 100f);
         panel.pad(20f);
 
-        // 1. Crée un conteneur vide pour héberger les panneaux dynamiques
         this.rightPanelContainer = new Table(); // <-- Conteneur unique
         panel.add(this.rightPanelContainer)
             .expandX()  // Occupe toute la largeur disponible
@@ -248,14 +248,30 @@ public class EditScenarScreen implements Screen {
 
         // --- Solution pour coller Label + TextField ---
         // Désactive TOUT padding/espacement par défaut
-        panel.defaults().pad(0).space(0);
+        panel.defaults().padBottom(20).space(0);
 
         // Crée les éléments avec des styles minimalistes
-        Label scenarNameLabel = new Label("Scenar Name :", SkinUtil.getLabelSkin(80, 30));
+        Label scenarNameLabel = new Label("Scenar Name : ", SkinUtil.getLabelSkin(80, 30));
         TextField scenarNameField = new TextField(
             this.editScenarService.getScenario().getName(),
             SkinUtil.getTextFieldSkin(80, 30)
         );
+
+        scenarNameField.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // 1. Récupérer la valeur brute
+                String cleanedValue = TextUtil.getCleanedText(scenarNameField.getText(), 20);
+                editScenarService.getScenario().setName(cleanedValue);
+                scenarNameField.setText(cleanedValue);
+
+                // 6. (Optionnel) Mettre à jour l'affichage si nécessaire
+                //scenarNameField.setText("Scenar Name : " + cleanedValue);
+            }
+        });
+
+
+
 
         // Ajoute une Table imbriquée pour contrôler précisément l'alignement
         Table nameRow = new Table();
@@ -269,14 +285,14 @@ public class EditScenarScreen implements Screen {
             .expandX(); // Occupe l'espace restant
 
         // Ajoute la sous-Table au panel principal
-        panel.add(nameRow).colspan(2).padTop(20).fillX().row();
+        panel.add(nameRow).colspan(2).padTop(20).padLeft(20).fillX().row();
 
 
         Label scenarMapNameLabel = new Label(
             "Map name : " + this.editScenarService.getScenario().getMap().getName(),
             SkinUtil.getLabelSkin(200, 30)
         );
-        panel.add(scenarMapNameLabel).colspan(2).row();
+        panel.add(scenarMapNameLabel).colspan(2).padLeft(20).left().row();
 
 
         Table opponentsPanel = createOpponentsPanel();
@@ -295,6 +311,23 @@ public class EditScenarScreen implements Screen {
 
         Slider scenarSidesCountSlider = new Slider(2f, 6f, 1f, false, SkinUtil.getSliderSkin(200, 30, 20)); // min, max, step, vertical
         scenarSidesCountSlider.setValue(this.editScenarService.getScenario().getSidesCount()); // Valeur par défaut
+
+        /*
+        Table nameRow = new Table();
+        nameRow.defaults().pad(0).space(0); // Pas d'espace ni padding
+
+        // Ajoute le Label et le TextField dans la sous-Table
+        nameRow.add(scenarNameLabel).left(); // Aligné à gauche
+        nameRow.add(scenarNameField)
+            .left()  // Aligné à gauche
+            .width(120) // Largeur fixe (ajustable)
+            .expandX(); // Occupe l'espace restant
+
+        // Ajoute la sous-Table au panel principal
+        panel.add(nameRow).colspan(2).padTop(20).padLeft(20).fillX().row();
+         */
+
+
         EditScenarScreen that = this;
         scenarSidesCountSlider.addListener(new ChangeListener() {
             @Override
@@ -309,9 +342,16 @@ public class EditScenarScreen implements Screen {
                 //that.displaySidesPanel();
             }
         });
-        panel.pad(20);
-        panel.add(scenarSidesCountLabel);
-        panel.add(scenarSidesCountSlider);
+        //panel.pad(20);
+        Table sidesRow = new Table();
+        sidesRow.defaults().pad(0).space(0);
+
+
+        sidesRow.add(scenarSidesCountLabel).left();
+        sidesRow.add(scenarSidesCountSlider).left()  // Aligné à gauche
+            .width(120) // Largeur fixe (ajustable)
+            .expandX();
+        panel.add(sidesRow);
         panel.row();
 
         //this.opponentsSidesListPanel = createOpponentsSidesListPanel();
@@ -320,7 +360,7 @@ public class EditScenarScreen implements Screen {
         panel.add(this.opponentsSidesListPanel).colspan(2);
         panel.row();
         this.rebuildOpponentsEditPanel();
-        panel.add(opponentsEditPanel).spaceTop(20).fillX().expandX().colspan(2);
+        panel.add(opponentsEditPanel).spaceTop(20).fillX().expandX().colspan(2).spaceBottom(20);
         panel.row();
 
         return panel;
@@ -340,7 +380,7 @@ public class EditScenarScreen implements Screen {
             "Sides (" + this.editScenarService.getScenario().getSidesCount() + "):",
             SkinUtil.getLabelSkin(100, 30)
         );
-        this.opponentsSidesListPanel.add(titleLabel).colspan(2).padBottom(10).row();
+        this.opponentsSidesListPanel.add(titleLabel).colspan(2).padBottom(10).padTop(20).row();
 
         // 3. Ajouter un bloc par side (exemple : un Label + un bouton par side)
         EditScenarScreen that = this;
@@ -398,7 +438,7 @@ public class EditScenarScreen implements Screen {
         });
 
 
-        this.opponentsSidesListPanel.add(buttonValidateOpponents.getButton()).spaceTop(20);
+        this.opponentsSidesListPanel.add(buttonValidateOpponents.getButton()).center().pad(0).spaceTop(20);
     }
 
     private void rebuildOpponentsEditPanel() {
@@ -445,6 +485,20 @@ public class EditScenarScreen implements Screen {
             Label selectedOpponentNameLabel = new Label("Name : ", SkinUtil.getLabelSkin(80, 25));
             this.selectedOpponentEditPanel.add(selectedOpponentNameLabel).colspan(1).padTop(20);
             TextField selectedOpponentNameTextField = new TextField(this.editScenarService.getSelectedOpponent().getName(), SkinUtil.getTextFieldSkin(150, 30));
+
+            selectedOpponentNameTextField.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    // 1. Récupérer la valeur brute
+                    String cleanedValue = TextUtil.getCleanedText(selectedOpponentNameTextField.getText(), 20);
+                    editScenarService.getSelectedOpponent().setName(cleanedValue);
+                    selectedOpponentNameTextField.setText(cleanedValue);
+
+                    // 6. (Optionnel) Mettre à jour l'affichage si nécessaire
+                    //scenarNameField.setText("Scenar Name : " + cleanedValue);
+                }
+            });
+
             this.selectedOpponentEditPanel.add(selectedOpponentNameTextField).colspan(1).padTop(20).row();
 
             Label selectedOpponentSideLabel = new Label("Side : " + this.editScenarService.getSelectedOpponent().getSide().getName(), SkinUtil.getLabelSkin(80, 25));
