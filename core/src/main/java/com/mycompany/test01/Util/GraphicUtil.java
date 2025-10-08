@@ -593,7 +593,8 @@ public class GraphicUtil {
         return groupNode;
     }
 
-    // TODO : déplacer dans UnitUtil ?
+    // déplacer dans UnitUtil ?
+    /*
     public static void printGroup(UnitGroup group) {
 
         // Parcourir les unités du groupe
@@ -605,9 +606,10 @@ public class GraphicUtil {
             } else if (element instanceof Unit) {
 
             }
-            //System.out.println("type : " + element.getType() + " / Name : " + element.getName());
+            System.out.println("type : " + element.getType() + " / Name : " + element.getName());
         }
     }
+    */
 
     // TODO : déplacer dans UnitUtil ?
     public static Texture getCounterTextureFromUnit(ElementInterface unit) {

@@ -22,20 +22,26 @@ import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Scenario.Opponent;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.ColorStyleEnum;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.ZoomLevelEnum;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
 import com.mycompany.test01.Interface.observer.ToastObserver;
+import com.mycompany.test01.Interface.observer.UnitGroupObserver;
+import com.mycompany.test01.Interface.unit.ElementInterface;
 import com.mycompany.test01.Library.HexPathfinderCalculator;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.EditScenarLoadMapObservable;
 import com.mycompany.test01.Observable.ToastObservable;
+import com.mycompany.test01.Observable.UnitRootGroupObservable;
+import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 import com.mycompany.test01.Util.TextUtil;
+import com.mycompany.test01.Util.UnitUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +53,13 @@ public class EditScenarScreen implements Screen {
     final SpriteBatch batch;
     private Pixmap drawingMapPixmap;
     private Texture drawingTexture = null;
+
     private final ToastObservable toastObservable;
     private final EditScenarLoadMapObservable editScenarLoadMapObservable;
+    private final UnitRootGroupObservable unitRootGroupObservable;
 
     private final ScenarFileService scenarFileService;
+    private final ArmyFileService armyFileService;
 
     private final EditScenarService editScenarService;
     private final InputMultiplexer inputMultiplexer; // Nouveau champ
@@ -69,6 +78,8 @@ public class EditScenarScreen implements Screen {
 
     private ScrollPane rightScrollPane;
 
+    private Image landArmyGroupIcon = null;
+
     private boolean isScenarPresent = false;
 
     private Hexagon pathStart, pathEnd;
@@ -84,9 +95,11 @@ public class EditScenarScreen implements Screen {
         this.font = new BitmapFont();
         this.batch = new SpriteBatch();
         this.scenarFileService = ScenarFileService.getInstance();
+        this.armyFileService = ArmyFileService.getInstance();
         this.editScenarService = EditScenarService.getInstance();
         this.toastObservable = ToastObservable.getInstance();
         this.editScenarLoadMapObservable = EditScenarLoadMapObservable.getInstance();
+        this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
         this.subscribeToObservables();
 
         this.screenInputAdapter = new EditScenarScreen.EditScenarScreenInputAdapter(this);
@@ -474,6 +487,7 @@ public class EditScenarScreen implements Screen {
     }
 
     private void rebuildSelectedOpponentEditPanel() {
+        EditScenarScreen that = this;
         if (this.selectedOpponentEditPanel != null) {
             this.selectedOpponentEditPanel.clear();
         } else {
@@ -506,7 +520,53 @@ public class EditScenarScreen implements Screen {
 
             Label selectedOpponentCountryLabel = new Label("Country : " + this.editScenarService.getSelectedOpponent().getCountry().getName(), SkinUtil.getLabelSkin(80, 25));
             this.selectedOpponentEditPanel.add(selectedOpponentCountryLabel).colspan(2).align(Align.left).row();
+
+            // TODO ajouter bouton pour charger une armée
+            // TOdo : verifier le que le pays soit le même que celui de selectedOpponent
+
+            ButtonWrapper buttonLoadArmyGroupWrapper = new ButtonWrapper("Load Army", 0, 0, 100, 30);
+
+            buttonLoadArmyGroupWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
+
+            buttonLoadArmyGroupWrapper.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    //System.out.println("click load all");
+                    //if (selectedUnit instanceof )
+                    that.loadRootGroupFromFile();
+                }
+            });
+
+            this.selectedOpponentEditPanel.add(buttonLoadArmyGroupWrapper.getButton()).padTop(20).align(Align.topLeft);
+
+            // TODO : ajouter l'icone du landArmyGroup de l'opponent
+            this.landArmyGroupIcon = new Image(this.getTextureFromOpponent(this.editScenarService.getSelectedOpponent()));
+            this.landArmyGroupIcon.setWidth(80);
+            this.landArmyGroupIcon.setHeight(80);
+            this.selectedOpponentEditPanel.add(this.landArmyGroupIcon).width(80).height(80).padTop(20).align(Align.topRight).row();
         }
+    }
+
+    private void loadRootGroupFromFile() {
+        System.out.println("Load Army Group");
+        //this.armyFileService.openLoadArmyRootFileChooser();
+        this.armyFileService.openLoadArmyRootFileChooser("EDIT_SCENAR_SCREEN");
+    }
+
+    private Texture getTextureFromOpponent(Opponent selectedOpponent) {
+        Texture toReturn = GraphicUtil.grassTexture;
+        if(this.editScenarService.getSelectedOpponent().getCountry() != CountryEnum.NO_COUNTRY) {
+            try {
+                if(editScenarService.getSelectedOpponent().getLandArmyGroup() != null) {
+                    toReturn = GraphicUtil.getCounterTextureFromUnit((ElementInterface) editScenarService.getSelectedOpponent().getLandArmyGroup());
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return toReturn;
     }
 
 /*
@@ -704,6 +764,28 @@ public class EditScenarScreen implements Screen {
                 }
             });
         }
+        if (this.unitRootGroupObservable != null) {
+            // Création d'un Observer<UnitGroup> anonyme
+            unitRootGroupObservable.subscribe(new UnitGroupObserver() {
+                @Override
+                public void update(UnitGroup newValue) {
+                    EditScenarScreen.this.updateRootFromObservable(newValue);
+                    // TODO : redessiner le composant de l'opponent
+                    that.rebuildSelectedOpponentEditPanel();
+                }
+            });
+        }
+    }
+
+    public void updateRootFromObservable(UnitGroup newValue) {
+        this.armyFileService.setRootLoaded(newValue); // TODO : ne sert à rien ??
+        this.editScenarService.getSelectedOpponent().setLandArmyGroup(newValue);
+        //UnitUtil.printGroup(newValue);
+
+        // TODO : tester si pays ok
+            // si oui : affecter
+            // sinon ?? -> toast warning ??
+
     }
 
     public void displayToastFromObservable(Toast toast){

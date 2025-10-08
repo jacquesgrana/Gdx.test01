@@ -3,6 +3,8 @@ package com.mycompany.test01.Entity.Scenario;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Entity.Airplane.Abstract.AirplaneSquadronGroup;
 import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.Entity.Unit.Group.ArmyGroup;
 import com.mycompany.test01.Entity.Unit.Group.FrontGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.OpponentSideEnum;
@@ -12,7 +14,7 @@ public class Opponent {
     private String name = "";
     private OpponentSideEnum side = OpponentSideEnum.NO_SIDE;
     private CountryEnum country = CountryEnum.NO_COUNTRY;
-    private FrontGroup landArmyGroup = null;
+    private UnitGroup landArmyGroup = null;
     private AirplaneSquadronGroup airArmyGroup = null;
     private Hexagon supplyingSource = null;
     private OrderedSet<ReinfElement> reinfProgram = new OrderedSet<>();
@@ -32,7 +34,7 @@ public class Opponent {
         String name,
         OpponentSideEnum side,
         CountryEnum country,
-        FrontGroup landArmyGroup,
+        UnitGroup landArmyGroup,
         AirplaneSquadronGroup airArmyGroup,
         Hexagon supplyingSource,
         OrderedSet<ReinfElement> reinfProgram,
@@ -94,11 +96,11 @@ public class Opponent {
         this.country = country;
     }
 
-    public FrontGroup getLandArmyGroup() {
+    public UnitGroup getLandArmyGroup() {
         return landArmyGroup;
     }
 
-    public void setLandArmyGroup(FrontGroup landArmyGroup) {
+    public void setLandArmyGroup(UnitGroup landArmyGroup) {
         this.landArmyGroup = landArmyGroup;
     }
 

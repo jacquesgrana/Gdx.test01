@@ -5,6 +5,7 @@ import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Interface.observer.Observable;
 import com.mycompany.test01.Interface.observer.Observer;
 import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Util.UnitUtil;
 
 public class UnitRootGroupObservable implements Observable<UnitGroup> {
 
@@ -39,7 +40,7 @@ public class UnitRootGroupObservable implements Observable<UnitGroup> {
     @Override
     public void notifyObservers() {
         //System.out.println("notify observable");
-        GraphicUtil.printGroup(this.observed);
+        //UnitUtil.printGroup(this.observed);
         //this.currentHealthData = newData;
         //System.out.println("observers size : " + observers.size);
         for (Observer<UnitGroup> observer : observers) {

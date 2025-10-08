@@ -1,6 +1,7 @@
 package com.mycompany.test01.Util;
 
 import com.badlogic.gdx.utils.OrderedSet;
+import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.CountryEnum;
@@ -577,5 +578,18 @@ public class UnitUtil {
             }
         });
         parent.setUnits(newUnits);
+    }
+
+    public static void printGroup(UnitGroup group) {
+
+        // Parcourir les unités du groupe
+        for (ElementInterface element : group.getUnits()) {
+            if (element instanceof UnitGroup) {
+                printGroup((UnitGroup) element);
+            } else if (element instanceof Unit) {
+
+            }
+            System.out.println("type : " + element.getType() + " / Name : " + element.getName());
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.mycompany.test01.FileChooserListener.DesktopArmyGroupFileChooserListe
 import com.mycompany.test01.FileChooserListener.DesktopArmyRootFileChooserListener;
 import com.mycompany.test01.Common.DesktopFileChooser;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.FileChooserListener.DesktopScenarArmyRootFileChooserListener;
 import com.mycompany.test01.Interface.common.FileChooserInterface;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;
@@ -45,10 +46,19 @@ public class ArmyFileService {
         return instance;
     }
 
-    public void openLoadArmyRootFileChooser() {
+    public void openLoadArmyRootFileChooser(String mode) {
         checkOrInitDirs();
-        DesktopArmyRootFileChooserListener fileChooserlistener = new DesktopArmyRootFileChooserListener();
-        fileChooser.openLoadFileChooser(fileChooserlistener, ARMY_FILE_PATH);
+        switch (mode) {
+            case "EDIT_ARMY_SCREEN":
+                DesktopArmyRootFileChooserListener ArmyFileChooserlistener = new DesktopArmyRootFileChooserListener();
+                fileChooser.openLoadFileChooser(ArmyFileChooserlistener, ARMY_FILE_PATH);
+                break;
+            case "EDIT_SCENAR_SCREEN":
+                DesktopScenarArmyRootFileChooserListener scenarFileChooserlistener = new DesktopScenarArmyRootFileChooserListener();
+                fileChooser.openLoadFileChooser(scenarFileChooserlistener, ARMY_FILE_PATH);
+
+                break;
+        }
     }
 
     public void openSaveArmyRootFileChooser() {
