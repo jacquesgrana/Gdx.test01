@@ -1,6 +1,7 @@
 package com.mycompany.test01.Entity.Map;
 
 import com.badlogic.gdx.utils.Array;
+import com.mycompany.test01.Enum.CountryEnum;
 
 public class MapData {
     private String name;
@@ -22,6 +23,13 @@ public class MapData {
         for (int i = 0; i < limitI; i++) {
             for (int j = 0; j < limitJ; j++) {
                 this.dataTab[i][j] = dataSource.get(i).get(j);
+                //System.out.println("owner : " + dataSource.get(i).get(j).getOwnerCountry());
+
+                // TODO : enlever qd nécessaire (assez de fichiers maps ok)
+                if(dataSource.get(i).get(j).getOwnerCountry() == null) {
+                    this.dataTab[i][j].setOwnerCountry(CountryEnum.NO_COUNTRY);
+                    //System.out.println("owner du if : " + dataSource.get(i).get(j).getOwnerCountry());
+                }
             }
         }
     }

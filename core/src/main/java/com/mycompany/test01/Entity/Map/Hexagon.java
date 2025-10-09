@@ -1,10 +1,7 @@
 package com.mycompany.test01.Entity.Map;
 
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
-import com.mycompany.test01.Enum.BridgeTypeEnum;
-import com.mycompany.test01.Enum.FortificationCategory;
-import com.mycompany.test01.Enum.HexagonCategory;
-import com.mycompany.test01.Enum.RiverCategory;
+import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Screen.EditScenarScreen;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Util.MapUtil;
@@ -21,6 +18,7 @@ public class Hexagon {
     private RiverCategory[] rivers;
     private BridgeEdges bridges;
     private Cliff[] cliffs;
+    private CountryEnum ownerCountry;
 
     //private EditScenarService editScenarService = EditScenarService.getInstance();
 
@@ -29,7 +27,7 @@ public class Hexagon {
         //editScenarService = EditScenarService.getInstance();
     }
 
-    public Hexagon(int x, int y, HexagonCategory category, FortificationCategory fortification) {
+    public Hexagon(int x, int y, HexagonCategory category, FortificationCategory fortification, CountryEnum ownerCountry) {
         this.x = x;
         this.y = y;
         this.category = category;
@@ -42,6 +40,7 @@ public class Hexagon {
         for(int i=0; i<6; i++) {
             this.cliffs[i] = new Cliff();
         }
+        this.ownerCountry = ownerCountry;
         //editScenarService = EditScenarService.getInstance();
     }
 
@@ -110,4 +109,11 @@ public class Hexagon {
         this.cliffs = cliffs;
     }
 
+    public CountryEnum getOwnerCountry() {
+        return ownerCountry;
+    }
+
+    public void setOwnerCountry(CountryEnum ownerCountry) {
+        this.ownerCountry = ownerCountry;
+    }
 }

@@ -38,10 +38,7 @@ import com.mycompany.test01.Observable.UnitRootGroupObservable;
 import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
-import com.mycompany.test01.Util.GraphicUtil;
-import com.mycompany.test01.Util.SkinUtil;
-import com.mycompany.test01.Util.TextUtil;
-import com.mycompany.test01.Util.UnitUtil;
+import com.mycompany.test01.Util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -548,13 +545,12 @@ public class EditScenarScreen implements Screen {
     }
 
     private void loadRootGroupFromFile() {
-        System.out.println("Load Army Group");
         //this.armyFileService.openLoadArmyRootFileChooser();
         this.armyFileService.openLoadArmyRootFileChooser("EDIT_SCENAR_SCREEN");
     }
 
     private Texture getTextureFromOpponent(Opponent selectedOpponent) {
-        Texture toReturn = GraphicUtil.grassTexture;
+        Texture toReturn = GraphicUtil.getEmptyTexture();
         if(this.editScenarService.getSelectedOpponent().getCountry() != CountryEnum.NO_COUNTRY) {
             try {
                 if(editScenarService.getSelectedOpponent().getLandArmyGroup() != null) {
@@ -562,7 +558,8 @@ public class EditScenarScreen implements Screen {
                 }
             }
             catch (Exception e) {
-                e.printStackTrace();
+                LogUtil.logError("Texture Error", e);
+                //e.printStackTrace();
             }
 
         }
@@ -778,11 +775,15 @@ public class EditScenarScreen implements Screen {
     }
 
     public void updateRootFromObservable(UnitGroup newValue) {
-        this.armyFileService.setRootLoaded(newValue); // TODO : ne sert à rien ??
-        this.editScenarService.getSelectedOpponent().setLandArmyGroup(newValue);
-        //UnitUtil.printGroup(newValue);
-
         // TODO : tester si pays ok
+        if(newValue.getCountry() == this.editScenarService.getSelectedOpponent().getCountry()) {
+            //this.armyFileService.setRootLoaded(newValue); // TODO : ne sert à rien ??
+            this.editScenarService.getSelectedOpponent().setLandArmyGroup(newValue);
+            //UnitUtil.printGroup(newValue);
+        }
+        else {
+            Toast.showToast(this.stage, "Bad country error !",ColorStyleEnum.WARNING , 4f);
+        }
             // si oui : affecter
             // sinon ?? -> toast warning ??
 

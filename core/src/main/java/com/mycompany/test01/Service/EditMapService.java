@@ -50,7 +50,7 @@ public class EditMapService {
         return instance;
     }
     // TODO : rendre limitI, limitJ, maxI, maxJ pairs !!!
-
+/*
     public void initRandomMapArray() {
         this.getMap().setHexesArray(new Array<Array<Hexagon>>(this.getMap().getLimitI()));
         for (int i = 0; i < this.getMap().getLimitI(); i++) {
@@ -62,11 +62,7 @@ public class EditMapService {
                 Hexagon hexagon = new Hexagon(i, j,
                     terrainCategory,
                     fortificationCategory);
-                /*
-                for (int k = 0; k < 6; k++) {
-                    hexagon.getRoads().getEdges()[k].setRailway(false);
-                }
-                */
+
 
                 // Créer un nouvel objet de type Hexagon
                 row.add(hexagon);
@@ -74,6 +70,7 @@ public class EditMapService {
             this.getMap().getHexesArray().add(row);
         }
     }
+    */
 
     public void resetMap() {
         this.getMap().setHexesArray(new Array<Array<Hexagon>>(this.getMap().getLimitI()));
@@ -84,7 +81,8 @@ public class EditMapService {
 
                 Hexagon hexagon = new Hexagon(i, j,
                     HexagonCategory.GRASS,
-                    FortificationCategory.NO_FORTIFICATION);
+                    FortificationCategory.NO_FORTIFICATION,
+                    CountryEnum.NO_COUNTRY);
                 // Créer un nouvel objet de type Hexagon
                 row.add(hexagon);
             }
