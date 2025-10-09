@@ -2,11 +2,17 @@ package com.mycompany.test01.Service;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.mycompany.test01.Common.DesktopFileChooser;
+import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.FileChooserListener.DesktopMapFileChooserListener;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.common.FileChooserInterface;
+import com.mycompany.test01.Util.LogUtil;
+
+import java.util.Arrays;
 
 public class MapFileService {
     private static MapFileService instance = null;
@@ -65,15 +71,32 @@ public class MapFileService {
             //System.out.println("jsonString : " + jsonString);
             try {
                 MapData data = json.fromJson(MapData.class, jsonString);
-                System.out.println("data : " + data);
+                // TODO ajouter set du ownerCountry ? Enlever qd assez de maps ok
+                data.setDataTab(this.getDataTabWithOwnerCountry(data));
+                //System.out.println("data : " + data);
                 return data;
             }
             catch (Exception e) {
-                System.out.println(e.fillInStackTrace());
+                //System.out.println(e.fillInStackTrace());
+                LogUtil.logError("Json deserialize error", e);
             }
 
             return null;
         }
         return null;
+    }
+
+    private Hexagon[][] getDataTabWithOwnerCountry(MapData data) {
+        Hexagon[][] dataTab = new Hexagon[data.getLimitI()][data.getLimitJ()];
+
+        for(int i=0; i<data.getLimitI(); i++) {
+            for (int j=0; j<data.getLimitJ(); j++) {
+                dataTab[i][j] = data.getDataTab()[i][j];
+                if(data.getDataTab()[i][j].getOwnerCountry() == null) {
+                    dataTab[i][j].setOwnerCountry(CountryEnum.NO_COUNTRY);
+                }
+            }
+        }
+        return dataTab;
     }
 }

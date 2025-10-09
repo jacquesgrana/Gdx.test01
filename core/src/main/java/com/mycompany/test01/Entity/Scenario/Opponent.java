@@ -21,7 +21,7 @@ public class Opponent {
     private OrderedSet<UnitReinfElement> unitReinProgram = new OrderedSet<>();
     private OrderedSet<SupplyElement> supplyProgram = new OrderedSet<>();
     private OrderedSet<Hexagon> ownedBorderHexes = new OrderedSet<>();
-    private OrderedSet<Hexagon> ownedHexes = new OrderedSet<>();
+    //private OrderedSet<Hexagon> ownedHexes = new OrderedSet<>();
     private SupplyElement initialRootSupplyStock = new SupplyElement();
     private float supplyRatio = 0f;
     private float reinfRatio = 0f;
@@ -42,7 +42,7 @@ public class Opponent {
         OrderedSet<SupplyElement> supplyProgram,
         // TODO : utiliser List?
         OrderedSet<Hexagon> ownedBorderHexes,
-        OrderedSet<Hexagon> ownedHexes,
+        //OrderedSet<Hexagon> ownedHexes,
         SupplyElement initialRootSupplyStock,
         float supplyRatio,
         float reinfRatio
@@ -58,7 +58,7 @@ public class Opponent {
         this.unitReinProgram = unitReinProgram;
         this.supplyProgram = supplyProgram;
         this.ownedBorderHexes = ownedBorderHexes;
-        this.ownedHexes = ownedHexes;
+        //this.ownedHexes = ownedHexes;
         this.initialRootSupplyStock = initialRootSupplyStock;
         this.supplyRatio = supplyRatio;
         this.reinfRatio = reinfRatio;
@@ -152,6 +152,7 @@ public class Opponent {
         this.ownedBorderHexes = ownedBorderHexes;
     }
 
+    /*
     public OrderedSet<Hexagon> getOwnedHexes() {
         return ownedHexes;
     }
@@ -159,6 +160,7 @@ public class Opponent {
     public void setOwnedHexes(OrderedSet<Hexagon> ownedHexes) {
         this.ownedHexes = ownedHexes;
     }
+     */
 
     public SupplyElement getInitialRootSupplyStock() {
         return initialRootSupplyStock;

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Util.LogUtil;
 import com.mycompany.test01.Util.MapUtil;
 
 public class Map {
@@ -274,6 +275,33 @@ public class Map {
                             GraphicUtil.getTextureFromFortification(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification()));
                     }
                 }
+
+
+
+                // TODO ajouter dessin du land owner
+
+                // Récupérer le propriétaire de l'hexagone
+                CountryEnum ownerCountry = this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getOwnerCountry();
+
+                if(ownerCountry != null && ownerCountry != CountryEnum.NO_COUNTRY && this.displayFlags.isOwnerCountryVisible()) {
+
+                    Color ownerColor = GraphicUtil.getColorFromCountry(ownerCountry);
+
+                    // 2. Créer une texture 1x1 avec cette couleur
+                    Pixmap colorPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+                    colorPixmap.setColor(ownerColor);
+                    colorPixmap.fill();
+                    Texture colorTexture = new Texture(colorPixmap);
+
+                    //LogUtil.logInfo("hex a colorer en : " + ownerColor.toString());
+                    // 3. Dessiner l'hexagone avec cette texture (sans bordure pour éviter un double contour)
+                    drawHexagon(drawingPixmap, x, y, this.getHexagonSize(), colorTexture, Color.BLACK);
+
+                    // 4. Libérer les ressources
+                    colorTexture.dispose();
+                    //colorPixmap.dispose();
+                }
+
             }
         }
     }

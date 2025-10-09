@@ -250,6 +250,7 @@ public class GraphicUtil {
     public static Color toastInfoBackgroundColor = new Color(0.1176f, 0.3529f, 1f, 1f);
     public static Color toastWarningBackgroundColor = new Color(0.9412f, 0.5098f, 0.0784f, 1.0f);
 
+
     /**
      * Creates a Texture from an image file located in the assets' folder.
      *
@@ -1193,29 +1194,9 @@ public class GraphicUtil {
         //drawingMapPixmap.setColor(oldColor);
     }
 
-    /*
-            moo1.getActor().addListener(new ClickListener() {
-            public void clicked (InputEvent event, float x, float y) {
-                System.out.println(moo1.getActor().getText() + ", " + moo1.getValue() + ", " + moo1.getValue().length());
-                UnitNode node = new UnitNode("added " + moo2.getChildren().size);
-                node.add(new UnitNode("1"));
-                node.add(new UnitNode("2"));
-                node.setExpanded(MathUtils.randomBoolean());
-                moo2.insert(MathUtils.randomBoolean() ? moo2.getChildren().size : MathUtils.random(0, moo2.getChildren().size), node);
-            }
-        });
-        moo2.getActor().addListener(new ClickListener() {
-            public void clicked (InputEvent event, float x, float y) {
-                moo2.getChildren().removeValue(moo3, true);
-                moo2.getChildren().add(moo3);
-                moo2.updateChildren();
-            }
-        });
-        moo5.getActor().addListener(new ClickListener() {
-            public void clicked (InputEvent event, float x, float y) {
-                UnitNode node = tree.findNode("moo4");
-                if (node != null) node.remove();
-            }
-        });
-     */
+    public static Color getColorFromCountry(CountryEnum ownerCountry) {
+        Color toReturn = ownerCountry.getColor();
+        toReturn.a = 0.2f;
+        return toReturn;
+    }
 }

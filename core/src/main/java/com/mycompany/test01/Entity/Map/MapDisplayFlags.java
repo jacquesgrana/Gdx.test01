@@ -6,6 +6,7 @@ public class MapDisplayFlags {
     private boolean isFortificationVisible = true;
     private boolean isCliffVisible = true;
     private boolean isBridgeVisible = true;
+    private boolean isOwnerCountryVisible = true;
 
     public MapDisplayFlags() {
     }
@@ -15,13 +16,15 @@ public class MapDisplayFlags {
         boolean isRoadVisible,
         boolean isFortificationVisible,
         boolean isCliffVisible,
-        boolean isBridgeVisible
+        boolean isBridgeVisible,
+        boolean isOwnerCountryVisible
     ) {
         this.isRiverVisible = isRiverVisible;
         this.isRoadVisible = isRoadVisible;
         this.isFortificationVisible = isFortificationVisible;
         this.isCliffVisible = isCliffVisible;
         this.isBridgeVisible = isBridgeVisible;
+        this.isOwnerCountryVisible = isOwnerCountryVisible;
     }
 
     public boolean isRiverVisible() {
@@ -62,5 +65,13 @@ public class MapDisplayFlags {
 
     public void setBridgeVisible(boolean bridgeVisible) {
         isBridgeVisible = bridgeVisible;
+    }
+
+    public boolean isOwnerCountryVisible() {
+        return isOwnerCountryVisible;
+    }
+
+    public void setOwnerCountryVisible(boolean ownerCountryVisible) {
+        isOwnerCountryVisible = ownerCountryVisible;
     }
 }

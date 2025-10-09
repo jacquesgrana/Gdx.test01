@@ -25,6 +25,7 @@ import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.ColorStyleEnum;
 import com.mycompany.test01.Enum.CountryEnum;
+import com.mycompany.test01.Enum.EditScenarModeEnum;
 import com.mycompany.test01.Enum.ZoomLevelEnum;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
 import com.mycompany.test01.Interface.observer.ToastObserver;
@@ -50,6 +51,8 @@ public class EditScenarScreen implements Screen {
     final SpriteBatch batch;
     private Pixmap drawingMapPixmap;
     private Texture drawingTexture = null;
+
+    private EditScenarModeEnum editMode;
 
     private final ToastObservable toastObservable;
     private final EditScenarLoadMapObservable editScenarLoadMapObservable;
@@ -91,9 +94,13 @@ public class EditScenarScreen implements Screen {
         this.stage = new Stage(new ScreenViewport());
         this.font = new BitmapFont();
         this.batch = new SpriteBatch();
+
+        this.editMode = EditScenarModeEnum.NO_ACTION;
+
         this.scenarFileService = ScenarFileService.getInstance();
         this.armyFileService = ArmyFileService.getInstance();
         this.editScenarService = EditScenarService.getInstance();
+
         this.toastObservable = ToastObservable.getInstance();
         this.editScenarLoadMapObservable = EditScenarLoadMapObservable.getInstance();
         this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
@@ -518,6 +525,22 @@ public class EditScenarScreen implements Screen {
             Label selectedOpponentCountryLabel = new Label("Country : " + this.editScenarService.getSelectedOpponent().getCountry().getName(), SkinUtil.getLabelSkin(80, 25));
             this.selectedOpponentEditPanel.add(selectedOpponentCountryLabel).colspan(2).align(Align.left).row();
 
+            ButtonWrapper buttonSetOwnedHexesWrapper = new ButtonWrapper("Owned Hexes", 0, 0, 100, 30);
+
+            buttonSetOwnedHexesWrapper.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    //System.out.println("click load all");
+                    //if (selectedUnit instanceof )
+                    that.redrawMap();
+                    that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.OWNED_HEXES : EditScenarModeEnum.NO_ACTION;
+                }
+            });
+
+            buttonSetOwnedHexesWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
+
+            this.selectedOpponentEditPanel.add(buttonSetOwnedHexesWrapper.getButton()).padTop(20).align(Align.center).colspan(2).row();
+
             // TODO ajouter bouton pour charger une armée
             // TOdo : verifier le que le pays soit le même que celui de selectedOpponent
 
@@ -537,7 +560,7 @@ public class EditScenarScreen implements Screen {
             this.selectedOpponentEditPanel.add(buttonLoadArmyGroupWrapper.getButton()).padTop(20).align(Align.topLeft);
 
             // TODO : ajouter l'icone du landArmyGroup de l'opponent
-            this.landArmyGroupIcon = new Image(this.getTextureFromOpponent(this.editScenarService.getSelectedOpponent()));
+            this.landArmyGroupIcon = new Image(this.getLandArmyGroupTextureFromOpponent(this.editScenarService.getSelectedOpponent()));
             this.landArmyGroupIcon.setWidth(80);
             this.landArmyGroupIcon.setHeight(80);
             this.selectedOpponentEditPanel.add(this.landArmyGroupIcon).width(80).height(80).padTop(20).align(Align.topRight).row();
@@ -549,7 +572,7 @@ public class EditScenarScreen implements Screen {
         this.armyFileService.openLoadArmyRootFileChooser("EDIT_SCENAR_SCREEN");
     }
 
-    private Texture getTextureFromOpponent(Opponent selectedOpponent) {
+    private Texture getLandArmyGroupTextureFromOpponent(Opponent selectedOpponent) {
         Texture toReturn = GraphicUtil.getEmptyTexture();
         if(this.editScenarService.getSelectedOpponent().getCountry() != CountryEnum.NO_COUNTRY) {
             try {
@@ -625,17 +648,6 @@ public class EditScenarScreen implements Screen {
         drawingMapPixmap.setColor(GraphicUtil.backgroundColorMedium);
         drawingMapPixmap.fill();
 
-
-
-        // TODO dessin path
-        /*
-        if(!this.path.isEmpty()) {
-            for (Hexagon hex : path ) {
-                System.out.println("path hex : i : " + hex.getX() + " : j : " + hex.getY());
-                this.editScenarService.renderHex(hex.getX() - this.editScenarService.getStartI(), hex.getY() - this.editScenarService.getStartJ() , GraphicUtil.redTexture, this.drawingMapPixmap);
-            }
-        }
-        */
 
         // Redraw the map to the pixmap
         editScenarService.getScenario().getMap().drawMap(drawingMapPixmap);
@@ -880,7 +892,7 @@ public class EditScenarScreen implements Screen {
 
                         // TODO ajouter test pathfinder
 
-                        if(screen.isScenarPresent) {
+                        if(screen.editMode == EditScenarModeEnum.NO_ACTION) {
                             this.screen.editScenarService.getScenario().getMap().renderHex( i + this.screen.editScenarService.getScenario().getMap().getStartI(), j + this.screen.editScenarService.getScenario().getMap().getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
 
                             if (screen.pathStart == null) {
@@ -914,6 +926,17 @@ public class EditScenarScreen implements Screen {
                                 this.screen.path = new ArrayList<>();
                                 this.screen.redrawMap();
                             }
+                        }
+                        else if(screen.editMode == EditScenarModeEnum.OWNED_HEXES) {
+                            //this.screen.editScenarService.getScenario().getMap().renderHex( i + this.screen.editScenarService.getScenario().getMap().getStartI(), j + this.screen.editScenarService.getScenario().getMap().getStartJ(), GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
+
+                            Hexagon hex = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
+
+                            CountryEnum newCountry = this.screen.editScenarService.getSelectedOpponent().getCountry();
+
+                            hex.setOwnerCountry(hex.getOwnerCountry() != newCountry ? newCountry : CountryEnum.NO_COUNTRY);
+
+                            this.screen.redrawMap();
                         }
                         /*
                         this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
