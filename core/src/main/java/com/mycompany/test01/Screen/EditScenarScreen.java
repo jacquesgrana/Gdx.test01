@@ -958,19 +958,8 @@ public class EditScenarScreen implements Screen {
 
         @Override
         public boolean keyDown(int keycode) {
-            int delta = 0;
-            switch (this.screen.editScenarService.getScenario().getMap().getZoomLevel()) {
-                case CLOSE_VIEW:
-                case NORMAL_VIEW:
-                    delta = 2;
-                    break;
-                case DISTANT_VIEW:
-                    delta = 4;
-                    break;
-                case VERY_DISTANT_VIEW:
-                    delta = 8;
-                    break;
-            }
+            int delta = this.screen.editScenarService.getScenario().getMap().getZoomLevel().getDeltaKey();
+
             //System.out.println("keycode : " + keycode);
             switch (keycode) {
                 case Input.Keys.LEFT:

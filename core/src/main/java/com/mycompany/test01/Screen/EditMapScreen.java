@@ -1244,7 +1244,8 @@ public class EditMapScreen implements Screen {
 
         @Override
         public boolean keyDown(int keycode) {
-            int delta = 2;
+            int delta = this.screen.editMapService.getMap().getZoomLevel().getDeltaKey();
+
             //System.out.println("keycode : " + keycode);
             switch (keycode) {
                 case Input.Keys.LEFT:

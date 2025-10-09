@@ -285,7 +285,7 @@ public class Map {
 
                 if(ownerCountry != null && ownerCountry != CountryEnum.NO_COUNTRY && this.displayFlags.isOwnerCountryVisible()) {
 
-                    Color ownerColor = GraphicUtil.getColorFromCountry(ownerCountry);
+                    Color ownerColor = GraphicUtil.getTransparentColorFromCountry(ownerCountry, 0.25f);
 
                     // 2. Créer une texture 1x1 avec cette couleur
                     Pixmap colorPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -549,10 +549,10 @@ public class Map {
 
     public void setStartI(int startI) {
         this.startI = startI;
-        /*
+
         if(startI%2 != 0) startI--;
-        if(startI > this.getLimitI() - this.getMaxI() - 1) {
-            this.startI = this.getLimitI() - this.getMaxI() - 1;
+        if(startI > this.getLimitI() - this.getMaxI()) {
+            this.startI = this.getLimitI() - this.getMaxI();
             //this.setStartI(this.getLimitI() - this.getMaxI() - 1);
         }
         else if (startI < 0) {
@@ -562,16 +562,16 @@ public class Map {
         else {
             this.startI = startI;
             //this.setStartI(startI);
-        }*/
+        }
     }
 
     public void setStartJ(int startJ) {
         this.startJ = startJ;
-        /*
+
         if(startJ%2 != 0) startJ--;
-        if(startJ > this.getLimitJ() - this.getMaxJ() - 1) {
+        if(startJ > this.getLimitJ() - this.getMaxJ()) {
             //this.setStartJ(this.getLimitJ() - this.getMaxJ() - 1);
-            this.startJ = this.getLimitJ() - this.getMaxJ() - 1;
+            this.startJ = this.getLimitJ() - this.getMaxJ();
         }
         else if (startJ < 0) {
             //this.setStartJ(0);
@@ -580,7 +580,8 @@ public class Map {
         else {
             //this.setStartJ(startJ);
             this.startJ = startJ;
-        }*/
+            //this.startJ = startJ % 2 == 0 ? startJ : startJ-1;
+        }
     }
 
     public String getName() {

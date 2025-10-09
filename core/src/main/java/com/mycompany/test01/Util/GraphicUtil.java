@@ -1190,13 +1190,11 @@ public class GraphicUtil {
             }
         }
 
-        // Restaurer la couleur précédente
-        //drawingMapPixmap.setColor(oldColor);
     }
 
-    public static Color getColorFromCountry(CountryEnum ownerCountry) {
+    public static Color getTransparentColorFromCountry(CountryEnum ownerCountry, float alpha) {
         Color toReturn = ownerCountry.getColor();
-        toReturn.a = 0.2f;
+        toReturn.a = alpha;
         return toReturn;
     }
 }
