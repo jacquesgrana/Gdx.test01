@@ -116,4 +116,17 @@ public class Hexagon {
     public void setOwnerCountry(CountryEnum ownerCountry) {
         this.ownerCountry = ownerCountry;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hexagon hexagon = (Hexagon) o;
+        return x == hexagon.x && y == hexagon.y;  // Égalité basée sur les coordonnées
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * x + y;  // Hash basé sur les coordonnées
+    }
 }

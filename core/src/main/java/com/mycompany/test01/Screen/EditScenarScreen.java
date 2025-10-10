@@ -42,7 +42,9 @@ import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EditScenarScreen implements Screen {
     private final Main game;
@@ -932,9 +934,25 @@ public class EditScenarScreen implements Screen {
 
                             Hexagon hex = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
 
-                            CountryEnum newCountry = this.screen.editScenarService.getSelectedOpponent().getCountry();
+                            CountryEnum selectedCountry = this.screen.editScenarService.getSelectedOpponent().getCountry();
 
-                            hex.setOwnerCountry(hex.getOwnerCountry() != newCountry ? newCountry : CountryEnum.NO_COUNTRY);
+
+                            Set<Hexagon> brushContent = MapUtil.getNeighborhoodHexesExtended(
+                                i, j,
+                                this.screen.editScenarService.getScenario().getMap().getStartI(),
+                                this.screen.editScenarService.getScenario().getMap().getStartJ(),
+                                this.screen.editScenarService.getScenario().getMap().getLimitI(),
+                                this.screen.editScenarService.getScenario().getMap().getLimitJ(),
+                                this.screen.editScenarService.getScenario().getMap().getHexesArray(),
+                                this.screen.editScenarService.getMapBrushSize()
+                            );
+
+                            selectedCountry = hex.getOwnerCountry() != selectedCountry ? selectedCountry : CountryEnum.NO_COUNTRY;
+                            for (Hexagon h : brushContent) {
+                                h.setOwnerCountry(selectedCountry);
+                            }
+
+                            //hex.setOwnerCountry(hex.getOwnerCountry() != selectedCountry ? selectedCountry : CountryEnum.NO_COUNTRY);
 
                             this.screen.redrawMap();
                         }
@@ -1021,6 +1039,16 @@ public class EditScenarScreen implements Screen {
                         case VERY_DISTANT_VIEW:
                             break;
                     }
+                    break;
+                case 154 :
+                    this.screen.editScenarService.setMapBrushSize(
+                        this.screen.editScenarService.getMapBrushSize() > 9 ? 10 : this.screen.editScenarService.getMapBrushSize() + 1
+                    );
+                    break;
+                case 155:
+                    this.screen.editScenarService.setMapBrushSize(
+                        this.screen.editScenarService.getMapBrushSize() < 1 ? 0 : this.screen.editScenarService.getMapBrushSize() - 1
+                    );
                     break;
                 default:
                     return false;

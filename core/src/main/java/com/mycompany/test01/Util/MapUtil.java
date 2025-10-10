@@ -6,6 +6,9 @@ import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.RoadCategory;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class MapUtil {
 
     /**
@@ -144,49 +147,44 @@ public class MapUtil {
         return toReturn;
     }
 
-/*
-    public static void drawRoadSegment(
-        Pixmap drawingPixmap,
-        int i, int j,
-        RoadCategory roadCategory,
-        int k,
-        int hexagonSize,
-        int margin,
-        int gapX,
-        int gapY
-    ) {
-        int x = getXFromIJ(i, j, gapX, margin);
-        int y = getYFromJ(j, gapY, margin, hexagonSize);
-        Texture texture = GraphicUtil.getRoadTextureFromRoadCatAndK(roadCategory, k);
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
+    public static Set<Hexagon> getNeighborhoodHexesExtended(int i, int j, int startI, int startJ, int limitI, int limitJ, Array<Array<Hexagon>> hexesArray, int dist) {
+        Set<Hexagon> toReturn = new HashSet<>();
+        Set<Hexagon> currentLayer = new HashSet<>();
 
-        // TODO faire méthode !!?
-        if (texturePixmap != null) {
-            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
-            drawingPixmap.drawPixmap(
-                texturePixmap, // Source Pixmap
-                0, 0,            // Source X,Y (top-left of source)
-                texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                x - hexagonSize, y - hexagonSize,            // Dest X,Y (top-left of destination)
-                hexagonSize * 2, hexagonSize * 2    // Dest width & height (scaling)
-            );
-
-            texturePixmap.dispose();
+        // Ajouter l'hexagone de départ
+        if (i + startI >= 0 && i + startI < limitI && j + startJ >= 0 && j + startJ < limitJ) {
+            Hexagon startHex = hexesArray.get(i + startI).get(j + startJ);
+            if (startHex != null) {
+                currentLayer.add(startHex);
+                toReturn.add(startHex);
+            }
         }
-        texture.dispose();
-    }
 
-    public static int getXFromIJ(int i, int j, int gapX, int margin) {
-        int toReturn = (int) gapX * i + gapX / 2 + margin;
-        if( j % 2 == 0) {
-            toReturn += (int) gapX / 2;
+        // Pour chaque niveau de distance
+        for (int d = 0; d < dist; d++) {
+            Set<Hexagon> nextLayer = new HashSet<>();
+
+            // Pour chaque hexagone de la couche actuelle
+            for (Hexagon hex : currentLayer) {
+                int hexI = hex.getX() - startI;
+                int hexJ = hex.getY() - startJ;
+
+                // Récupérer ses voisins
+                Hexagon[] neighbours = getNeighborhoodHexes(hexI, hexJ, startI, startJ, limitI, limitJ, hexesArray);
+
+                // Ajouter les voisins non-null
+                for (Hexagon neighbour : neighbours) {
+                    if (neighbour != null && !toReturn.contains(neighbour)) {
+                        nextLayer.add(neighbour);
+                        toReturn.add(neighbour);
+                    }
+                }
+            }
+            currentLayer = nextLayer;
         }
         return toReturn;
     }
 
-    public static int getYFromJ (int j, int gapY, int margin, int hexagonSize) {
-        return gapY * j + hexagonSize + margin;
-    }*/
 
     public static boolean isInsideHexagon(int x, int y, int[] xPoints, int[] yPoints) {
         boolean inside = false;

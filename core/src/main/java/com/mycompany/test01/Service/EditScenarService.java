@@ -12,6 +12,8 @@ public class EditScenarService {
 
     private Opponent selectedOpponent = null;
 
+    private int mapBrushSize = 0;
+
     //private OpponentSideEnum[] sidesAll = OpponentSideEnum.values();
 
     public EditScenarService() {
@@ -42,6 +44,14 @@ public class EditScenarService {
 
     public void setSelectedOpponent(Opponent selectedOpponent) {
         this.selectedOpponent = selectedOpponent;
+    }
+
+    public int getMapBrushSize() {
+        return mapBrushSize;
+    }
+
+    public void setMapBrushSize(int mapBrushSize) {
+        this.mapBrushSize = mapBrushSize;
     }
 
     /*

@@ -251,7 +251,7 @@ public class EditMapService {
                 Texture textureTransp = null;
                 // dessine l'hex actif et ses voisins dans le mode Road
                 if(roadStartHex != null) {
-                    if(i + this.getMap().getStartI() == roadStartHex.getX() && j + this.getMap().getStartJ() == roadStartHex.getY()) textureTransp = GraphicUtil.getTextureFromColor(GraphicUtil.getTransparentColor(GraphicUtil.colorRed, 0.2f));
+                    if(i + this.getMap().getStartI() == roadStartHex.getX() && j + this.getMap().getStartJ() == roadStartHex.getY()) textureTransp = GraphicUtil.getTextureFromColor(GraphicUtil.getTransparentColor(GraphicUtil.colorRed, 0.25f));
                     boolean isInRoadStartNeighbours = false;
                     for(int k=0; k<6; k++) {
                         if (this.roadStartHexNeighbours[k] != null && i + this.getMap().getStartI() == roadStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == roadStartHexNeighbours[k].getY()
@@ -264,7 +264,7 @@ public class EditMapService {
 
                 // dessine l'hex actif et ses voisins dans le mode River
                 if(riverStartHex != null) {
-                    if(i + this.getMap().getStartI() == riverStartHex.getX() && j + this.getMap().getStartJ() == riverStartHex.getY()) textureTransp = GraphicUtil.getTextureFromColor(GraphicUtil.getTransparentColor(GraphicUtil.colorRed, 0.2f));
+                    if(i + this.getMap().getStartI() == riverStartHex.getX() && j + this.getMap().getStartJ() == riverStartHex.getY()) textureTransp = GraphicUtil.getTextureFromColor(GraphicUtil.getTransparentColor(GraphicUtil.colorRed, 0.25f));
                     boolean isInRiverStartNeighbours = false;
                     for(int k=0; k<6; k++) {
                         if (riverStartHexNeighbours[k] != null && i + this.getMap().getStartI() == riverStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == riverStartHexNeighbours[k].getY()
@@ -277,7 +277,7 @@ public class EditMapService {
 
                 // dessine l'hex actif et ses voisins dans le mode Cliff
                 if(cliffStartHex != null) {
-                    if(i + this.getMap().getStartI() == cliffStartHex.getX() && j + this.getMap().getStartJ() == cliffStartHex.getY()) textureTransp = GraphicUtil.getTextureFromColor(GraphicUtil.getTransparentColor(GraphicUtil.colorRed, 0.2f));
+                    if(i + this.getMap().getStartI() == cliffStartHex.getX() && j + this.getMap().getStartJ() == cliffStartHex.getY()) textureTransp = GraphicUtil.getTextureFromColor(GraphicUtil.getTransparentColor(GraphicUtil.colorRed, 0.25f));
                     boolean isInCliffStartNeighbours = false;
                     for(int k=0; k<6; k++) {
                         if (cliffStartHexNeighbours[k] != null && i + this.getMap().getStartI() == cliffStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == cliffStartHexNeighbours[k].getY()
@@ -287,9 +287,13 @@ public class EditMapService {
                     }
                     if(isInCliffStartNeighbours) textureTransp = GraphicUtil.getTextureFromColor(GraphicUtil.getTransparentColor(GraphicUtil.colorBlue, 0.2f));
                 }
+
                 //LogUtil.logInfo("Texture transp : " + textureTransp.toString());
+
+                // Dessin du terrain
                 this.getMap().drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), texture, Color.BLACK);
-                //renderHex(i + startI, j + startJ, texture, drawingPixmap);
+
+                // Dessin de la couleur d'édition transparente si besoin
                 if(textureTransp != null) {
                     this.getMap().drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), textureTransp, Color.BLACK);
                 }
