@@ -250,6 +250,13 @@ public class GraphicUtil {
     public static Color toastInfoBackgroundColor = new Color(0.1176f, 0.3529f, 1f, 1f);
     public static Color toastWarningBackgroundColor = new Color(0.9412f, 0.5098f, 0.0784f, 1.0f);
 
+    public static Color colorRed = new Color(1f, 0f, 0f, 1f);
+    public static Color colorOrange = new Color(1f, 0.5f, 0f, 1f);
+    public static Color colorYellow = new Color(1f, 1f, 0f, 1f);
+    public static Color colorGreen = new Color(0f, 1f, 0f, 1f);
+    public static Color colorBlue = new Color(0f, 0f, 1f, 1f);
+    public static Color colorPurple = new Color(0.5f, 0f, 1f, 1f);
+
 
     /**
      * Creates a Texture from an image file located in the assets' folder.
@@ -1194,7 +1201,21 @@ public class GraphicUtil {
 
     public static Color getTransparentColorFromCountry(CountryEnum ownerCountry, float alpha) {
         Color toReturn = ownerCountry.getColor();
+        alpha = alpha < 0 ? 0 : alpha > 1 ? 1 : alpha;
         toReturn.a = alpha;
         return toReturn;
+    }
+
+    public static Color getTransparentColor(Color color, float alpha) {
+        alpha = alpha < 0 ? 0 : alpha > 1 ? 1 : alpha;
+        color.a = alpha;
+        return color;
+    }
+
+    public static Texture getTextureFromColor(Color color) {
+        Pixmap colorPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        colorPixmap.setColor(color);
+        colorPixmap.fill();
+        return new Texture(colorPixmap);
     }
 }

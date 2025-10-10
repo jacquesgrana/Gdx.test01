@@ -288,12 +288,9 @@ public class Map {
                     Color ownerColor = GraphicUtil.getTransparentColorFromCountry(ownerCountry, 0.25f);
 
                     // 2. Créer une texture 1x1 avec cette couleur
-                    Pixmap colorPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-                    colorPixmap.setColor(ownerColor);
-                    colorPixmap.fill();
-                    Texture colorTexture = new Texture(colorPixmap);
+                    Texture colorTexture = GraphicUtil.getTextureFromColor(ownerColor);
 
-                    //LogUtil.logInfo("hex a colorer en : " + ownerColor.toString());
+                        //LogUtil.logInfo("hex a colorer en : " + ownerColor.toString());
                     // 3. Dessiner l'hexagone avec cette texture (sans bordure pour éviter un double contour)
                     drawHexagon(drawingPixmap, x, y, this.getHexagonSize(), colorTexture, Color.BLACK);
 
