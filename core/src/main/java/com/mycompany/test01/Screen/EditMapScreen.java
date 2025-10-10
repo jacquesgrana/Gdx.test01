@@ -25,6 +25,7 @@ import com.mycompany.test01.Observable.ToastObservable;
 import com.mycompany.test01.Service.MapFileService;
 import com.mycompany.test01.Service.EditMapService;
 import com.mycompany.test01.Util.GraphicUtil;
+import com.mycompany.test01.Util.LogUtil;
 import com.mycompany.test01.Util.MapUtil;
 import com.mycompany.test01.Util.SkinUtil;
 
@@ -1058,6 +1059,7 @@ public class EditMapScreen implements Screen {
                             //System.out.println("old roadDrawFlag : " + roadDrawFlag.toString());
 
                             if(this.screen.editMapService.getRoadDrawFlag() == DrawFlagCategory.EMPTY || this.screen.editMapService.getRoadDrawFlag() == DrawFlagCategory.SECOND_CLICK_DONE) {
+
                                 this.screen.editMapService.setRoadStartHex(this.screen.editMapService.getMap().getHexesArray().get(i + this.screen.editMapService.getMap().getStartI()).get(j + this.screen.editMapService.getMap().getStartJ()));
 
                                 this.screen.editMapService.setRoadStartHexNeighbours(MapUtil.getNeighborhoodHexes(
@@ -1073,6 +1075,8 @@ public class EditMapScreen implements Screen {
 
                                 //this.screen.roadDrawFlag = DrawFlagCategory.FIRST_CLICK_DONE;
                                 this.screen.editMapService.setRoadDrawFlag(DrawFlagCategory.FIRST_CLICK_DONE);
+
+
                             }
                             else if(this.screen.editMapService.getRoadDrawFlag() == DrawFlagCategory.FIRST_CLICK_DONE && this.screen.editMapService.isInNeighboursByMode(i, j, EditMapMode.ROAD)) {
                                 Hexagon startHex = this.screen.editMapService.getRoadStartHex();

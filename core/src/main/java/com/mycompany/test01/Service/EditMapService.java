@@ -253,7 +253,7 @@ public class EditMapService {
                     if(i + this.getMap().getStartI() == roadStartHex.getX() && j + this.getMap().getStartJ() == roadStartHex.getY()) texture = GraphicUtil.redTexture;
                     boolean isInRoadStartNeighbours = false;
                     for(int k=0; k<6; k++) {
-                        if (i + this.getMap().getStartI() == roadStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == roadStartHexNeighbours[k].getY()
+                        if (this.roadStartHexNeighbours[k] != null && i + this.getMap().getStartI() == roadStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == roadStartHexNeighbours[k].getY()
                         && this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             isInRoadStartNeighbours = true;
                         }
@@ -266,7 +266,7 @@ public class EditMapService {
                     if(i + this.getMap().getStartI() == riverStartHex.getX() && j + this.getMap().getStartJ() == riverStartHex.getY()) texture = GraphicUtil.redTexture;
                     boolean isInRiverStartNeighbours = false;
                     for(int k=0; k<6; k++) {
-                        if (i + this.getMap().getStartI() == riverStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == riverStartHexNeighbours[k].getY()
+                        if (riverStartHexNeighbours[k] != null && i + this.getMap().getStartI() == riverStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == riverStartHexNeighbours[k].getY()
                             && this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             isInRiverStartNeighbours = true;
                         }
@@ -279,7 +279,7 @@ public class EditMapService {
                     if(i + this.getMap().getStartI() == cliffStartHex.getX() && j + this.getMap().getStartJ() == cliffStartHex.getY()) texture = GraphicUtil.redTexture;
                     boolean isInCliffStartNeighbours = false;
                     for(int k=0; k<6; k++) {
-                        if (i + this.getMap().getStartI() == cliffStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == cliffStartHexNeighbours[k].getY()
+                        if (cliffStartHexNeighbours[k] != null && i + this.getMap().getStartI() == cliffStartHexNeighbours[k].getX() && j + this.getMap().getStartJ() == cliffStartHexNeighbours[k].getY()
                             && this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory() != HexagonCategory.WATER) {
                             isInCliffStartNeighbours = true;
                         }
