@@ -42,11 +42,14 @@ import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class EditScenarScreen implements Screen {
+
+    private final int MAX_BRUSH_SIZE = 10;
+    private final int MIN_BRUSH_SIZE = 0;
+
     private final Main game;
     private final Stage stage;
     private final BitmapFont font;
@@ -67,6 +70,8 @@ public class EditScenarScreen implements Screen {
     private final InputMultiplexer inputMultiplexer; // Nouveau champ
     private final EditScenarScreen.EditScenarScreenInputAdapter screenInputAdapter; // Pour la logique d'entrée de l'écran
 
+
+
     private final Table leftMapPanel, rightPanel, bottomRightButtonPanel;
     private Table rightPanelContainer;
     private Table  rightLoadMapPanel;
@@ -77,6 +82,10 @@ public class EditScenarScreen implements Screen {
     private Table opponentsEditPanel;
 
     private Table selectedOpponentEditPanel;
+
+    private Label scenarMapBrushSizeLabel;
+
+    private Slider scenarMapBrushSideSlider;
 
     private ScrollPane rightScrollPane;
 
@@ -542,6 +551,24 @@ public class EditScenarScreen implements Screen {
             buttonSetOwnedHexesWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
             this.selectedOpponentEditPanel.add(buttonSetOwnedHexesWrapper.getButton()).padTop(20).align(Align.center).colspan(2).row();
+
+            //this.scenarMapBrushSizeLabel this.scenarMapBrushSideSlider
+            this.scenarMapBrushSizeLabel = new Label("Brush Size : " + this.editScenarService.getMapBrushSize(), SkinUtil.getLabelSkin(100, 30));
+
+            this.scenarMapBrushSideSlider = new Slider(this.MIN_BRUSH_SIZE, this.MAX_BRUSH_SIZE, 1f, false, SkinUtil.getSliderSkin(200, 30, 20)); // min, max, step, vertical
+            scenarMapBrushSideSlider.setValue(this.editScenarService.getMapBrushSize());
+
+            scenarMapBrushSideSlider.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    scenarMapBrushSizeLabel.setText("Brush Size : " + (int) scenarMapBrushSideSlider.getValue());
+                    that.editScenarService.setMapBrushSize((int) scenarMapBrushSideSlider.getValue());
+                    // rebuildOpponentsSidesListPanel();
+                }
+            });
+
+            this.selectedOpponentEditPanel.add(scenarMapBrushSizeLabel).padTop(20);
+            this.selectedOpponentEditPanel.add(scenarMapBrushSideSlider).padTop(20).row();
 
             // TODO ajouter bouton pour charger une armée
             // TOdo : verifier le que le pays soit le même que celui de selectedOpponent
@@ -1042,13 +1069,15 @@ public class EditScenarScreen implements Screen {
                     break;
                 case 154 :
                     this.screen.editScenarService.setMapBrushSize(
-                        this.screen.editScenarService.getMapBrushSize() > 9 ? 10 : this.screen.editScenarService.getMapBrushSize() + 1
+                        this.screen.editScenarService.getMapBrushSize() > this.screen.MAX_BRUSH_SIZE - 1 ? this.screen.MAX_BRUSH_SIZE : this.screen.editScenarService.getMapBrushSize() + 1
                     );
+                    this.screen.rebuildSelectedOpponentEditPanel();
                     break;
                 case 155:
                     this.screen.editScenarService.setMapBrushSize(
-                        this.screen.editScenarService.getMapBrushSize() < 1 ? 0 : this.screen.editScenarService.getMapBrushSize() - 1
+                        this.screen.editScenarService.getMapBrushSize() < this.screen.MIN_BRUSH_SIZE + 1 ? this.screen.MIN_BRUSH_SIZE : this.screen.editScenarService.getMapBrushSize() - 1
                     );
+                    this.screen.rebuildSelectedOpponentEditPanel();
                     break;
                 default:
                     return false;
