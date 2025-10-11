@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
@@ -28,6 +29,8 @@ import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.LogUtil;
 import com.mycompany.test01.Util.MapUtil;
 import com.mycompany.test01.Util.SkinUtil;
+
+import java.util.Set;
 
 public class EditMapScreen implements Screen {
     final Main game;
@@ -955,6 +958,21 @@ public class EditMapScreen implements Screen {
         newMapPanel.setVisible(false);
     }
 
+    //int i, int j, int startI, int startJ, int limitI, int limitJ, Array<Array<Hexagon>> hexesArray, int dist
+    private void setBrushHexesTerrainCategory(
+        int iRel, int jRel,
+        int startI, int startJ,
+        int limitI, int limitJ,
+        Array<Array<Hexagon>> hexesArray,
+        int dist,
+        HexagonCategory terrainCategory
+    ) {
+        Set<Hexagon> brushContent = MapUtil.getNeighborhoodHexesExtended(iRel, jRel, startI, startJ, limitI, limitJ, hexesArray, dist);
+        for (Hexagon h : brushContent) {
+            h.setCategory(terrainCategory);
+        }
+    }
+
     private static class EditMapScreenInputAdapter extends InputAdapter {
         private final EditMapScreen screen; // Référence à votre écran pour accéder à ses membres
 
@@ -1057,9 +1075,18 @@ public class EditMapScreen implements Screen {
                     if(this.screen.editMapService.getMap().isClickInMap(i, j)) {
                         if(this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).getCategory() != this.screen.selectedTerrain) {
 
-                            
+                            this.screen.setBrushHexesTerrainCategory(
+                                i, j,
+                                this.screen.editMapService.getMap().getStartI(),
+                                this.screen.editMapService.getMap().getStartJ(),
+                                this.screen.editMapService.getMap().getLimitI(),
+                                this.screen.editMapService.getMap().getLimitJ(),
+                                this.screen.editMapService.getMap().getHexesArray(),
+                                this.screen.editMapService.getMapBrushSize(),
+                                this.screen.selectedTerrain);
 
-                            this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).setCategory(this.screen.selectedTerrain);
+
+                            //this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).setCategory(this.screen.selectedTerrain);
                         }
                         this.screen.redrawMap();
                     }

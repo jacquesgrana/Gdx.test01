@@ -969,7 +969,7 @@ public class EditScenarScreen implements Screen {
 
                             CountryEnum selectedCountry = this.screen.editScenarService.getSelectedOpponent().getCountry();
 
-
+                            // TODO: faire méthode ?
                             Set<Hexagon> brushContent = MapUtil.getNeighborhoodHexesExtended(
                                 i, j,
                                 this.screen.editScenarService.getScenario().getMap().getStartI(),
