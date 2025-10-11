@@ -13,6 +13,9 @@ import com.mycompany.test01.Util.LogUtil;
 public class EditMapService {
     private static EditMapService instance = null;
 
+    private final int MAX_BRUSH_SIZE = 10;
+    private final int MIN_BRUSH_SIZE = 0;
+    private int mapBrushSize = 0;
     private Map map;
 
     // TODO faire objet MiniMap
@@ -528,5 +531,21 @@ public class EditMapService {
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public int getMAX_BRUSH_SIZE() {
+        return MAX_BRUSH_SIZE;
+    }
+
+    public int getMIN_BRUSH_SIZE() {
+        return MIN_BRUSH_SIZE;
+    }
+
+    public int getMapBrushSize() {
+        return mapBrushSize;
+    }
+
+    public void setMapBrushSize(int mapBrushSize) {
+        this.mapBrushSize = mapBrushSize;
     }
 }

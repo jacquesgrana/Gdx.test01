@@ -40,11 +40,16 @@ public class EditMapScreen implements Screen {
     final MapFileService mapFileService;
     private boolean isMiniMapVisible = false;
     private EditMapMode mode;
+
     private final Label modeLabel;
     private Label selectedTerrainLabel;
     private Label selectedFortificationLabel;
     private Label selectedRoadLabel;
     private Label selectedRiverLabel;
+    private Label mapBrushSizeLabel;
+
+    private Slider mapBrushSideSlider;
+
     private final Table terrainButtonPanel;
     private final Table fortificationButtonPanel;
     private final Table roadButtonPanel;
@@ -320,9 +325,33 @@ public class EditMapScreen implements Screen {
         });
         stage.addActor(buttonModeMiscWrapper.getButton());
 
-        // TODO ajouter mapFilterCheckboxesPanel
         mapFiltersCheckboxesPanel = createMapFiltersCheckboxesPanel();
         this.stage.addActor(mapFiltersCheckboxesPanel);
+
+
+        // TODO faire nouveau Skin
+        this.mapBrushSizeLabel = new Label("Brush Size : " + editMapService.getMapBrushSize(), SkinUtil.getLabelSkin(100, 24));
+        this.mapBrushSizeLabel.setPosition(740f, 126f);
+        //this.mapBrushSizeLabel.getStyle().background =
+        this.stage.addActor(mapBrushSizeLabel);
+
+        this.mapBrushSideSlider = new Slider(this.editMapService.getMIN_BRUSH_SIZE(), this.editMapService.getMAX_BRUSH_SIZE(), 1f, false, SkinUtil.getSliderSkin(200, 24, 16)); // min, max, step, vertical
+        this.mapBrushSideSlider.setPosition(850f, 126f);
+        this.mapBrushSideSlider.setValue(this.editMapService.getMapBrushSize());
+
+        mapBrushSideSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                mapBrushSizeLabel.setText("Brush Size : " + (int) mapBrushSideSlider.getValue());
+                that.editMapService.setMapBrushSize((int) mapBrushSideSlider.getValue());
+                // rebuildOpponentsSidesListPanel();
+            }
+        });
+
+        this.stage.addActor(this.mapBrushSideSlider);
+
+        //mapBrushSideSlider
+
 
         terrainButtonPanel = createTerrainButtonPanel();
         fortificationButtonPanel = createFortificationButtonPanel();
@@ -442,7 +471,6 @@ public class EditMapScreen implements Screen {
     public void resume() {}
 
 
-    // TODO ajouter createMapFiltersCheckboxesPanel
     private Table createMapFiltersCheckboxesPanel() {
         Table panel = new Table();
         panel.defaults().pad(5);
@@ -1028,6 +1056,9 @@ public class EditMapScreen implements Screen {
                     //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
                     if(this.screen.editMapService.getMap().isClickInMap(i, j)) {
                         if(this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).getCategory() != this.screen.selectedTerrain) {
+
+                            
+
                             this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).setCategory(this.screen.selectedTerrain);
                         }
                         this.screen.redrawMap();
@@ -1333,6 +1364,23 @@ public class EditMapScreen implements Screen {
                         case VERY_DISTANT_VIEW:
                             break;
                     }
+                    break;
+                case 154 :
+                    this.screen.editMapService.setMapBrushSize(
+                        this.screen.editMapService.getMapBrushSize() > this.screen.editMapService.getMAX_BRUSH_SIZE() - 1 ? this.screen.editMapService.getMAX_BRUSH_SIZE() : this.screen.editMapService.getMapBrushSize() + 1
+                    );
+                    this.screen.mapBrushSizeLabel.setText("Brush Size : " +  this.screen.editMapService.getMapBrushSize());
+                    this.screen.mapBrushSideSlider.setValue(this.screen.editMapService.getMapBrushSize());
+                    //this.screen.rebuildSelectedOpponentEditPanel();
+                    break;
+                case 155:
+                    this.screen.editMapService.setMapBrushSize(
+                        this.screen.editMapService.getMapBrushSize() < this.screen.editMapService.getMIN_BRUSH_SIZE() + 1 ? this.screen.editMapService.getMIN_BRUSH_SIZE() : this.screen.editMapService.getMapBrushSize() - 1
+                    );
+                    ;this.screen.mapBrushSizeLabel.setText("Brush Size : " +  this.screen.editMapService.getMapBrushSize());
+                    this.screen.mapBrushSideSlider.setValue(this.screen.editMapService.getMapBrushSize());
+
+                    //this.screen.rebuildSelectedOpponentEditPanel();
                     break;
                 default:
                     return false;

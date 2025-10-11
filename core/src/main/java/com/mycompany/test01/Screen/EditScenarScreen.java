@@ -47,6 +47,7 @@ import java.util.Set;
 
 public class EditScenarScreen implements Screen {
 
+    // TODO déplacer dans le service
     private final int MAX_BRUSH_SIZE = 10;
     private final int MIN_BRUSH_SIZE = 0;
 
@@ -569,6 +570,11 @@ public class EditScenarScreen implements Screen {
 
             this.selectedOpponentEditPanel.add(scenarMapBrushSizeLabel).padTop(20);
             this.selectedOpponentEditPanel.add(scenarMapBrushSideSlider).padTop(20).row();
+
+
+
+
+
 
             // TODO ajouter bouton pour charger une armée
             // TOdo : verifier le que le pays soit le même que celui de selectedOpponent
