@@ -159,9 +159,87 @@ public class EditScenarScreen implements Screen {
         stage.addActor(buttonBackWrapper.getButton());
     }
 
+    private Table createMapFiltersCheckboxesPanel() {
+        Table panel = new Table();
+        panel.defaults().pad(5);
+        EditScenarScreen that = this;
+
+        CheckBox checkBoxRiver = new CheckBox(" River", SkinUtil.getCheckBoxSkin(25));
+        checkBoxRiver.setChecked(true);
+        checkBoxRiver.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //System.out.println("change river checkbox");
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setRiverVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isRiverVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxRiver);
+
+        CheckBox checkBoxRoad = new CheckBox(" Road", SkinUtil.getCheckBoxSkin(25));
+        checkBoxRoad.setChecked(true);
+        checkBoxRoad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setRoadVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isRoadVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxRoad);
+
+        CheckBox checkBoxFort = new CheckBox(" Fort.", SkinUtil.getCheckBoxSkin(25));
+        checkBoxFort.setChecked(true);
+        checkBoxFort.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setFortificationVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isFortificationVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxFort);
+
+        CheckBox checkBoxCliff = new CheckBox(" Cliff", SkinUtil.getCheckBoxSkin(25));
+        checkBoxCliff.setChecked(true);
+        checkBoxCliff.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setCliffVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isCliffVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxCliff);
+
+        CheckBox checkBoxBridge = new CheckBox(" Bridge", SkinUtil.getCheckBoxSkin(25));
+        checkBoxBridge.setChecked(true);
+        checkBoxBridge.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setBridgeVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isBridgeVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxBridge);
+
+        CheckBox checkBoxOwner = new CheckBox(" Owner", SkinUtil.getCheckBoxSkin(25));
+        checkBoxOwner.setChecked(true);
+        checkBoxOwner.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setOwnerCountryVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isOwnerCountryVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxOwner);
+
+        panel.setPosition(500f, 140f);
+        return  panel;
+    }
+
     private Table createLeftMapPanel() {
         Table panel = new Table();
         panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
+
+        //panel.addActor(createMapFiltersCheckboxesPanel());
 
         panel.setBounds(50f, 180f, Gdx.graphics.getWidth() - 500f, Gdx.graphics.getHeight() - 230f);
         return panel;
@@ -264,6 +342,9 @@ public class EditScenarScreen implements Screen {
             }
         });
         panel.addActor(buttonSaveScenarWrapper.getButton());
+
+
+        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(20f);
 
         return panel;
     }
