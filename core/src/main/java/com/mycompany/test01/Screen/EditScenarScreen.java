@@ -17,16 +17,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
-import com.mycompany.test01.Enum.ColorStyleEnum;
-import com.mycompany.test01.Enum.CountryEnum;
-import com.mycompany.test01.Enum.EditScenarModeEnum;
-import com.mycompany.test01.Enum.ZoomLevelEnum;
+import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
 import com.mycompany.test01.Interface.observer.ToastObserver;
 import com.mycompany.test01.Interface.observer.UnitGroupObserver;
@@ -888,6 +886,29 @@ public class EditScenarScreen implements Screen {
         this.stage.dispose();
     }
 
+    private void setBrushHexesOwnerCountry(
+        int iRel, int jRel,
+        int startI, int startJ,
+        int limitI, int limitJ,
+        Array<Array<Hexagon>> hexesArray,
+        int dist,
+        CountryEnum ownerCountry
+    ) {
+        Set<Hexagon> brushContent = MapUtil.getNeighborhoodHexesExtended(
+            iRel, jRel,
+            startI, startJ,
+            limitI, limitJ,
+            hexesArray,
+            dist
+        );
+        Hexagon hex = hexesArray.get(iRel + startI).get(jRel + startJ);
+
+        ownerCountry = hex.getOwnerCountry() != ownerCountry ? ownerCountry : CountryEnum.NO_COUNTRY;
+        for (Hexagon h : brushContent) {
+            h.setOwnerCountry(ownerCountry);
+        }
+    }
+
     private static class EditScenarScreenInputAdapter extends InputAdapter {
         private final EditScenarScreen screen; // Référence à votre écran pour accéder à ses membres
 
@@ -965,6 +986,7 @@ public class EditScenarScreen implements Screen {
                         else if(screen.editMode == EditScenarModeEnum.OWNED_HEXES) {
                             //this.screen.editScenarService.getScenario().getMap().renderHex( i + this.screen.editScenarService.getScenario().getMap().getStartI(), j + this.screen.editScenarService.getScenario().getMap().getStartJ(), GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
 
+                            /*
                             Hexagon hex = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
 
                             CountryEnum selectedCountry = this.screen.editScenarService.getSelectedOpponent().getCountry();
@@ -985,8 +1007,19 @@ public class EditScenarScreen implements Screen {
                                 h.setOwnerCountry(selectedCountry);
                             }
 
-                            //hex.setOwnerCountry(hex.getOwnerCountry() != selectedCountry ? selectedCountry : CountryEnum.NO_COUNTRY);
+                             */
 
+                            //hex.setOwnerCountry(hex.getOwnerCountry() != selectedCountry ? selectedCountry : CountryEnum.NO_COUNTRY);
+                            this.screen.setBrushHexesOwnerCountry(
+                                i, j,
+                                this.screen.editScenarService.getScenario().getMap().getStartI(),
+                                this.screen.editScenarService.getScenario().getMap().getStartJ(),
+                                this.screen.editScenarService.getScenario().getMap().getLimitI(),
+                                this.screen.editScenarService.getScenario().getMap().getLimitJ(),
+                                this.screen.editScenarService.getScenario().getMap().getHexesArray(),
+                                this.screen.editScenarService.getMapBrushSize(),
+                                this.screen.editScenarService.getSelectedOpponent().getCountry()
+                            );
                             this.screen.redrawMap();
                         }
                         /*
