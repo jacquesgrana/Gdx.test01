@@ -71,7 +71,7 @@ public class EditScenarScreen implements Screen {
 
 
 
-    private final Table leftMapPanel, rightPanel, bottomRightButtonPanel;
+    private final Table leftMapPanel, rightPanel, bottomLeftButtonPanel;
     private Table rightPanelContainer;
     private Table  rightLoadMapPanel;
     private Table rightEditScenarPanel;
@@ -83,6 +83,8 @@ public class EditScenarScreen implements Screen {
     private Table selectedOpponentEditPanel;
 
     private Label scenarMapBrushSizeLabel;
+
+    private Label editModeLabel;
 
     private Slider scenarMapBrushSideSlider;
 
@@ -133,8 +135,8 @@ public class EditScenarScreen implements Screen {
         this.rightScrollPane = new ScrollPane(this.rightPanel, SkinUtil.getScrollPaneSkin(380, Gdx.graphics.getHeight() - 100));
         this.rightScrollPane.setBounds(Gdx.graphics.getWidth() - 430f, 50f, 380f, Gdx.graphics.getHeight() - 100f);
         this.stage.addActor(this.rightScrollPane);
-        this.bottomRightButtonPanel = this.createBottomRightButtonPanel();
-        this.stage.addActor(this.bottomRightButtonPanel);
+        this.bottomLeftButtonPanel = this.createBottomLeftButtonPanel();
+        this.stage.addActor(this.bottomLeftButtonPanel);
 
         Label.LabelStyle labelStyle = new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
 
@@ -290,7 +292,7 @@ public class EditScenarScreen implements Screen {
     }
 
 
-    private Table createBottomRightButtonPanel() { // TODO : corriger nom !!! en ...Left...
+   private Table createBottomLeftButtonPanel() { // TODO : corriger nom !!! en ...Left...
 
         int padding = 20;
         int panelHeight = 60;
@@ -344,7 +346,11 @@ public class EditScenarScreen implements Screen {
         panel.addActor(buttonSaveScenarWrapper.getButton());
 
 
-        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(20f);
+        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(220f);
+
+        this.editModeLabel = new Label("Edit Mode : " + this.editMode.getName(), SkinUtil.getLabelSkin(200, 30));
+
+        panel.add(this.editModeLabel).padLeft(20);
 
         return panel;
     }
@@ -625,6 +631,7 @@ public class EditScenarScreen implements Screen {
                     //if (selectedUnit instanceof )
                     that.redrawMap();
                     that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.OWNED_HEXES : EditScenarModeEnum.NO_ACTION;
+                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
 
@@ -650,10 +657,41 @@ public class EditScenarScreen implements Screen {
             this.selectedOpponentEditPanel.add(scenarMapBrushSizeLabel).padTop(20);
             this.selectedOpponentEditPanel.add(scenarMapBrushSideSlider).padTop(20).row();
 
+            ButtonWrapper buttonEdgesHexes = new ButtonWrapper("Edges Hexes" , 0, 0, 100, 30);
 
+            buttonEdgesHexes.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
+            // TODO : ajouter change listener
+            buttonEdgesHexes.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    //System.out.println("click load all");
+                    //if (selectedUnit instanceof )
+                    that.redrawMap();
+                    that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.EDGES_HEXES : EditScenarModeEnum.NO_ACTION;
+                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                }
+            });
 
+            this.selectedOpponentEditPanel.add(buttonEdgesHexes.getButton()).padTop(20);
 
+            ButtonWrapper buttonSupplyHexes = new ButtonWrapper("Supply Hexes" , 0, 0, 100, 30);
+
+            buttonSupplyHexes.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
+
+            // TODO : ajouter change listener
+            buttonSupplyHexes.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    //System.out.println("click load all");
+                    //if (selectedUnit instanceof )
+                    that.redrawMap();
+                    that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.SUPPLY_HEXES : EditScenarModeEnum.NO_ACTION;
+                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                }
+            });
+
+            this.selectedOpponentEditPanel.add(buttonSupplyHexes.getButton()).padTop(20).row();
 
             // TODO ajouter bouton pour charger une armée
             // TOdo : verifier le que le pays soit le même que celui de selectedOpponent
