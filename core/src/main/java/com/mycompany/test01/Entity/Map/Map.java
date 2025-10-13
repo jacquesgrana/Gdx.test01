@@ -235,7 +235,7 @@ public class Map {
         return new MapData("test", this.getLimitI(), this.getLimitJ(), this.getHexesArray());
     }
 
-    public void drawMap(Pixmap drawingPixmap, Scenario scenario) {
+    public void drawMap(Pixmap drawingPixmap, Opponent[] opponents) {
         for(int i=0; i < this.getMaxI(); i++) {
             for (int j=0; j < this.getMaxJ(); j++) {
                 int x = getXFromIJ(i, j);
@@ -296,40 +296,73 @@ public class Map {
 
                         //LogUtil.logInfo("hex a colorer en : " + ownerColor.toString());
                     // 3. Dessiner l'hexagone avec cette texture (sans bordure pour éviter un double contour)
+
+                    // TODO utiliser renderHex ??
                     drawHexagon(drawingPixmap, x, y, this.getHexagonSize(), colorTexture, Color.BLACK);
 
                     // 4. Libérer les ressources
                     colorTexture.dispose();
                     //colorPixmap.dispose();
                 }
-                // boucle sur les opponents
-                boolean isBorderShown = i + this.startI == 0
-                    || i + startI == limitI - 1
-                    || j + startJ == 0
-                    || j + startJ == limitJ - 1;
+
+            }
+        }
+
+        // boucle sur les opponents
+        boolean isBorderShown = this.startI == 0
+            || startI + maxI == limitI
+            || startJ == 0
+            || startJ + maxJ == limitJ;
 
 
-                // ajouter test si i+startI == 0 ou i+startI == limitI - 1 etc pour j
-                if(scenario.getOpponents().length > 0 && isBorderShown) {
-                    //LogUtil.logInfo("border shown !");
-                    for (Opponent opponent : scenario.getOpponents()) {
-                        // TODO : ajouter dessin des borderHexes
-                        if(!opponent.getBorderHexesOwned().isEmpty()) {
-                            for (Hexagon hexagon : opponent.getBorderHexesOwned()) {
-                                int xx = getXFromIJ(hexagon.getX() - startI, hexagon.getY() - startJ);
-                                int yy = getYFromJ(hexagon.getY() - startJ);
-                                Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.50f);
-                                Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
-                                drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), colorTexture, Color.BLACK);
-                                colorTexture.dispose();
-                            }
+        // ajouter test si i+startI == 0 ou i+startI == limitI - 1 etc pour j
+        if(opponents.length > 0 && isBorderShown) {
+            //LogUtil.logInfo("border shown !");
+            for (Opponent opponent : opponents) {
+
+                // dessin des borderHexes
+                if(!opponent.getBorderHexesOwned().isEmpty()) {
+                    for (Hexagon hexagon : opponent.getBorderHexesOwned()) {
+
+                        if(!opponent.getReinfHexesSource().contains(hexagon) && !opponent.getSupplyHexesSource().contains(hexagon)) {
+                            //int xx = getXFromIJ(hexagon.getX() - startI, hexagon.getY() - startJ);
+                            //int yy = getYFromJ(hexagon.getY() - startJ);
+                            Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.40f);
+                            Texture opponentColorTexture = GraphicUtil.getTextureFromColor(opponentColor);
+                            //drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), opponentColorTexture, Color.BLACK);
+                            renderHex(hexagon.getX(), hexagon.getY(), opponentColorTexture, drawingPixmap);
+                            opponentColorTexture.dispose();
                         }
 
-                        // TODO : ajouter dessin des supplyHexes
-                        // TODO : ajouter dessin des reinfHexes
+
                     }
                 }
 
+                // dessin des reinfHexes
+                if(!opponent.getReinfHexesSource().isEmpty()) {
+                    for (Hexagon hexagon : opponent.getReinfHexesSource()) {
+                        if(!opponent.getSupplyHexesSource().contains(hexagon)) {
+                            //int xx = getXFromIJ(hexagon.getX() - startI, hexagon.getY() - startJ);
+                            //int yy = getYFromJ(hexagon.getY() - startJ);
+                            Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.60f);
+                            Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
+                            //drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), colorTexture, Color.BLACK);
+                            renderHex(hexagon.getX(), hexagon.getY(), colorTexture, drawingPixmap);
+                            colorTexture.dispose();
+                        }
+                    }
+                }
+
+
+                // dessin des supplyHexes
+                if(!opponent.getSupplyHexesSource().isEmpty()) {
+                    for (Hexagon hexagon : opponent.getSupplyHexesSource()) {
+                        Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.8f);
+                        Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
+                        renderHex(hexagon.getX(), hexagon.getY(), colorTexture, drawingPixmap);
+                        colorTexture.dispose();
+                    }
+                }
 
 
             }
