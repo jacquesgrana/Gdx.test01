@@ -5,10 +5,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.mycompany.test01.Entity.Scenario.Opponent;
+import com.mycompany.test01.Entity.Scenario.Scenario;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.LogUtil;
 import com.mycompany.test01.Util.MapUtil;
+
+import java.util.Set;
 
 public class Map {
     private String name = "Default map name";
@@ -231,7 +235,7 @@ public class Map {
         return new MapData("test", this.getLimitI(), this.getLimitJ(), this.getHexesArray());
     }
 
-    public void drawMap(Pixmap drawingPixmap) {
+    public void drawMap(Pixmap drawingPixmap, Scenario scenario) {
         for(int i=0; i < this.getMaxI(); i++) {
             for (int j=0; j < this.getMaxJ(); j++) {
                 int x = getXFromIJ(i, j);
@@ -298,6 +302,35 @@ public class Map {
                     colorTexture.dispose();
                     //colorPixmap.dispose();
                 }
+                // boucle sur les opponents
+                boolean isBorderShown = i + this.startI == 0
+                    || i + startI == limitI - 1
+                    || j + startJ == 0
+                    || j + startJ == limitJ - 1;
+
+
+                // ajouter test si i+startI == 0 ou i+startI == limitI - 1 etc pour j
+                if(scenario.getOpponents().length > 0 && isBorderShown) {
+                    //LogUtil.logInfo("border shown !");
+                    for (Opponent opponent : scenario.getOpponents()) {
+                        // TODO : ajouter dessin des borderHexes
+                        if(!opponent.getBorderHexesOwned().isEmpty()) {
+                            for (Hexagon hexagon : opponent.getBorderHexesOwned()) {
+                                int xx = getXFromIJ(hexagon.getX() - startI, hexagon.getY() - startJ);
+                                int yy = getYFromJ(hexagon.getY() - startJ);
+                                Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.50f);
+                                Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
+                                drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), colorTexture, Color.BLACK);
+                                colorTexture.dispose();
+                            }
+                        }
+
+                        // TODO : ajouter dessin des supplyHexes
+                        // TODO : ajouter dessin des reinfHexes
+                    }
+                }
+
+
 
             }
         }

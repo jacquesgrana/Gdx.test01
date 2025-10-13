@@ -9,6 +9,9 @@ import com.mycompany.test01.Entity.Unit.Group.FrontGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Opponent {
     private int id = 0;
     private String name = "";
@@ -16,11 +19,12 @@ public class Opponent {
     private CountryEnum country = CountryEnum.NO_COUNTRY;
     private UnitGroup landArmyGroup = null;
     private AirplaneSquadronGroup airArmyGroup = null;
-    private Hexagon supplyingSource = null;
+    private Set<Hexagon> supplyHexesSource = new HashSet<>();
+    private Set<Hexagon> reinfHexesSource = new HashSet<>();
     private OrderedSet<ReinfElement> reinfProgram = new OrderedSet<>();
     private OrderedSet<UnitReinfElement> unitReinProgram = new OrderedSet<>();
     private OrderedSet<SupplyElement> supplyProgram = new OrderedSet<>();
-    private OrderedSet<Hexagon> ownedBorderHexes = new OrderedSet<>();
+    private Set<Hexagon> borderHexesOwned = new HashSet<>();
     //private OrderedSet<Hexagon> ownedHexes = new OrderedSet<>();
     private SupplyElement initialRootSupplyStock = new SupplyElement();
     private float supplyRatio = 0f;
@@ -36,12 +40,14 @@ public class Opponent {
         CountryEnum country,
         UnitGroup landArmyGroup,
         AirplaneSquadronGroup airArmyGroup,
-        Hexagon supplyingSource,
+        Set<Hexagon> supplyHexesSource,
+        Set<Hexagon> reinfHexesSource,
         OrderedSet<ReinfElement> reinfProgram,
         OrderedSet<UnitReinfElement> unitReinProgram,
         OrderedSet<SupplyElement> supplyProgram,
         // TODO : utiliser List?
-        OrderedSet<Hexagon> ownedBorderHexes,
+        //OrderedSet<Hexagon> ownedBorderHexes,
+        Set<Hexagon> borderHexesOwned,
         //OrderedSet<Hexagon> ownedHexes,
         SupplyElement initialRootSupplyStock,
         float supplyRatio,
@@ -53,11 +59,13 @@ public class Opponent {
         this.country = country;
         this.landArmyGroup = landArmyGroup;
         this.airArmyGroup = airArmyGroup;
-        this.supplyingSource = supplyingSource;
+        //this.supplyingSource = supplyingSource;
+        this.supplyHexesSource = supplyHexesSource;
+        this.reinfHexesSource = reinfHexesSource;
         this.reinfProgram = reinfProgram;
         this.unitReinProgram = unitReinProgram;
         this.supplyProgram = supplyProgram;
-        this.ownedBorderHexes = ownedBorderHexes;
+        this.borderHexesOwned = borderHexesOwned;
         //this.ownedHexes = ownedHexes;
         this.initialRootSupplyStock = initialRootSupplyStock;
         this.supplyRatio = supplyRatio;
@@ -112,12 +120,20 @@ public class Opponent {
         this.airArmyGroup = airArmyGroup;
     }
 
-    public Hexagon getSupplyingSource() {
-        return supplyingSource;
+    public Set<Hexagon> getSupplyHexesSource() {
+        return supplyHexesSource;
     }
 
-    public void setSupplyingSource(Hexagon supplyingSource) {
-        this.supplyingSource = supplyingSource;
+    public void setSupplyHexesSource(Set<Hexagon> supplyHexesSource) {
+        this.supplyHexesSource = supplyHexesSource;
+    }
+
+    public Set<Hexagon> getReinfHexesSource() {
+        return reinfHexesSource;
+    }
+
+    public void setReinfHexesSource(Set<Hexagon> reinfHexesSource) {
+        this.reinfHexesSource = reinfHexesSource;
     }
 
     public OrderedSet<ReinfElement> getReinfProgram() {
@@ -144,15 +160,15 @@ public class Opponent {
         this.supplyProgram = supplyProgram;
     }
 
-    public OrderedSet<Hexagon> getOwnedBorderHexes() {
-        return ownedBorderHexes;
+    public Set<Hexagon> getBorderHexesOwned() {
+        return borderHexesOwned;
     }
 
-    public void setOwnedBorderHexes(OrderedSet<Hexagon> ownedBorderHexes) {
-        this.ownedBorderHexes = ownedBorderHexes;
+    public void setBorderHexesOwned(Set<Hexagon> borderHexesOwned) {
+        this.borderHexesOwned = borderHexesOwned;
     }
 
-    /*
+/*
     public OrderedSet<Hexagon> getOwnedHexes() {
         return ownedHexes;
     }

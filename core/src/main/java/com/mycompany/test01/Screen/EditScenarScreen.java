@@ -346,11 +346,11 @@ public class EditScenarScreen implements Screen {
         panel.addActor(buttonSaveScenarWrapper.getButton());
 
 
-        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(220f);
+        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(120f).colspan(4).left();
 
         this.editModeLabel = new Label("Edit Mode : " + this.editMode.getName(), SkinUtil.getLabelSkin(200, 30));
 
-        panel.add(this.editModeLabel).padLeft(20);
+        panel.add(this.editModeLabel).padLeft(140f).colspan(2).left();
 
         return panel;
     }
@@ -657,7 +657,9 @@ public class EditScenarScreen implements Screen {
             this.selectedOpponentEditPanel.add(scenarMapBrushSizeLabel).padTop(20);
             this.selectedOpponentEditPanel.add(scenarMapBrushSideSlider).padTop(20).row();
 
-            ButtonWrapper buttonEdgesHexes = new ButtonWrapper("Edges Hexes" , 0, 0, 100, 30);
+            Table buttonHexesContainer = new Table();
+
+            ButtonWrapper buttonEdgesHexes = new ButtonWrapper("Edges" , 0, 0, 80, 30);
 
             buttonEdgesHexes.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
@@ -673,9 +675,9 @@ public class EditScenarScreen implements Screen {
                 }
             });
 
-            this.selectedOpponentEditPanel.add(buttonEdgesHexes.getButton()).padTop(20);
+            buttonHexesContainer.add(buttonEdgesHexes.getButton());
 
-            ButtonWrapper buttonSupplyHexes = new ButtonWrapper("Supply Hexes" , 0, 0, 100, 30);
+            ButtonWrapper buttonSupplyHexes = new ButtonWrapper("Supply" , 0, 0, 80, 30);
 
             buttonSupplyHexes.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
@@ -691,7 +693,26 @@ public class EditScenarScreen implements Screen {
                 }
             });
 
-            this.selectedOpponentEditPanel.add(buttonSupplyHexes.getButton()).padTop(20).row();
+            buttonHexesContainer.add(buttonSupplyHexes.getButton()).padLeft(20).padRight(20);
+
+            ButtonWrapper buttonReinfHexes = new ButtonWrapper("Reinf" , 0, 0, 80, 30);
+
+            buttonReinfHexes.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
+
+            // TODO : ajouter change listener
+            buttonReinfHexes.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    //System.out.println("click load all");
+                    //if (selectedUnit instanceof )
+                    that.redrawMap();
+                    that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.REINF_HEXES : EditScenarModeEnum.NO_ACTION;
+                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                }
+            });
+            buttonHexesContainer.add(buttonReinfHexes.getButton());
+
+            this.selectedOpponentEditPanel.add(buttonHexesContainer).padTop(20).colspan(3).row();
 
             // TODO ajouter bouton pour charger une armée
             // TOdo : verifier le que le pays soit le même que celui de selectedOpponent
@@ -802,7 +823,7 @@ public class EditScenarScreen implements Screen {
 
 
         // Redraw the map to the pixmap
-        editScenarService.getScenario().getMap().drawMap(drawingMapPixmap);
+        editScenarService.getScenario().getMap().drawMap(drawingMapPixmap, this.editScenarService.getScenario());
 
         // Create a new texture from the pixmap
         drawingTexture = new Texture(drawingMapPixmap);
@@ -1065,6 +1086,9 @@ public class EditScenarScreen implements Screen {
                         //System.out.println("hex terrain : " + clickedHexagon.getCategory());
                         screen.stage.setKeyboardFocus(null);
 
+                        int iAbs = i + this.screen.editScenarService.getScenario().getMap().getStartI();
+                        int jAbs = j + this.screen.editScenarService.getScenario().getMap().getStartJ();
+                        Hexagon clickedHex = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
                         // TODO ajouter test pathfinder
 
                         if(screen.editMode == EditScenarModeEnum.NO_ACTION) {
@@ -1103,30 +1127,6 @@ public class EditScenarScreen implements Screen {
                             }
                         }
                         else if(screen.editMode == EditScenarModeEnum.OWNED_HEXES) {
-                            //this.screen.editScenarService.getScenario().getMap().renderHex( i + this.screen.editScenarService.getScenario().getMap().getStartI(), j + this.screen.editScenarService.getScenario().getMap().getStartJ(), GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
-
-                            /*
-                            Hexagon hex = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
-
-                            CountryEnum selectedCountry = this.screen.editScenarService.getSelectedOpponent().getCountry();
-
-                            // TODO: faire méthode ?
-                            Set<Hexagon> brushContent = MapUtil.getNeighborhoodHexesExtended(
-                                i, j,
-                                this.screen.editScenarService.getScenario().getMap().getStartI(),
-                                this.screen.editScenarService.getScenario().getMap().getStartJ(),
-                                this.screen.editScenarService.getScenario().getMap().getLimitI(),
-                                this.screen.editScenarService.getScenario().getMap().getLimitJ(),
-                                this.screen.editScenarService.getScenario().getMap().getHexesArray(),
-                                this.screen.editScenarService.getMapBrushSize()
-                            );
-
-                            selectedCountry = hex.getOwnerCountry() != selectedCountry ? selectedCountry : CountryEnum.NO_COUNTRY;
-                            for (Hexagon h : brushContent) {
-                                h.setOwnerCountry(selectedCountry);
-                            }
-
-                             */
 
                             //hex.setOwnerCountry(hex.getOwnerCountry() != selectedCountry ? selectedCountry : CountryEnum.NO_COUNTRY);
                             this.screen.setBrushHexesOwnerCountry(
@@ -1139,6 +1139,32 @@ public class EditScenarScreen implements Screen {
                                 this.screen.editScenarService.getMapBrushSize(),
                                 this.screen.editScenarService.getSelectedOpponent().getCountry()
                             );
+                            this.screen.redrawMap();
+                        }
+                        else if(screen.editMode == EditScenarModeEnum.EDGES_HEXES) {
+                            // si hex cliqué sur un bord alors ajout de l'hex au set des edgesHexes de l'opponent
+                            boolean isHexInEdges = iAbs == 0
+                                || jAbs == 0
+                                || iAbs == this.screen.editScenarService.getScenario().getMap().getLimitI() - 1
+                                || jAbs == this.screen.editScenarService.getScenario().getMap().getLimitJ() - 1;
+                            if(isHexInEdges) {
+                                //LogUtil.logInfo("Click in edges !!");
+                                if(!this.screen.editScenarService.getSelectedOpponent().getBorderHexesOwned().contains(clickedHex)) {
+                                    this.screen.editScenarService.getSelectedOpponent().getBorderHexesOwned().add(clickedHex);
+                                    //LogUtil.logInfo("getBorderHexesOwned size : " + this.screen.editScenarService.getSelectedOpponent().getBorderHexesOwned().size());
+                                }
+                                else {
+                                    this.screen.editScenarService.getSelectedOpponent().getBorderHexesOwned().remove(clickedHex);
+                                }
+                                this.screen.redrawMap();
+                            }
+
+                        }
+                        else if(screen.editMode == EditScenarModeEnum.SUPPLY_HEXES) {
+                            this.screen.redrawMap();
+                        }
+                        else if(screen.editMode == EditScenarModeEnum.REINF_HEXES
+                        ) {
                             this.screen.redrawMap();
                         }
                         /*

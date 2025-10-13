@@ -4,7 +4,8 @@ public enum EditScenarModeEnum {
     NO_ACTION ("No Action"),
     OWNED_HEXES ("Owned Hexes"),
     EDGES_HEXES ("Edges Hexes"),
-    SUPPLY_HEXES ("Supply Edges");
+    SUPPLY_HEXES ("Supply Edges"),
+    REINF_HEXES ("Reinf. Hexes");
 
     private final String name;
 
