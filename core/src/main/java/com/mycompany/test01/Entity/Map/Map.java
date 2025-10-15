@@ -243,8 +243,10 @@ public class Map {
 
                 Texture texture = GraphicUtil.getTextureFromTerrain(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCategory());
 
-                drawHexagon(drawingPixmap, x, y, this.getHexagonSize(), texture, Color.BLACK);
+                renderHex(i + startI, j + startJ, texture, drawingPixmap);
+                //drawHexagon(drawingPixmap, x, y, this.getHexagonSize(), texture, Color.BLACK);
                 //renderHex(i + startI, j + startJ, texture, drawingPixmap);
+                texture.dispose();
 
                 for (int k = 0; k < 6; k++) {
                     if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCliffs()[k].isCliff()
@@ -275,15 +277,12 @@ public class Map {
                         && this.displayFlags.isFortificationVisible()) {
                         drawFortification(
                             drawingPixmap,
-                            x, y, this.getHexagonSize() * 2, // ajouté !!
+                            i, j, this.getHexagonSize() * 2, // ajouté !!
                             GraphicUtil.getTextureFromFortification(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification()));
                     }
                 }
-
-
-
-                // TODO ajouter dessin du land owner
-
+                
+                // dessin du land owner
                 // Récupérer le propriétaire de l'hexagone
                 CountryEnum ownerCountry = this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getOwnerCountry();
 
@@ -298,8 +297,8 @@ public class Map {
                     // 3. Dessiner l'hexagone avec cette texture (sans bordure pour éviter un double contour)
 
                     // TODO utiliser renderHex ??
-                    drawHexagon(drawingPixmap, x, y, this.getHexagonSize(), colorTexture, Color.BLACK);
-
+                    //drawHexagon(drawingPixmap, x, y, this.getHexagonSize(), colorTexture, Color.BLACK);
+                    renderHex(i + startI, j + startJ, colorTexture, drawingPixmap);
                     // 4. Libérer les ressources
                     colorTexture.dispose();
                     //colorPixmap.dispose();
@@ -308,14 +307,12 @@ public class Map {
             }
         }
 
-        // boucle sur les opponents
         boolean isBorderShown = this.startI == 0
             || startI + maxI == limitI
             || startJ == 0
             || startJ + maxJ == limitJ;
 
-
-        // ajouter test si i+startI == 0 ou i+startI == limitI - 1 etc pour j
+        // boucle sur les opponents
         if(opponents.length > 0 && isBorderShown) {
             //LogUtil.logInfo("border shown !");
             for (Opponent opponent : opponents) {
@@ -419,11 +416,12 @@ public class Map {
         }
     }
 
-    public static void drawFortification(
+    public void drawFortification(
         Pixmap drawingPixmap,
-        int x, int y, int hexagonSize,
+        int i, int j, int hexagonSize,
         Texture fortifTexture) {
-
+        int x = getXFromIJ(i, j);
+        int y = getYFromJ(j);
         // Check for null texture to avoid NullPointerException
         if (fortifTexture == null) {
             System.err.println("Error: fortifTexture is null.  Cannot draw fortification.");

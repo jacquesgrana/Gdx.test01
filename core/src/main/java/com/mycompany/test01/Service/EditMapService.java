@@ -350,9 +350,9 @@ public class EditMapService {
                 // dessin des fortifications
                 if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification() != FortificationCategory.NO_FORTIFICATION
                 && this.getMap().getDisplayFlags().isFortificationVisible()) {
-                    Map.drawFortification(
+                    this.map.drawFortification(
                         drawingPixmap,
-                        x, y, this.getMap().getHexagonSize() * 2, // ajouté !!
+                        i, j, this.getMap().getHexagonSize() * 2, // ajouté !!
                         GraphicUtil.getTextureFromFortification(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification()));
                 }
 
