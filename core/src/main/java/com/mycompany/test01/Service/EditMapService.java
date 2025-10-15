@@ -245,8 +245,8 @@ public class EditMapService {
         // Dessiner les hexagones
         for(int i=0; i < this.getMap().getMaxI(); i++) {
             for (int j=0; j < this.getMap().getMaxJ(); j++) {
-                int x = this.getMap().getXFromIJ(i, j);
-                int y = this.getMap().getYFromJ(j);
+                //int x = this.getMap().getXFromIJ(i, j);
+                //int y = this.getMap().getYFromJ(j);
                 //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
                 // faire méthode dans enum ou GraphicUtil qui renvoie la texture en fonction du terrain
 
@@ -294,11 +294,12 @@ public class EditMapService {
                 //LogUtil.logInfo("Texture transp : " + textureTransp.toString());
 
                 // Dessin du terrain
-                this.getMap().drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), texture, Color.BLACK);
-
+                //this.getMap().drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), texture, Color.BLACK);
+                this.getMap().renderHex(i + this.getMap().getStartI(), j + this.getMap().getStartJ(), texture, drawingPixmap);
                 // Dessin de la couleur d'édition transparente si besoin
                 if(textureTransp != null) {
-                    this.getMap().drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), textureTransp, Color.BLACK);
+                    //this.getMap().drawHexagon(drawingPixmap, x, y, this.getMap().getHexagonSize(), textureTransp, Color.BLACK);
+                    this.getMap().renderHex(i + this.getMap().getStartI(), j + this.getMap().getStartJ(), textureTransp, drawingPixmap);
                 }
 
 
@@ -350,7 +351,7 @@ public class EditMapService {
                 // dessin des fortifications
                 if(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification() != FortificationCategory.NO_FORTIFICATION
                 && this.getMap().getDisplayFlags().isFortificationVisible()) {
-                    this.map.drawFortification(
+                    this.getMap().drawFortification(
                         drawingPixmap,
                         i, j, this.getMap().getHexagonSize() * 2, // ajouté !!
                         GraphicUtil.getTextureFromFortification(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification()));

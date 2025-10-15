@@ -281,7 +281,7 @@ public class Map {
                             GraphicUtil.getTextureFromFortification(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification()));
                     }
                 }
-                
+
                 // dessin du land owner
                 // Récupérer le propriétaire de l'hexagone
                 CountryEnum ownerCountry = this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getOwnerCountry();
@@ -457,7 +457,7 @@ public class Map {
      * @param texture      The texture to fill the hexagon with.  Must be non-null
      * @param borderColor  The color of the hexagon's border.
      */
-    public void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Texture texture, Color borderColor) {
+    private void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Texture texture, Color borderColor) {
         int[] xPoints = new int[6];
         int[] yPoints = new int[6];
 
@@ -502,10 +502,10 @@ public class Map {
         }
     }
 
-    public void renderHex(int hexI, int hexJ, Texture texture, Pixmap pixmap) {
+    public void renderHex(int hexIAbs, int hexJAbs, Texture texture, Pixmap pixmap) {
         // Calculer les coordonnées du centre de l'hexagone
-        int centerX = getXFromIJ(hexI - this.getStartI(), hexJ - this.getStartJ());
-        int centerY = getYFromJ(hexJ - this.getStartJ());
+        int centerX = getXFromIJ(hexIAbs - this.getStartI(), hexJAbs - this.getStartJ());
+        int centerY = getYFromJ(hexJAbs - this.getStartJ());
         // Dessiner l'hexagone avec la couleur spécifiée
         //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
         drawHexagon(pixmap, centerX, centerY, this.getHexagonSize(), texture, Color.BLACK);
