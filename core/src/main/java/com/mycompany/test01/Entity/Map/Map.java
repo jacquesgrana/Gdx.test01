@@ -447,7 +447,8 @@ public class Map {
         }
     }
 
-    /**
+
+    /*
      * Draws a textured hexagon onto the provided Pixmap.
      *
      * @param pixmap       The Pixmap to draw on.
@@ -457,6 +458,7 @@ public class Map {
      * @param texture      The texture to fill the hexagon with.  Must be non-null
      * @param borderColor  The color of the hexagon's border.
      */
+    /*
     private void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Texture texture, Color borderColor) {
         int[] xPoints = new int[6];
         int[] yPoints = new int[6];
@@ -500,7 +502,7 @@ public class Map {
             int j = (i + 1) % 6;
             pixmap.drawLine(xPoints[i], yPoints[i], xPoints[j], yPoints[j]);
         }
-    }
+    }*/
 
     public void renderHex(int hexIAbs, int hexJAbs, Texture texture, Pixmap pixmap) {
         // Calculer les coordonnées du centre de l'hexagone
@@ -508,7 +510,7 @@ public class Map {
         int centerY = getYFromJ(hexJAbs - this.getStartJ());
         // Dessiner l'hexagone avec la couleur spécifiée
         //Texture textureGrass = GraphicUtil.loadTexture("texture/texture-grass.png");
-        drawHexagon(pixmap, centerX, centerY, this.getHexagonSize(), texture, Color.BLACK);
+        MapUtil.drawHexagon(pixmap, centerX, centerY, this.getHexagonSize(), texture, Color.BLACK);
     }
 
     public void generateBridgesFromRiversAndRoads() {

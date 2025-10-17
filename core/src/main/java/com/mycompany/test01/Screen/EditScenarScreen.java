@@ -622,7 +622,7 @@ public class EditScenarScreen implements Screen {
             Label selectedOpponentCountryLabel = new Label("Country : " + this.editScenarService.getSelectedOpponent().getCountry().getName(), SkinUtil.getLabelSkin(80, 25));
             this.selectedOpponentEditPanel.add(selectedOpponentCountryLabel).colspan(2).align(Align.left).row();
 
-            ButtonWrapper buttonSetOwnedHexesWrapper = new ButtonWrapper("Owned Hexes", 0, 0, 100, 30);
+            ButtonWrapper buttonSetOwnedHexesWrapper = new ButtonWrapper("Owned Hexes", 0, 0, 120, 30);
 
             buttonSetOwnedHexesWrapper.getButton().addListener(new ChangeListener() {
                 @Override
@@ -630,14 +630,38 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
-                    that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.OWNED_HEXES : EditScenarModeEnum.NO_ACTION;
+
+                    // TODO enlever ternaire qd ok
+                    that.editMode = EditScenarModeEnum.OWNED_HEXES;
                     that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
 
             buttonSetOwnedHexesWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
-            this.selectedOpponentEditPanel.add(buttonSetOwnedHexesWrapper.getButton()).padTop(20).align(Align.center).colspan(2).row();
+            this.selectedOpponentEditPanel.add(buttonSetOwnedHexesWrapper.getButton()).padTop(20).align(Align.center);
+
+            // TODO nouveau bouton reset mode
+            ButtonWrapper buttonResetEditModeWrapper = new ButtonWrapper("Reset Mode", 0, 0, 120, 30);
+
+            buttonResetEditModeWrapper.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    //System.out.println("click load all");
+                    //if (selectedUnit instanceof )
+                    that.redrawMap();
+
+                    that.editMode = EditScenarModeEnum.NO_ACTION;
+                    // TODO faire méthode ?
+                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                }
+            });
+
+            buttonResetEditModeWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
+
+            this.selectedOpponentEditPanel.add(buttonResetEditModeWrapper.getButton()).padTop(20).align(Align.center).row();
+
+
 
             //this.scenarMapBrushSizeLabel this.scenarMapBrushSideSlider
             this.scenarMapBrushSizeLabel = new Label("Brush Size : " + this.editScenarService.getMapBrushSize(), SkinUtil.getLabelSkin(100, 30));
@@ -670,7 +694,7 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
-                    that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.EDGES_HEXES : EditScenarModeEnum.NO_ACTION;
+                    that.editMode = EditScenarModeEnum.EDGES_HEXES;
                     that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
@@ -688,7 +712,7 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
-                    that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.REINF_HEXES : EditScenarModeEnum.NO_ACTION;
+                    that.editMode = EditScenarModeEnum.REINF_HEXES;
                     that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
@@ -705,7 +729,7 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
-                    that.editMode = that.editMode == EditScenarModeEnum.NO_ACTION ? EditScenarModeEnum.SUPPLY_HEXES : EditScenarModeEnum.NO_ACTION;
+                    that.editMode = EditScenarModeEnum.SUPPLY_HEXES;
                     that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
@@ -714,10 +738,9 @@ public class EditScenarScreen implements Screen {
 
             this.selectedOpponentEditPanel.add(buttonHexesContainer).padTop(20).colspan(3).row();
 
-            // TODO ajouter bouton pour charger une armée
-            // TODO : verifier le que le pays soit le même que celui de selectedOpponent
+            Table landArmyButtonsContainer = new Table();
 
-            ButtonWrapper buttonLoadArmyGroupWrapper = new ButtonWrapper("Load Army", 0, 0, 100, 30);
+            ButtonWrapper buttonLoadArmyGroupWrapper = new ButtonWrapper("Load Army", 0, 0, 80, 30);
 
             buttonLoadArmyGroupWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
@@ -730,13 +753,27 @@ public class EditScenarScreen implements Screen {
                 }
             });
 
-            this.selectedOpponentEditPanel.add(buttonLoadArmyGroupWrapper.getButton()).padTop(20).align(Align.topLeft);
+            landArmyButtonsContainer.add(buttonLoadArmyGroupWrapper.getButton()).align(Align.top);
 
-            // TODO : ajouter l'icone du landArmyGroup de l'opponent
+            ButtonWrapper buttonDeployUnitsWrapper = new ButtonWrapper("Deploy", 0, 0, 80, 30);
+
+            buttonDeployUnitsWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY || this.editScenarService.getSelectedOpponent().getLandArmyGroup() == null);
+
+            buttonDeployUnitsWrapper.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    System.out.println("click deploy units");
+                }
+            });
+
+            landArmyButtonsContainer.add(buttonDeployUnitsWrapper.getButton()).padLeft(20).padRight(20).align(Align.top);
+
             this.landArmyGroupIcon = new Image(this.getLandArmyGroupTextureFromOpponent(this.editScenarService.getSelectedOpponent()));
             this.landArmyGroupIcon.setWidth(80);
             this.landArmyGroupIcon.setHeight(80);
-            this.selectedOpponentEditPanel.add(this.landArmyGroupIcon).width(80).height(80).padTop(20).align(Align.topRight).row();
+
+            landArmyButtonsContainer.add(this.landArmyGroupIcon).width(80).height(80).align(Align.top).row();
+            this.selectedOpponentEditPanel.add(landArmyButtonsContainer).padTop(20).colspan(3);
         }
     }
 

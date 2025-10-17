@@ -2,6 +2,7 @@ package com.mycompany.test01.Entity.Map;
 
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Enum.*;
+import com.mycompany.test01.Interface.unit.ElementInterface;
 import com.mycompany.test01.Screen.EditScenarScreen;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Util.MapUtil;
@@ -19,6 +20,7 @@ public class Hexagon {
     private BridgeEdges bridges;
     private Cliff[] cliffs;
     private CountryEnum ownerCountry;
+    private HexUnits units;
 
     //private EditScenarService editScenarService = EditScenarService.getInstance();
 
@@ -41,6 +43,7 @@ public class Hexagon {
             this.cliffs[i] = new Cliff();
         }
         this.ownerCountry = ownerCountry;
+        this.units = new HexUnits();
         //editScenarService = EditScenarService.getInstance();
     }
 
@@ -115,6 +118,14 @@ public class Hexagon {
 
     public void setOwnerCountry(CountryEnum ownerCountry) {
         this.ownerCountry = ownerCountry;
+    }
+
+    public HexUnits getUnits() {
+        return units;
+    }
+
+    public void setUnits(HexUnits units) {
+        this.units = units;
     }
 
     @Override

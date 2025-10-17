@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.mycompany.test01.Common.DesktopFileChooser;
+import com.mycompany.test01.Entity.Map.HexUnits;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.FileChooserListener.DesktopMapFileChooserListener;
@@ -73,6 +74,9 @@ public class MapFileService {
                 MapData data = json.fromJson(MapData.class, jsonString);
                 // TODO ajouter set du ownerCountry ? Enlever qd assez de maps ok
                 data.setDataTab(this.getDataTabWithOwnerCountry(data));
+                data.setDataTab(this.getDataTabWithUnits(data));
+
+                //getDataTabWithUnits
                 //System.out.println("data : " + data);
                 return data;
             }
@@ -94,6 +98,20 @@ public class MapFileService {
                 dataTab[i][j] = data.getDataTab()[i][j];
                 if(data.getDataTab()[i][j].getOwnerCountry() == null) {
                     dataTab[i][j].setOwnerCountry(CountryEnum.NO_COUNTRY);
+                }
+            }
+        }
+        return dataTab;
+    }
+
+    private Hexagon[][] getDataTabWithUnits(MapData data) {
+        Hexagon[][] dataTab = new Hexagon[data.getLimitI()][data.getLimitJ()];
+
+        for(int i=0; i<data.getLimitI(); i++) {
+            for (int j=0; j<data.getLimitJ(); j++) {
+                dataTab[i][j] = data.getDataTab()[i][j];
+                if(data.getDataTab()[i][j].getUnits() == null) {
+                    dataTab[i][j].setUnits(new HexUnits());
                 }
             }
         }
