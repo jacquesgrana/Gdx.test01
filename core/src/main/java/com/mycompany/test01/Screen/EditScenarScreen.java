@@ -23,8 +23,10 @@ import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Scenario.Opponent;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.*;
+import com.mycompany.test01.Factory.Unit.UnitRedCountryFactory;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
 import com.mycompany.test01.Interface.observer.ToastObserver;
 import com.mycompany.test01.Interface.observer.UnitGroupObserver;
@@ -38,6 +40,7 @@ import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
+import jdk.jpackage.internal.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -762,7 +765,12 @@ public class EditScenarScreen implements Screen {
             buttonDeployUnitsWrapper.getButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    System.out.println("click deploy units");
+                    //LogUtil.logInfo("click deploy units");
+                    that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
+                    UnitRedCountryFactory factory = new UnitRedCountryFactory();
+                    UnitElement unit = factory.createInfantryUnit(
+                        "Test Unit", "TEST", false, false, 0);
+                    that.editScenarService.setSelectedUnit(unit);
                 }
             });
 
@@ -1234,6 +1242,15 @@ public class EditScenarScreen implements Screen {
 
                             this.screen.redrawMap();
                         }
+                        else if(screen.editMode == EditScenarModeEnum.DEPLOY_UNITS) {
+                            if(screen.editScenarService.getSelectedUnit() != null) {
+                                //LogUtil.logInfo("selected unit not null");
+                                Hexagon hex = screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
+                                hex.getUnits().addUnitToUnits(screen.editScenarService.getSelectedUnit());
+                                this.screen.redrawMap();
+                            }
+                        }
+
                         /*
                         this.screen.editScenarService.renderHex( i + this.screen.editScenarService.getStartI(), j + this.screen.editScenarService.getStartJ(), GraphicUtil.redTexture, this.screen.drawingMapPixmap);
                          */

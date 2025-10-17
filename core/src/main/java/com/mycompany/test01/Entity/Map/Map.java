@@ -238,8 +238,8 @@ public class Map {
     public void drawMap(Pixmap drawingPixmap, Opponent[] opponents) {
         for(int i=0; i < this.getMaxI(); i++) {
             for (int j=0; j < this.getMaxJ(); j++) {
-                int x = getXFromIJ(i, j);
-                int y = getYFromJ(j);
+                //int x = getXFromIJ(i, j);
+                //int y = getYFromJ(j);
 
                 Texture texture = GraphicUtil.getTextureFromTerrain(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCategory());
 
@@ -280,6 +280,11 @@ public class Map {
                             i, j, this.getHexagonSize() * 2, // ajouté !!
                             GraphicUtil.getTextureFromFortification(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification()));
                     }
+                }
+
+                // dessin des unités
+                if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits().getFirstLine().getUnitCount() != 0) {
+                    renderHex(i + this.getStartI(), j + this.getStartJ(), GraphicUtil.orangeTexture, drawingPixmap);
                 }
 
                 // dessin du land owner

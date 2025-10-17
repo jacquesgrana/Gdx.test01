@@ -2,6 +2,7 @@ package com.mycompany.test01.Service;
 
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
+import com.mycompany.test01.Interface.unit.ElementInterface;
 
 public class EditScenarService {
     private final int DEFAULT_SIDE_COUNT = 2;
@@ -11,6 +12,8 @@ public class EditScenarService {
     private Scenario scenario = null;
 
     private Opponent selectedOpponent = null;
+
+    private ElementInterface selectedUnit = null;
 
     private int mapBrushSize = 0;
 
@@ -52,6 +55,14 @@ public class EditScenarService {
 
     public void setMapBrushSize(int mapBrushSize) {
         this.mapBrushSize = mapBrushSize;
+    }
+
+    public ElementInterface getSelectedUnit() {
+        return selectedUnit;
+    }
+
+    public void setSelectedUnit(ElementInterface selectedUnit) {
+        this.selectedUnit = selectedUnit;
     }
 
     /*
