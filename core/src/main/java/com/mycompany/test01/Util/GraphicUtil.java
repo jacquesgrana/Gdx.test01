@@ -656,6 +656,7 @@ public class GraphicUtil {
      * @param height La hauteur de dessin (pour la mise à l'échelle).
      */
     private static void drawOnPixmap(Pixmap destination, Texture textureSource, int width, int height) {
+
         if (textureSource == null || destination == null) {
             return;
         }
@@ -954,6 +955,7 @@ public class GraphicUtil {
         }
 
         // --- Méthode de secours (GPU / FBO) ---
+
         FrameBuffer fbo = null;
         SpriteBatch batch = null;
         try {
@@ -982,6 +984,7 @@ public class GraphicUtil {
             // fbo.end() est appelé implicitement par fbo.dispose() s'il est encore actif
             if (fbo != null) fbo.dispose();
         }
+
     }
 
     public static Texture drawTextOnTexture(Texture input, String text, boolean usesWhiteStroke) {
@@ -1173,7 +1176,7 @@ public class GraphicUtil {
 
     public static Texture getParaAddonTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
-        if(unit.isPara()) { // TODO : remplacer par isPara()
+        if(unit.isPara()) {
             toReturn = unit.isUsesWhiteStroke() ? counterAddOnWSParaTexture : counterAddOnBSParaTexture;
         }
         return toReturn;

@@ -59,7 +59,7 @@ public class HexUnit {
             }
             */
 
-            for (int i=0; i<=COMPANIES_PER_UNIT; i++) {
+            for (int i=0; i<COMPANIES_PER_UNIT; i++) {
                 if(this.getUnitCount() == i) {
                     this.hexUnit[i] = unitToAdd;
                     toReturn = true;

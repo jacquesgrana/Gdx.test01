@@ -26,6 +26,7 @@ import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.*;
+import com.mycompany.test01.Factory.Unit.UnitBlackCountryFactory;
 import com.mycompany.test01.Factory.Unit.UnitRedCountryFactory;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
 import com.mycompany.test01.Interface.observer.ToastObserver;
@@ -769,9 +770,9 @@ public class EditScenarScreen implements Screen {
                     //LogUtil.logInfo("click deploy units");
                     that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
                     that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
-                    UnitRedCountryFactory factory = new UnitRedCountryFactory();
-                    UnitElement unit = factory.createMotoInfUnit(
-                        "Test Unit", "TEST", true, true, 3);
+                    UnitBlackCountryFactory factory = new UnitBlackCountryFactory();
+                    UnitElement unit = factory.createInfRecoCompanyUnit(
+                        "1324th", "1324", false, false, 2);
                     that.editScenarService.setSelectedUnit(unit);
 
                     //LogUtil.logInfo("Unit : " + unit.getType() + " " + unit.getName());
