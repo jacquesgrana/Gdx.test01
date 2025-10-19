@@ -792,7 +792,7 @@ public class GraphicUtil {
         float nativeWidth = layout.width;
 
         // On ajoute une petite marge pour que le texte ne touche pas les bords
-        float scale = (destWidth * 0.66f) / nativeWidth;
+        float scale = (destWidth * 0.5f) / nativeWidth;
 
         // Recalculer la largeur et hauteur finales avec le ratio
         float finalWidth = layout.width * scale;
@@ -800,7 +800,7 @@ public class GraphicUtil {
 
         // Calculer le point de départ (coin supérieur gauche) pour centrer le texte
         float startX = (destWidth - finalWidth) / 2f;
-        float startY = ((destHeight - finalHeight) / 2f) + finalHeight * 2.33f;
+        float startY = ((destHeight - finalHeight) / 2f) + finalHeight * 2.4f;
 
 
         // Étape 2: Obtenir le Pixmap de la texture de la police
@@ -897,59 +897,92 @@ public class GraphicUtil {
      */
 
 
+    // Dans votre classe GraphicUtil
+
+    /**
+     * Lit les pixels du FrameBuffer et retourne un Pixmap correctement orienté.
+     * @param x Coordonnée X du coin inférieur gauche de la zone à capturer.
+     * @param y Coordonnée Y du coin inférieur gauche de la zone à capturer.
+     * @param w Largeur de la zone à capturer.
+     * @param h Hauteur de la zone à capturer.
+     * @return Un nouveau Pixmap, correctement orienté (axe Y inversé).
+     */
+    private static Pixmap getFlippedFrameBufferPixmap(int x, int y, int w, int h) {
+        // 1. Capture du FrameBuffer (l'image sera à l'envers)
+        Pixmap upsideDownPixmap = Pixmap.createFromFrameBuffer(x, y, w, h);
+
+        // 2. Création d'un Pixmap de destination
+        Pixmap flippedPixmap = new Pixmap(w, h, upsideDownPixmap.getFormat());
+
+        // 3. Dessiner le pixmap inversé sur le pixmap final en inversant les coordonnées Y
+        // On lit le pixmap source de bas en haut et on l'écrit sur la destination de haut en bas.
+        for (int row = 0; row < h; row++) {
+            for (int col = 0; col < w; col++) {
+                flippedPixmap.drawPixel(col, row, upsideDownPixmap.getPixel(col, h - 1 - row));
+            }
+        }
+
+        // 4. Libérer le pixmap intermédiaire
+        upsideDownPixmap.dispose();
+
+        return flippedPixmap;
+    }
+
+
     public static Pixmap textureToPixmapSafe(Texture texture, int targetW, int targetH) {
         if (texture == null) return null;
 
-        // Si on sait consommer un Pixmap directement, on peut tenter d’abord
+        // --- Première approche (CPU) ---
+        // (Cette partie ne change pas)
         try {
             TextureData td = texture.getTextureData();
             if (td != null && !(td instanceof com.badlogic.gdx.graphics.glutils.GLOnlyTextureData)) {
                 if (!td.isPrepared()) td.prepare();
                 Pixmap pm = td.consumePixmap();
-                // Si la taille n’est pas celle désirée, on scale proprement
                 if (pm != null && (pm.getWidth() != targetW || pm.getHeight() != targetH)) {
                     Pixmap scaled = new Pixmap(targetW, targetH, Pixmap.Format.RGBA8888);
                     scaled.setFilter(Pixmap.Filter.BiLinear);
                     scaled.drawPixmap(pm, 0, 0, pm.getWidth(), pm.getHeight(), 0, 0, targetW, targetH);
-                    pm.dispose();
+                    //pm.dispose(); // Important de disposer le pixmap original s'il a été consommé !
                     return scaled;
                 }
                 return pm;
             }
         } catch (Throwable t) {
-            // On tombera sur la voie FBO ci-dessous si ça échoue
-            LogUtil.logInfo("Fallback to FBO readback: " + t.getMessage());
+            // En cas d'échec, on passe à la méthode de secours FBO
+            System.err.println("Info: Could not consume pixmap directly, falling back to FBO render. " + t.getMessage());
         }
 
-        // Fallback universel: dessiner la texture dans un FBO et lire les pixels
+        // --- Méthode de secours (GPU / FBO) ---
         FrameBuffer fbo = null;
         SpriteBatch batch = null;
         try {
             fbo = new FrameBuffer(Pixmap.Format.RGBA8888, targetW, targetH, false);
             fbo.begin();
-            Gdx.gl.glViewport(0, 0, targetW, targetH);
             Gdx.gl.glClearColor(0, 0, 0, 0);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+            // Pas besoin de glViewport ici, le FBO s'en charge.
             batch = new SpriteBatch();
+            batch.getProjectionMatrix().setToOrtho2D(0, 0, targetW, targetH); // Configuration importante !
+
             batch.begin();
-            // Attention: les textures FBO sont y-flipped; ici on dessine une texture “normale”
-            batch.draw(texture, 0, 0, targetW, targetH);
+            // On dessine la texture à l'envers (flipped) pour qu'elle soit à l'endroit dans le FBO
+            // vu que le FBO lui-même a un système de coordonnées inversé par rapport à l'écran.
+            // Paramètres de draw: texture, x, y, width, height, srcX, srcY, srcWidth, srcHeight, flipX, flipY
+            batch.draw(texture, 0, 0, targetW, targetH, 0, 0, texture.getWidth(), texture.getHeight(), false, true);
             batch.end();
 
-            // Lecture pixels
-            Pixmap pm = ScreenUtils.getFrameBufferPixmap(0, 0, targetW, targetH);
+            // NOUVELLE FAÇON DE FAIRE : Utiliser Pixmap.createFromFrameBuffer
+            // Pas besoin de retourner l'image manuellement si on a dessiné "flipped"
+            return Pixmap.createFromFrameBuffer(0, 0, targetW, targetH);
 
-            return pm;
         } finally {
             if (batch != null) batch.dispose();
-            if (fbo != null) fbo.end(); // FBO doit être end avant dispose
+            // fbo.end() est appelé implicitement par fbo.dispose() s'il est encore actif
             if (fbo != null) fbo.dispose();
         }
     }
-
-
-
 
     public static Texture drawTextOnTexture(Texture input, String text, boolean usesWhiteStroke) {
         int width = input.getWidth(), height = input.getHeight();
