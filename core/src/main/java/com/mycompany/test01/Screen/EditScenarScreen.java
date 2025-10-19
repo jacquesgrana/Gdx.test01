@@ -40,7 +40,6 @@ import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
-import jdk.jpackage.internal.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +93,8 @@ public class EditScenarScreen implements Screen {
     private ScrollPane rightScrollPane;
 
     private Image landArmyGroupIcon = null;
+
+    private Image selectedUnitIcon= null;
 
     private boolean isScenarPresent = false;
 
@@ -767,10 +768,22 @@ public class EditScenarScreen implements Screen {
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     //LogUtil.logInfo("click deploy units");
                     that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
+                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                     UnitRedCountryFactory factory = new UnitRedCountryFactory();
-                    UnitElement unit = factory.createInfantryUnit(
-                        "Test Unit", "TEST", false, false, 0);
+                    UnitElement unit = factory.createMotoInfUnit(
+                        "Test Unit", "TEST", true, true, 2);
                     that.editScenarService.setSelectedUnit(unit);
+
+                    //LogUtil.logInfo("Unit : " + unit.getType() + " " + unit.getName());
+
+
+                    Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(unit);
+                    //LogUtil.logInfo("Texture : " + unitTexture.getHeight() + " " + unitTexture.getWidth() + " " + unitTexture.getTextureData());
+                    that.selectedUnitIcon = new Image(unitTexture);
+                    that.selectedUnitIcon.setWidth(80);
+                    that.selectedUnitIcon.setHeight(80);
+                    that.rebuildSelectedOpponentEditPanel();
+
                 }
             });
 
@@ -781,7 +794,16 @@ public class EditScenarScreen implements Screen {
             this.landArmyGroupIcon.setHeight(80);
 
             landArmyButtonsContainer.add(this.landArmyGroupIcon).width(80).height(80).align(Align.top).row();
-            this.selectedOpponentEditPanel.add(landArmyButtonsContainer).padTop(20).colspan(3);
+            this.selectedOpponentEditPanel.add(landArmyButtonsContainer).padTop(20).colspan(3).row();
+
+            if(this.editScenarService.getSelectedUnit() != null) {
+                this.selectedUnitIcon = new Image(GraphicUtil.getCounterTextureFromUnit(this.editScenarService.getSelectedUnit()));
+                this.selectedUnitIcon.setWidth(80);
+                this.selectedUnitIcon.setHeight(80);
+
+                this.selectedOpponentEditPanel.add(selectedUnitIcon).width(80).height(80).padTop(20);
+            }
+
         }
     }
 
@@ -868,7 +890,7 @@ public class EditScenarScreen implements Screen {
 
 
         // Redraw the map to the pixmap
-        editScenarService.getScenario().getMap().drawMap(drawingMapPixmap, this.editScenarService.getScenario().getOpponents());
+        editScenarService.getScenario().getMap().drawMap(drawingMapPixmap, this.editScenarService.getScenario().getOpponents(), this.editScenarService.getScenario().getMap().getHexagonSize());
 
         // Create a new texture from the pixmap
         drawingTexture = new Texture(drawingMapPixmap);

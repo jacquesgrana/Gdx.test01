@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Map.Cliff;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
@@ -257,6 +258,15 @@ public class GraphicUtil {
     public static Color colorBlue = new Color(0f, 0f, 1f, 1f);
     public static Color colorPurple = new Color(0.5f, 0f, 1f, 1f);
 
+    // Dans GraphicUtil.java, ajoutez ces champs en haut de la classe
+
+    // Vous devez charger ces polices une seule fois au lancement de votre jeu.
+    // Par exemple : regularFont = new BitmapFont(Gdx.files.internal("fonts/my-font.fnt"));
+    public static BitmapFont regularFont = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-++.fnt"));
+    public static BitmapFont whiteStrokeFont  = new BitmapFont(Gdx.files.internal("bitmapfont/RobotoCondensed-Black-110-WB.fnt"));
+
+    // Outil pour mesurer la taille du texte
+    private static final GlyphLayout layout = new GlyphLayout();
 
     /**
      * Creates a Texture from an image file located in the assets' folder.
@@ -601,24 +611,6 @@ public class GraphicUtil {
         return groupNode;
     }
 
-    // déplacer dans UnitUtil ?
-    /*
-    public static void printGroup(UnitGroup group) {
-
-        // Parcourir les unités du groupe
-        for (ElementInterface element : group.getUnits()) {
-            if (element instanceof UnitGroup) {
-                printGroup((UnitGroup) element);
-
-
-            } else if (element instanceof Unit) {
-
-            }
-            System.out.println("type : " + element.getType() + " / Name : " + element.getName());
-        }
-    }
-    */
-
     // TODO : déplacer dans UnitUtil ?
     public static Texture getCounterTextureFromUnit(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
@@ -652,6 +644,312 @@ public class GraphicUtil {
         //toReturn = drawTextOnTexture(toReturn, acronym);
         return toReturn;
     }
+
+    // Dans votre classe GraphicUtil.java
+
+    /**
+     * Superpose un Pixmap source sur un Pixmap de destination.
+     * Cette méthode gère la conversion de la Texture en Pixmap et sa libération.
+     * @param destination Le Pixmap sur lequel dessiner.
+     * @param textureSource La Texture à dessiner.
+     * @param width La largeur de dessin (pour la mise à l'échelle).
+     * @param height La hauteur de dessin (pour la mise à l'échelle).
+     */
+    private static void drawOnPixmap(Pixmap destination, Texture textureSource, int width, int height) {
+        if (textureSource == null || destination == null) {
+            return;
+        }
+
+        // Convertit la texture en un pixmap temporaire, mis à l'échelle à la bonne taille
+        Pixmap pixmapSource = textureToPixmapSafe(textureSource, width, height);
+
+        if (pixmapSource != null) {
+            // Dessine le pixmap source sur la destination
+            destination.drawPixmap(
+                pixmapSource,
+                0, 0, pixmapSource.getWidth(), pixmapSource.getHeight(), // Rectangle source (entier)
+                0, 0, width, height                                  // Rectangle destination (entier)
+            );
+
+            // Libère immédiatement le pixmap temporaire pour éviter les fuites de mémoire
+            pixmapSource.dispose();
+        }
+    }
+
+
+    // Dans GraphicUtil.java
+
+    public static Pixmap getCounterPixmapFromUnit(ElementInterface unit, int width, int height) {
+        // --- Étape 1: Créer le Pixmap de base ---
+        Texture backgroundTexture = getCountryTexture(unit);
+        Pixmap finalPixmap = textureToPixmapSafe(backgroundTexture, width, height);
+        if (finalPixmap == null) {
+            finalPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+            finalPixmap.setColor(0, 0, 0, 0);
+            finalPixmap.fill();
+        }
+
+        // IMPORTANT: Pour un meilleur rendu du texte redimensionné, utilisez le filtre BiLinear.
+        // Il va lisser les pixels et éviter un effet d'escalier.
+        finalPixmap.setFilter(Pixmap.Filter.BiLinear);
+
+        // --- Étape 2: Superposer les addons ---
+        // (Le code pour drawOnPixmap reste le même qu'avant)
+        drawOnPixmap(finalPixmap, getUnitTypeTexture(unit), width, height);
+        drawOnPixmap(finalPixmap, getParaAddonTexture(unit), width, height);
+        drawOnPixmap(finalPixmap, getMotorisedAddonTexture(unit), width, height);
+        drawOnPixmap(finalPixmap, getRegRankAddonTexture(unit), width, height);
+        if (unit instanceof UnitGroup) {
+            drawOnPixmap(finalPixmap, getLevelAddonTexture((UnitGroup) unit), width, height);
+        }
+        drawOnPixmap(finalPixmap, getCompanyAddonTexture(unit), width, height);
+
+        // --- ÉTAPE 3: Dessiner l'acronyme (appel simplifié) ---
+        String acronym = unit.getAcronym();
+        if (acronym != null && !acronym.isEmpty()) {
+            BitmapFont fontToUse = unit.isUsesWhiteStroke() ? whiteStrokeFont : regularFont;
+
+            if (fontToUse != null) {
+                // L'appel est plus simple: on passe juste le pixmap et la zone cible (le pixmap entier).
+                // La méthode s'occupe du reste (calcul du ratio, centrage).
+                drawTextOnPixmap(finalPixmap, fontToUse, acronym, width, height);
+            } else {
+                System.err.println("Attention: La police pour le rendu du compteur est nulle.");
+            }
+        }
+
+        // --- Étape 4: Retourner le résultat ---
+        return finalPixmap;
+    }
+
+
+    /**
+     * Dessine du texte directement sur un Pixmap en utilisant un BitmapFont.
+     * Cette méthode est "thread-safe" car elle n'utilise que des opérations Pixmap (CPU).
+     *
+     * @param destination Le Pixmap sur lequel dessiner.
+     * @param font La police à utiliser.
+     * @param text Le texte à afficher.
+     * @param x La coordonnée X du coin supérieur gauche du texte.
+     * @param y La coordonnée Y du coin supérieur gauche du texte (baseline).
+     */
+    /*
+    public static void drawTextOnPixmap(Pixmap destination, BitmapFont font, String text, int x, int y) {
+        BitmapFont.BitmapFontData fontData = font.getData();
+
+        // Obtenir le Pixmap de la texture de la police.
+        // C'est la partie la plus coûteuse, mais nécessaire.
+        Texture fontTexture = font.getRegion().getTexture();
+        Pixmap fontPixmap = textureToPixmapSafe(fontTexture, fontTexture.getWidth(), fontTexture.getHeight());
+
+        if (fontPixmap == null) {
+            System.err.println("Impossible de convertir la texture de la police en Pixmap.");
+            return;
+        }
+
+        int cursorX = x;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            BitmapFont.Glyph glyph = fontData.getGlyph(c);
+
+            if (glyph != null) {
+                // Dessine le glyphe (le caractère) du Pixmap de la police vers le Pixmap de destination
+                destination.drawPixmap(
+                    fontPixmap,                                 // Pixmap source (la police)
+                    glyph.srcX, glyph.srcY,                     // Coordonnées source (coin sup-gauche du caractère)
+                    glyph.width, glyph.height,                  // Taille du caractère dans la source
+                    cursorX + glyph.xoffset, y + glyph.yoffset, // Coordonnées destination (avec décalages)
+                    glyph.width, glyph.height                   // Taille dans la destination (pas de mise à l'échelle)
+                );
+                cursorX += glyph.xadvance;
+            }
+        }
+
+        // Très important : libérer le pixmap de la police créé temporairement
+        fontPixmap.dispose();
+    }
+
+     */
+
+    // Dans GraphicUtil.java
+
+    /**
+     * Dessine du texte directement sur un Pixmap, en le redimensionnant et en le centrant
+     * pour qu'il s'insère dans la zone de destination.
+     * Cette méthode est "thread-safe".
+     *
+     * @param destination Le Pixmap sur lequel dessiner.
+     * @param font La police à utiliser.
+     * @param text Le texte à afficher.
+     * @param destWidth La largeur de la zone cible pour le texte.
+     * @param destHeight La hauteur de la zone cible pour le texte.
+     */
+    public static void drawTextOnPixmap(Pixmap destination, BitmapFont font, String text, int destWidth, int destHeight) {
+        BitmapFont.BitmapFontData fontData = font.getData();
+
+        // Étape 1: Calculer la taille native du texte pour déterminer le ratio
+        layout.setText(font, text);
+        float nativeWidth = layout.width;
+
+        // On ajoute une petite marge pour que le texte ne touche pas les bords
+        float scale = (destWidth * 0.66f) / nativeWidth;
+
+        // Recalculer la largeur et hauteur finales avec le ratio
+        float finalWidth = layout.width * scale;
+        float finalHeight = layout.height * scale;
+
+        // Calculer le point de départ (coin supérieur gauche) pour centrer le texte
+        float startX = (destWidth - finalWidth) / 2f;
+        float startY = ((destHeight - finalHeight) / 2f) + finalHeight * 2.33f;
+
+
+        // Étape 2: Obtenir le Pixmap de la texture de la police
+        Texture fontTexture = font.getRegion().getTexture();
+        Pixmap fontPixmap = textureToPixmapSafe(fontTexture, fontTexture.getWidth(), fontTexture.getHeight());
+
+        if (fontPixmap == null) {
+            System.err.println("Impossible de convertir la texture de la police en Pixmap.");
+            return;
+        }
+
+        // Étape 3: Dessiner chaque caractère un par un, en appliquant le ratio
+        float cursorX = startX;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            BitmapFont.Glyph glyph = fontData.getGlyph(c);
+
+            if (glyph != null) {
+                // Appliquer le ratio à toutes les dimensions du caractère
+                float scaledGlyphWidth = glyph.width * scale;
+                float scaledGlyphHeight = glyph.height * scale;
+                float scaledXOffset = glyph.xoffset * scale;
+                float scaledYOffset = glyph.yoffset * scale;
+
+                // Dessiner le glyphe redimensionné sur le Pixmap de destination
+                destination.drawPixmap(
+                    fontPixmap,
+                    glyph.srcX, glyph.srcY,
+                    glyph.width, glyph.height,
+                    (int)(cursorX + scaledXOffset), (int)(startY + scaledYOffset), // Position de destination
+                    (int)scaledGlyphWidth, (int)scaledGlyphHeight                   // Taille de destination (avec redimensionnement)
+                );
+
+                // Avancer le curseur
+                cursorX += glyph.xadvance * scale;
+            }
+        }
+
+        fontPixmap.dispose();
+    }
+
+
+    /*
+    public static Texture resizeTexture(Texture original, int width, int height) {
+        FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
+        SpriteBatch batch = new SpriteBatch();
+
+        fbo.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.begin();
+        batch.draw(original, 0, 0, width, height);
+        batch.end();
+
+        fbo.end();
+
+        // Créer une texture permanente depuis le FBO
+        Pixmap pixmap = Pixmap.createFromFrameBuffer(0, 0, width, height);
+        Texture result = new Texture(pixmap);
+
+        pixmap.dispose();
+        batch.dispose();
+        fbo.dispose();
+
+        return result;
+    }
+     */
+
+    /*
+    public static Texture resizeTextureSimple(Texture original, int width, int height) {
+        // Obtenir le Pixmap source
+        if (!original.getTextureData().isPrepared()) {
+            original.getTextureData().prepare();
+        }
+        Pixmap source = original.getTextureData().consumePixmap();
+
+        // Créer le Pixmap destination
+        Pixmap dest = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        dest.setFilter(Pixmap.Filter.BiLinear);
+
+        // Redimensionner avec drawPixmap (version étendue qui fonctionne)
+        dest.drawPixmap(source,
+            0, 0, source.getWidth(), source.getHeight(),  // source rect
+            0, 0, width, height);                          // dest rect
+
+        Texture result = new Texture(dest);
+
+        source.dispose();
+        dest.dispose();
+
+        return result;
+    }
+     */
+
+
+    public static Pixmap textureToPixmapSafe(Texture texture, int targetW, int targetH) {
+        if (texture == null) return null;
+
+        // Si on sait consommer un Pixmap directement, on peut tenter d’abord
+        try {
+            TextureData td = texture.getTextureData();
+            if (td != null && !(td instanceof com.badlogic.gdx.graphics.glutils.GLOnlyTextureData)) {
+                if (!td.isPrepared()) td.prepare();
+                Pixmap pm = td.consumePixmap();
+                // Si la taille n’est pas celle désirée, on scale proprement
+                if (pm != null && (pm.getWidth() != targetW || pm.getHeight() != targetH)) {
+                    Pixmap scaled = new Pixmap(targetW, targetH, Pixmap.Format.RGBA8888);
+                    scaled.setFilter(Pixmap.Filter.BiLinear);
+                    scaled.drawPixmap(pm, 0, 0, pm.getWidth(), pm.getHeight(), 0, 0, targetW, targetH);
+                    pm.dispose();
+                    return scaled;
+                }
+                return pm;
+            }
+        } catch (Throwable t) {
+            // On tombera sur la voie FBO ci-dessous si ça échoue
+            LogUtil.logInfo("Fallback to FBO readback: " + t.getMessage());
+        }
+
+        // Fallback universel: dessiner la texture dans un FBO et lire les pixels
+        FrameBuffer fbo = null;
+        SpriteBatch batch = null;
+        try {
+            fbo = new FrameBuffer(Pixmap.Format.RGBA8888, targetW, targetH, false);
+            fbo.begin();
+            Gdx.gl.glViewport(0, 0, targetW, targetH);
+            Gdx.gl.glClearColor(0, 0, 0, 0);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            batch = new SpriteBatch();
+            batch.begin();
+            // Attention: les textures FBO sont y-flipped; ici on dessine une texture “normale”
+            batch.draw(texture, 0, 0, targetW, targetH);
+            batch.end();
+
+            // Lecture pixels
+            Pixmap pm = ScreenUtils.getFrameBufferPixmap(0, 0, targetW, targetH);
+
+            return pm;
+        } finally {
+            if (batch != null) batch.dispose();
+            if (fbo != null) fbo.end(); // FBO doit être end avant dispose
+            if (fbo != null) fbo.dispose();
+        }
+    }
+
+
+
 
     public static Texture drawTextOnTexture(Texture input, String text, boolean usesWhiteStroke) {
         int width = input.getWidth(), height = input.getHeight();

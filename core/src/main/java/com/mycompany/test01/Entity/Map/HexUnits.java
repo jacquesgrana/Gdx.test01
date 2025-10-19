@@ -105,4 +105,14 @@ public class HexUnits {
         }
         return ok;
     }
+
+    public int getUnitsCount() {
+        int toReturn = 0;
+        toReturn += this.firstLine.getUnitCount();
+        toReturn += this.secondLine.getUnitCount();
+        toReturn += this.reserve.getUnitCount();
+        toReturn += this.reserveSup.getUnitCount();
+        toReturn += this.reserveMax.getUnitCount();
+        return toReturn;
+    }
 }
