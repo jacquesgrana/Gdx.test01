@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
 import com.mycompany.test01.Enum.*;
@@ -17,6 +18,8 @@ import com.mycompany.test01.Util.UnitUtil;
 import java.util.Set;
 
 public class Map {
+    public static final int COMPANIES_PER_UNIT = 3;
+
     private String name = "Default map name";
     private Array<Array<Hexagon>> hexesArray;
     private int limitI = 0;
@@ -286,20 +289,16 @@ public class Map {
 
                 // dessin des unités
                 if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits().getUnitsCount() > 0) {
+
+                    // TODO appeler méthode de GraphicUtil qui affiche la pile des unites
+                    drawUnitsStackOnHex(i, j, this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits(), hexSize, drawingPixmap);
+
                     // TODO améliorer !!!
-                    ElementInterface firstLineUnit = this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits().getFirstLine().getHexUnit()[0];
+                    //ElementInterface firstLineUnit = this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits().getFirstLine().getHexUnit()[0];
                     //LogUtil.logInfo("unit name : " + firstLineUnit.getName());
-                    Texture textureFirstLine = GraphicUtil.getCounterTextureFromUnit(firstLineUnit);
 
-
-
-                    // TODO : créer nouvelle méthode dans MapUtil pour afficher dans drawingPixmap la texture du counter : textureFirstLine
-                    //renderHex(i + this.getStartI(), j + this.getStartJ(), GraphicUtil.orangeTexture, drawingPixmap);
-
-                    //GraphicUtil.orangeTexture
                     // TODO passer l'unité en paramètre
-                    drawUnitsOnHex(i, j, firstLineUnit, hexSize, drawingPixmap);
-
+                    //drawUnitOnHex(i, j, firstLineUnit, hexSize, drawingPixmap);
 
                     //textureFirstLine.dispose();
                 }
@@ -471,7 +470,76 @@ public class Map {
         }
     }
 
-    public void drawUnitsOnHex(int iRel, int jRel, ElementInterface unit, int hexagonSize, Pixmap drawingPixmap) {
+    public void drawUnitsStackOnHex(int iRel, int jRel, HexUnits units, int hexagonSize, Pixmap drawingPixmap) {
+        if (units == null || units.getUnitsCount() == 0) {
+            System.err.println("Error: unit null.");
+            return;
+        }
+
+        int x = getXFromIJ(iRel, jRel);
+        int y = getYFromJ(jRel);
+
+        OrderedSet<ElementInterface> unitsSet = new OrderedSet<>();
+        int unitCount = 0;
+        // calculer le nombre d'unités de la pile -> pas la peine ? -> si !!
+
+
+        // TODO faire méthode qd ok !!
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(units.getFirstLine().getHexUnit()[i] != null) {
+                unitsSet.add(units.getFirstLine().getHexUnit()[i]);
+            }
+        }
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(units.getSecondLine().getHexUnit()[i] != null) {
+                unitsSet.add(units.getSecondLine().getHexUnit()[i]);
+            }
+        }
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(units.getReserve().getHexUnit()[i] != null) {
+                unitsSet.add(units.getReserve().getHexUnit()[i]);
+            }
+        }
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(units.getReserveSup().getHexUnit()[i] != null) {
+                unitsSet.add(units.getReserveSup().getHexUnit()[i]);
+            }
+        }
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(units.getReserveMax().getHexUnit()[i] != null) {
+                unitsSet.add(units.getReserveMax().getHexUnit()[i]);
+            }
+        }
+        unitsSet.orderedItems().reverse();
+
+        int cpt = 0;
+        float pixelByUnitRatio = this.getZoomLevel().getDeltaStack();
+        int delta = (int) (unitsSet.orderedItems().size * pixelByUnitRatio);
+        for(ElementInterface unit : unitsSet.orderedItems()) {
+            LogUtil.logInfo("unit : name : " + unit.getName() + " / isCompany : " + unit.isCompany() + " / type : " + unit.getType().getName() + " / cpt : " + cpt);
+            cpt++;
+
+            Pixmap unitPixmap = GraphicUtil.getCounterPixmapFromUnit(unit, hexagonSize, hexagonSize);
+            if (unitPixmap != null) {
+                drawingPixmap.drawPixmap(
+                    unitPixmap,                                 // Source Pixmap
+                    0, 0,                                       // Source X,Y
+                    unitPixmap.getWidth(), unitPixmap.getHeight(), // Source width & height
+                    (int) ((x - hexagonSize / 2) - cpt * pixelByUnitRatio) + delta/2, (int) ((y - hexagonSize / 2) - cpt * pixelByUnitRatio) + delta/2,   // Dest X,Y
+                    hexagonSize, hexagonSize                     // Dest width & height
+                );
+            }
+            unitPixmap.dispose();
+        }
+
+
+
+        // construire une liste (avec ordre) des unités en ordre inverse (firstline à la fin)
+            // boucle sur la liste obtenue
+                // dessine l'unité avec un décalage du se vers le nw
+    }
+
+    public void drawUnitOnHex(int iRel, int jRel, ElementInterface unit, int hexagonSize, Pixmap drawingPixmap) {
         if (unit == null) {
             System.err.println("Error: unit null.");
             return;
@@ -480,7 +548,6 @@ public class Map {
         int x = getXFromIJ(iRel, jRel);
         int y = getYFromJ(jRel);
 
-        // Obtenir directement le Pixmap composite, sans passer par une Texture
         Pixmap unitPixmap = GraphicUtil.getCounterPixmapFromUnit(unit, hexagonSize, hexagonSize);
 
         if (unitPixmap != null) {
@@ -503,6 +570,8 @@ public class Map {
             System.err.println("Error: Could not create a Pixmap for the unit.");
         }
     }
+
+
 
 
     /*

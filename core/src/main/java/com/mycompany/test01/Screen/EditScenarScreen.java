@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -61,6 +62,8 @@ public class EditScenarScreen implements Screen {
 
     private EditScenarModeEnum editMode;
 
+    private boolean isLandUnitsTreeOpen = false;
+
     private final ToastObservable toastObservable;
     private final EditScenarLoadMapObservable editScenarLoadMapObservable;
     private final UnitRootGroupObservable unitRootGroupObservable;
@@ -80,13 +83,11 @@ public class EditScenarScreen implements Screen {
     private Table rightEditScenarPanel;
 
     private Table opponentsSidesListPanel;
-
     private Table opponentsEditPanel;
-
     private Table selectedOpponentEditPanel;
+    private Table landUnitsTreePanel;
 
     private Label scenarMapBrushSizeLabel;
-
     private Label editModeLabel;
 
     private Slider scenarMapBrushSideSlider;
@@ -94,7 +95,6 @@ public class EditScenarScreen implements Screen {
     private ScrollPane rightScrollPane;
 
     private Image landArmyGroupIcon = null;
-
     private Image selectedUnitIcon= null;
 
     private boolean isScenarPresent = false;
@@ -476,13 +476,30 @@ public class EditScenarScreen implements Screen {
         //this.opponentsSidesListPanel = createOpponentsSidesListPanel();
         this.editScenarService.getScenario().initOpponentsFromSidesCount();
         rebuildOpponentsSidesListPanel();
-        panel.add(this.opponentsSidesListPanel).colspan(2);
+        panel.add(this.opponentsSidesListPanel).colspan(3);
         panel.row();
         this.rebuildOpponentsEditPanel();
         panel.add(opponentsEditPanel).spaceTop(20).fillX().expandX().colspan(2).spaceBottom(20);
         panel.row();
 
         return panel;
+    }
+
+    private void rebuildLandUnitsTreePanel() {
+        //this.landUnitsTreePanel = new Table();
+        if (this.landUnitsTreePanel != null) {
+            this.landUnitsTreePanel.clear();
+        } else {
+            this.landUnitsTreePanel = new Table();
+            this.landUnitsTreePanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
+        }
+
+
+        if(this.editScenarService.getSelectedOpponent().getLandArmyGroup() != null && isLandUnitsTreeOpen) {
+            Label titleLabel = new Label("Land Units Tree :", SkinUtil.getLabelSkin(160, 30));
+
+            this.landUnitsTreePanel.add(titleLabel).padTop(20).width(160).row();
+        }
     }
 
     private void rebuildOpponentsSidesListPanel() {
@@ -755,10 +772,11 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.loadRootGroupFromFile();
+                    //that.rebuildLandUnitsTreePanel();
                 }
             });
 
-            landArmyButtonsContainer.add(buttonLoadArmyGroupWrapper.getButton()).align(Align.top);
+            landArmyButtonsContainer.add(buttonLoadArmyGroupWrapper.getButton());
 
             ButtonWrapper buttonDeployUnitsWrapper = new ButtonWrapper("Deploy", 0, 0, 80, 30);
 
@@ -771,12 +789,12 @@ public class EditScenarScreen implements Screen {
                     that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
                     that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                     UnitBlackCountryFactory factory = new UnitBlackCountryFactory();
-                    UnitElement unit = factory.createMotoInfRecoCompanyUnit(
-                        "12th", "12", true, true, 0);
+                    double random = Math.random();
+                    String randomAcronym = String.valueOf(Math.round(random*10000));
+
+                    UnitElement unit = factory.createArtiUnit(
+                        randomAcronym, randomAcronym, false, false, 0);
                     that.editScenarService.setSelectedUnit(unit);
-
-                    //LogUtil.logInfo("Unit : " + unit.getType() + " " + unit.getName());
-
 
                     Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(unit);
                     //LogUtil.logInfo("Texture : " + unitTexture.getHeight() + " " + unitTexture.getWidth() + " " + unitTexture.getTextureData());
@@ -784,26 +802,39 @@ public class EditScenarScreen implements Screen {
                     that.selectedUnitIcon.setWidth(80);
                     that.selectedUnitIcon.setHeight(80);
                     that.rebuildSelectedOpponentEditPanel();
-
                 }
             });
 
-            landArmyButtonsContainer.add(buttonDeployUnitsWrapper.getButton()).padLeft(20).padRight(20).align(Align.top);
+            landArmyButtonsContainer.add(buttonDeployUnitsWrapper.getButton()).padLeft(20).row();
 
             this.landArmyGroupIcon = new Image(this.getLandArmyGroupTextureFromOpponent(this.editScenarService.getSelectedOpponent()));
             this.landArmyGroupIcon.setWidth(80);
             this.landArmyGroupIcon.setHeight(80);
 
-            landArmyButtonsContainer.add(this.landArmyGroupIcon).width(80).height(80).align(Align.top).row();
-            this.selectedOpponentEditPanel.add(landArmyButtonsContainer).padTop(20).colspan(3).row();
+            this.landArmyGroupIcon.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    LogUtil.logInfo("click land army icon");
+                    that.isLandUnitsTreeOpen = !that.isLandUnitsTreeOpen;
+                    that.rebuildLandUnitsTreePanel();
+                }
+            });
+
+            landArmyButtonsContainer.add(this.landArmyGroupIcon).width(80).padTop(20).height(80);
 
             if(this.editScenarService.getSelectedUnit() != null) {
                 this.selectedUnitIcon = new Image(GraphicUtil.getCounterTextureFromUnit(this.editScenarService.getSelectedUnit()));
                 this.selectedUnitIcon.setWidth(80);
                 this.selectedUnitIcon.setHeight(80);
 
-                this.selectedOpponentEditPanel.add(selectedUnitIcon).width(80).height(80).padTop(20);
+                landArmyButtonsContainer.add(selectedUnitIcon).padLeft(20).padTop(20).width(80).height(80);
             }
+            this.selectedOpponentEditPanel.add(landArmyButtonsContainer).padTop(20).colspan(3).row();
+
+            this.rebuildLandUnitsTreePanel();
+            this.selectedOpponentEditPanel.add(this.landUnitsTreePanel).width(240).pad(20).colspan(3).row();
+
+
 
         }
     }
