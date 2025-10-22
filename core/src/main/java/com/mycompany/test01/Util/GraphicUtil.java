@@ -791,9 +791,12 @@ public class GraphicUtil {
         // Étape 1: Calculer la taille native du texte pour déterminer le ratio
         layout.setText(font, text);
         float nativeWidth = layout.width;
+        float nativeHeight = layout.height;
 
-        // On ajoute une petite marge pour que le texte ne touche pas les bords
-        float scale = (destWidth * 0.5f) / nativeWidth;
+        // Calculer l'échelle en fonction de la hauteur et de la largeur
+        //float scaleWidth = (destWidth * 0.5f) / nativeWidth;
+        float scale = (destHeight * 0.175f) / nativeHeight;
+        //float scale = Math.min(scaleWidth, scaleHeight);
 
         // Recalculer la largeur et hauteur finales avec le ratio
         float finalWidth = layout.width * scale;

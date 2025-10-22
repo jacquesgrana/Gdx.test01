@@ -771,8 +771,8 @@ public class EditScenarScreen implements Screen {
                     that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
                     that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                     UnitBlackCountryFactory factory = new UnitBlackCountryFactory();
-                    UnitElement unit = factory.createInfRecoCompanyUnit(
-                        "1324th", "1324", false, false, 2);
+                    UnitElement unit = factory.createMotoInfRecoCompanyUnit(
+                        "12th", "12", true, true, 0);
                     that.editScenarService.setSelectedUnit(unit);
 
                     //LogUtil.logInfo("Unit : " + unit.getType() + " " + unit.getName());
