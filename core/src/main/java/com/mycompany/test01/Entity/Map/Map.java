@@ -479,35 +479,7 @@ public class Map {
         int x = getXFromIJ(iRel, jRel);
         int y = getYFromJ(jRel);
 
-        // TODO faire méthode qd ok !!
-        OrderedSet<ElementInterface> unitsSet = new OrderedSet<>();
-        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
-            if(units.getFirstLine().getHexUnit()[i] != null) {
-                unitsSet.add(units.getFirstLine().getHexUnit()[i]);
-            }
-        }
-        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
-            if(units.getSecondLine().getHexUnit()[i] != null) {
-                unitsSet.add(units.getSecondLine().getHexUnit()[i]);
-            }
-        }
-        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
-            if(units.getReserve().getHexUnit()[i] != null) {
-                unitsSet.add(units.getReserve().getHexUnit()[i]);
-            }
-        }
-        /*
-        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
-            if(units.getReserveSup().getHexUnit()[i] != null) {
-                unitsSet.add(units.getReserveSup().getHexUnit()[i]);
-            }
-        }
-        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
-            if(units.getReserveMax().getHexUnit()[i] != null) {
-                unitsSet.add(units.getReserveMax().getHexUnit()[i]);
-            }
-        }
-        */
+        OrderedSet<ElementInterface> unitsSet = units.getOrderedSet();
         unitsSet.orderedItems().reverse();
 
         int cpt = 0;
@@ -515,9 +487,7 @@ public class Map {
         int delta = (int) (unitsSet.orderedItems().size * pixelByUnitRatio);
         for(ElementInterface unit : unitsSet.orderedItems()) {
             cpt++;
-            LogUtil.logInfo("unit : name : " + unit.getName() + " / isCompany : " + unit.isCompany() + " / type : " + unit.getType().getName() + " / cpt : " + cpt);
-
-
+            //LogUtil.logInfo("unit : name : " + unit.getName() + " / isCompany : " + unit.isCompany() + " / type : " + unit.getType().getName() + " / cpt : " + cpt);
             Pixmap unitPixmap = GraphicUtil.getCounterPixmapFromUnit(unit, hexagonSize, hexagonSize);
             if (unitPixmap != null) {
                 drawingPixmap.drawPixmap(
@@ -530,12 +500,6 @@ public class Map {
             }
             unitPixmap.dispose();
         }
-
-
-
-        // construire une liste (avec ordre) des unités en ordre inverse (firstline à la fin)
-            // boucle sur la liste obtenue
-                // dessine l'unité avec un décalage du se vers le nw
     }
 
     public void drawUnitOnHex(int iRel, int jRel, ElementInterface unit, int hexagonSize, Pixmap drawingPixmap) {
@@ -569,190 +533,6 @@ public class Map {
             System.err.println("Error: Could not create a Pixmap for the unit.");
         }
     }
-
-
-
-
-    /*
-    public void drawUnitsOnHex(int iRel,int jRel, ElementInterface unit, int hexagonSize, Pixmap drawingPixmap) {
-        int x = getXFromIJ(iRel, jRel);
-        int y = getYFromJ(jRel);
-
-        Texture textureFirstLine = GraphicUtil.getCounterTextureFromUnit(unit);
-
-        if (unit == null) {
-            System.err.println("Error: unit null.");
-            return; // Exit the method if the texture is null
-        }
-
-        textureFirstLine = GraphicUtil.orangeTexture;
-
-        Pixmap texturePixmap = GraphicUtil.textureToPixmapSafe(textureFirstLine, hexagonSize, hexagonSize);
-        if (texturePixmap != null) {
-            // Draw the texture onto the drawingPixmap, scaling it to fit within the hexagonSize
-            try{
-
-
-                drawingPixmap.drawPixmap(
-                    texturePixmap, // Source Pixmap
-                    0, 0,     // Source X,Y (top-left of source)
-                    texturePixmap.getWidth(), texturePixmap.getHeight(), // Source width & height
-                    x - hexagonSize/2, y - hexagonSize/2,            // Dest X,Y (top-left of destination)
-                    hexagonSize, hexagonSize    // Dest width & height (scaling)
-                );
-
-            }
-            catch (Exception e) {
-                LogUtil.logError("Error : ");
-            }
-
-
-            texturePixmap.dispose();
-        } else {
-            System.err.println("Error: Could not convert textureFirstLine to Pixmap.");
-        }
-    }
-     */
-
-    private static void drawPixmapClipped(
-        Pixmap dst, Pixmap src,
-        int srcX, int srcY, int srcW, int srcH,
-        int dstX, int dstY, int dstW, int dstH) {
-
-        // Rien à dessiner
-        if (dstW <= 0 || dstH <= 0 || srcW <= 0 || srcH <= 0) return;
-
-        // Clipping destination dans [0..dst.width/height)
-        int clipX = Math.max(dstX, 0);
-        int clipY = Math.max(dstY, 0);
-        int clipW = Math.min(dstX + dstW, dst.getWidth()) - clipX;
-        int clipH = Math.min(dstY + dstH, dst.getHeight()) - clipY;
-        if (clipW <= 0 || clipH <= 0) return;
-
-        // Ratio de scaling entre src et dst
-        float scaleX = (float) srcW / (float) dstW;
-        float scaleY = (float) srcH / (float) dstH;
-
-        // Ajuste la source pour coller au clip destination
-        int adjSrcX = srcX + Math.round((clipX - dstX) * scaleX);
-        int adjSrcY = srcY + Math.round((clipY - dstY) * scaleY);
-        int adjSrcW = Math.round(clipW * scaleX);
-        int adjSrcH = Math.round(clipH * scaleY);
-
-        // Clamp source dans les bornes src
-        if (adjSrcX < 0) { adjSrcW += adjSrcX; adjSrcX = 0; }
-        if (adjSrcY < 0) { adjSrcH += adjSrcY; adjSrcY = 0; }
-        adjSrcW = Math.min(adjSrcW, src.getWidth()  - adjSrcX);
-        adjSrcH = Math.min(adjSrcH, src.getHeight() - adjSrcY);
-        if (adjSrcW <= 0 || adjSrcH <= 0) return;
-
-        // Dessin sécurisé
-        dst.drawPixmap(src,
-            adjSrcX, adjSrcY, adjSrcW, adjSrcH,
-            clipX,   clipY,   clipW,   clipH);
-    }
-
-     /*
-    public void drawUnitsOnHex(int iRel, int jRel, Texture textureFirstLine, int hexagonSize, Pixmap drawingPixmap) {
-        int x = getXFromIJ(iRel, jRel);
-        int y = getYFromJ(jRel);
-
-        if (textureFirstLine == null) {
-            System.err.println("Error: textureFirstLine is null.");
-            return;
-        }
-
-        Texture scaledTexture = null;
-        Pixmap scaledPixmap = null;
-
-        try {
-            // Créer une texture redimensionnée via GPU
-            scaledTexture = GraphicUtil.resizeTexture(textureFirstLine, hexagonSize, hexagonSize);
-
-            if (scaledTexture == null) {
-                LogUtil.logError("Failed to resize texture");
-                return;
-            }
-
-            // Convertir en Pixmap pour dessiner
-            scaledPixmap = GraphicUtil.textureToPixmap(scaledTexture);
-
-            if (scaledPixmap != null) {
-                drawingPixmap.setBlending(Pixmap.Blending.SourceOver);
-                drawingPixmap.drawPixmap(
-                    scaledPixmap,
-                    x - hexagonSize/2,
-                    y - hexagonSize/2
-                );
-            }
-
-        } catch (Exception e) {
-            LogUtil.logError("Error in drawUnitsOnHex: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            if (scaledPixmap != null) scaledPixmap.dispose();
-            if (scaledTexture != null) scaledTexture.dispose();
-        }
-    }
-
-
-      */
-
-    /*
-     * Draws a textured hexagon onto the provided Pixmap.
-     *
-     * @param pixmap       The Pixmap to draw on.
-     * @param centerX      The x-coordinate of the hexagon's center.
-     * @param centerY      The y-coordinate of the hexagon's center.
-     * @param size         The size (radius) of the hexagon.
-     * @param texture      The texture to fill the hexagon with.  Must be non-null
-     * @param borderColor  The color of the hexagon's border.
-     */
-    /*
-    private void drawHexagon(Pixmap pixmap, int centerX, int centerY, int size, Texture texture, Color borderColor) {
-        int[] xPoints = new int[6];
-        int[] yPoints = new int[6];
-
-        for (int i = 0; i < 6; i++) {
-            double angle = 2 * Math.PI / 6 * (i + 0.5);
-            xPoints[i] = (int) (centerX + size * Math.cos(angle));
-            yPoints[i] = (int) (centerY + size * Math.sin(angle));
-        }
-
-        // Fill with texture
-        pixmap.setColor(Color.WHITE); // Important: set to white for texture drawing
-
-        //Get the pixel data from the texture
-        Pixmap texturePixmap = GraphicUtil.textureToPixmap(texture);
-
-        if (texturePixmap != null) {
-            for (int y = centerY - size; y <= centerY + size; y++) {
-                for (int x = centerX - size; x <= centerX + size; x++) {
-                    if (MapUtil.isInsideHexagon(x, y, xPoints, yPoints)) {
-                        // Sample the texture
-                        int textureX = (int) (((x - (centerX - size)) / (double) (2 * size)) * texturePixmap.getWidth());
-                        int textureY = (int) (((y - (centerY - size)) / (double) (2 * size)) * texturePixmap.getHeight());
-
-                        //Adjust textureX and textureY in case they are out of bounds
-                        textureX = Math.max(0, Math.min(textureX, texturePixmap.getWidth() - 1));
-                        textureY = Math.max(0, Math.min(textureY, texturePixmap.getHeight() - 1));
-
-                        int pixelColor = texturePixmap.getPixel(textureX, textureY);
-                        pixmap.drawPixel(x, y, pixelColor);
-                    }
-                }
-            }
-            texturePixmap.dispose();
-        }
-
-
-        // Contour
-        pixmap.setColor(borderColor);
-        for (int i = 0; i < 6; i++) {
-            int j = (i + 1) % 6;
-            pixmap.drawLine(xPoints[i], yPoints[i], xPoints[j], yPoints[j]);
-        }
-    }*/
 
     public void renderHex(int hexIAbs, int hexJAbs, Texture texture, Pixmap pixmap) {
         // Calculer les coordonnées du centre de l'hexagone

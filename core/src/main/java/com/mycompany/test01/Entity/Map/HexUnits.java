@@ -1,6 +1,9 @@
 package com.mycompany.test01.Entity.Map;
 
+import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Interface.unit.ElementInterface;
+
+import static com.mycompany.test01.Entity.Map.HexUnit.COMPANIES_PER_UNIT;
 
 public class HexUnits {
 
@@ -71,13 +74,13 @@ public class HexUnits {
     public boolean addUnitToUnits(ElementInterface unitToAdd) {
         boolean ok = false;
         if (unitToAdd.isCompany()) {
-            if(this.firstLine.getUnitCount() < HexUnit.COMPANIES_PER_UNIT) {
+            if(this.firstLine.getUnitCount() < COMPANIES_PER_UNIT) {
                 ok = this.firstLine.addUnit(unitToAdd);
             }
-            else if(this.secondLine.getUnitCount() < HexUnit.COMPANIES_PER_UNIT) {
+            else if(this.secondLine.getUnitCount() < COMPANIES_PER_UNIT) {
                 ok = this.secondLine.addUnit(unitToAdd);
             }
-            else if(this.reserve.getUnitCount() < HexUnit.COMPANIES_PER_UNIT) {
+            else if(this.reserve.getUnitCount() < COMPANIES_PER_UNIT) {
                 ok = this.reserve.addUnit(unitToAdd);
             }
             /*
@@ -116,6 +119,38 @@ public class HexUnits {
         toReturn += this.reserve.getUnitCount();
         toReturn += this.reserveSup.getUnitCount();
         toReturn += this.reserveMax.getUnitCount();
+        return toReturn;
+    }
+
+    public OrderedSet<ElementInterface> getOrderedSet() {
+        OrderedSet<ElementInterface> toReturn = new OrderedSet<>();
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(this.getFirstLine().getHexUnit()[i] != null) {
+                toReturn.add(this.getFirstLine().getHexUnit()[i]);
+            }
+        }
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(this.getSecondLine().getHexUnit()[i] != null) {
+                toReturn.add(this.getSecondLine().getHexUnit()[i]);
+            }
+        }
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(this.getReserve().getHexUnit()[i] != null) {
+                toReturn.add(this.getReserve().getHexUnit()[i]);
+            }
+        }
+        /*
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(units.getReserveSup().getHexUnit()[i] != null) {
+                unitsSet.add(units.getReserveSup().getHexUnit()[i]);
+            }
+        }
+        for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
+            if(units.getReserveMax().getHexUnit()[i] != null) {
+                unitsSet.add(units.getReserveMax().getHexUnit()[i]);
+            }
+        }
+        */
         return toReturn;
     }
 }
