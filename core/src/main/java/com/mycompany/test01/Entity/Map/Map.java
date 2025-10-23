@@ -479,12 +479,8 @@ public class Map {
         int x = getXFromIJ(iRel, jRel);
         int y = getYFromJ(jRel);
 
-        OrderedSet<ElementInterface> unitsSet = new OrderedSet<>();
-        int unitCount = 0;
-        // calculer le nombre d'unités de la pile -> pas la peine ? -> si !!
-
-
         // TODO faire méthode qd ok !!
+        OrderedSet<ElementInterface> unitsSet = new OrderedSet<>();
         for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
             if(units.getFirstLine().getHexUnit()[i] != null) {
                 unitsSet.add(units.getFirstLine().getHexUnit()[i]);
@@ -500,6 +496,7 @@ public class Map {
                 unitsSet.add(units.getReserve().getHexUnit()[i]);
             }
         }
+        /*
         for (int i = 0; i < COMPANIES_PER_UNIT; i++) {
             if(units.getReserveSup().getHexUnit()[i] != null) {
                 unitsSet.add(units.getReserveSup().getHexUnit()[i]);
@@ -510,23 +507,25 @@ public class Map {
                 unitsSet.add(units.getReserveMax().getHexUnit()[i]);
             }
         }
+        */
         unitsSet.orderedItems().reverse();
 
         int cpt = 0;
         float pixelByUnitRatio = this.getZoomLevel().getDeltaStack();
         int delta = (int) (unitsSet.orderedItems().size * pixelByUnitRatio);
         for(ElementInterface unit : unitsSet.orderedItems()) {
-            LogUtil.logInfo("unit : name : " + unit.getName() + " / isCompany : " + unit.isCompany() + " / type : " + unit.getType().getName() + " / cpt : " + cpt);
             cpt++;
+            LogUtil.logInfo("unit : name : " + unit.getName() + " / isCompany : " + unit.isCompany() + " / type : " + unit.getType().getName() + " / cpt : " + cpt);
+
 
             Pixmap unitPixmap = GraphicUtil.getCounterPixmapFromUnit(unit, hexagonSize, hexagonSize);
             if (unitPixmap != null) {
                 drawingPixmap.drawPixmap(
-                    unitPixmap,                                 // Source Pixmap
-                    0, 0,                                       // Source X,Y
+                    unitPixmap,     // Source Pixmap
+                    0, 0,        // Source X,Y
                     unitPixmap.getWidth(), unitPixmap.getHeight(), // Source width & height
                     (int) ((x - hexagonSize / 2) - cpt * pixelByUnitRatio) + delta/2, (int) ((y - hexagonSize / 2) - cpt * pixelByUnitRatio) + delta/2,   // Dest X,Y
-                    hexagonSize, hexagonSize                     // Dest width & height
+                    hexagonSize, hexagonSize   // Dest width & height
                 );
             }
             unitPixmap.dispose();

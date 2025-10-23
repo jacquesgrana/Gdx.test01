@@ -67,6 +67,7 @@ public class HexUnits {
         this.reserveMax = reserveMax;
     }
 
+    // TODO ne plus utiliser reserveSup et reserveMax
     public boolean addUnitToUnits(ElementInterface unitToAdd) {
         boolean ok = false;
         if (unitToAdd.isCompany()) {
@@ -79,12 +80,14 @@ public class HexUnits {
             else if(this.reserve.getUnitCount() < HexUnit.COMPANIES_PER_UNIT) {
                 ok = this.reserve.addUnit(unitToAdd);
             }
+            /*
             else if(this.reserveSup.getUnitCount() < HexUnit.COMPANIES_PER_UNIT) {
                 ok = this.reserveSup.addUnit(unitToAdd);
             }
             else if(this.reserveMax.getUnitCount() < HexUnit.COMPANIES_PER_UNIT) {
                 ok = this.reserveMax.addUnit(unitToAdd);
             }
+            */
         }
         else {
             if(this.firstLine.getUnitCount() == 0) {

@@ -1,6 +1,7 @@
 package com.mycompany.test01.Entity.Map;
 
 import com.mycompany.test01.Interface.unit.ElementInterface;
+import com.mycompany.test01.Util.LogUtil;
 
 public class HexUnit {
     public static final int COMPANIES_PER_UNIT = 3;
@@ -29,8 +30,12 @@ public class HexUnit {
     public int getUnitCount() {
         int toReturn = 0;
 
+        //LogUtil.logInfo("getUnitCount : hexUnitSize : " + this.hexUnit.length );
+        int cpt = 0;
         for(ElementInterface unit : this.hexUnit) {
             if(unit != null) {
+                cpt++;
+                //LogUtil.logInfo("getUnitCount : isCompany : " + unit.isCompany());
                 if(unit.isCompany()) {
                     toReturn++;
                 }
@@ -40,37 +45,40 @@ public class HexUnit {
             }
 
         }
+        //LogUtil.logInfo("getUnitCount : non null count : " + cpt);
         return toReturn;
     }
 
     public boolean addUnit(ElementInterface unitToAdd) {
         boolean toReturn = false;
         if(unitToAdd.isCompany()) {
-            /*
-            // TODO : pas modulaire , '3' en dur
-            if(COMPANY_MAX - this.getUnitCount() == 1 ) {
-                this.hexUnit[2] = unitToAdd;
-            }
-            else if (COMPANY_MAX - this.getUnitCount() == 2) {
-                this.hexUnit[1] = unitToAdd;
-            }
-            else if (COMPANY_MAX - this.getUnitCount() == 3) {
-                this.hexUnit[0] = unitToAdd;
-            }
-            */
 
+            LogUtil.logInfo("add company unit : getUnitCount av ajout : " + this.getUnitCount());
+
+            /*
             for (int i=0; i<COMPANIES_PER_UNIT; i++) {
                 if(this.getUnitCount() == i) {
                     this.hexUnit[i] = unitToAdd;
                     toReturn = true;
                 }
+            }*/
+
+            if(this.getUnitCount() < COMPANIES_PER_UNIT) {
+                this.hexUnit[getUnitCount()] = unitToAdd;
             }
+
+            LogUtil.logInfo("add company unit : getUnitCount ap ajout : " + this.getUnitCount());
+
         }
         else {
+            LogUtil.logInfo("add non company unit : getUnitCount av ajout : " + this.getUnitCount());
+
             if(this.getUnitCount() == 0) {
                 this.hexUnit[0] = unitToAdd;
                 toReturn = true;
             }
+            LogUtil.logInfo("add non company unit : getUnitCount ap ajout : " + this.getUnitCount());
+
         }
         return toReturn;
     }

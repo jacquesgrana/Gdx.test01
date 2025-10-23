@@ -788,12 +788,19 @@ public class EditScenarScreen implements Screen {
                     //LogUtil.logInfo("click deploy units");
                     that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
                     that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
-                    UnitBlackCountryFactory factory = new UnitBlackCountryFactory();
-                    double random = Math.random();
-                    String randomAcronym = String.valueOf(Math.round(random*10000));
+                    UnitRedCountryFactory factory = new UnitRedCountryFactory();
+                    double randomName = Math.random();
+                    String randomAcronym = String.valueOf(Math.round(randomName*10000));
 
-                    UnitElement unit = factory.createArtiUnit(
-                        randomAcronym, randomAcronym, false, false, 0);
+                    double randomIsElite = Math.random();
+                    boolean isElite = randomIsElite > 0.67;
+
+                    double randomUnit = Math.random();
+                    UnitElement unit = randomUnit > 0.5 ? factory.createInfRecoCompanyUnit(
+                        randomAcronym, randomAcronym, isElite, isElite, 0) : factory.createAssaultGunUnit(
+                        randomAcronym, randomAcronym, isElite, isElite, 0);
+
+                    //UnitElement unit = factory.createInfRecoCompanyUnit(randomAcronym, randomAcronym, isElite, isElite, 0);
                     that.editScenarService.setSelectedUnit(unit);
 
                     Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(unit);
