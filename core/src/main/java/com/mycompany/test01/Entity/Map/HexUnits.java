@@ -3,7 +3,7 @@ package com.mycompany.test01.Entity.Map;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Interface.unit.ElementInterface;
 
-import static com.mycompany.test01.Entity.Map.HexUnit.COMPANIES_PER_UNIT;
+import static com.mycompany.test01.Config.MapConfig.COMPANIES_PER_UNIT;
 
 public class HexUnits {
 
@@ -112,6 +112,7 @@ public class HexUnits {
         return ok;
     }
 
+    // TODO renommer getUnitsSize() ??
     public int getUnitsCount() {
         int toReturn = 0;
         toReturn += this.firstLine.getUnitCount();

@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
 import com.mycompany.test01.Common.Toast;
+import com.mycompany.test01.Config.MapConfig;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
@@ -50,8 +51,8 @@ import java.util.Set;
 public class EditScenarScreen implements Screen {
 
     // TODO déplacer dans le service
-    private final int MAX_BRUSH_SIZE = 10;
-    private final int MIN_BRUSH_SIZE = 0;
+    //private final int MAX_BRUSH_SIZE = 10;
+    //private final int MIN_BRUSH_SIZE = 0;
 
     private final Main game;
     private final Stage stage;
@@ -688,7 +689,7 @@ public class EditScenarScreen implements Screen {
             //this.scenarMapBrushSizeLabel this.scenarMapBrushSideSlider
             this.scenarMapBrushSizeLabel = new Label("Brush Size : " + this.editScenarService.getMapBrushSize(), SkinUtil.getLabelSkin(100, 30));
 
-            this.scenarMapBrushSideSlider = new Slider(this.MIN_BRUSH_SIZE, this.MAX_BRUSH_SIZE, 1f, false, SkinUtil.getSliderSkin(200, 30, 20)); // min, max, step, vertical
+            this.scenarMapBrushSideSlider = new Slider(MapConfig.MIN_BRUSH_SIZE, MapConfig.MAX_BRUSH_SIZE, 1f, false, SkinUtil.getSliderSkin(200, 30, 20)); // min, max, step, vertical
             scenarMapBrushSideSlider.setValue(this.editScenarService.getMapBrushSize());
 
             scenarMapBrushSideSlider.addListener(new ChangeListener() {
@@ -1398,13 +1399,13 @@ public class EditScenarScreen implements Screen {
                     break;
                 case 154 :
                     this.screen.editScenarService.setMapBrushSize(
-                        this.screen.editScenarService.getMapBrushSize() > this.screen.MAX_BRUSH_SIZE - 1 ? this.screen.MAX_BRUSH_SIZE : this.screen.editScenarService.getMapBrushSize() + 1
+                        this.screen.editScenarService.getMapBrushSize() > MapConfig.MAX_BRUSH_SIZE - 1 ? MapConfig.MAX_BRUSH_SIZE : this.screen.editScenarService.getMapBrushSize() + 1
                     );
                     this.screen.rebuildSelectedOpponentEditPanel();
                     break;
                 case 155:
                     this.screen.editScenarService.setMapBrushSize(
-                        this.screen.editScenarService.getMapBrushSize() < this.screen.MIN_BRUSH_SIZE + 1 ? this.screen.MIN_BRUSH_SIZE : this.screen.editScenarService.getMapBrushSize() - 1
+                        this.screen.editScenarService.getMapBrushSize() < MapConfig.MIN_BRUSH_SIZE + 1 ? MapConfig.MIN_BRUSH_SIZE : this.screen.editScenarService.getMapBrushSize() - 1
                     );
                     this.screen.rebuildSelectedOpponentEditPanel();
                     break;

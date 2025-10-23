@@ -10,14 +10,16 @@ import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.FileChooserListener.DesktopScenarArmyRootFileChooserListener;
 import com.mycompany.test01.Interface.common.FileChooserInterface;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
+
+import static com.mycompany.test01.Config.FileConfig.*;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 public class ArmyFileService {
     private static ArmyFileService instance = null;
 
-    public static final String GAME_DATA_FILE_PATH = "game_data/";
-    public static final String ARMY_FILE_PATH = GAME_DATA_FILE_PATH + "armies/";
-    public static final String GROUP_FILE_PATH = GAME_DATA_FILE_PATH + "groups/";
+    //public static final String GAME_DATA_FILE_PATH = "game_data/";
+    //public static final String ARMY_FILE_PATH = GAME_DATA_FILE_PATH + "armies/";
+    //public static final String GROUP_FILE_PATH = GAME_DATA_FILE_PATH + "groups/";
     //private final Json json;
     private final FileChooserInterface fileChooser;
     private final UnitElementSerializer unitElementSerializer;

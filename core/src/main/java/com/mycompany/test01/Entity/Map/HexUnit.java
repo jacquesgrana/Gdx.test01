@@ -3,8 +3,12 @@ package com.mycompany.test01.Entity.Map;
 import com.mycompany.test01.Interface.unit.ElementInterface;
 import com.mycompany.test01.Util.LogUtil;
 
+import static com.mycompany.test01.Config.MapConfig.COMPANIES_PER_UNIT;
+
 public class HexUnit {
-    public static final int COMPANIES_PER_UNIT = 3;
+
+    // TODO : faire un fichier mapConfig.java
+    //public static final int COMPANIES_PER_UNIT = 3;
 
     private ElementInterface[] hexUnit;
 
@@ -27,13 +31,11 @@ public class HexUnit {
         this.hexUnit = hexUnit;
     }
 
+    // TODO renommer getUnitSize() ??
     public int getUnitCount() {
         int toReturn = 0;
-
-        int cpt = 0;
         for(ElementInterface unit : this.hexUnit) {
             if(unit != null) {
-                cpt++;
                 if(unit.isCompany()) {
                     toReturn++;
                 }
@@ -41,7 +43,6 @@ public class HexUnit {
                     toReturn += COMPANIES_PER_UNIT;
                 }
             }
-
         }
         return toReturn;
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.mycompany.test01.Common.DesktopFileChooser;
+import com.mycompany.test01.Config.FileConfig;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.FileChooserListener.EditScenarMapFileChooserListener;
 import com.mycompany.test01.Interface.common.FileChooserInterface;
@@ -11,8 +12,8 @@ import com.mycompany.test01.Interface.common.FileChooserInterface;
 public class ScenarFileService {
     private static ScenarFileService instance = null;
 
-    public static final String GAME_DATA_FILE_PATH = "game_data/";
-    public static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
+    //public static final String GAME_DATA_FILE_PATH = "game_data/";
+    //public static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
     private final Json json;
     private final FileChooserInterface fileChooser;
 
@@ -31,19 +32,19 @@ public class ScenarFileService {
     public void openLoadMapFileChooser() {
         checkOrInitDirs();
         EditScenarMapFileChooserListener fileChooserlistener = new EditScenarMapFileChooserListener();
-        fileChooser.openLoadFileChooser(fileChooserlistener, MAP_FILE_PATH);
+        fileChooser.openLoadFileChooser(fileChooserlistener, FileConfig.MAP_FILE_PATH);
     }
 
     public void openSaveMapFileChooser() {
         checkOrInitDirs();
         EditScenarMapFileChooserListener fileChooserlistener = new EditScenarMapFileChooserListener();
-        fileChooser.openSaveFileChooser(fileChooserlistener, MAP_FILE_PATH);
+        fileChooser.openSaveFileChooser(fileChooserlistener, FileConfig.MAP_FILE_PATH);
     }
 
     private void checkOrInitDirs() {
-        FileHandle dataDir = Gdx.files.local(GAME_DATA_FILE_PATH);
+        FileHandle dataDir = Gdx.files.local(FileConfig.GAME_DATA_FILE_PATH);
         if(!dataDir.exists()) dataDir.mkdirs();
-        FileHandle mapDir = Gdx.files.local(MAP_FILE_PATH);
+        FileHandle mapDir = Gdx.files.local(FileConfig.MAP_FILE_PATH);
         if(!mapDir.exists()) mapDir.mkdirs();
     }
 

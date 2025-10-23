@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.mycompany.test01.Config.MapConfig;
 import com.mycompany.test01.Entity.Map.*;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
@@ -13,8 +14,8 @@ import com.mycompany.test01.Util.LogUtil;
 public class EditMapService {
     private static EditMapService instance = null;
 
-    private final int MAX_BRUSH_SIZE = 10;
-    private final int MIN_BRUSH_SIZE = 0;
+    //private final int MAX_BRUSH_SIZE = 10;
+    //private final int MIN_BRUSH_SIZE = 0;
     private int mapBrushSize = 0;
     private Map map;
 
@@ -535,11 +536,11 @@ public class EditMapService {
     }
 
     public int getMAX_BRUSH_SIZE() {
-        return MAX_BRUSH_SIZE;
+        return MapConfig.MAX_BRUSH_SIZE;
     }
 
     public int getMIN_BRUSH_SIZE() {
-        return MIN_BRUSH_SIZE;
+        return MapConfig.MIN_BRUSH_SIZE;
     }
 
     public int getMapBrushSize() {

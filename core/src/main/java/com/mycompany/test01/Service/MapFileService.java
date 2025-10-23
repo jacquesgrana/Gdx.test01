@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.mycompany.test01.Common.DesktopFileChooser;
+import com.mycompany.test01.Config.FileConfig;
 import com.mycompany.test01.Entity.Map.HexUnits;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Enum.CountryEnum;
@@ -18,8 +19,8 @@ import java.util.Arrays;
 public class MapFileService {
     private static MapFileService instance = null;
 
-    public static final String GAME_DATA_FILE_PATH = "game_data/";
-    public static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
+    //public static final String GAME_DATA_FILE_PATH = "game_data/";
+    //public static final String MAP_FILE_PATH = GAME_DATA_FILE_PATH + "maps/";
     private final Json json;
     private final FileChooserInterface fileChooser;
 
@@ -38,19 +39,19 @@ public class MapFileService {
     public void openLoadMapFileChooser() {
         checkOrInitDirs();
         DesktopMapFileChooserListener fileChooserlistener = new DesktopMapFileChooserListener();
-        fileChooser.openLoadFileChooser(fileChooserlistener, MAP_FILE_PATH);
+        fileChooser.openLoadFileChooser(fileChooserlistener, FileConfig.MAP_FILE_PATH);
     }
 
     public void openSaveMapFileChooser() {
         checkOrInitDirs();
         DesktopMapFileChooserListener fileChooserlistener = new DesktopMapFileChooserListener();
-        fileChooser.openSaveFileChooser(fileChooserlistener, MAP_FILE_PATH);
+        fileChooser.openSaveFileChooser(fileChooserlistener, FileConfig.MAP_FILE_PATH);
     }
 
     private void checkOrInitDirs() {
-        FileHandle dataDir = Gdx.files.local(GAME_DATA_FILE_PATH);
+        FileHandle dataDir = Gdx.files.local(FileConfig.GAME_DATA_FILE_PATH);
         if(!dataDir.exists()) dataDir.mkdirs();
-        FileHandle mapDir = Gdx.files.local(MAP_FILE_PATH);
+        FileHandle mapDir = Gdx.files.local(FileConfig.MAP_FILE_PATH);
         if(!mapDir.exists()) mapDir.mkdirs();
     }
 

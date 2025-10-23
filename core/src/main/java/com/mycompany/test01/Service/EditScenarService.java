@@ -1,11 +1,12 @@
 package com.mycompany.test01.Service;
 
+import com.mycompany.test01.Config.ScenarConfig;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
 import com.mycompany.test01.Interface.unit.ElementInterface;
 
 public class EditScenarService {
-    private final int DEFAULT_SIDE_COUNT = 2;
+    //private final int DEFAULT_SIDE_COUNT = 2;
 
     private static EditScenarService instance = null;
 
@@ -21,7 +22,7 @@ public class EditScenarService {
 
     public EditScenarService() {
         this.scenario = new Scenario();
-        this.getScenario().setSidesCount(DEFAULT_SIDE_COUNT);
+        this.getScenario().setSidesCount(ScenarConfig.DEFAULT_SIDE_COUNT);
         this.getScenario().setSidesFromCount();
         //this.zoomLevel = ZoomLevelEnum.NORMAL_VIEW;
     }
