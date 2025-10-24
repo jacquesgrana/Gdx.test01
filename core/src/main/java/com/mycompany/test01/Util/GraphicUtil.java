@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mycompany.test01.Common.ScenarUnitNode;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Map.Cliff;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
@@ -16,6 +18,7 @@ import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Interface.unit.ElementInterface;
 import com.mycompany.test01.Screen.EditArmyScreen;
+import com.mycompany.test01.Screen.EditScenarScreen;
 
 import java.nio.ByteBuffer;
 
@@ -567,6 +570,60 @@ public class GraphicUtil {
         pixmap.dispose();
 
         return texture;
+    }
+
+    // TODO : déplacer dans UnitUtil ?
+    public static ScenarUnitNode createScenarTreeFromGroup(UnitGroup group, Screen screen) {
+        // Créer un nœud pour le groupe actuel
+        ScenarUnitNode groupNode = new ScenarUnitNode(group);
+
+        // Parcourir les unités du groupe
+        for (ElementInterface element : group.getUnits()) {
+            if (element instanceof UnitGroup) {
+                // Si c'est un sous-groupe, appel récursif
+                ScenarUnitNode childGroupNode = createScenarTreeFromGroup((UnitGroup) element, screen);
+                groupNode.add(childGroupNode); // Ajouter le sous-groupe au nœud actuel
+                // ajouter listener
+                childGroupNode.getActor().addListener(new ClickListener() {
+                    public void clicked (InputEvent event, float x, float y) {
+                        //System.out.println("click on group");
+                        if (screen instanceof EditScenarScreen) {
+                            EditScenarScreen that = (EditScenarScreen) screen;
+                            that.editScenarService.setSelectedUnit(element);
+                            that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
+                            that.rebuildSelectedOpponentEditPanel();
+                        }
+                        //childGroupNode.setExpanded(!childGroupNode.isExpanded());
+                    }
+                });
+
+            } else if (element instanceof Unit) {
+                // Si c'est une unité, créer un nœud simple
+                ScenarUnitNode unitNode = new ScenarUnitNode((Unit) element);
+                groupNode.add(unitNode); // Ajouter l'unité au nœud actuel
+                // ajouter listener
+                unitNode.getActor().addListener(new ClickListener() {
+                    public void clicked (InputEvent event, float x, float y) {
+                        //System.out.println("click on unit");
+                        if (screen instanceof EditScenarScreen) {
+                            EditScenarScreen that = (EditScenarScreen) screen;
+                            //that.displayUnitInfos(element);
+                            that.editScenarService.setSelectedUnit(element);
+                            that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
+                            that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+
+                            Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(element);
+                            //LogUtil.logInfo("Texture : " + unitTexture.getHeight() + " " + unitTexture.getWidth() + " " + unitTexture.getTextureData());
+                            that.selectedUnitIcon = new Image(unitTexture);
+                            that.selectedUnitIcon.setWidth(80);
+                            that.selectedUnitIcon.setHeight(80);
+                            that.rebuildSelectedOpponentEditPanel();
+                        }
+                    }
+                });
+            }
+        }
+        return groupNode;
     }
 
     // TODO : déplacer dans UnitUtil ?

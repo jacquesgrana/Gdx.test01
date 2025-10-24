@@ -21,7 +21,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.ButtonWrapper;
+import com.mycompany.test01.Common.ScenarUnitNode;
 import com.mycompany.test01.Common.Toast;
+import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Config.MapConfig;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Scenario.Opponent;
@@ -43,6 +45,7 @@ import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
+import jdk.jpackage.internal.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +64,7 @@ public class EditScenarScreen implements Screen {
     private Pixmap drawingMapPixmap;
     private Texture drawingTexture = null;
 
-    private EditScenarModeEnum editMode;
+    public EditScenarModeEnum editMode;
 
     private boolean isLandUnitsTreeOpen = false;
 
@@ -72,7 +75,7 @@ public class EditScenarScreen implements Screen {
     private final ScenarFileService scenarFileService;
     private final ArmyFileService armyFileService;
 
-    private final EditScenarService editScenarService;
+    public final EditScenarService editScenarService;
     private final InputMultiplexer inputMultiplexer; // Nouveau champ
     private final EditScenarScreen.EditScenarScreenInputAdapter screenInputAdapter; // Pour la logique d'entrée de l'écran
 
@@ -89,14 +92,14 @@ public class EditScenarScreen implements Screen {
     private Table landUnitsTreePanel;
 
     private Label scenarMapBrushSizeLabel;
-    private Label editModeLabel;
+    public Label editModeLabel;
 
     private Slider scenarMapBrushSideSlider;
 
     private ScrollPane rightScrollPane;
 
     private Image landArmyGroupIcon = null;
-    private Image selectedUnitIcon= null;
+    public Image selectedUnitIcon= null;
 
     private boolean isScenarPresent = false;
 
@@ -485,6 +488,18 @@ public class EditScenarScreen implements Screen {
 
         return panel;
     }
+    /*
+        that.editScenarService.setSelectedUnit(element);
+        that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
+        that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+
+        Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(element);
+        //LogUtil.logInfo("Texture : " + unitTexture.getHeight() + " " + unitTexture.getWidth() + " " + unitTexture.getTextureData());
+        that.selectedUnitIcon = new Image(unitTexture);
+        that.selectedUnitIcon.setWidth(80);
+        that.selectedUnitIcon.setHeight(80);
+        that.rebuildSelectedOpponentEditPanel();
+     */
 
     private void rebuildLandUnitsTreePanel() {
         //this.landUnitsTreePanel = new Table();
@@ -497,9 +512,35 @@ public class EditScenarScreen implements Screen {
 
 
         if(this.editScenarService.getSelectedOpponent().getLandArmyGroup() != null && isLandUnitsTreeOpen) {
-            Label titleLabel = new Label("Land Units Tree :", SkinUtil.getLabelSkin(160, 30));
+            //Label titleLabel = new Label("Land Units Tree :", SkinUtil.getLabelSkin(160, 30));
+            //this.landUnitsTreePanel.add(titleLabel).padTop(20).width(160).row();
+            Tree<ScenarUnitNode, String> landUnitsTree = new Tree<>(SkinUtil.getUnitTreeSkin());
 
-            this.landUnitsTreePanel.add(titleLabel).padTop(20).width(160).row();
+            // TODO : vérifier que ça sert à qqchose
+            landUnitsTree.setPadding(10);
+            landUnitsTree.setIndentSpacing(30);
+            landUnitsTree.setIconSpacing(10, 20);
+            landUnitsTree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
+            //float rectWidth = (Gdx.graphics.getWidth() - (3 + 1) * 50f) / 3;
+            //float rectHeight = Gdx.graphics.getHeight() - 150f;
+            landUnitsTree.setBounds(0f, -20f, 300, 800);
+
+            ScenarUnitNode rootNode = GraphicUtil.createScenarTreeFromGroup(this.editScenarService.getSelectedOpponent().getLandArmyGroup(), this);
+            landUnitsTree.add(rootNode);
+            EditScenarScreen that = this;
+
+            landUnitsTree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
+                public void clicked (InputEvent event, float x, float y) {
+                    //LogUtil.logInfo("clic on root : " + that.editScenarService.getSelectedOpponent().getLandArmyGroup().getName());
+                    that.editScenarService.setSelectedUnit(that.editScenarService.getSelectedOpponent().getLandArmyGroup());
+                    that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
+                    that.rebuildSelectedOpponentEditPanel();
+                }
+            });
+            landUnitsTree.expandAll();
+            ScrollPane treeScrollPane = new ScrollPane(landUnitsTree, SkinUtil.getScrollPaneSkin(300, 800));
+            this.landUnitsTreePanel.add(treeScrollPane).padTop(20).width(300).colspan(3).row();
+            this.landUnitsTreePanel.invalidateHierarchy();
         }
     }
 
@@ -610,7 +651,7 @@ public class EditScenarScreen implements Screen {
         this.opponentsEditPanel.add(this.selectedOpponentEditPanel).row();
     }
 
-    private void rebuildSelectedOpponentEditPanel() {
+    public void rebuildSelectedOpponentEditPanel() {
         EditScenarScreen that = this;
         if (this.selectedOpponentEditPanel != null) {
             this.selectedOpponentEditPanel.clear();
@@ -655,8 +696,10 @@ public class EditScenarScreen implements Screen {
                     that.redrawMap();
 
                     // TODO enlever ternaire qd ok
-                    that.editMode = EditScenarModeEnum.OWNED_HEXES;
-                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                    that.updateEditMode(EditScenarModeEnum.OWNED_HEXES);
+
+                    //that.editMode = EditScenarModeEnum.OWNED_HEXES;
+                    //that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
 
@@ -673,10 +716,11 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
+                    that.updateEditMode(EditScenarModeEnum.NO_ACTION);
 
-                    that.editMode = EditScenarModeEnum.NO_ACTION;
+                    //that.editMode = EditScenarModeEnum.NO_ACTION;
                     // TODO faire méthode ?
-                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                    //that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
 
@@ -717,8 +761,10 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
-                    that.editMode = EditScenarModeEnum.EDGES_HEXES;
-                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                    that.updateEditMode(EditScenarModeEnum.EDGES_HEXES);
+
+                    //that.editMode = EditScenarModeEnum.EDGES_HEXES;
+                    //that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
 
@@ -735,8 +781,10 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
-                    that.editMode = EditScenarModeEnum.REINF_HEXES;
-                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                    that.updateEditMode(EditScenarModeEnum.REINF_HEXES);
+
+                    //that.editMode = EditScenarModeEnum.REINF_HEXES;
+                    //that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
             buttonHexesContainer.add(buttonReinfHexes.getButton()).padLeft(20).padRight(20);
@@ -752,8 +800,10 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
-                    that.editMode = EditScenarModeEnum.SUPPLY_HEXES;
-                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                    that.updateEditMode(EditScenarModeEnum.SUPPLY_HEXES);
+
+                    //that.editMode = EditScenarModeEnum.SUPPLY_HEXES;
+                    //that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                 }
             });
 
@@ -787,8 +837,10 @@ public class EditScenarScreen implements Screen {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     //LogUtil.logInfo("click deploy units");
-                    that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
-                    that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+                    that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
+
+                    //that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
+                    //that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
                     UnitRedCountryFactory factory = new UnitRedCountryFactory();
                     double randomName = Math.random();
                     String randomAcronym = String.valueOf(Math.round(randomName*10000));
@@ -803,12 +855,13 @@ public class EditScenarScreen implements Screen {
 
                     //UnitElement unit = factory.createInfRecoCompanyUnit(randomAcronym, randomAcronym, isElite, isElite, 0);
                     that.editScenarService.setSelectedUnit(unit);
+                    //that.updateSelectedUnitIcon(unit);
 
-                    Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(unit);
+                    //Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(unit);
                     //LogUtil.logInfo("Texture : " + unitTexture.getHeight() + " " + unitTexture.getWidth() + " " + unitTexture.getTextureData());
-                    that.selectedUnitIcon = new Image(unitTexture);
-                    that.selectedUnitIcon.setWidth(80);
-                    that.selectedUnitIcon.setHeight(80);
+                    //that.selectedUnitIcon = new Image(unitTexture);
+                    //that.selectedUnitIcon.setWidth(80);
+                    //that.selectedUnitIcon.setHeight(80);
                     that.rebuildSelectedOpponentEditPanel();
                 }
             });
@@ -831,9 +884,10 @@ public class EditScenarScreen implements Screen {
             landArmyButtonsContainer.add(this.landArmyGroupIcon).width(80).padTop(20).height(80);
 
             if(this.editScenarService.getSelectedUnit() != null) {
-                this.selectedUnitIcon = new Image(GraphicUtil.getCounterTextureFromUnit(this.editScenarService.getSelectedUnit()));
-                this.selectedUnitIcon.setWidth(80);
-                this.selectedUnitIcon.setHeight(80);
+                that.updateSelectedUnitIcon(this.editScenarService.getSelectedUnit());
+                //this.selectedUnitIcon = new Image(GraphicUtil.getCounterTextureFromUnit(this.editScenarService.getSelectedUnit()));
+                //this.selectedUnitIcon.setWidth(80);
+                //this.selectedUnitIcon.setHeight(80);
 
                 landArmyButtonsContainer.add(selectedUnitIcon).padLeft(20).padTop(20).width(80).height(80);
             }
@@ -1084,6 +1138,19 @@ public class EditScenarScreen implements Screen {
         toast.show(this.stage, 2f);
     }
 
+    public void updateEditMode(EditScenarModeEnum editMode) {
+        this.editMode = editMode;
+        this.editModeLabel.setText("Edit Mode : " + editMode.getName());
+    }
+
+    public void updateSelectedUnitIcon(ElementInterface unit) {
+        Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(unit);
+        this.selectedUnitIcon = new Image(unitTexture);
+        this.selectedUnitIcon.setWidth(80);
+        this.selectedUnitIcon.setHeight(80);
+        //this.rebuildSelectedOpponentEditPanel();
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -1096,8 +1163,6 @@ public class EditScenarScreen implements Screen {
             GraphicUtil.backgroundColorDark.b,
             GraphicUtil.backgroundColorDark.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
@@ -1310,6 +1375,9 @@ public class EditScenarScreen implements Screen {
                                 Hexagon hex = screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
                                 hex.getUnits().addUnitToUnits(screen.editScenarService.getSelectedUnit());
                                 this.screen.redrawMap();
+                                this.screen.updateEditMode(EditScenarModeEnum.NO_ACTION);
+                                //this.screen.editMode = EditScenarModeEnum.NO_ACTION;
+                                //this.screen.editModeLabel.setText("Edit Mode : " + this.screen.editMode.getName());
                             }
                         }
 

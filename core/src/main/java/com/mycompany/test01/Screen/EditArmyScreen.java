@@ -747,7 +747,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
         float rectHeight = Gdx.graphics.getHeight() - 150f;
         //float padding = 50f;
         //float width = (Gdx.graphics.getWidth() - 200f) / 3 - 2 * padding;
-        ScrollPane leftScrollPane = new ScrollPane(tree, SkinUtil.getScrollPaneSkin((int) rectWidth, (int) rectHeight));
+        ScrollPane leftScrollPane = new ScrollPane(this.tree, SkinUtil.getScrollPaneSkin((int) rectWidth, (int) rectHeight));
         leftScrollPane.setBounds(0f, 0f, rectWidth, rectHeight);
 
         return leftScrollPane;
