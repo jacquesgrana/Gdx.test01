@@ -20,11 +20,12 @@ public class ScenarUnitNode extends Tree.Node<ScenarUnitNode, ElementInterface, 
         Image unitImage = new Image(GraphicUtil.getCounterTextureFromUnit(unit));
         Label infoLabel = new Label(
             unit.getName(),
-            SkinUtil.getTreeNodeLabelSkin(180, 60)
+            SkinUtil.getTreeNodeLabelSkin(120, 60)
         );
 
         nodeContent.add(unitImage).size(60, 60).padRight(5);
-        nodeContent.add(infoLabel).size(180, 60);
+        nodeContent.add(infoLabel).size(120, 60);
+        nodeContent.setSize(180, 80);
         /*
         Image groupImage = new Image(GraphicUtil.groupTreeIconUnitTexture);
         if (unit instanceof UnitGroup) {

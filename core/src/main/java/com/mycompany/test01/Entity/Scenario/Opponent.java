@@ -1,6 +1,8 @@
 package com.mycompany.test01.Entity.Scenario;
 
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.mycompany.test01.Common.OnBoardUnit;
 import com.mycompany.test01.Entity.Airplane.Abstract.AirplaneSquadronGroup;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
@@ -29,6 +31,8 @@ public class Opponent {
     private SupplyElement initialRootSupplyStock = new SupplyElement();
     private float supplyRatio = 0f;
     private float reinfRatio = 0f;
+    private Set<OnBoardUnit> deployedUnits = new HashSet<>();
+
 
     public Opponent() {
     }
@@ -200,6 +204,14 @@ public class Opponent {
 
     public void setReinfRatio(float reinfRatio) {
         this.reinfRatio = reinfRatio;
+    }
+
+    public Set<OnBoardUnit> getDeployedUnits() {
+        return deployedUnits;
+    }
+
+    public void setDeployedUnits(Set<OnBoardUnit> deployedUnits) {
+        this.deployedUnits = deployedUnits;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.mycompany.test01.Service;
 
+import com.badlogic.gdx.utils.Array;
+import com.mycompany.test01.Common.OnBoardUnit;
 import com.mycompany.test01.Config.ScenarConfig;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
@@ -16,6 +18,7 @@ public class EditScenarService {
 
     private ElementInterface selectedUnit = null;
 
+    // TODO : passer dans la map du scenar?
     private int mapBrushSize = 0;
 
     //private OpponentSideEnum[] sidesAll = OpponentSideEnum.values();

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mycompany.test01.Common.OnBoardUnit;
 import com.mycompany.test01.Common.ScenarUnitNode;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Map.Cliff;
@@ -589,9 +590,17 @@ public class GraphicUtil {
                         //System.out.println("click on group");
                         if (screen instanceof EditScenarScreen) {
                             EditScenarScreen that = (EditScenarScreen) screen;
-                            that.editScenarService.setSelectedUnit(element);
-                            that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
-                            that.rebuildSelectedOpponentEditPanel();
+                            OnBoardUnit onBoardUnit = new OnBoardUnit();
+                            onBoardUnit.setUnit(element);
+                            boolean isDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
+                                unit.equals(onBoardUnit)
+                            );
+                            if(!isDeployed) {
+                                //that.displayUnitInfos(element);
+                                that.editScenarService.setSelectedUnit(element);
+                                that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
+                                that.rebuildSelectedOpponentEditPanel();
+                            }
                         }
                         //childGroupNode.setExpanded(!childGroupNode.isExpanded());
                     }
@@ -607,17 +616,19 @@ public class GraphicUtil {
                         //System.out.println("click on unit");
                         if (screen instanceof EditScenarScreen) {
                             EditScenarScreen that = (EditScenarScreen) screen;
-                            //that.displayUnitInfos(element);
-                            that.editScenarService.setSelectedUnit(element);
-                            that.editMode = EditScenarModeEnum.DEPLOY_UNITS;
-                            that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
 
-                            Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(element);
-                            //LogUtil.logInfo("Texture : " + unitTexture.getHeight() + " " + unitTexture.getWidth() + " " + unitTexture.getTextureData());
-                            that.selectedUnitIcon = new Image(unitTexture);
-                            that.selectedUnitIcon.setWidth(80);
-                            that.selectedUnitIcon.setHeight(80);
-                            that.rebuildSelectedOpponentEditPanel();
+                            OnBoardUnit onBoardUnit = new OnBoardUnit();
+                            onBoardUnit.setUnit(element);
+                            boolean isDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
+                                unit.equals(onBoardUnit)
+                            );
+                            if(!isDeployed) {
+                                //that.displayUnitInfos(element);
+                                that.editScenarService.setSelectedUnit(element);
+                                that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
+                                that.rebuildSelectedOpponentEditPanel();
+                            }
+
                         }
                     }
                 });
@@ -670,7 +681,7 @@ public class GraphicUtil {
 
     // TODO : déplacer dans UnitUtil ?
     public static Texture getCounterTextureFromUnit(ElementInterface unit) {
-        Texture toReturn = getEmptyTexture();
+        //Texture toReturn = getEmptyTexture();
         Texture background = getCountryTexture(unit);
         Texture typeIcon = getUnitTypeTexture(unit);
 
@@ -687,7 +698,7 @@ public class GraphicUtil {
             levelAddon = getLevelAddonTexture((UnitGroup) unit);
         }
 
-        toReturn = stackTextures(background, typeIcon, paraAddon, motorisedAddon, regRankAddon, levelAddon, companyAddon);
+        Texture toReturn = stackTextures(background, typeIcon, paraAddon, motorisedAddon, regRankAddon, levelAddon, companyAddon);
 
         // Ajouter le texte de l'acronyme à la texture
         String acronym = unit.getAcronym();

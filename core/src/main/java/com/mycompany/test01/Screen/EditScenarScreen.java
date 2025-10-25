@@ -20,10 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mycompany.test01.Common.ButtonWrapper;
-import com.mycompany.test01.Common.ScenarUnitNode;
-import com.mycompany.test01.Common.Toast;
-import com.mycompany.test01.Common.UnitNode;
+import com.mycompany.test01.Common.*;
 import com.mycompany.test01.Config.MapConfig;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Scenario.Opponent;
@@ -517,6 +514,7 @@ public class EditScenarScreen implements Screen {
             Tree<ScenarUnitNode, String> landUnitsTree = new Tree<>(SkinUtil.getUnitTreeSkin());
 
             // TODO : vérifier que ça sert à qqchose
+            /*
             landUnitsTree.setPadding(10);
             landUnitsTree.setIndentSpacing(30);
             landUnitsTree.setIconSpacing(10, 20);
@@ -525,6 +523,8 @@ public class EditScenarScreen implements Screen {
             //float rectHeight = Gdx.graphics.getHeight() - 150f;
             landUnitsTree.setBounds(0f, -20f, 300, 800);
 
+             */
+
             ScenarUnitNode rootNode = GraphicUtil.createScenarTreeFromGroup(this.editScenarService.getSelectedOpponent().getLandArmyGroup(), this);
             landUnitsTree.add(rootNode);
             EditScenarScreen that = this;
@@ -532,14 +532,22 @@ public class EditScenarScreen implements Screen {
             landUnitsTree.getRootNodes().get(0).getActor().addListener(new ClickListener() {
                 public void clicked (InputEvent event, float x, float y) {
                     //LogUtil.logInfo("clic on root : " + that.editScenarService.getSelectedOpponent().getLandArmyGroup().getName());
-                    that.editScenarService.setSelectedUnit(that.editScenarService.getSelectedOpponent().getLandArmyGroup());
-                    that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
-                    that.rebuildSelectedOpponentEditPanel();
+                    OnBoardUnit onBoardUnit = new OnBoardUnit();
+                    onBoardUnit.setUnit(that.editScenarService.getSelectedOpponent().getLandArmyGroup());
+                    boolean isDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
+                        unit.equals(onBoardUnit)
+                    );
+                    if(!isDeployed) {
+                        that.editScenarService.setSelectedUnit(that.editScenarService.getSelectedOpponent().getLandArmyGroup());
+                        that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
+                        that.rebuildSelectedOpponentEditPanel();
+                    }
+
                 }
             });
             landUnitsTree.expandAll();
-            ScrollPane treeScrollPane = new ScrollPane(landUnitsTree, SkinUtil.getScrollPaneSkin(300, 800));
-            this.landUnitsTreePanel.add(treeScrollPane).padTop(20).width(300).colspan(3).row();
+            ScrollPane treeScrollPane = new ScrollPane(landUnitsTree, SkinUtil.getScrollPaneSkin(320, 800));
+            this.landUnitsTreePanel.add(treeScrollPane).padTop(20).width(320).colspan(3).row();
             this.landUnitsTreePanel.invalidateHierarchy();
         }
     }
@@ -1144,7 +1152,10 @@ public class EditScenarScreen implements Screen {
     }
 
     public void updateSelectedUnitIcon(ElementInterface unit) {
-        Texture unitTexture = GraphicUtil.getCounterTextureFromUnit(unit);
+        Texture unitTexture = GraphicUtil.getEmptyTexture();
+        if(unit != null) {
+            unitTexture = GraphicUtil.getCounterTextureFromUnit(unit);
+        }
         this.selectedUnitIcon = new Image(unitTexture);
         this.selectedUnitIcon.setWidth(80);
         this.selectedUnitIcon.setHeight(80);
@@ -1372,10 +1383,18 @@ public class EditScenarScreen implements Screen {
                         else if(screen.editMode == EditScenarModeEnum.DEPLOY_UNITS) {
                             if(screen.editScenarService.getSelectedUnit() != null) {
                                 //LogUtil.logInfo("selected unit not null");
+                                
                                 Hexagon hex = screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
                                 hex.getUnits().addUnitToUnits(screen.editScenarService.getSelectedUnit());
+
+                                OnBoardUnit onBoardUnit = new OnBoardUnit(screen.editScenarService.getSelectedUnit(), iAbs, jAbs);
+                                this.screen.editScenarService.getSelectedOpponent().getDeployedUnits().add(onBoardUnit);
+
                                 this.screen.redrawMap();
                                 this.screen.updateEditMode(EditScenarModeEnum.NO_ACTION);
+                                this.screen.editScenarService.setSelectedUnit(null);
+                                this.screen.updateSelectedUnitIcon(null);
+                                this.screen.rebuildSelectedOpponentEditPanel();
                                 //this.screen.editMode = EditScenarModeEnum.NO_ACTION;
                                 //this.screen.editModeLabel.setText("Edit Mode : " + this.screen.editMode.getName());
                             }
