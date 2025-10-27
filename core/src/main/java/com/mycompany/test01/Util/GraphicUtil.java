@@ -613,15 +613,15 @@ public class GraphicUtil {
                 childGroupNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
                         //System.out.println("click on group");
-                        if (screen instanceof EditScenarScreen) {
-                            if(!isDeployed) {
-                                //that.displayUnitInfos(element);
-                                that.editScenarService.setSelectedUnit(element);
-                                that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
-                                that.rebuildSelectedOpponentEditPanel();
-                                // TODO set le TreeNode : childGroupNode
-                                //that.editScenarService.setSelectedTreeNode(childGroupNode);
-                            }
+                        if (!isDeployed) {
+
+                            //that.displayUnitInfos(element);
+                            that.editScenarService.setSelectedUnit(element);
+                            that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
+                            that.rebuildSelectedOpponentEditPanel();
+                            // TODO set le TreeNode : childGroupNode
+                            //that.editScenarService.setSelectedTreeNode(childGroupNode);
+
                         }
                         //childGroupNode.setExpanded(!childGroupNode.isExpanded());
                     }
@@ -636,17 +636,15 @@ public class GraphicUtil {
                 unitNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
                         //System.out.println("click on unit");
-                        if (screen instanceof EditScenarScreen) {
-                            if(!isDeployed) {
-                                //that.displayUnitInfos(element);
-                                that.editScenarService.setSelectedUnit(element);
-                                that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
-                                that.rebuildSelectedOpponentEditPanel();
-                                // TODO set le TreeNode : unitNode
-                                //that.editScenarService.setSelectedTreeNode(unitNode);
-                            }
-
+                        if (!isDeployed) {
+                            //that.displayUnitInfos(element);
+                            that.editScenarService.setSelectedUnit(element);
+                            that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
+                            that.rebuildSelectedOpponentEditPanel();
+                            // TODO set le TreeNode : unitNode
+                            //that.editScenarService.setSelectedTreeNode(unitNode);
                         }
+
                     }
                 });
             }
