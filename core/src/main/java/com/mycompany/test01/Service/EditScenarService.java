@@ -2,6 +2,7 @@ package com.mycompany.test01.Service;
 
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Common.OnBoardUnit;
+import com.mycompany.test01.Common.ScenarUnitNode;
 import com.mycompany.test01.Config.ScenarConfig;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
@@ -17,6 +18,8 @@ public class EditScenarService {
     private Opponent selectedOpponent = null;
 
     private ElementInterface selectedUnit = null;
+
+    //private ScenarUnitNode selectedTreeNode;
 
     // TODO : passer dans la map du scenar?
     private int mapBrushSize = 0;
@@ -68,6 +71,18 @@ public class EditScenarService {
     public void setSelectedUnit(ElementInterface selectedUnit) {
         this.selectedUnit = selectedUnit;
     }
+
+    /*
+    public ScenarUnitNode getSelectedTreeNode() {
+        return selectedTreeNode;
+    }
+
+    public void setSelectedTreeNode(ScenarUnitNode selectedTreeNode) {
+        this.selectedTreeNode = selectedTreeNode;
+    }
+
+     */
+
 
     /*
     public void setSidesFromCount() {

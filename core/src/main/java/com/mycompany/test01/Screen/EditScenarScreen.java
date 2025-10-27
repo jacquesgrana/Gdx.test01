@@ -42,6 +42,7 @@ import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
+//import com.badlogic.gdx.scenes.scene2d.utils.ColorDrawable;
 import jdk.jpackage.internal.Log;
 
 import java.util.ArrayList;
@@ -538,9 +539,15 @@ public class EditScenarScreen implements Screen {
                         unit.equals(onBoardUnit)
                     );
                     if(!isDeployed) {
+                        //landUnitsTree.getRootNodes().get(0).getActor().background(new TextureRegionDrawable(GraphicUtil.orangeTexture));
                         that.editScenarService.setSelectedUnit(that.editScenarService.getSelectedOpponent().getLandArmyGroup());
                         that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
                         that.rebuildSelectedOpponentEditPanel();
+                        // TODO set le TreeNode : landUnitsTree.getRootNodes().get(0).getActor()
+                        //that.editScenarService.setSelectedTreeNode(landUnitsTree.getRootNodes().get(0));
+
+
+
                     }
 
                 }
@@ -1381,10 +1388,12 @@ public class EditScenarScreen implements Screen {
                             this.screen.redrawMap();
                         }
                         else if(screen.editMode == EditScenarModeEnum.DEPLOY_UNITS) {
-                            if(screen.editScenarService.getSelectedUnit() != null) {
+                            Hexagon hex = screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
+                            boolean isHexInOwnedHexes = hex.getOwnerCountry() == screen.editScenarService.getSelectedOpponent().getCountry();
+                            if(screen.editScenarService.getSelectedUnit() != null && isHexInOwnedHexes) {
                                 //LogUtil.logInfo("selected unit not null");
-                                
-                                Hexagon hex = screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
+
+
                                 hex.getUnits().addUnitToUnits(screen.editScenarService.getSelectedUnit());
 
                                 OnBoardUnit onBoardUnit = new OnBoardUnit(screen.editScenarService.getSelectedUnit(), iAbs, jAbs);
@@ -1394,7 +1403,11 @@ public class EditScenarScreen implements Screen {
                                 this.screen.updateEditMode(EditScenarModeEnum.NO_ACTION);
                                 this.screen.editScenarService.setSelectedUnit(null);
                                 this.screen.updateSelectedUnitIcon(null);
+
+                                //this.screen.rebuildLandUnitsTreePanel();
+
                                 this.screen.rebuildSelectedOpponentEditPanel();
+
                                 //this.screen.editMode = EditScenarModeEnum.NO_ACTION;
                                 //this.screen.editModeLabel.setText("Edit Mode : " + this.screen.editMode.getName());
                             }

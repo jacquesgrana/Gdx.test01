@@ -9,17 +9,19 @@ import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.SkinUtil;
 
 public class ScenarUnitNode extends Tree.Node<ScenarUnitNode, ElementInterface, Table> {
-    public ScenarUnitNode(ElementInterface unit) {
-        super(createNodeActor(unit));
+
+    public ScenarUnitNode(ElementInterface unit, boolean isDeployed) {
+        super(createNodeActor(unit, isDeployed));
         setValue(unit);
     }
 
-    private static Table createNodeActor(ElementInterface unit) {
+    private static Table createNodeActor(ElementInterface unit, boolean isDeployed) {
         Table nodeContent = new Table();
 
         Image unitImage = new Image(GraphicUtil.getCounterTextureFromUnit(unit));
+        String comment = isDeployed ? unit.getName() + " / DEP" : unit.getName() + " / NDEP";
         Label infoLabel = new Label(
-            unit.getName(),
+            comment,
             SkinUtil.getTreeNodeLabelSkin(120, 60)
         );
 

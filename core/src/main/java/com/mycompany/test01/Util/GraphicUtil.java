@@ -20,6 +20,7 @@ import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Interface.unit.ElementInterface;
 import com.mycompany.test01.Screen.EditArmyScreen;
 import com.mycompany.test01.Screen.EditScenarScreen;
+import com.mycompany.test01.Service.EditScenarService;
 
 import java.nio.ByteBuffer;
 
@@ -575,11 +576,35 @@ public class GraphicUtil {
 
     // TODO : déplacer dans UnitUtil ?
     public static ScenarUnitNode createScenarTreeFromGroup(UnitGroup group, Screen screen) {
+        EditScenarScreen that = (EditScenarScreen) screen;
+
+        // TODO faire méthode de opponent par le service
+        /*
+        OnBoardUnit onBoardRootUnit = new OnBoardUnit();
+        onBoardRootUnit.setUnit(group);
+        //EditScenarService editScenarService = EditScenarService.getInstance();
+        boolean isRootDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
+            unit.equals(onBoardRootUnit)
+        );
+
+         */
+        boolean isRootDeployed = that.editScenarService.getSelectedOpponent().isUnitDeployed(group);
         // Créer un nœud pour le groupe actuel
-        ScenarUnitNode groupNode = new ScenarUnitNode(group);
+        ScenarUnitNode groupNode = new ScenarUnitNode(group, isRootDeployed);
 
         // Parcourir les unités du groupe
         for (ElementInterface element : group.getUnits()) {
+
+            // TODO faire méthode de opponent par le service
+            /*
+            OnBoardUnit onBoardUnit = new OnBoardUnit();
+            onBoardUnit.setUnit(element);
+            boolean isDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
+                unit.equals(onBoardUnit)
+            );
+             */
+            boolean isDeployed = that.editScenarService.getSelectedOpponent().isUnitDeployed(element);
+
             if (element instanceof UnitGroup) {
                 // Si c'est un sous-groupe, appel récursif
                 ScenarUnitNode childGroupNode = createScenarTreeFromGroup((UnitGroup) element, screen);
@@ -589,44 +614,36 @@ public class GraphicUtil {
                     public void clicked (InputEvent event, float x, float y) {
                         //System.out.println("click on group");
                         if (screen instanceof EditScenarScreen) {
-                            EditScenarScreen that = (EditScenarScreen) screen;
-                            OnBoardUnit onBoardUnit = new OnBoardUnit();
-                            onBoardUnit.setUnit(element);
-                            boolean isDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
-                                unit.equals(onBoardUnit)
-                            );
                             if(!isDeployed) {
                                 //that.displayUnitInfos(element);
                                 that.editScenarService.setSelectedUnit(element);
                                 that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
                                 that.rebuildSelectedOpponentEditPanel();
+                                // TODO set le TreeNode : childGroupNode
+                                //that.editScenarService.setSelectedTreeNode(childGroupNode);
                             }
                         }
                         //childGroupNode.setExpanded(!childGroupNode.isExpanded());
                     }
                 });
 
-            } else if (element instanceof Unit) {
+            }
+            else if (element instanceof Unit) {
                 // Si c'est une unité, créer un nœud simple
-                ScenarUnitNode unitNode = new ScenarUnitNode((Unit) element);
+                ScenarUnitNode unitNode = new ScenarUnitNode((Unit) element, isDeployed);
                 groupNode.add(unitNode); // Ajouter l'unité au nœud actuel
                 // ajouter listener
                 unitNode.getActor().addListener(new ClickListener() {
                     public void clicked (InputEvent event, float x, float y) {
                         //System.out.println("click on unit");
                         if (screen instanceof EditScenarScreen) {
-                            EditScenarScreen that = (EditScenarScreen) screen;
-
-                            OnBoardUnit onBoardUnit = new OnBoardUnit();
-                            onBoardUnit.setUnit(element);
-                            boolean isDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
-                                unit.equals(onBoardUnit)
-                            );
                             if(!isDeployed) {
                                 //that.displayUnitInfos(element);
                                 that.editScenarService.setSelectedUnit(element);
                                 that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
                                 that.rebuildSelectedOpponentEditPanel();
+                                // TODO set le TreeNode : unitNode
+                                //that.editScenarService.setSelectedTreeNode(unitNode);
                             }
 
                         }

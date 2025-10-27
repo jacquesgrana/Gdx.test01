@@ -10,6 +10,7 @@ import com.mycompany.test01.Entity.Unit.Group.ArmyGroup;
 import com.mycompany.test01.Entity.Unit.Group.FrontGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.OpponentSideEnum;
+import com.mycompany.test01.Interface.unit.ElementInterface;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -74,6 +75,14 @@ public class Opponent {
         this.initialRootSupplyStock = initialRootSupplyStock;
         this.supplyRatio = supplyRatio;
         this.reinfRatio = reinfRatio;
+    }
+
+    public boolean isUnitDeployed(ElementInterface unit) {
+        OnBoardUnit onBoardUnit = new OnBoardUnit();
+        onBoardUnit.setUnit(unit);
+        return this.getDeployedUnits().stream().anyMatch((OnBoardUnit u) ->
+            u.equals(onBoardUnit)
+        );
     }
 
     public int getId() {
