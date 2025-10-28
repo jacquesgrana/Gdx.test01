@@ -1281,10 +1281,10 @@ public class GraphicUtil {
         return toReturn;
     }
 
-    // TODO modifier enum et ajouter deux textures selon isElite
     public static Texture getCountryTexture(ElementInterface unit) {
-        Texture toReturn = getEmptyTexture();
         // choix du bg de l'unité en fonction du pays
+
+        /*
         switch (unit.getCountry()) {
             case RED_COUNTRY:
                 toReturn = unit.isElite() ? counterBgRedCountry01Texture : counterBgRedCountry02Texture;
@@ -1305,7 +1305,10 @@ public class GraphicUtil {
                 toReturn = unit.isElite() ? counterBgBrownCountry01Texture : counterBgBrownCountry02Texture;
                 break;
         }
-        return toReturn;
+
+         */
+
+        return unit.isElite() ? unit.getCountry().getCountryTextureElite() : unit.getCountry().getCountryTextureNormal();
     }
 
     public static Texture getUnitTypeTexture(ElementInterface unit) {
@@ -1579,7 +1582,6 @@ public class GraphicUtil {
 
     /**
      * Algorithme de Bresenham modifié pour dessiner des lignes épaisses continues
-     * TODO : deplace dans un util ou ailleurs
      * ajouter drawingMapPixmap en paramètre
      */
     public static void drawThickLine(
