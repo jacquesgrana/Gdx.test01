@@ -1,19 +1,24 @@
 package com.mycompany.test01.Enum;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.mycompany.test01.Util.GraphicUtil;
+
 public enum FortificationCategory {
-    NO_FORTIFICATION ("No Fortification", 0.0f),
-    WOOD_LIGHT ("Wood Light", 1.5f),
-    WOOD_MEDIUM ("Wood Medium", 2.0f),
-    CONCRETE_LIGHT ("Concrete Light", 2.5f),
-    CONCRETE_MEDIUM ("Concrete Medium", 3.0f),
-    CONCRETE_HEAVY("Concrete Heavy", 3.5f);
+    NO_FORTIFICATION ("No Fortification", 0.0f, GraphicUtil.getEmptyTexture()),
+    WOOD_LIGHT ("Wood Light", 1.5f, GraphicUtil.fortifWoodLightTexture),
+    WOOD_MEDIUM ("Wood Medium", 2.0f, GraphicUtil.fortifWoodMediumTexture),
+    CONCRETE_LIGHT ("Concrete Light", 2.5f, GraphicUtil.fortifConcreteLightTexture),
+    CONCRETE_MEDIUM ("Concrete Medium", 3.0f, GraphicUtil.fortifConcreteMediumTexture),
+    CONCRETE_HEAVY("Concrete Heavy", 3.5f, GraphicUtil.fortifConcreteHeavyTexture);
 
     private final String name;
     private final float level;
+    private final Texture texture;
 
-    FortificationCategory(String name, float level) {
+    FortificationCategory(String name, float level, Texture texture) {
         this.name = name;
         this.level = level;
+        this.texture = texture;
     }
 
     public String getName() {
@@ -23,6 +28,8 @@ public enum FortificationCategory {
     public float getLevel() {
         return level;
     }
+
+    public Texture getTexture() { return texture; }
 
     static public FortificationCategory getRandomFortification() {
         float random = (float) Math.random();

@@ -30,13 +30,13 @@ public class ScenarUnitNode extends Tree.Node<ScenarUnitNode, ElementInterface, 
         // Label avec le nom
         String comment = unit.getName();
         //comment += isDeployed ? " / DEP" : " / NDEP";
-        Label infoLabel = new Label(comment, SkinUtil.getTreeNodeLabelSkin(120, 60));
+        Label infoLabel = new Label(comment, SkinUtil.getTreeNodeLabelSkin(100, 40));
 
         // Assemblage : indicateur à gauche, puis image, puis label
         nodeContent.add(statusIndicator).size(20, 20).padRight(5);
-        nodeContent.add(unitImage).size(60, 60).padRight(5);
-        nodeContent.add(infoLabel).size(120, 60);
-        nodeContent.setSize(205, 80); // Ajusté pour inclure l'indicateur
+        nodeContent.add(unitImage).size(40, 40).padRight(5);
+        nodeContent.add(infoLabel).size(100, 40);
+        nodeContent.setSize(170, 50); // Ajusté pour inclure l'indicateur
 
         return nodeContent;
     }
@@ -46,7 +46,7 @@ public class ScenarUnitNode extends Tree.Node<ScenarUnitNode, ElementInterface, 
         Pixmap pixmap = new Pixmap(20, 20, Pixmap.Format.RGBA8888);
 
         // Choisir la couleur selon le statut
-        Color color = isDeployed ? GraphicUtil.colorGreen : GraphicUtil.colorOrange;
+        Color color = isDeployed ? GraphicUtil.colorGreen : GraphicUtil.colorRed;
         pixmap.setColor(color);
 
         // Dessiner un cercle (ou un carré avec fill())

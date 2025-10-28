@@ -292,6 +292,7 @@ public class GraphicUtil {
         }
     }
 
+    /*
     public static Texture getTextureFromTerrain(HexagonCategory terrain) {
         switch (terrain) {
             case FOREST:
@@ -311,7 +312,9 @@ public class GraphicUtil {
         }
         return redTexture;
     }
+     */
 
+    /*
     public static Texture getTextureFromFortification(FortificationCategory fortification) {
         switch (fortification) {
             case WOOD_LIGHT:
@@ -329,6 +332,7 @@ public class GraphicUtil {
         }
         return getEmptyTexture();
     }
+     */
 
     public static Texture getTextureSideFromCliff(Cliff cliff, int side) {
         Texture toReturn = getEmptyTexture();
@@ -448,6 +452,7 @@ public class GraphicUtil {
         return texture.getTextureData().consumePixmap();
     }
 
+/*
     public static Color getColorFromTerrain(HexagonCategory category) {
         Color toReturn = Color.WHITE;
         switch (category) {
@@ -474,6 +479,8 @@ public class GraphicUtil {
         }
         return toReturn;
     }
+ */
+
 
     /**
      * Creates a Texture containing a horizontal line with variable thickness and color.
@@ -484,12 +491,18 @@ public class GraphicUtil {
      * @return A Texture object containing the horizontal line.  The caller is responsible for disposing of the Texture.
      * @throws IllegalArgumentException if width, height, or lineThickness are invalid.
      */
-    public static Texture getTextureFromRoadForButton(int width, int height,
-                                             int lineThickness, RoadCategory roadCategory) {
+    public static Texture getTextureFromRoadForButton(int width, int height, int lineThickness, RoadCategory roadCategory) {
         // Validate parameters
         if (width <= 0 || height <= 0 || lineThickness <= 0) {
             throw new IllegalArgumentException("Width, height, and lineThickness must be positive.");
         }
+
+        if(roadCategory == RoadCategory.NO_ROAD) {
+            return GraphicUtil.getEmptyTexture();
+        }
+
+        // TODO modifier enum et inclure lineColor
+        /*
         Color lineColor = Color.BLUE;
         switch(roadCategory) {
         case PATHWAY:
@@ -504,8 +517,11 @@ public class GraphicUtil {
         case NO_ROAD:
             return GraphicUtil.getEmptyTexture();
         }
+         */
 
-        // Create Pixmap
+        Color lineColor = roadCategory.getLineColor();
+
+            // Create Pixmap
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 
         // Set background color to light gray
@@ -535,8 +551,14 @@ public class GraphicUtil {
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("Width, height, and lineThickness must be positive.");
         }
+
+        if(riverCategory == RiverCategory.NO_RIVER) {
+            return GraphicUtil.getEmptyTexture();
+        }
+
+        /*
         int lineThickness = 1;
-        Color lineColor = Color.BLUE;
+
         switch(riverCategory) {
             case NARROW:
                 lineThickness = 2;
@@ -550,6 +572,9 @@ public class GraphicUtil {
             case NO_RIVER:
                 return GraphicUtil.getEmptyTexture();
         }
+         */
+        //Color lineColor = Color.BLUE;
+        //int lineThickness = riverCategory.getLineThickness();
 
         // Create Pixmap
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
@@ -559,11 +584,11 @@ public class GraphicUtil {
         pixmap.fill();  // Fill the entire Pixmap with light gray
 
         // Calculate line Y position (center the line)
-        int lineY = (height / 2) - (lineThickness / 2);
+        int lineY = (height / 2) - (riverCategory.getLineThickness() / 2);
 
         // Set color and draw the line
-        pixmap.setColor(lineColor);
-        pixmap.fillRectangle(0, lineY, width, lineThickness);
+        pixmap.setColor(Color.BLUE);
+        pixmap.fillRectangle(0, lineY, width, riverCategory.getLineThickness());
 
         // Create Texture from Pixmap
         Texture texture = new Texture(pixmap);
@@ -579,30 +604,12 @@ public class GraphicUtil {
         EditScenarScreen that = (EditScenarScreen) screen;
 
         // TODO faire méthode de opponent par le service
-        /*
-        OnBoardUnit onBoardRootUnit = new OnBoardUnit();
-        onBoardRootUnit.setUnit(group);
-        //EditScenarService editScenarService = EditScenarService.getInstance();
-        boolean isRootDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
-            unit.equals(onBoardRootUnit)
-        );
-
-         */
         boolean isRootDeployed = that.editScenarService.getSelectedOpponent().isUnitDeployed(group);
         // Créer un nœud pour le groupe actuel
         ScenarUnitNode groupNode = new ScenarUnitNode(group, isRootDeployed);
 
         // Parcourir les unités du groupe
         for (ElementInterface element : group.getUnits()) {
-
-            // TODO faire méthode de opponent par le service
-            /*
-            OnBoardUnit onBoardUnit = new OnBoardUnit();
-            onBoardUnit.setUnit(element);
-            boolean isDeployed = that.editScenarService.getSelectedOpponent().getDeployedUnits().stream().anyMatch((OnBoardUnit unit) ->
-                unit.equals(onBoardUnit)
-            );
-             */
             boolean isDeployed = that.editScenarService.getSelectedOpponent().isUnitDeployed(element);
 
             if (element instanceof UnitGroup) {
@@ -619,7 +626,6 @@ public class GraphicUtil {
                             that.editScenarService.setSelectedUnit(element);
                             that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
                             that.rebuildSelectedOpponentEditPanel();
-                            // TODO set le TreeNode : childGroupNode
                             //that.editScenarService.setSelectedTreeNode(childGroupNode);
 
                         }
@@ -641,7 +647,6 @@ public class GraphicUtil {
                             that.editScenarService.setSelectedUnit(element);
                             that.updateEditMode(EditScenarModeEnum.DEPLOY_UNITS);
                             that.rebuildSelectedOpponentEditPanel();
-                            // TODO set le TreeNode : unitNode
                             //that.editScenarService.setSelectedTreeNode(unitNode);
                         }
 
@@ -1276,6 +1281,7 @@ public class GraphicUtil {
         return toReturn;
     }
 
+    // TODO modifier enum et ajouter deux textures selon isElite
     public static Texture getCountryTexture(ElementInterface unit) {
         Texture toReturn = getEmptyTexture();
         // choix du bg de l'unité en fonction du pays

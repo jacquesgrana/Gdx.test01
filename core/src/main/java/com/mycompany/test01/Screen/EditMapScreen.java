@@ -542,8 +542,9 @@ public class EditMapScreen implements Screen {
     private Table createTerrainButtonPanel() {
         Table panel = new Table();
         // Ajouter l'image de la texture
-        Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
-        Image terrainImage = new Image(terrainTexture);
+        //Texture terrainTexture = GraphicUtil.getTextureFromTerrain(this.selectedTerrain);
+        Texture terrainTexture = this.selectedTerrain.getTexture();
+            Image terrainImage = new Image(terrainTexture);
         terrainImage.setSize(64, 64);
         panel.defaults().pad(7);
 
@@ -578,7 +579,7 @@ public class EditMapScreen implements Screen {
                     selectedTerrain = terrainType;
                     selectedTerrainLabel.setText("Selected Terrain : " + terrainType.toString());
                     // ajouter update affichage miniature du selectedTerrain
-                    terrainImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromTerrain(that.selectedTerrain))));
+                    terrainImage.setDrawable(new TextureRegionDrawable(new TextureRegion(that.selectedTerrain.getTexture())));
                 }
             });
             panel.add(button);
@@ -632,7 +633,7 @@ public class EditMapScreen implements Screen {
                     //System.out.println("Selected fortification : " + fortificationType.toString());
                     selectedFortification = fortificationType;
                     selectedFortificationLabel.setText("Selected Fortification : " + fortificationType.toString());
-                    fortificationImage.setDrawable(new TextureRegionDrawable(new TextureRegion(GraphicUtil.getTextureFromFortification(selectedFortification))));
+                    fortificationImage.setDrawable(new TextureRegionDrawable(new TextureRegion(selectedFortification.getTexture())));
                 }
             });
             panel.add(button);

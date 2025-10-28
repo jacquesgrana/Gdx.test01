@@ -246,7 +246,8 @@ public class Map {
                 //int x = getXFromIJ(i, j);
                 //int y = getYFromJ(j);
 
-                Texture texture = GraphicUtil.getTextureFromTerrain(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCategory());
+                //Texture texture = GraphicUtil.getTextureFromTerrain(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCategory());
+                Texture texture = this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getCategory().getTexture();
 
                 renderHex(i + startI, j + startJ, texture, drawingPixmap);
                 //drawHexagon(drawingPixmap, x, y, this.getHexagonSize(), texture, Color.BLACK);
@@ -283,7 +284,7 @@ public class Map {
                         drawFortification(
                             drawingPixmap,
                             i, j, this.getHexagonSize() * 2, // ajouté !!
-                            GraphicUtil.getTextureFromFortification(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification()));
+                            this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getFortification().getTexture());
                     }
                 }
 
@@ -573,7 +574,7 @@ public class Map {
         // dessin de la miniMap
         for(int i=0; i<this.getLimitI(); i++) {
             for(int j=0; j<this.getLimitJ(); j++) {
-                Color fillColor = GraphicUtil.getColorFromTerrain(this.getHexesArray().get(i).get(j).getCategory());
+                Color fillColor = this.getHexesArray().get(i).get(j).getCategory().getColor();
                 drawingMapPixmap.setColor(fillColor);
 
                 for(int k=0; k<this.getMinimap().getMiniHexSize(); k++) {

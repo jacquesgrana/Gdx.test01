@@ -251,7 +251,7 @@ public class EditMapService {
                 //Color hexColor = hexesArray.get(i + startI).get(j + startJ).getColorFromCategory();
                 // faire méthode dans enum ou GraphicUtil qui renvoie la texture en fonction du terrain
 
-                Texture texture = GraphicUtil.getTextureFromTerrain(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory());
+                Texture texture = this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getCategory().getTexture();
                 Texture textureTransp = null;
                 // dessine l'hex actif et ses voisins dans le mode Road
                 if(roadStartHex != null) {
@@ -355,7 +355,7 @@ public class EditMapService {
                     this.getMap().drawFortification(
                         drawingPixmap,
                         i, j, this.getMap().getHexagonSize() * 2, // ajouté !!
-                        GraphicUtil.getTextureFromFortification(this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification()));
+                        this.getMap().getHexesArray().get(i + this.getMap().getStartI()).get(j + this.getMap().getStartJ()).getFortification().getTexture());
                 }
 
             }
