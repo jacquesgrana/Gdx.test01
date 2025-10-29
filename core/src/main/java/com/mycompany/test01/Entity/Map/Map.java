@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.mycompany.test01.Entity.Scenario.MapObjective;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
 import com.mycompany.test01.Enum.*;
@@ -240,7 +241,12 @@ public class Map {
         return new MapData("test", this.getLimitI(), this.getLimitJ(), this.getHexesArray());
     }
 
-    public void drawMap(Pixmap drawingPixmap, Opponent[] opponents, int hexSize) {
+    public void drawMap(
+        Pixmap drawingPixmap,
+        Opponent[] opponents,
+        Array<MapObjective> objectives,
+        int hexSize
+    ) {
         for(int i=0; i < this.getMaxI(); i++) {
             for (int j=0; j < this.getMaxJ(); j++) {
                 //int x = getXFromIJ(i, j);
@@ -291,23 +297,12 @@ public class Map {
                 // dessin des unités
                 if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits().getUnitsCount() > 0) {
 
-                    // TODO appeler méthode de GraphicUtil qui affiche la pile des unites
                     drawUnitsStackOnHex(i, j, this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits(), hexSize, drawingPixmap);
 
-                    // TODO améliorer !!!
-                    //ElementInterface firstLineUnit = this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits().getFirstLine().getHexUnit()[0];
-                    //LogUtil.logInfo("unit name : " + firstLineUnit.getName());
-
-                    // TODO passer l'unité en paramètre
-                    //drawUnitOnHex(i, j, firstLineUnit, hexSize, drawingPixmap);
-
-                    //textureFirstLine.dispose();
                 }
 
-
-
                 // dessin du land owner
-                // Récupérer le propriétaire de l'hexagone
+                    // Récupérer le propriétaire de l'hexagone
                 CountryEnum ownerCountry = this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getOwnerCountry();
 
                 if(ownerCountry != null && ownerCountry != CountryEnum.NO_COUNTRY && this.displayFlags.isOwnerCountryVisible()) {
@@ -337,7 +332,7 @@ public class Map {
             || startJ + maxJ == limitJ;
 
         // boucle sur les opponents
-        if(opponents.length > 0 && isBorderShown) {
+        if(opponents.length > 0 && isBorderShown && this.displayFlags.isBorderHexeVisible()) {
             //LogUtil.logInfo("border shown !");
             for (Opponent opponent : opponents) {
 
@@ -346,13 +341,13 @@ public class Map {
                     for (Hexagon hexagon : opponent.getBorderHexesOwned()) {
 
                         if(!opponent.getReinfHexesSource().contains(hexagon) && !opponent.getSupplyHexesSource().contains(hexagon)) {
-                            //int xx = getXFromIJ(hexagon.getX() - startI, hexagon.getY() - startJ);
-                            //int yy = getYFromJ(hexagon.getY() - startJ);
-                            Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.40f);
-                            Texture opponentColorTexture = GraphicUtil.getTextureFromColor(opponentColor);
-                            //drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), opponentColorTexture, Color.BLACK);
-                            renderHex(hexagon.getX(), hexagon.getY(), opponentColorTexture, drawingPixmap);
-                            opponentColorTexture.dispose();
+                            if(isHexInMap(hexagon.getX() - startI, hexagon.getY() - startJ)) {
+                                Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.40f);
+                                Texture opponentColorTexture = GraphicUtil.getTextureFromColor(opponentColor);
+                                //drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), opponentColorTexture, Color.BLACK);
+                                renderHex(hexagon.getX(), hexagon.getY(), opponentColorTexture, drawingPixmap);
+                                opponentColorTexture.dispose();
+                            }
                         }
 
 
@@ -362,14 +357,14 @@ public class Map {
                 // dessin des reinfHexes
                 if(!opponent.getReinfHexesSource().isEmpty()) {
                     for (Hexagon hexagon : opponent.getReinfHexesSource()) {
-                        if(!opponent.getSupplyHexesSource().contains(hexagon)) {
-                            //int xx = getXFromIJ(hexagon.getX() - startI, hexagon.getY() - startJ);
-                            //int yy = getYFromJ(hexagon.getY() - startJ);
-                            Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.60f);
-                            Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
-                            //drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), colorTexture, Color.BLACK);
-                            renderHex(hexagon.getX(), hexagon.getY(), colorTexture, drawingPixmap);
-                            colorTexture.dispose();
+                        if(opponent.getBorderHexesOwned().contains(hexagon) && !opponent.getSupplyHexesSource().contains(hexagon)) {
+                            if(isHexInMap(hexagon.getX() - startI, hexagon.getY() - startJ)) {
+                                Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.60f);
+                                Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
+                                //drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), colorTexture, Color.BLACK);
+                                renderHex(hexagon.getX(), hexagon.getY(), colorTexture, drawingPixmap);
+                                colorTexture.dispose();
+                            }
                         }
                     }
                 }
@@ -378,10 +373,26 @@ public class Map {
                 // dessin des supplyHexes
                 if(!opponent.getSupplyHexesSource().isEmpty()) {
                     for (Hexagon hexagon : opponent.getSupplyHexesSource()) {
-                        Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.8f);
-                        Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
-                        renderHex(hexagon.getX(), hexagon.getY(), colorTexture, drawingPixmap);
-                        colorTexture.dispose();
+                        if(opponent.getBorderHexesOwned().contains(hexagon)) {
+                            if (isHexInMap(hexagon.getX() - startI, hexagon.getY() - startJ)) {
+                                Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.8f);
+                                Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
+                                renderHex(hexagon.getX(), hexagon.getY(), colorTexture, drawingPixmap);
+                                colorTexture.dispose();
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        // dessin des objectives
+        if(!objectives.isEmpty() && this.displayFlags.isMapObjectiveVisible()) {
+            for (MapObjective obj : objectives) {
+                for (Hexagon hex : obj.getHexagons()) {
+                    if(isHexInMap(hex.getX() - startI, hex.getY() - startJ)) {
+                        renderHex(hex.getX(), hex.getY(), GraphicUtil.orangeTexture, drawingPixmap);
                     }
                 }
             }

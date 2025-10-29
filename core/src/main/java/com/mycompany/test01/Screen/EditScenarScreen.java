@@ -241,7 +241,28 @@ public class EditScenarScreen implements Screen {
         });
         panel.add(checkBoxOwner);
 
-        panel.setPosition(500f, 140f);
+        CheckBox checkBoxObjective = new CheckBox(" Obj.", SkinUtil.getCheckBoxSkin(25));
+        checkBoxObjective.setChecked(true);
+        checkBoxObjective.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setMapObjectiveVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isMapObjectiveVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxObjective);
+
+        CheckBox checkBoxBorderHex = new CheckBox(" Border", SkinUtil.getCheckBoxSkin(25));
+        checkBoxBorderHex.setChecked(true);
+        checkBoxBorderHex.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setBorderHexeVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isBorderHexeVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxBorderHex);
+
         return  panel;
     }
 
@@ -354,11 +375,11 @@ public class EditScenarScreen implements Screen {
         panel.addActor(buttonSaveScenarWrapper.getButton());
 
 
-        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(120f).colspan(4).left();
+        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(380f);
 
         this.editModeLabel = new Label("Edit Mode : " + this.editMode.getName(), SkinUtil.getLabelSkin(200, 30));
 
-        panel.add(this.editModeLabel).padLeft(140f).colspan(2).left();
+        panel.add(this.editModeLabel).padLeft(20);
 
         return panel;
     }
@@ -469,7 +490,7 @@ public class EditScenarScreen implements Screen {
         sidesRow.defaults().pad(0).space(0);
 
 
-        sidesRow.add(scenarSidesCountLabel).left();
+        sidesRow.add(scenarSidesCountLabel).left().padLeft(20);
         sidesRow.add(scenarSidesCountSlider).left()  // Aligné à gauche
             .width(120) // Largeur fixe (ajustable)
             .expandX();
@@ -479,7 +500,7 @@ public class EditScenarScreen implements Screen {
         //this.opponentsSidesListPanel = createOpponentsSidesListPanel();
         this.editScenarService.getScenario().initOpponentsFromSidesCount();
         rebuildOpponentsSidesListPanel();
-        panel.add(this.opponentsSidesListPanel).colspan(3);
+        panel.add(this.opponentsSidesListPanel).colspan(2);
         panel.row();
 
         // TODO ajouter bouton des objectifs
@@ -507,7 +528,28 @@ public class EditScenarScreen implements Screen {
         });
 
 
-        panel.add(buttonSetobjectives.getButton()).center().spaceTop(20).colspan(3).row();
+        panel.add(buttonSetobjectives.getButton()).padTop(20).colspan(1);
+
+        // TODO nouveau bouton reset mode
+        ButtonWrapper buttonResetEditModeWrapper = new ButtonWrapper("Reset Mode", 0, 0, 120, 30);
+
+        buttonResetEditModeWrapper.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                //System.out.println("click load all");
+                //if (selectedUnit instanceof )
+                that.redrawMap();
+                that.updateEditMode(EditScenarModeEnum.NO_ACTION);
+
+                //that.editMode = EditScenarModeEnum.NO_ACTION;
+                // TODO faire méthode ?
+                //that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
+            }
+        });
+
+        //buttonResetEditModeWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
+
+        panel.add(buttonResetEditModeWrapper.getButton()).padTop(20).colspan(1).row();
 
         this.rebuildOpponentsEditPanel();
         panel.add(opponentsEditPanel).spaceTop(20).fillX().expandX().colspan(2).spaceBottom(20);
@@ -747,9 +789,10 @@ public class EditScenarScreen implements Screen {
 
             buttonSetOwnedHexesWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
-            this.selectedOpponentEditPanel.add(buttonSetOwnedHexesWrapper.getButton()).padTop(20).align(Align.center);
+            this.selectedOpponentEditPanel.add(buttonSetOwnedHexesWrapper.getButton()).padTop(20).align(Align.center).colspan(2).row();
 
             // TODO nouveau bouton reset mode
+            /*
             ButtonWrapper buttonResetEditModeWrapper = new ButtonWrapper("Reset Mode", 0, 0, 120, 30);
 
             buttonResetEditModeWrapper.getButton().addListener(new ChangeListener() {
@@ -766,9 +809,10 @@ public class EditScenarScreen implements Screen {
                 }
             });
 
-            buttonResetEditModeWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
+            //buttonResetEditModeWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
             this.selectedOpponentEditPanel.add(buttonResetEditModeWrapper.getButton()).padTop(20).align(Align.center).row();
+            */
 
 
 
@@ -869,8 +913,8 @@ public class EditScenarScreen implements Screen {
                 }
             });
 
-            landArmyButtonsContainer.add(buttonLoadArmyGroupWrapper.getButton());
-
+            landArmyButtonsContainer.add(buttonLoadArmyGroupWrapper.getButton()).row();
+/*
             ButtonWrapper buttonDeployUnitsWrapper = new ButtonWrapper("Deploy", 0, 0, 80, 30);
 
             buttonDeployUnitsWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY || this.editScenarService.getSelectedOpponent().getLandArmyGroup() == null);
@@ -909,7 +953,7 @@ public class EditScenarScreen implements Screen {
             });
 
             landArmyButtonsContainer.add(buttonDeployUnitsWrapper.getButton()).padLeft(20).row();
-
+*/
             this.landArmyGroupIcon = new Image(this.getLandArmyGroupTextureFromOpponent(this.editScenarService.getSelectedOpponent()));
             this.landArmyGroupIcon.setWidth(80);
             this.landArmyGroupIcon.setHeight(80);
@@ -1026,7 +1070,7 @@ public class EditScenarScreen implements Screen {
 
 
         // Redraw the map to the pixmap
-        editScenarService.getScenario().getMap().drawMap(drawingMapPixmap, this.editScenarService.getScenario().getOpponents(), this.editScenarService.getScenario().getMap().getHexagonSize());
+        editScenarService.getScenario().getMap().drawMap(drawingMapPixmap, this.editScenarService.getScenario().getOpponents(), editScenarService.getScenario().getObjectives(), this.editScenarService.getScenario().getMap().getHexagonSize());
 
         // Create a new texture from the pixmap
         drawingTexture = new Texture(drawingMapPixmap);
@@ -1467,6 +1511,8 @@ public class EditScenarScreen implements Screen {
                                 MapObjective newObjective = new MapObjective("Test", "TEST", 1000, 10, 500, newHexagons);
                                 objectives.add(newObjective);
                             }
+
+                            this.screen.redrawMap();
                         }
 
                         /*
