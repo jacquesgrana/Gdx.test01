@@ -1073,7 +1073,7 @@ public class EditMapScreen implements Screen {
                     //System.out.println("i : " + i);
 
                     //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
-                    if(this.screen.editMapService.getMap().isClickInMap(i, j)) {
+                    if(this.screen.editMapService.getMap().isHexInMap(i, j)) {
                         if(this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).getCategory() != this.screen.selectedTerrain) {
 
                             this.screen.setBrushHexesTerrainCategory(
@@ -1098,7 +1098,7 @@ public class EditMapScreen implements Screen {
                     //int i = (int) x / mapService.getGapX();
                     //System.out.println("i : " + i);
                     //if(i >= 0 && i < mapService.getMaxI() && j >= 0 && j < mapService.getMaxJ()) {
-                    if(this.screen.editMapService.getMap().isClickInMap(i, j)) {
+                    if(this.screen.editMapService.getMap().isHexInMap(i, j)) {
                         if(this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).getFortification() != this.screen.selectedFortification) {
                             this.screen.editMapService.getMap().getHexesArray().get(i+ this.screen.editMapService.getMap().getStartI()).get(j+ this.screen.editMapService.getMap().getStartJ()).setFortification(this.screen.selectedFortification);
                         }

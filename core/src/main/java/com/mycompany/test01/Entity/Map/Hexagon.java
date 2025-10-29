@@ -131,7 +131,7 @@ public class Hexagon {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
         Hexagon hexagon = (Hexagon) o;
         return x == hexagon.x && y == hexagon.y;  // Égalité basée sur les coordonnées
     }

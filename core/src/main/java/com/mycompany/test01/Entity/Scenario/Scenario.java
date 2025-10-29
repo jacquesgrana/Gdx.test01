@@ -1,10 +1,14 @@
 package com.mycompany.test01.Entity.Scenario;
 
+import com.badlogic.gdx.utils.Array;
+import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Map.Map;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 public class Scenario {
 
@@ -12,7 +16,7 @@ public class Scenario {
     private OpponentSideEnum[] sides;
     private int sidesCount;
     private Opponent[] opponents;
-    private MapObjective[] objectives;
+    private Array<MapObjective> objectives;
 
     // TODO ajouter date de départ et la durée
     private DayDate startDate;
@@ -24,6 +28,7 @@ public class Scenario {
 
     public Scenario() {
         this.map = new Map();
+        this.objectives = new Array<>();
     }
 
     public Scenario(
@@ -31,7 +36,7 @@ public class Scenario {
         OpponentSideEnum[] sides,
         int sidesCount,
         Opponent[] opponents,
-        MapObjective[] objectives
+        Array<MapObjective> objectives
         //Array<Array<Hexagon>> hexesArray
         //int limitI,
         //int limitJ
@@ -80,6 +85,26 @@ public class Scenario {
         return isOpponentsOk;
     }
 
+    public boolean isHexInObjectives(Hexagon hexagon) {
+        if (objectives == null || objectives.isEmpty()) {
+            return false;
+        }
+        return StreamSupport.stream(this.objectives.spliterator(), false)
+            .anyMatch(objective -> objective.isHexInHexagons(hexagon));
+    }
+
+    public MapObjective getMapObjectiveFromHex(Hexagon hexagon) {
+        if (objectives == null || objectives.isEmpty() || hexagon == null) {
+            return null;
+        }
+
+        Optional<MapObjective> foundObjective = StreamSupport.stream(objectives.spliterator(), false)
+            .filter(objective -> objective.getHexagons().contains(hexagon, false))
+            .findFirst();
+
+        return foundObjective.orElse(null);
+    }
+
     public String getName() {
         return name;
     }
@@ -112,11 +137,11 @@ public class Scenario {
         this.opponents = opponents;
     }
 
-    public MapObjective[] getObjectives() {
+    public Array<MapObjective> getObjectives() {
         return objectives;
     }
 
-    public void setObjectives(MapObjective[] objectives) {
+    public void setObjectives(Array<MapObjective> objectives) {
         this.objectives = objectives;
     }
 

@@ -1,5 +1,6 @@
 package com.mycompany.test01.Entity.Scenario;
 
+import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Map.Hexagon;
 
 public class MapObjective {
@@ -7,17 +8,45 @@ public class MapObjective {
     private String name = "";
     private String acronym = "";
 
+    private int captureReward = 0;
     private int dailyCaptureReward = 0;
-    private Hexagon hexagon = null;
+    private int endGameReward = 0;
+    private Array<Hexagon> hexagons = new Array<>();
 
     public MapObjective() {
     }
 
-    public MapObjective(String name, String acronym, int dailyCaptureReward, Hexagon hexagon) {
+    // TODO ajouter methodes isInHexagons addHexagon et removeHexagon
+    public MapObjective(
+        String name,
+        String acronym,
+        int captureReward,
+        int dailyCaptureReward,
+        int endGameReward,
+        Array<Hexagon> hexagons
+    ) {
         this.name = name;
         this.acronym = acronym;
+        this.captureReward = captureReward;
         this.dailyCaptureReward = dailyCaptureReward;
-        this.hexagon = hexagon;
+        this.endGameReward = endGameReward;
+        this.hexagons = hexagons;
+    }
+
+    public boolean isHexInHexagons(Hexagon hexagon) {
+        return this.getHexagons().contains(hexagon, false);
+    }
+
+    public void addHexagon(Hexagon hexagon) {
+        if(!this.getHexagons().contains(hexagon, false)) {
+           this.getHexagons().add(hexagon);
+        }
+    }
+
+    public void removeHexagon(Hexagon hexagon) {
+        if(this.getHexagons().contains(hexagon, false)) {
+            this.getHexagons().removeValue(hexagon, false);
+        }
     }
 
     public String getName() {
@@ -36,6 +65,14 @@ public class MapObjective {
         this.acronym = acronym;
     }
 
+    public int getCaptureReward() {
+        return captureReward;
+    }
+
+    public void setCaptureReward(int captureReward) {
+        this.captureReward = captureReward;
+    }
+
     public int getDailyCaptureReward() {
         return dailyCaptureReward;
     }
@@ -44,11 +81,19 @@ public class MapObjective {
         this.dailyCaptureReward = dailyCaptureReward;
     }
 
-    public Hexagon getHexagon() {
-        return hexagon;
+    public int getEndGameReward() {
+        return endGameReward;
     }
 
-    public void setHexagon(Hexagon hexagon) {
-        this.hexagon = hexagon;
+    public void setEndGameReward(int endGameReward) {
+        this.endGameReward = endGameReward;
+    }
+
+    public Array<Hexagon> getHexagons() {
+        return hexagons;
+    }
+
+    public void setHexagons(Array<Hexagon> hexagons) {
+        this.hexagons = hexagons;
     }
 }

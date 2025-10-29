@@ -286,8 +286,7 @@ public class GraphicUtil {
             return new Texture(Gdx.files.internal(filePath));
             //return texture;
         } catch (Exception e) {
-            System.err.println("Error loading texture from file: " + filePath);
-            e.printStackTrace();  // Print the stack trace for debugging
+            LogUtil.logError("Error loading texture from file: " + filePath, e);  // Print the stack trace for debugging
             return null;
         }
     }
@@ -501,7 +500,6 @@ public class GraphicUtil {
             return GraphicUtil.getEmptyTexture();
         }
 
-        // TODO modifier enum et inclure lineColor
         /*
         Color lineColor = Color.BLUE;
         switch(roadCategory) {
@@ -599,11 +597,9 @@ public class GraphicUtil {
         return texture;
     }
 
-    // TODO : déplacer dans UnitUtil ?
     public static ScenarUnitNode createScenarTreeFromGroup(UnitGroup group, Screen screen) {
         EditScenarScreen that = (EditScenarScreen) screen;
 
-        // TODO faire méthode de opponent par le service
         boolean isRootDeployed = that.editScenarService.getSelectedOpponent().isUnitDeployed(group);
         // Créer un nœud pour le groupe actuel
         ScenarUnitNode groupNode = new ScenarUnitNode(group, isRootDeployed);
@@ -657,7 +653,6 @@ public class GraphicUtil {
         return groupNode;
     }
 
-    // TODO : déplacer dans UnitUtil ?
     public static UnitNode createTreeFromGroup(UnitGroup group, Screen screen) {
         // Créer un nœud pour le groupe actuel
         UnitNode groupNode = new UnitNode(group);
@@ -699,7 +694,6 @@ public class GraphicUtil {
         return groupNode;
     }
 
-    // TODO : déplacer dans UnitUtil ?
     public static Texture getCounterTextureFromUnit(ElementInterface unit) {
         //Texture toReturn = getEmptyTexture();
         Texture background = getCountryTexture(unit);
@@ -812,7 +806,7 @@ public class GraphicUtil {
     }
 
 
-    /**
+    /*
      * Dessine du texte directement sur un Pixmap en utilisant un BitmapFont.
      * Cette méthode est "thread-safe" car elle n'utilise que des opérations Pixmap (CPU).
      *

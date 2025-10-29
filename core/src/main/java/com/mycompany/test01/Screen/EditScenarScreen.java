@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.*;
 import com.mycompany.test01.Config.MapConfig;
 import com.mycompany.test01.Entity.Map.Hexagon;
+import com.mycompany.test01.Entity.Scenario.MapObjective;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
@@ -45,9 +46,9 @@ import com.mycompany.test01.Util.*;
 //import com.badlogic.gdx.scenes.scene2d.utils.ColorDrawable;
 import jdk.jpackage.internal.Log;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.StreamSupport;
 
 public class EditScenarScreen implements Screen {
 
@@ -480,6 +481,34 @@ public class EditScenarScreen implements Screen {
         rebuildOpponentsSidesListPanel();
         panel.add(this.opponentsSidesListPanel).colspan(3);
         panel.row();
+
+        // TODO ajouter bouton des objectifs
+
+        ButtonWrapper buttonSetobjectives = new ButtonWrapper(
+            "Objectives",
+            0, 0,
+            100, 30);
+
+        // listener
+        buttonSetobjectives.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                if(that.isScenarPresent) {
+                    //System.out.println("opponents ok !");
+                    Toast.showToast(that.stage, "Set Objectives", ColorStyleEnum.SUCCESS, 2f);
+                    that.redrawMap();
+                    that.updateEditMode(EditScenarModeEnum.SET_OBJECTIVES);
+                }
+                else {
+                    //System.out.println("opponents ko !");
+                    Toast.showToast(that.stage, "Scenario problem", ColorStyleEnum.WARNING, 2f);
+                }
+            }
+        });
+
+
+        panel.add(buttonSetobjectives.getButton()).center().spaceTop(20).colspan(3).row();
+
         this.rebuildOpponentsEditPanel();
         panel.add(opponentsEditPanel).spaceTop(20).fillX().expandX().colspan(2).spaceBottom(20);
         panel.row();
@@ -709,8 +738,6 @@ public class EditScenarScreen implements Screen {
                     //System.out.println("click load all");
                     //if (selectedUnit instanceof )
                     that.redrawMap();
-
-                    // TODO enlever ternaire qd ok
                     that.updateEditMode(EditScenarModeEnum.OWNED_HEXES);
 
                     //that.editMode = EditScenarModeEnum.OWNED_HEXES;
@@ -1262,34 +1289,34 @@ public class EditScenarScreen implements Screen {
                 int x = (int) (screenX - mapX - margin);
                 int y = (int) (screenY - mapX - margin); // mapX : 50 meme valeur que le y du haut de la map
                 //System.out.println("x : " + x + " / y : " + y);
-                int i = this.screen.editScenarService.getScenario().getMap().getIFromXY(x, y);
-                int j = this.screen.editScenarService.getScenario().getMap().getJFromY(y);
+                int iRel = this.screen.editScenarService.getScenario().getMap().getIFromXY(x, y);
+                int jRel = this.screen.editScenarService.getScenario().getMap().getJFromY(y);
                 //System.out.println("i : " + i + " / j : " + j);
 
+                // TODO faire méthode boolean
                 if (x >= 0 && x <= mapWidth - margin &&
                     y >= 0 && y <= mapHeight - margin) {
                     //System.out.println("clic in !!");
 
-                    if(i >= 0 && i < this.screen.editScenarService.getScenario().getMap().getMaxI() && j >= 0 && j < this.screen.editScenarService.getScenario().getMap().getMaxJ()) {
+                    if(this.screen.editScenarService.getScenario().getMap().isHexInMap(iRel, jRel)) {
                         //Hexagon clickedHexagon = this.screen.editMapService.getHexesArray().get(i + this.screen.editMapService.getStartI()).get(j + editMapService.getStartJ());
                         //System.out.println("hex terrain : " + clickedHexagon.getCategory());
                         screen.stage.setKeyboardFocus(null);
 
-                        int iAbs = i + this.screen.editScenarService.getScenario().getMap().getStartI();
-                        int jAbs = j + this.screen.editScenarService.getScenario().getMap().getStartJ();
+                        int iAbs = iRel + this.screen.editScenarService.getScenario().getMap().getStartI();
+                        int jAbs = jRel + this.screen.editScenarService.getScenario().getMap().getStartJ();
                         Hexagon clickedHex = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
-                        // TODO ajouter test pathfinder
+                        boolean isHexInEdges = this.screen.editScenarService.getScenario().getMap().isHexInEdges(iAbs, jAbs);
 
                         if(screen.editMode == EditScenarModeEnum.NO_ACTION) {
-                            this.screen.editScenarService.getScenario().getMap().renderHex( i + this.screen.editScenarService.getScenario().getMap().getStartI(), j + this.screen.editScenarService.getScenario().getMap().getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
+                            this.screen.editScenarService.getScenario().getMap().renderHex( iRel + this.screen.editScenarService.getScenario().getMap().getStartI(), jRel + this.screen.editScenarService.getScenario().getMap().getStartJ(), (screen.pathStart == null || screen.pathEnd == null) ? GraphicUtil.redTexture : GraphicUtil.orangeTexture, this.screen.drawingMapPixmap);
 
                             if (screen.pathStart == null) {
-                                screen.pathStart = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
+                                screen.pathStart = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(iRel + this.screen.editScenarService.getScenario().getMap().getStartI()).get(jRel + this.screen.editScenarService.getScenario().getMap().getStartJ());
                             }
                             else if (screen.pathEnd == null) {
-                                screen.pathEnd = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(i + this.screen.editScenarService.getScenario().getMap().getStartI()).get(j + this.screen.editScenarService.getScenario().getMap().getStartJ());
+                                screen.pathEnd = this.screen.editScenarService.getScenario().getMap().getHexesArray().get(iRel + this.screen.editScenarService.getScenario().getMap().getStartI()).get(jRel + this.screen.editScenarService.getScenario().getMap().getStartJ());
 
-                                // TODO chercher path
                                 HexPathfinderCalculator pathfinder = new HexPathfinderCalculator(
                                     this.screen.editScenarService.getScenario().getMap().getHexesArray(),
                                     this.screen.editScenarService.getScenario().getMap().getLimitI(),
@@ -1319,7 +1346,7 @@ public class EditScenarScreen implements Screen {
 
                             //hex.setOwnerCountry(hex.getOwnerCountry() != selectedCountry ? selectedCountry : CountryEnum.NO_COUNTRY);
                             this.screen.setBrushHexesOwnerCountry(
-                                i, j,
+                                iRel, jRel,
                                 this.screen.editScenarService.getScenario().getMap().getStartI(),
                                 this.screen.editScenarService.getScenario().getMap().getStartJ(),
                                 this.screen.editScenarService.getScenario().getMap().getLimitI(),
@@ -1332,10 +1359,14 @@ public class EditScenarScreen implements Screen {
                         }
                         else if(screen.editMode == EditScenarModeEnum.EDGES_HEXES) {
                             // si hex cliqué sur un bord alors ajout de l'hex au set des edgesHexes de l'opponent
+                            /*
                             boolean isHexInEdges = iAbs == 0
                                 || jAbs == 0
                                 || iAbs == this.screen.editScenarService.getScenario().getMap().getLimitI() - 1
                                 || jAbs == this.screen.editScenarService.getScenario().getMap().getLimitJ() - 1;
+
+                             */
+                            //boolean isHexInEdges = this.screen.editScenarService.getScenario().getMap().isHexInEdges(iAbs, jAbs);
                             if(isHexInEdges) {
                                 //LogUtil.logInfo("Click in edges !!");
                                 if(!this.screen.editScenarService.getSelectedOpponent().getBorderHexesOwned().contains(clickedHex)) {
@@ -1350,11 +1381,14 @@ public class EditScenarScreen implements Screen {
 
                         }
                         else if(screen.editMode == EditScenarModeEnum.REINF_HEXES) {
+                            /*
                             boolean isHexInEdges = iAbs == 0
                                 || jAbs == 0
                                 || iAbs == this.screen.editScenarService.getScenario().getMap().getLimitI() - 1
                                 || jAbs == this.screen.editScenarService.getScenario().getMap().getLimitJ() - 1;
 
+                             */
+                            //boolean isHexInEdges = this.screen.editScenarService.getScenario().getMap().isHexInEdges(iAbs, jAbs);
                             if(isHexInEdges && this.screen.editScenarService.getSelectedOpponent().getBorderHexesOwned().contains(clickedHex)) {
                                 //LogUtil.logInfo("Click in edges !!");
                                 if (!this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().contains(clickedHex)) {
@@ -1369,11 +1403,14 @@ public class EditScenarScreen implements Screen {
                         }
                         else if(screen.editMode == EditScenarModeEnum.SUPPLY_HEXES
                         ) {
+                            /*
                             boolean isHexInEdges = iAbs == 0
                                 || jAbs == 0
                                 || iAbs == this.screen.editScenarService.getScenario().getMap().getLimitI() - 1
                                 || jAbs == this.screen.editScenarService.getScenario().getMap().getLimitJ() - 1;
 
+                             */
+                            //boolean isHexInEdges = this.screen.editScenarService.getScenario().getMap().isHexInEdges(iAbs, jAbs);
                             if(isHexInEdges && this.screen.editScenarService.getSelectedOpponent().getBorderHexesOwned().contains(clickedHex)) {
                                 //LogUtil.logInfo("Click in edges !!");
                                 if (!this.screen.editScenarService.getSelectedOpponent().getSupplyHexesSource().contains(clickedHex)) {
@@ -1388,13 +1425,13 @@ public class EditScenarScreen implements Screen {
                             this.screen.redrawMap();
                         }
                         else if(screen.editMode == EditScenarModeEnum.DEPLOY_UNITS) {
-                            Hexagon hex = screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
-                            boolean isHexInOwnedHexes = hex.getOwnerCountry() == screen.editScenarService.getSelectedOpponent().getCountry();
+                            //Hexagon hex = screen.editScenarService.getScenario().getMap().getHexesArray().get(iAbs).get(jAbs);
+                            boolean isHexInOwnedHexes = clickedHex.getOwnerCountry() == screen.editScenarService.getSelectedOpponent().getCountry();
                             if(screen.editScenarService.getSelectedUnit() != null && isHexInOwnedHexes) {
                                 //LogUtil.logInfo("selected unit not null");
 
 
-                                hex.getUnits().addUnitToUnits(screen.editScenarService.getSelectedUnit());
+                                clickedHex.getUnits().addUnitToUnits(screen.editScenarService.getSelectedUnit());
 
                                 OnBoardUnit onBoardUnit = new OnBoardUnit(screen.editScenarService.getSelectedUnit(), iAbs, jAbs);
                                 this.screen.editScenarService.getSelectedOpponent().getDeployedUnits().add(onBoardUnit);
@@ -1410,6 +1447,25 @@ public class EditScenarScreen implements Screen {
 
                                 //this.screen.editMode = EditScenarModeEnum.NO_ACTION;
                                 //this.screen.editModeLabel.setText("Edit Mode : " + this.screen.editMode.getName());
+                            }
+                        }
+                        else if(screen.editMode == EditScenarModeEnum.SET_OBJECTIVES) {
+                            Array<MapObjective> objectives = screen.editScenarService.getScenario().getObjectives();
+
+                            boolean isHexInObjectives = screen.editScenarService.getScenario().isHexInObjectives(clickedHex);
+                            if(isHexInObjectives) {
+                                LogUtil.logInfo("in objectives");
+
+                                if(screen.editScenarService.getScenario().getMapObjectiveFromHex(clickedHex) != null) {
+                                    screen.editScenarService.getScenario().getMapObjectiveFromHex(clickedHex).getHexagons().removeValue(clickedHex, false);
+                                }
+                            }
+                            else {
+                                LogUtil.logInfo("not in objectives");
+                                Array<Hexagon> newHexagons = new Array<>();
+                                newHexagons.add(clickedHex);
+                                MapObjective newObjective = new MapObjective("Test", "TEST", 1000, 10, 500, newHexagons);
+                                objectives.add(newObjective);
                             }
                         }
 

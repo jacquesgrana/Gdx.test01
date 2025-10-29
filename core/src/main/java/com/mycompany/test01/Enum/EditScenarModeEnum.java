@@ -6,7 +6,8 @@ public enum EditScenarModeEnum {
     EDGES_HEXES ("Edges Hexes"),
     SUPPLY_HEXES ("Supply Edges"),
     REINF_HEXES ("Reinf. Hexes"),
-    DEPLOY_UNITS ("Deploy Units");
+    DEPLOY_UNITS ("Deploy Units"),
+    SET_OBJECTIVES ("Set Objectives");
 
     private final String name;
 

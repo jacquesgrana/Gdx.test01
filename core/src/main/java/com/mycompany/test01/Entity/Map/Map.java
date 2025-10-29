@@ -628,13 +628,15 @@ public class Map {
         return (int) ((y - this.getHexagonSize() * 0.5) / (this.getHexagonSize() * 1.475)); // !!!!!!!!!!!!!!!!!!
     }
 
-    public boolean isClickInMap(int i, int j) {
-        if(i >= 0 && i < this.getMaxI() && j >= 0 && j < this.getMaxJ()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    public boolean isHexInMap(int iRel, int jRel) {
+        return iRel >= 0 && iRel < this.getMaxI() && jRel >= 0 && jRel < this.getMaxJ();
+    }
+
+    public boolean isHexInEdges(int iAbs, int jAbs) {
+        return iAbs == 0
+            || jAbs == 0
+            || iAbs == this.getLimitI() - 1
+            || jAbs == this.getLimitJ() - 1;
     }
 
     // Getters et Setters
