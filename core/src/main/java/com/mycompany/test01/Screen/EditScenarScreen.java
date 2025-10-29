@@ -491,7 +491,7 @@ public class EditScenarScreen implements Screen {
 
 
         sidesRow.add(scenarSidesCountLabel).left().padLeft(20);
-        sidesRow.add(scenarSidesCountSlider).left()  // Aligné à gauche
+        sidesRow.add(scenarSidesCountSlider).left().padLeft(20)  // Aligné à gauche
             .width(120) // Largeur fixe (ajustable)
             .expandX();
         panel.add(sidesRow);
@@ -503,6 +503,8 @@ public class EditScenarScreen implements Screen {
         panel.add(this.opponentsSidesListPanel).colspan(2);
         panel.row();
 
+
+        Table buttonsRow = new Table();
         // TODO ajouter bouton des objectifs
 
         ButtonWrapper buttonSetobjectives = new ButtonWrapper(
@@ -528,7 +530,7 @@ public class EditScenarScreen implements Screen {
         });
 
 
-        panel.add(buttonSetobjectives.getButton()).padTop(20).colspan(1);
+        buttonsRow.add(buttonSetobjectives.getButton()).padLeft(0).padTop(20).colspan(1);
 
         // TODO nouveau bouton reset mode
         ButtonWrapper buttonResetEditModeWrapper = new ButtonWrapper("Reset Mode", 0, 0, 120, 30);
@@ -549,7 +551,9 @@ public class EditScenarScreen implements Screen {
 
         //buttonResetEditModeWrapper.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
-        panel.add(buttonResetEditModeWrapper.getButton()).padTop(20).colspan(1).row();
+        buttonsRow.add(buttonResetEditModeWrapper.getButton()).padLeft(20).padTop(20).colspan(1).row();
+
+        panel.add(buttonsRow).colspan(2).row();
 
         this.rebuildOpponentsEditPanel();
         panel.add(opponentsEditPanel).spaceTop(20).fillX().expandX().colspan(2).spaceBottom(20);
@@ -895,7 +899,7 @@ public class EditScenarScreen implements Screen {
 
             buttonHexesContainer.add(buttonSupplyHexes.getButton()).row();
 
-            this.selectedOpponentEditPanel.add(buttonHexesContainer).padTop(20).colspan(3).row();
+            this.selectedOpponentEditPanel.add(buttonHexesContainer).padTop(20).colspan(2).row();
 
             Table landArmyButtonsContainer = new Table();
 
@@ -977,10 +981,10 @@ public class EditScenarScreen implements Screen {
 
                 landArmyButtonsContainer.add(selectedUnitIcon).padLeft(20).padTop(20).width(80).height(80);
             }
-            this.selectedOpponentEditPanel.add(landArmyButtonsContainer).padTop(20).colspan(3).row();
+            this.selectedOpponentEditPanel.add(landArmyButtonsContainer).padTop(20).colspan(2).row();
 
             this.rebuildLandUnitsTreePanel();
-            this.selectedOpponentEditPanel.add(this.landUnitsTreePanel).width(240).pad(20).colspan(3).row();
+            this.selectedOpponentEditPanel.add(this.landUnitsTreePanel).width(240).pad(20).colspan(2).row();
 
 
 
