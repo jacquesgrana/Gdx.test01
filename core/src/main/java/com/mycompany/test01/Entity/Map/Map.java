@@ -295,7 +295,7 @@ public class Map {
                 }
 
                 // dessin des unités
-                if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits().getUnitsCount() > 0) {
+                if(this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits().getUnitsCount() > 0 && this.displayFlags.isUnitVisible()) {
 
                     drawUnitsStackOnHex(i, j, this.getHexesArray().get(i + this.getStartI()).get(j + this.getStartJ()).getUnits(), hexSize, drawingPixmap);
 

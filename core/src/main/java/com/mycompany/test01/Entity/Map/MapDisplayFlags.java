@@ -9,6 +9,7 @@ public class MapDisplayFlags {
     private boolean isOwnerCountryVisible = true;
     private boolean isMapObjectiveVisible = true;
     private boolean isBorderHexeVisible = true;
+    private boolean isUnitVisible = true;
 
     public MapDisplayFlags() {
     }
@@ -21,7 +22,8 @@ public class MapDisplayFlags {
         boolean isBridgeVisible,
         boolean isOwnerCountryVisible,
         boolean isMapObjectiveVisible,
-        boolean isBorderHexeVisible
+        boolean isBorderHexeVisible,
+        boolean isUnitVisible
     ) {
         this.isRiverVisible = isRiverVisible;
         this.isRoadVisible = isRoadVisible;
@@ -31,6 +33,7 @@ public class MapDisplayFlags {
         this.isOwnerCountryVisible = isOwnerCountryVisible;
         this.isMapObjectiveVisible = isMapObjectiveVisible;
         this.isBorderHexeVisible = isBorderHexeVisible;
+        this.isUnitVisible = isUnitVisible;
     }
 
     public boolean isRiverVisible() {
@@ -95,5 +98,13 @@ public class MapDisplayFlags {
 
     public void setBorderHexeVisible(boolean borderHexeVisible) {
         isBorderHexeVisible = borderHexeVisible;
+    }
+
+    public boolean isUnitVisible() {
+        return isUnitVisible;
+    }
+
+    public void setUnitVisible(boolean unitVisible) {
+        isUnitVisible = unitVisible;
     }
 }

@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -25,11 +24,8 @@ import com.mycompany.test01.Config.MapConfig;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Scenario.MapObjective;
 import com.mycompany.test01.Entity.Scenario.Opponent;
-import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.*;
-import com.mycompany.test01.Factory.Unit.UnitBlackCountryFactory;
-import com.mycompany.test01.Factory.Unit.UnitRedCountryFactory;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
 import com.mycompany.test01.Interface.observer.ToastObserver;
 import com.mycompany.test01.Interface.observer.UnitGroupObserver;
@@ -43,12 +39,9 @@ import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
-//import com.badlogic.gdx.scenes.scene2d.utils.ColorDrawable;
-import jdk.jpackage.internal.Log;
 
 import java.util.*;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 public class EditScenarScreen implements Screen {
 
@@ -263,6 +256,17 @@ public class EditScenarScreen implements Screen {
         });
         panel.add(checkBoxBorderHex);
 
+        CheckBox checkBoxUnit = new CheckBox(" Unit", SkinUtil.getCheckBoxSkin(25));
+        checkBoxUnit.setChecked(true);
+        checkBoxUnit.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                that.editScenarService.getScenario().getMap().getDisplayFlags().setUnitVisible(!that.editScenarService.getScenario().getMap().getDisplayFlags().isUnitVisible());
+                that.redrawMap();
+            }
+        });
+        panel.add(checkBoxUnit);
+
         return  panel;
     }
 
@@ -375,7 +379,7 @@ public class EditScenarScreen implements Screen {
         panel.addActor(buttonSaveScenarWrapper.getButton());
 
 
-        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(380f);
+        panel.add(this.createMapFiltersCheckboxesPanel()).padLeft(420f);
 
         this.editModeLabel = new Label("Edit Mode : " + this.editMode.getName(), SkinUtil.getLabelSkin(200, 30));
 
@@ -542,10 +546,6 @@ public class EditScenarScreen implements Screen {
                 //if (selectedUnit instanceof )
                 that.redrawMap();
                 that.updateEditMode(EditScenarModeEnum.NO_ACTION);
-
-                //that.editMode = EditScenarModeEnum.NO_ACTION;
-                // TODO faire méthode ?
-                //that.editModeLabel.setText("Edit Mode : " + that.editMode.getName());
             }
         });
 
