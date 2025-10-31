@@ -39,6 +39,7 @@ import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
+import jdk.jpackage.internal.Log;
 
 import java.util.*;
 import java.util.List;
@@ -83,6 +84,8 @@ public class EditScenarScreen implements Screen {
     private Table selectedOpponentEditPanel;
     private Table landUnitsTreePanel;
 
+    private Table objectivesEditPanel;
+
     private Label scenarMapBrushSizeLabel;
     public Label editModeLabel;
 
@@ -94,6 +97,7 @@ public class EditScenarScreen implements Screen {
     public Image selectedUnitIcon= null;
 
     private boolean isScenarPresent = false;
+    private boolean isObjectivesPanelOpen = false;
 
     private Hexagon pathStart, pathEnd;
     private List<Hexagon> path;
@@ -511,20 +515,22 @@ public class EditScenarScreen implements Screen {
         Table buttonsRow = new Table();
         // TODO ajouter bouton des objectifs
 
-        ButtonWrapper buttonSetobjectives = new ButtonWrapper(
+        ButtonWrapper buttonSetObjectives = new ButtonWrapper(
             "Objectives",
             0, 0,
             100, 30);
 
         // listener
-        buttonSetobjectives.getButton().addListener(new ChangeListener() {
+        buttonSetObjectives.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 if(that.isScenarPresent) {
                     //System.out.println("opponents ok !");
-                    Toast.showToast(that.stage, "Set Objectives", ColorStyleEnum.SUCCESS, 2f);
-                    that.redrawMap();
-                    that.updateEditMode(EditScenarModeEnum.SET_OBJECTIVES);
+                    //Toast.showToast(that.stage, "Set Objectives", ColorStyleEnum.SUCCESS, 2f);
+                    //that.redrawMap();
+                    //that.updateEditMode(EditScenarModeEnum.SET_OBJECTIVES);
+                    that.isObjectivesPanelOpen = !that.isObjectivesPanelOpen;
+                    that.rebuildObjectivesEditPanel();
                 }
                 else {
                     //System.out.println("opponents ko !");
@@ -534,9 +540,8 @@ public class EditScenarScreen implements Screen {
         });
 
 
-        buttonsRow.add(buttonSetobjectives.getButton()).padLeft(0).padTop(20).colspan(1);
+        buttonsRow.add(buttonSetObjectives.getButton()).padLeft(0).padTop(20).colspan(1);
 
-        // TODO nouveau bouton reset mode
         ButtonWrapper buttonResetEditModeWrapper = new ButtonWrapper("Reset Mode", 0, 0, 120, 30);
 
         buttonResetEditModeWrapper.getButton().addListener(new ChangeListener() {
@@ -554,6 +559,10 @@ public class EditScenarScreen implements Screen {
         buttonsRow.add(buttonResetEditModeWrapper.getButton()).padLeft(20).padTop(20).colspan(1).row();
 
         panel.add(buttonsRow).colspan(2).row();
+
+        // TODO ajouter objectivesEditPanel
+        this.rebuildObjectivesEditPanel();
+        panel.add(objectivesEditPanel).spaceTop(20).colspan(2).row();
 
         this.rebuildOpponentsEditPanel();
         panel.add(opponentsEditPanel).spaceTop(20).fillX().expandX().colspan(2).spaceBottom(20);
@@ -573,6 +582,105 @@ public class EditScenarScreen implements Screen {
         that.selectedUnitIcon.setHeight(80);
         that.rebuildSelectedOpponentEditPanel();
      */
+
+    private void rebuildObjectivesEditPanel() {
+        if (this.objectivesEditPanel != null) {
+            this.objectivesEditPanel.clear();
+        } else {
+            this.objectivesEditPanel = new Table();
+            this.objectivesEditPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
+        }
+
+        if(isObjectivesPanelOpen) {
+            Label titlelLabel = new Label("Objectives", SkinUtil.getLabelSkin(100, 30));
+            this.objectivesEditPanel.add(titlelLabel).colspan(2).spaceBottom(20).row();
+
+            Table newObjectiveContainer = new Table();
+
+            Label nameLabel = new Label("Name :", SkinUtil.getLabelSkin(80, 30));
+            TextField nameTextField = new TextField("", SkinUtil.getTextFieldSkin(120, 30));
+            newObjectiveContainer.add(nameLabel);
+            newObjectiveContainer.add(nameTextField).padLeft(20).row();
+
+            // TODO : Set l'acronym comme pour les unités (cf screen)
+            Label acronymLabel = new Label("Acronym :", SkinUtil.getLabelSkin(80, 30));
+            TextField acronymTextField = new TextField("", SkinUtil.getTextFieldSkin(120, 30));
+            newObjectiveContainer.add(acronymLabel);
+            newObjectiveContainer.add(acronymTextField).padLeft(20).row();
+
+            // TODO utiliser des constantes de Config pour les sliders et labels
+            //Slider scenarSidesCountSlider = new Slider(2f, 6f, 1f, false, SkinUtil.getSliderSkin(200, 30, 20));
+            Label captureRewardLabel = new Label("Capture : 100", SkinUtil.getLabelSkin(120, 30));
+            Slider captureRewardSlider = new Slider(100f, 1600f, 100f, false, SkinUtil.getSliderSkin(200, 30, 20));
+
+            EditScenarScreen that = this;
+            captureRewardSlider.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    captureRewardLabel.setText("Capture : " + (int) captureRewardSlider.getValue());
+                    //that.rebuildObjectivesEditPanel();
+                }
+            });
+
+            newObjectiveContainer.add(captureRewardLabel);
+            newObjectiveContainer.add(captureRewardSlider).padLeft(10).row();
+
+            Label dailyRewardLabel = new Label("Daily : 5", SkinUtil.getLabelSkin(120, 30));
+            Slider dailyRewardSlider = new Slider(5f, 250f, 5f, false, SkinUtil.getSliderSkin(200, 30, 20));
+
+            dailyRewardSlider.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    dailyRewardLabel.setText("Daily : " + (int) dailyRewardSlider.getValue());
+                    //that.rebuildObjectivesEditPanel();
+                }
+            });
+
+            newObjectiveContainer.add(dailyRewardLabel);
+            newObjectiveContainer.add(dailyRewardSlider).padLeft(10).row();
+
+            Label endGameRewardLabel = new Label("End Game : 100", SkinUtil.getLabelSkin(120, 30));
+            Slider endGameRewardSlider = new Slider(100f, 3200f, 100f, false, SkinUtil.getSliderSkin(200, 30, 20));
+
+            endGameRewardSlider.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    endGameRewardLabel.setText("End Game : " + (int) endGameRewardSlider.getValue());
+                    //that.rebuildObjectivesEditPanel();
+                }
+            });
+
+            newObjectiveContainer.add(endGameRewardLabel);
+            newObjectiveContainer.add(endGameRewardSlider).padLeft(10).row();
+
+            ButtonWrapper buttonAddObjectiveWrapper = new ButtonWrapper("Add", 0, 0, 120, 30);
+
+            buttonAddObjectiveWrapper.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    LogUtil.logInfo("click add");
+                    boolean isNewObjectiveOk = !nameTextField.getText().isEmpty();
+                    isNewObjectiveOk &= !acronymTextField.getText().isEmpty();
+                    if(isNewObjectiveOk) {
+                        String name = nameTextField.getText();
+                        String acronym = acronymTextField.getText();
+                        int captureReward = (int) captureRewardSlider.getValue();
+                        int dailyReward = (int) dailyRewardSlider.getValue();
+                        int endGameReward = (int) endGameRewardSlider.getValue();
+
+                        MapObjective newObjective = new MapObjective(name, acronym, captureReward, dailyReward, endGameReward, new Array<>());
+                        if(!that.editScenarService.getScenario().getObjectives().contains(newObjective, true)) {
+                            that.editScenarService.getScenario().getObjectives().add(newObjective);
+                        }
+                        
+                    }
+                }
+            });
+            newObjectiveContainer.add(buttonAddObjectiveWrapper.getButton()).colspan(2).spaceTop(20).row();
+
+            this.objectivesEditPanel.add(newObjectiveContainer).colspan(2).row();
+        }
+    }
 
     private void rebuildLandUnitsTreePanel() {
         //this.landUnitsTreePanel = new Table();
