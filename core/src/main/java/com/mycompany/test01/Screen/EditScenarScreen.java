@@ -590,7 +590,8 @@ public class EditScenarScreen implements Screen {
             this.objectivesEditPanel = new Table();
             this.objectivesEditPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
         }
-
+        // TODO set le selectedObjective à null
+        this.editScenarService.setSelectedObjective(null);
         if(isObjectivesPanelOpen) {
             Label titlelLabel = new Label("Objectives", SkinUtil.getLabelSkin(100, 30));
             this.objectivesEditPanel.add(titlelLabel).colspan(2).spaceBottom(20).row();
@@ -669,19 +670,63 @@ public class EditScenarScreen implements Screen {
                         int endGameReward = (int) endGameRewardSlider.getValue();
 
                         MapObjective newObjective = new MapObjective(name, acronym, captureReward, dailyReward, endGameReward, new Array<>());
-                        if(!that.editScenarService.getScenario().getObjectives().contains(newObjective, true)) {
+                        if(!that.editScenarService.getScenario().getObjectives().contains(newObjective, false)) {
                             that.editScenarService.getScenario().getObjectives().add(newObjective);
+                            Toast.showToast(that.stage, "New objective added",ColorStyleEnum.SUCCESS , 2f);
                         }
-                        
+                        that.rebuildObjectivesEditPanel();
                     }
+                    LogUtil.logInfo("objectives size : " + that.editScenarService.getScenario().getObjectives().size);
                 }
             });
             newObjectiveContainer.add(buttonAddObjectiveWrapper.getButton()).colspan(2).spaceTop(20).row();
 
             this.objectivesEditPanel.add(newObjectiveContainer).colspan(2).row();
+
+            if(!that.editScenarService.getScenario().getObjectives().isEmpty()) {
+                Table objectivesListContainer = new Table();
+               for(MapObjective obj : that.editScenarService.getScenario().getObjectives()) {
+                Table row = new Table();
+                Label rowContent = new Label(obj.getName() + " / " + obj.getAcronym() + " / " + obj.getCaptureReward() + " / " + obj.getDailyCaptureReward() + " / " + obj.getEndGameReward(), SkinUtil.getLabelSkin(280, 30));
+                row.add(rowContent);
+
+                ButtonWrapper addHexButton = new ButtonWrapper("+", 0, 0, 30, 30);
+
+                   addHexButton.getButton().addListener(new ChangeListener() {
+                       @Override
+                       public void changed(ChangeEvent changeEvent, Actor actor) {
+                           //LogUtil.logInfo("click delete");
+
+                           // TODO set le selectedObjective
+                           that.editScenarService.setSelectedObjective(obj);
+                           that.updateEditMode(EditScenarModeEnum.SET_OBJECTIVES);
+                           // passer en mode SET_OBJECTIVES
+                       }
+                   });
+
+                row.add(addHexButton.getButton());
+
+                ButtonWrapper deleteButton = new ButtonWrapper("X", 0, 0, 30, 30);
+
+               deleteButton.getButton().addListener(new ChangeListener() {
+                   @Override
+                   public void changed(ChangeEvent changeEvent, Actor actor) {
+                       //LogUtil.logInfo("click delete");
+                       that.editScenarService.getScenario().getObjectives().removeValue(obj, true);
+                       that.rebuildObjectivesEditPanel();
+                       that.redrawMap();
+                    }
+               });
+               row.add(deleteButton.getButton()).row();
+               objectivesListContainer.add(row).colspan(2).spaceTop(10).row();
+               }
+
+                this.objectivesEditPanel.add(objectivesListContainer).spaceTop(20).colspan(2).row();
+            }
+
         }
     }
-
+//selectedObjective
     private void rebuildLandUnitsTreePanel() {
         //this.landUnitsTreePanel = new Table();
         if (this.landUnitsTreePanel != null) {
@@ -1606,9 +1651,23 @@ public class EditScenarScreen implements Screen {
                             }
                         }
                         else if(screen.editMode == EditScenarModeEnum.SET_OBJECTIVES) {
-                            Array<MapObjective> objectives = screen.editScenarService.getScenario().getObjectives();
+                            //Array<MapObjective> objectives = screen.editScenarService.getScenario().getObjectives();
 
                             boolean isHexInObjectives = screen.editScenarService.getScenario().isHexInObjectives(clickedHex);
+
+                            if(screen.editScenarService.getSelectedObjective() != null) {
+                                boolean isHexInSelectedObjective = screen.editScenarService.getSelectedObjective().isHexInHexagons(clickedHex);
+                                if(!isHexInSelectedObjective) {
+                                    if(!isHexInObjectives) {
+                                        screen.editScenarService.getSelectedObjective().addHexagon(clickedHex);
+                                    }
+                                }
+                                else {
+                                    screen.editScenarService.getSelectedObjective().removeHexagon(clickedHex);
+                                }
+                            }
+
+                            /*
                             if(isHexInObjectives) {
                                 LogUtil.logInfo("in objectives");
 
@@ -1623,6 +1682,7 @@ public class EditScenarScreen implements Screen {
                                 MapObjective newObjective = new MapObjective("Test", "TEST", 1000, 10, 500, newHexagons);
                                 objectives.add(newObjective);
                             }
+                             */
 
                             this.screen.redrawMap();
                         }

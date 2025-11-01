@@ -14,6 +14,7 @@ import com.mycompany.test01.Common.OnBoardUnit;
 import com.mycompany.test01.Common.ScenarUnitNode;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Map.Cliff;
+import com.mycompany.test01.Entity.Scenario.MapObjective;
 import com.mycompany.test01.Entity.Unit.Abstract.Unit;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.*;
@@ -795,7 +796,7 @@ public class GraphicUtil {
             if (fontToUse != null) {
                 // L'appel est plus simple: on passe juste le pixmap et la zone cible (le pixmap entier).
                 // La méthode s'occupe du reste (calcul du ratio, centrage).
-                drawTextOnPixmap(finalPixmap, fontToUse, acronym, width, height);
+                drawAcronymTextOnPixmap(finalPixmap, fontToUse, acronym, width, height);
             } else {
                 System.err.println("Attention: La police pour le rendu du compteur est nulle.");
             }
@@ -867,7 +868,7 @@ public class GraphicUtil {
      * @param destWidth La largeur de la zone cible pour le texte.
      * @param destHeight La hauteur de la zone cible pour le texte.
      */
-    public static void drawTextOnPixmap(Pixmap destination, BitmapFont font, String text, int destWidth, int destHeight) {
+    public static void drawAcronymTextOnPixmap(Pixmap destination, BitmapFont font, String text, int destWidth, int destHeight) {
         BitmapFont.BitmapFontData fontData = font.getData();
 
         // Étape 1: Calculer la taille native du texte pour déterminer le ratio
@@ -928,7 +929,78 @@ public class GraphicUtil {
         fontPixmap.dispose();
     }
 
+    /**
+     * Dessine du texte directement sur un Pixmap, en le redimensionnant et en le centrant
+     * pour qu'il s'insère dans la zone de destination.
+     * Cette méthode est "thread-safe".
+     *
+     * @param destination Le Pixmap sur lequel dessiner.
+     * @param font La police à utiliser.
+     * @param text Le texte à afficher.
+     * @param destWidth La largeur de la zone cible pour le texte.
+     * @param destHeight La hauteur de la zone cible pour le texte.
+     */
+    public static void drawTextOnPixmap(Pixmap destination, BitmapFont font, String text, int destWidth, int destHeight) {
+        BitmapFont.BitmapFontData fontData = font.getData();
 
+        // Étape 1: Calculer la taille native du texte pour déterminer le ratio
+        layout.setText(font, text);
+        float nativeWidth = layout.width;
+        float nativeHeight = layout.height;
+
+        // Calculer l'échelle en fonction de la hauteur et de la largeur
+        float scaleWidth = (destWidth * 0.5f) / nativeWidth;
+        float scaleHeight = (destHeight * 0.5f) / nativeHeight;
+        //float scale = (destHeight * 0.175f) / nativeHeight;
+        float scale = Math.min(scaleWidth, scaleHeight);
+
+        // Recalculer la largeur et hauteur finales avec le ratio
+        float finalWidth = layout.width * scale;
+        float finalHeight = layout.height * scale;
+
+        // Calculer le point de départ (coin supérieur gauche) pour centrer le texte
+        float startX = (destWidth - finalWidth) / 2f;
+        float startY = ((destHeight - finalHeight) / 2f) + finalHeight * 1.2f;
+
+
+        // Étape 2: Obtenir le Pixmap de la texture de la police
+        Texture fontTexture = font.getRegion().getTexture();
+        Pixmap fontPixmap = textureToPixmapSafe(fontTexture, fontTexture.getWidth(), fontTexture.getHeight());
+
+        if (fontPixmap == null) {
+            System.err.println("Impossible de convertir la texture de la police en Pixmap.");
+            return;
+        }
+
+        // Étape 3: Dessiner chaque caractère un par un, en appliquant le ratio
+        float cursorX = startX;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            BitmapFont.Glyph glyph = fontData.getGlyph(c);
+
+            if (glyph != null) {
+                // Appliquer le ratio à toutes les dimensions du caractère
+                float scaledGlyphWidth = glyph.width * scale;
+                float scaledGlyphHeight = glyph.height * scale;
+                float scaledXOffset = glyph.xoffset * scale;
+                float scaledYOffset = glyph.yoffset * scale;
+
+                // Dessiner le glyphe redimensionné sur le Pixmap de destination
+                destination.drawPixmap(
+                    fontPixmap,
+                    glyph.srcX, glyph.srcY,
+                    glyph.width, glyph.height,
+                    (int)(cursorX + scaledXOffset), (int)(startY + scaledYOffset), // Position de destination
+                    (int)scaledGlyphWidth, (int)scaledGlyphHeight                   // Taille de destination (avec redimensionnement)
+                );
+
+                // Avancer le curseur
+                cursorX += glyph.xadvance * scale;
+            }
+        }
+
+        fontPixmap.dispose();
+    }
     /*
     public static Texture resizeTexture(Texture original, int width, int height) {
         FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);
@@ -1197,6 +1269,28 @@ public class GraphicUtil {
 
         // Renvoi du résultat
         return toReturn;
+    }
+
+    public static Texture getObjectiveTexture(MapObjective objective, int hexSize) {
+        float red =  ((float)objective.getCaptureReward() / 1600);
+        float green = ((float) objective.getDailyCaptureReward() / 250);
+        float blue = ((float) objective.getEndGameReward() / 3200);
+
+        Color baseColor = GraphicUtil.colorPurple;
+        Color counterColor = new Color(red * baseColor.r, green * baseColor.g, blue * baseColor.b, 0.67f);
+        Texture backgroundTexture = getTextureFromColor(counterColor);
+        //Texture withText = drawTextOnTexture(backgroundTexture, "TEST", true);
+        Pixmap pixmap = textureToPixmapSafe(backgroundTexture, hexSize, hexSize);
+        //BitmapFont fontToUse = unit.isUsesWhiteStroke() ? whiteStrokeFont : regularFont;
+        BitmapFont fontToUse = whiteStrokeFont;
+        drawTextOnPixmap(pixmap, fontToUse, objective.getAcronym(), hexSize, hexSize);
+        Texture finalTexture = new Texture(pixmap);
+        //Pixmap toReturn = drawTextOnPixmap(pixmap, font, objective.getAcronym(), );
+        //Texture texture = drawTextOnTexture(backgroundTexture, objective.getAcronym(), true);
+        //backgroundTexture.dispose();
+        //pixmap.dispose();
+        return finalTexture;
+
     }
 
     public static Texture getLevelAddonTexture(UnitGroup group) {

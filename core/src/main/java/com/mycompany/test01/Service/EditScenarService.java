@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Common.OnBoardUnit;
 import com.mycompany.test01.Common.ScenarUnitNode;
 import com.mycompany.test01.Config.ScenarConfig;
+import com.mycompany.test01.Entity.Scenario.MapObjective;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
 import com.mycompany.test01.Interface.unit.ElementInterface;
@@ -18,6 +19,8 @@ public class EditScenarService {
     private Opponent selectedOpponent = null;
 
     private ElementInterface selectedUnit = null;
+
+    private MapObjective selectedObjective = null;
 
     //private ScenarUnitNode selectedTreeNode;
 
@@ -70,6 +73,14 @@ public class EditScenarService {
 
     public void setSelectedUnit(ElementInterface selectedUnit) {
         this.selectedUnit = selectedUnit;
+    }
+
+    public MapObjective getSelectedObjective() {
+        return selectedObjective;
+    }
+
+    public void setSelectedObjective(MapObjective selectedObjective) {
+        this.selectedObjective = selectedObjective;
     }
 
     /*

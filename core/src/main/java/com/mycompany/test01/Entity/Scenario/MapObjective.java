@@ -3,6 +3,8 @@ package com.mycompany.test01.Entity.Scenario;
 import com.badlogic.gdx.utils.Array;
 import com.mycompany.test01.Entity.Map.Hexagon;
 
+import java.util.Objects;
+
 public class MapObjective {
 
     private String name = "";
@@ -47,6 +49,15 @@ public class MapObjective {
         if(this.getHexagons().contains(hexagon, false)) {
             this.getHexagons().removeValue(hexagon, false);
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || this.getClass() != other.getClass()) return false;
+        MapObjective objective = (MapObjective) other;
+        return Objects.equals(this.name, objective.name)
+            || Objects.equals(this.acronym, objective.acronym);
     }
 
     public String getName() {

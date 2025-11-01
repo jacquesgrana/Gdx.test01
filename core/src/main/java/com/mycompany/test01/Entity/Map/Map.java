@@ -392,7 +392,8 @@ public class Map {
             for (MapObjective obj : objectives) {
                 for (Hexagon hex : obj.getHexagons()) {
                     if(isHexInMap(hex.getX() - startI, hex.getY() - startJ)) {
-                        renderHex(hex.getX(), hex.getY(), GraphicUtil.orangeTexture, drawingPixmap);
+                        Texture objectiveTexture = GraphicUtil.getObjectiveTexture(obj, hexSize);
+                        renderHex(hex.getX(), hex.getY(), objectiveTexture, drawingPixmap);
                     }
                 }
             }
