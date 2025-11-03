@@ -6,7 +6,6 @@ import com.mycompany.test01.Entity.Map.Map;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -20,7 +19,7 @@ public class Scenario {
 
     // TODO ajouter date de départ et la durée
     private DayDate startDate;
-    private int duration;
+    private int duration = 1;
 
     private Map map;
 

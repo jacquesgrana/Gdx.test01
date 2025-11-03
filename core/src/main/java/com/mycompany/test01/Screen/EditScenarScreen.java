@@ -98,6 +98,7 @@ public class EditScenarScreen implements Screen {
 
     private boolean isScenarPresent = false;
     private boolean isObjectivesPanelOpen = false;
+    private boolean isStartDatePanelOpen = false;
 
     private Hexagon pathStart, pathEnd;
     private List<Hexagon> path;
@@ -513,7 +514,6 @@ public class EditScenarScreen implements Screen {
 
 
         Table buttonsRow = new Table();
-        // TODO ajouter bouton des objectifs
 
         ButtonWrapper buttonSetObjectives = new ButtonWrapper(
             "Objectives",
@@ -560,7 +560,45 @@ public class EditScenarScreen implements Screen {
 
         panel.add(buttonsRow).colspan(2).row();
 
-        // TODO ajouter objectivesEditPanel
+        Table dateButtonsRow = new Table();
+        // TODO ajouter bouton de la startDate
+        ButtonWrapper buttonStartDateWrapper = new ButtonWrapper("Start Date", 0, 0, 120, 30);
+
+        buttonStartDateWrapper.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                LogUtil.logInfo("click start date");
+                if(that.isScenarPresent) {
+                    that.isStartDatePanelOpen = !that.isStartDatePanelOpen;
+                    //that.rebuildStartDateEditPanel();
+                }
+            }
+        });
+
+        dateButtonsRow.add(buttonStartDateWrapper.getButton()).colspan(2).row();
+
+        // TODO ajouter slider pour la durée en jour
+        Label durationLabel = new Label("Duration : 1", SkinUtil.getLabelSkin(120, 30));
+        Slider durationSlider = new Slider(1, 120, 1, false, SkinUtil.getSliderSkin(180, 30, 20));
+
+        //EditScenarScreen that = this;
+        durationSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                durationLabel.setText("Duration : " + (int) durationSlider.getValue());
+                that.editScenarService.getScenario().setDuration((int) durationSlider.getValue());
+                //that.rebuildObjectivesEditPanel();
+            }
+        });
+
+        dateButtonsRow.add(durationLabel).spaceTop(20);
+        dateButtonsRow.add(durationSlider).spaceTop(20).padLeft(10).row();
+
+        panel.add(dateButtonsRow).spaceTop(20).colspan(2).row();
+
+        // TODO appeler rebuildStartDateEditPanel
+        // rebuildStartDateEditPanel();
+
         this.rebuildObjectivesEditPanel();
         panel.add(objectivesEditPanel).spaceTop(20).colspan(2).row();
 
@@ -582,6 +620,8 @@ public class EditScenarScreen implements Screen {
         that.selectedUnitIcon.setHeight(80);
         that.rebuildSelectedOpponentEditPanel();
      */
+
+    // TODO créer rebuildStartDateEditPanel()
 
     private void rebuildObjectivesEditPanel() {
         if (this.objectivesEditPanel != null) {
@@ -715,6 +755,8 @@ public class EditScenarScreen implements Screen {
                        that.editScenarService.getScenario().getObjectives().removeValue(obj, true);
                        that.rebuildObjectivesEditPanel();
                        that.redrawMap();
+                       Toast.showToast(that.stage, "Objective deleted",ColorStyleEnum.SUCCESS , 2f);
+
                     }
                });
                row.add(deleteButton.getButton()).row();
