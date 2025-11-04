@@ -28,6 +28,7 @@ public class Scenario {
     public Scenario() {
         this.map = new Map();
         this.objectives = new Array<>();
+        this.startDate = new DayDate();
     }
 
     public Scenario(

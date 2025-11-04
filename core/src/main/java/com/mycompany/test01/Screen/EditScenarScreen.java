@@ -86,6 +86,8 @@ public class EditScenarScreen implements Screen {
 
     private Table objectivesEditPanel;
 
+    private Table startDateEditPanel;
+
     private Label scenarMapBrushSizeLabel;
     public Label editModeLabel;
 
@@ -531,6 +533,8 @@ public class EditScenarScreen implements Screen {
                     //that.updateEditMode(EditScenarModeEnum.SET_OBJECTIVES);
                     that.isObjectivesPanelOpen = !that.isObjectivesPanelOpen;
                     that.rebuildObjectivesEditPanel();
+                    // TODO fermer les autres panels ? (startDate)
+
                 }
                 else {
                     //System.out.println("opponents ko !");
@@ -567,10 +571,11 @@ public class EditScenarScreen implements Screen {
         buttonStartDateWrapper.getButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                LogUtil.logInfo("click start date");
+                //LogUtil.logInfo("click start date");
                 if(that.isScenarPresent) {
                     that.isStartDatePanelOpen = !that.isStartDatePanelOpen;
-                    //that.rebuildStartDateEditPanel();
+                    that.rebuildStartDateEditPanel();
+                    // TODO fermer l'autre panel ? (objectives)
                 }
             }
         });
@@ -587,7 +592,7 @@ public class EditScenarScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 durationLabel.setText("Duration : " + (int) durationSlider.getValue());
                 that.editScenarService.getScenario().setDuration((int) durationSlider.getValue());
-                //that.rebuildObjectivesEditPanel();
+                //that.rebuildStartDateEditPanel();
             }
         });
 
@@ -597,7 +602,8 @@ public class EditScenarScreen implements Screen {
         panel.add(dateButtonsRow).spaceTop(20).colspan(2).row();
 
         // TODO appeler rebuildStartDateEditPanel
-        // rebuildStartDateEditPanel();
+        this.rebuildStartDateEditPanel();
+        panel.add(startDateEditPanel).spaceTop(20).colspan(2).row();
 
         this.rebuildObjectivesEditPanel();
         panel.add(objectivesEditPanel).spaceTop(20).colspan(2).row();
@@ -622,6 +628,71 @@ public class EditScenarScreen implements Screen {
      */
 
     // TODO créer rebuildStartDateEditPanel()
+
+    private void rebuildStartDateEditPanel() {
+        //this.startDateEditPanel ==
+        if (this.startDateEditPanel != null) {
+            this.startDateEditPanel.clear();
+        } else {
+            this.startDateEditPanel = new Table();
+            this.startDateEditPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
+        }
+
+        if(isStartDatePanelOpen) {
+            EditScenarScreen that = this;
+
+            Label titleLabel = new Label("Start Date : " + this.editScenarService.getScenario().getStartDate().toString(), SkinUtil.getLabelSkin(160, 30));
+            this.startDateEditPanel.add(titleLabel).colspan(2).row();
+            Table fieldcontainer = new Table();
+
+            // TODO ajouter slider pour le jour de startDate
+            Label startDayLabel = new Label("day : " + this.editScenarService.getScenario().getStartDate().getDay(), SkinUtil.getLabelSkin(120, 30));
+            Slider startDaySlider = new Slider(1, this.editScenarService.getScenario().getStartDate().getMonthDuration(), 1, false, SkinUtil.getSliderSkin(180, 30, 20));
+            startDaySlider.setValue(this.editScenarService.getScenario().getStartDate().getDay());
+            startDaySlider.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    startDayLabel.setText("day : " + (int) startDaySlider.getValue());
+                    that.editScenarService.getScenario().getStartDate().setDay((int) startDaySlider.getValue());
+                    //that.rebuildStartDateEditPanel();
+                }
+            });
+            fieldcontainer.add(startDayLabel).spaceTop(20);
+            fieldcontainer.add(startDaySlider).spaceTop(20).padLeft(10).row();
+
+            // TODO ajouter slider pour le mois de startDate
+            Label startMonthLabel = new Label("month : " + this.editScenarService.getScenario().getStartDate().getMonth(), SkinUtil.getLabelSkin(120, 30));
+            Slider startMonthSlider = new Slider(1, 12, 1, false, SkinUtil.getSliderSkin(180, 30, 20));
+            startMonthSlider.setValue(this.editScenarService.getScenario().getStartDate().getMonth());
+            startMonthSlider.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    startMonthLabel.setText("month : " + (int) startMonthSlider.getValue());
+                    that.editScenarService.getScenario().getStartDate().setMonth((int) startMonthSlider.getValue());
+                    //LogUtil.logInfo("avant rebuild");
+                    //that.rebuildStartDateEditPanel();
+                }
+            });
+            fieldcontainer.add(startMonthLabel).spaceTop(20);
+            fieldcontainer.add(startMonthSlider).spaceTop(20).padLeft(10).row();
+
+            ButtonWrapper buttonValidateStartDateWrapper = new ButtonWrapper("Validate", 0, 0, 120, 30);
+
+            buttonValidateStartDateWrapper.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    //LogUtil.logInfo("click validate");
+                    that.editScenarService.getScenario().getStartDate().setDay((int) startDaySlider.getValue());
+                    that.editScenarService.getScenario().getStartDate().setMonth((int) startMonthSlider.getValue());
+                    that.rebuildStartDateEditPanel();
+                }
+            });
+            fieldcontainer.add(buttonValidateStartDateWrapper.getButton()).colspan(2).spaceTop(20).row();
+
+
+            this.startDateEditPanel.add(fieldcontainer).spaceTop(20).colspan(2).row();
+        }
+    }
 
     private void rebuildObjectivesEditPanel() {
         if (this.objectivesEditPanel != null) {
@@ -699,7 +770,7 @@ public class EditScenarScreen implements Screen {
             buttonAddObjectiveWrapper.getButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    LogUtil.logInfo("click add");
+                    //LogUtil.logInfo("click add");
                     boolean isNewObjectiveOk = !nameTextField.getText().isEmpty();
                     isNewObjectiveOk &= !acronymTextField.getText().isEmpty();
                     if(isNewObjectiveOk) {
@@ -716,7 +787,7 @@ public class EditScenarScreen implements Screen {
                         }
                         that.rebuildObjectivesEditPanel();
                     }
-                    LogUtil.logInfo("objectives size : " + that.editScenarService.getScenario().getObjectives().size);
+                    //LogUtil.logInfo("objectives size : " + that.editScenarService.getScenario().getObjectives().size);
                 }
             });
             newObjectiveContainer.add(buttonAddObjectiveWrapper.getButton()).colspan(2).spaceTop(20).row();
@@ -1160,7 +1231,7 @@ public class EditScenarScreen implements Screen {
             this.landArmyGroupIcon.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    LogUtil.logInfo("click land army icon");
+                    //LogUtil.logInfo("click land army icon");
                     that.isLandUnitsTreeOpen = !that.isLandUnitsTreeOpen;
                     that.rebuildLandUnitsTreePanel();
                 }
@@ -1636,7 +1707,7 @@ public class EditScenarScreen implements Screen {
                                 //LogUtil.logInfo("Click in edges !!");
                                 if (!this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().contains(clickedHex)) {
                                     this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().add(clickedHex);
-                                    LogUtil.logInfo("getReinfHexesSource size : " + this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().size());
+                                    //LogUtil.logInfo("getReinfHexesSource size : " + this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().size());
                                 }
                                 else {
                                     this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().remove(clickedHex);
