@@ -1001,6 +1001,8 @@ public class GraphicUtil {
 
         fontPixmap.dispose();
     }
+
+
     /*
     public static Texture resizeTexture(Texture original, int width, int height) {
         FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, false);

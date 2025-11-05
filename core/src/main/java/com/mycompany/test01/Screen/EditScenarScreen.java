@@ -534,6 +534,10 @@ public class EditScenarScreen implements Screen {
                     that.isObjectivesPanelOpen = !that.isObjectivesPanelOpen;
                     that.rebuildObjectivesEditPanel();
                     // TODO fermer les autres panels ? (startDate)
+                    if(that.isObjectivesPanelOpen) {
+                        that.isStartDatePanelOpen = false;
+                        that.rebuildStartDateEditPanel();
+                    }
 
                 }
                 else {
@@ -576,6 +580,11 @@ public class EditScenarScreen implements Screen {
                     that.isStartDatePanelOpen = !that.isStartDatePanelOpen;
                     that.rebuildStartDateEditPanel();
                     // TODO fermer l'autre panel ? (objectives)
+                    if(isStartDatePanelOpen) {
+                        that.isObjectivesPanelOpen = false;
+                        that.rebuildObjectivesEditPanel();
+                    }
+
                 }
             }
         });
