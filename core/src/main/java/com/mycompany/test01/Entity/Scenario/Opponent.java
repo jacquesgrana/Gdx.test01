@@ -13,6 +13,7 @@ import com.mycompany.test01.Enum.OpponentSideEnum;
 import com.mycompany.test01.Interface.unit.ElementInterface;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Opponent {
@@ -22,12 +23,12 @@ public class Opponent {
     private CountryEnum country = CountryEnum.NO_COUNTRY;
     private UnitGroup landArmyGroup = null;
     private AirplaneSquadronGroup airArmyGroup = null;
-    private Set<Hexagon> supplyHexesSource = new HashSet<>();
-    private Set<Hexagon> reinfHexesSource = new HashSet<>();
+    private Set<Hexagon> supplyHexesSource = new LinkedHashSet<>();
+    private Set<Hexagon> reinfHexesSource = new LinkedHashSet<>();
     private OrderedSet<ReinfElement> reinfProgram = new OrderedSet<>();
     private OrderedSet<UnitReinfElement> unitReinProgram = new OrderedSet<>();
     private OrderedSet<SupplyElement> supplyProgram = new OrderedSet<>();
-    private Set<Hexagon> borderHexesOwned = new HashSet<>();
+    private Set<Hexagon> borderHexesOwned = new LinkedHashSet<>();
     //private OrderedSet<Hexagon> ownedHexes = new OrderedSet<>();
     private SupplyElement initialRootSupplyStock = new SupplyElement();
     private float supplyRatio = 0f;

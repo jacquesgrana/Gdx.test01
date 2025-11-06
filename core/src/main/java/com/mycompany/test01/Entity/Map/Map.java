@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Entity.Scenario.MapObjective;
@@ -356,13 +357,18 @@ public class Map {
 
                 // dessin des reinfHexes
                 if(!opponent.getReinfHexesSource().isEmpty()) {
+                    int cpt = 0;
                     for (Hexagon hexagon : opponent.getReinfHexesSource()) {
+                        cpt++;
+
                         if(opponent.getBorderHexesOwned().contains(hexagon) && !opponent.getSupplyHexesSource().contains(hexagon)) {
                             if(isHexInMap(hexagon.getX() - startI, hexagon.getY() - startJ)) {
                                 Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.60f);
                                 Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
-                                //drawHexagon(drawingPixmap, xx, yy, this.getHexagonSize(), colorTexture, Color.BLACK);
-                                renderHex(hexagon.getX(), hexagon.getY(), colorTexture, drawingPixmap);
+                                Pixmap pixmap = GraphicUtil.textureToPixmapSafe(colorTexture, this.hexagonSize, this.hexagonSize);
+                                BitmapFont fontToUse = GraphicUtil.whiteStrokeFont;
+                                GraphicUtil.drawTextOnPixmap(pixmap, fontToUse, String.valueOf(cpt), this.hexagonSize, this.hexagonSize);
+                                renderHex(hexagon.getX(), hexagon.getY(), new Texture(pixmap), drawingPixmap);
                                 colorTexture.dispose();
                             }
                         }
@@ -372,13 +378,19 @@ public class Map {
 
                 // dessin des supplyHexes
                 if(!opponent.getSupplyHexesSource().isEmpty()) {
+                    int cpt = 0;
                     for (Hexagon hexagon : opponent.getSupplyHexesSource()) {
+                        cpt++;
                         if(opponent.getBorderHexesOwned().contains(hexagon)) {
                             if (isHexInMap(hexagon.getX() - startI, hexagon.getY() - startJ)) {
                                 Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.8f);
                                 Texture colorTexture = GraphicUtil.getTextureFromColor(opponentColor);
-                                renderHex(hexagon.getX(), hexagon.getY(), colorTexture, drawingPixmap);
+                                Pixmap pixmap = GraphicUtil.textureToPixmapSafe(colorTexture, this.hexagonSize, this.hexagonSize);
+                                BitmapFont fontToUse = GraphicUtil.whiteStrokeFont;
+                                GraphicUtil.drawTextOnPixmap(pixmap, fontToUse, String.valueOf(cpt), this.hexagonSize, this.hexagonSize);
+                                renderHex(hexagon.getX(), hexagon.getY(), new Texture(pixmap), drawingPixmap);
                                 colorTexture.dispose();
+                                //pixmap.dispose();
                             }
                         }
 
