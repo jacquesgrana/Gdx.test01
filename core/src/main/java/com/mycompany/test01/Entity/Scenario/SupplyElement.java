@@ -9,16 +9,18 @@ public class SupplyElement {
     private int fuelStock = 0;
     private int ammoStock = 0;
     private int foodStock = 0;
-    private Hexagon supplySource = null;
+    private int medecineStock = 0;
+    private SourceHexagon supplySource = null;
 
     public SupplyElement() {
     }
 
-    public SupplyElement(int dayNumber, int fuelStock, int ammoStock, int foodStock, Hexagon supplySource) {
+    public SupplyElement(int dayNumber, int fuelStock, int ammoStock, int foodStock, int medecineStock, SourceHexagon supplySource) {
         this.dayNumber = dayNumber;
         this.fuelStock = fuelStock;
         this.ammoStock = ammoStock;
         this.foodStock = foodStock;
+        this.medecineStock = medecineStock;
         this.supplySource = supplySource;
     }
 
@@ -26,12 +28,12 @@ public class SupplyElement {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SupplyElement that = (SupplyElement) o;
-        return dayNumber == that.dayNumber && fuelStock == that.fuelStock && ammoStock == that.ammoStock && foodStock == that.foodStock && Objects.equals(supplySource, that.supplySource);
+        return dayNumber == that.dayNumber && fuelStock == that.fuelStock && ammoStock == that.ammoStock && foodStock == that.foodStock && medecineStock == that.medecineStock && supplySource.getHexagon().equals(that.supplySource.getHexagon());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dayNumber, fuelStock, ammoStock, foodStock, supplySource);
+        return Objects.hash(dayNumber, fuelStock, ammoStock, foodStock, medecineStock, supplySource);
     }
 
     public int getDayNumber() {
@@ -66,11 +68,19 @@ public class SupplyElement {
         this.foodStock = foodStock;
     }
 
-    public Hexagon getSupplySource() {
+    public int getMedecineStock() {
+        return medecineStock;
+    }
+
+    public void setMedecineStock(int medecineStock) {
+        this.medecineStock = medecineStock;
+    }
+
+    public SourceHexagon getSupplySource() {
         return supplySource;
     }
 
-    public void setSupplySource(Hexagon supplySource) {
+    public void setSupplySource(SourceHexagon supplySource) {
         this.supplySource = supplySource;
     }
 }

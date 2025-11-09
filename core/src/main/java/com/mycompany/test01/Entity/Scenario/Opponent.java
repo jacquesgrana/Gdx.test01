@@ -23,7 +23,7 @@ public class Opponent {
     private CountryEnum country = CountryEnum.NO_COUNTRY;
     private UnitGroup landArmyGroup = null;
     private AirplaneSquadronGroup airArmyGroup = null;
-    private Set<Hexagon> supplyHexesSource = new LinkedHashSet<>();
+    private Set<SourceHexagon> supplyHexesSource = new LinkedHashSet<>();
     // TODO créer DTO pour SourceHexagon ??
     private Set<SourceHexagon> reinfHexesSource = new LinkedHashSet<>();
     private Set<Hexagon> borderHexesOwned = new LinkedHashSet<>();
@@ -46,7 +46,7 @@ public class Opponent {
         CountryEnum country,
         UnitGroup landArmyGroup,
         AirplaneSquadronGroup airArmyGroup,
-        Set<Hexagon> supplyHexesSource,
+        Set<SourceHexagon> supplyHexesSource,
         Set<SourceHexagon> reinfHexesSource,
         Array<ReinfElement> reinfProgram,
         Array<UnitReinfElement> unitReinProgram,
@@ -86,6 +86,7 @@ public class Opponent {
         );
     }
 
+    // TODO factoriser !!!
     public void generateReinfHexesSourceRanks() {
         int cpt = 0;
         for(SourceHexagon sourceHexagon : reinfHexesSource) {
@@ -102,6 +103,24 @@ public class Opponent {
             }
         }
         this.reinfHexesSource = newSet;
+    }
+
+    public void generateSupplyHexesSourceRanks() {
+        int cpt = 0;
+        for(SourceHexagon sourceHexagon : supplyHexesSource) {
+            cpt++;
+            sourceHexagon.setRank(cpt);
+        }
+    }
+
+    public void removeSupplyHexesSourceSafe(SourceHexagon sourceHexagon) {
+        Set<SourceHexagon> newSet = new LinkedHashSet<>();
+        for(SourceHexagon s : this.supplyHexesSource) {
+            if(!s.getHexagon().equals(sourceHexagon.getHexagon())) {
+                newSet.add(s);
+            }
+        }
+        this.supplyHexesSource = newSet;
     }
 
     public int getId() {
@@ -152,11 +171,11 @@ public class Opponent {
         this.airArmyGroup = airArmyGroup;
     }
 
-    public Set<Hexagon> getSupplyHexesSource() {
+    public Set<SourceHexagon> getSupplyHexesSource() {
         return supplyHexesSource;
     }
 
-    public void setSupplyHexesSource(Set<Hexagon> supplyHexesSource) {
+    public void setSupplyHexesSource(Set<SourceHexagon> supplyHexesSource) {
         this.supplyHexesSource = supplyHexesSource;
     }
 

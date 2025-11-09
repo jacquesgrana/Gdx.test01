@@ -385,8 +385,9 @@ public class Map {
                 // dessin des supplyHexes
                 if(!opponent.getSupplyHexesSource().isEmpty()) {
                     int cpt = 0;
-                    for (Hexagon hexagon : opponent.getSupplyHexesSource()) {
+                    for (SourceHexagon sourceHexagon : opponent.getSupplyHexesSource()) {
                         cpt++;
+                        Hexagon hexagon = sourceHexagon.getHexagon();
                         if(opponent.getBorderHexesOwned().contains(hexagon)) {
                             if (isHexInMap(hexagon.getX() - startI, hexagon.getY() - startJ)) {
                                 Color opponentColor = GraphicUtil.getTransparentColorFromCountry(opponent.getCountry(), 0.8f);
