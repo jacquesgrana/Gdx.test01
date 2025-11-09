@@ -1,20 +1,27 @@
 package com.mycompany.test01.Entity.Scenario;
 
+import com.mycompany.test01.Entity.Map.Hexagon;
+
+import java.util.Objects;
+
 public class UnitReinfElement {
 
-    int infEngReinf = 0;
-    int artiReinf = 0;
-    int atAaReinf = 0;
-    int tankReinf = 0;
-    int hqReinf = 0;
-    int paraReinf = 0;
-    int marineReinf = 0;
-    int mountainReinf = 0;
+    private int dayNumber = 1;
+    private int infEngReinf = 0;
+    private int artiReinf = 0;
+    private int atAaReinf = 0;
+    private int tankReinf = 0;
+    private int hqReinf = 0;
+    private int paraReinf = 0;
+    private int marineReinf = 0;
+    private int mountainReinf = 0;
+    private SourceHexagon unitReinfSource = null;
 
     public UnitReinfElement() {
     }
 
     public UnitReinfElement(
+        int dayNumber,
         int infEngReinf,
         int artiReinf,
         int atAaReinf,
@@ -22,8 +29,10 @@ public class UnitReinfElement {
         int hqReinf,
         int paraReinf,
         int marineReinf,
-        int mountainReinf
+        int mountainReinf,
+        SourceHexagon unitReinfSource
     ) {
+        this.dayNumber = dayNumber;
         this.infEngReinf = infEngReinf;
         this.artiReinf = artiReinf;
         this.atAaReinf = atAaReinf;
@@ -32,6 +41,27 @@ public class UnitReinfElement {
         this.paraReinf = paraReinf;
         this.marineReinf = marineReinf;
         this.mountainReinf = mountainReinf;
+        this.unitReinfSource = unitReinfSource;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        UnitReinfElement that = (UnitReinfElement) o;
+        return dayNumber == that.dayNumber && infEngReinf == that.infEngReinf && artiReinf == that.artiReinf && atAaReinf == that.atAaReinf && tankReinf == that.tankReinf && hqReinf == that.hqReinf && paraReinf == that.paraReinf && marineReinf == that.marineReinf && mountainReinf == that.mountainReinf && Objects.equals(unitReinfSource, that.unitReinfSource);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dayNumber, infEngReinf, artiReinf, atAaReinf, tankReinf, hqReinf, paraReinf, marineReinf, mountainReinf, unitReinfSource);
+    }
+
+    public int getDayNumber() {
+        return dayNumber;
+    }
+
+    public void setDayNumber(int dayNumber) {
+        this.dayNumber = dayNumber;
     }
 
     public int getInfEngReinf() {
@@ -96,5 +126,13 @@ public class UnitReinfElement {
 
     public void setMountainReinf(int mountainReinf) {
         this.mountainReinf = mountainReinf;
+    }
+
+    public SourceHexagon getUnitReinfSource() {
+        return unitReinfSource;
+    }
+
+    public void setUnitReinfSource(SourceHexagon unitReinfSource) {
+        this.unitReinfSource = unitReinfSource;
     }
 }

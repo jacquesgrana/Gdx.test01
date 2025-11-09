@@ -1002,6 +1002,13 @@ public class GraphicUtil {
         fontPixmap.dispose();
     }
 
+    public static Texture drawTextOnTextureByPixmap(Texture texture, int width, int height, String text) {
+        Pixmap pixmap = GraphicUtil.textureToPixmapSafe(texture, width, height);
+        BitmapFont fontToUse = GraphicUtil.whiteStrokeFont;
+        GraphicUtil.drawTextOnPixmap(pixmap, fontToUse, text, width, height);
+        return new Texture(pixmap);
+    }
+
 
     /*
     public static Texture resizeTexture(Texture original, int width, int height) {

@@ -140,4 +140,11 @@ public class Hexagon {
     public int hashCode() {
         return 31 * x + y;  // Hash basé sur les coordonnées
     }
+
+    @Override
+    public String toString() {
+        return "x=" + x +
+            ", y=" + y +
+            ", category=" + category;
+    }
 }

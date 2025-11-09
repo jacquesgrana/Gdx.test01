@@ -5,8 +5,10 @@ import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitElement;
 import com.mycompany.test01.Interface.airplane.AirplaneSquadronElementInterface;
 
+import java.util.Objects;
+
 public class ReinfElement {
-    private String dateTime = "";
+    private int dayNumber = 1;
     private OrderedSet<UnitElement> landUnits = new OrderedSet<>();
     private OrderedSet<AirplaneSquadronElementInterface> airUnits = new OrderedSet<>();
     private Hexagon reinfHex = null;
@@ -15,23 +17,35 @@ public class ReinfElement {
     }
 
     public ReinfElement(
-        String dateTime,
+        int dayNumber,
         OrderedSet<UnitElement> landUnits,
         OrderedSet<AirplaneSquadronElementInterface> airUnits,
         Hexagon reinfHex
     ) {
-        this.dateTime = dateTime;
+        this.dayNumber = dayNumber;
         this.landUnits = landUnits;
         this.airUnits = airUnits;
         this.reinfHex = reinfHex;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ReinfElement that = (ReinfElement) o;
+        return dayNumber == that.dayNumber && Objects.equals(landUnits, that.landUnits) && Objects.equals(airUnits, that.airUnits) && Objects.equals(reinfHex, that.reinfHex);
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+    @Override
+    public int hashCode() {
+        return Objects.hash(dayNumber, landUnits, airUnits, reinfHex);
+    }
+
+    public int getDayNumber() {
+        return dayNumber;
+    }
+
+    public void setDayNumber(int dayNumber) {
+        this.dayNumber = dayNumber;
     }
 
     public OrderedSet<UnitElement> getLandUnits() {

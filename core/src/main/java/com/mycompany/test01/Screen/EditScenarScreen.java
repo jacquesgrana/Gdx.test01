@@ -24,6 +24,8 @@ import com.mycompany.test01.Config.MapConfig;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Scenario.MapObjective;
 import com.mycompany.test01.Entity.Scenario.Opponent;
+import com.mycompany.test01.Entity.Scenario.SourceHexagon;
+import com.mycompany.test01.Entity.Scenario.UnitReinfElement;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Interface.observer.EditScenarLoadMapObserver;
@@ -59,8 +61,6 @@ public class EditScenarScreen implements Screen {
 
     public EditScenarModeEnum editMode;
 
-    private boolean isLandUnitsTreeOpen = false;
-
     private final ToastObservable toastObservable;
     private final EditScenarLoadMapObservable editScenarLoadMapObservable;
     private final UnitRootGroupObservable unitRootGroupObservable;
@@ -88,6 +88,8 @@ public class EditScenarScreen implements Screen {
 
     private Table startDateEditPanel;
 
+    private Table programsEditPanel;
+
     private Label scenarMapBrushSizeLabel;
     public Label editModeLabel;
 
@@ -98,9 +100,13 @@ public class EditScenarScreen implements Screen {
     private Image landArmyGroupIcon = null;
     public Image selectedUnitIcon= null;
 
+    private boolean isLandUnitsTreeOpen = false;
     private boolean isScenarPresent = false;
     private boolean isObjectivesPanelOpen = false;
     private boolean isStartDatePanelOpen = false;
+    private boolean isProgramsEditPanelOpen = false;
+
+    private ProgramTypeModeEnum programEditMode = ProgramTypeModeEnum.NO_ACTION;
 
     private Hexagon pathStart, pathEnd;
     private List<Hexagon> path;
@@ -351,7 +357,7 @@ public class EditScenarScreen implements Screen {
         buttonNewScenarWrapper.getButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("click new scenario");
+                //System.out.println("click new scenario");
                 //that.rightLoadMapPanel.setVisible(true);
                 //that.rightEditScenarPanel.setVisible(false);
                 that.showLoadMapPanel();
@@ -1261,9 +1267,277 @@ public class EditScenarScreen implements Screen {
             this.rebuildLandUnitsTreePanel();
             this.selectedOpponentEditPanel.add(this.landUnitsTreePanel).width(240).pad(20).colspan(2).row();
 
+            // TODO ajouter bouton pour les programmes
+            ButtonWrapper programsButton = new ButtonWrapper("Programs", 0, 0, 120, 30);
+            //LogUtil.logInfo("selected opponent : " + this.editScenarService.getSelectedOpponent());
+            programsButton.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
+
+            programsButton.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    that.isProgramsEditPanelOpen = !that.isProgramsEditPanelOpen;
+                    that.rebuildSelectedOpponentEditPanel();
+                }
+            });
+
+            this.selectedOpponentEditPanel.add(programsButton.getButton()).spaceTop(20).colspan(2).row();
+
+            // rebuild du nouveau panel
+            if(isProgramsEditPanelOpen) {
+                this.rebuildProgramsEditPanel();
+                this.selectedOpponentEditPanel.add(this.programsEditPanel).spaceTop(20).colspan(2).row();
+            }
 
 
+            // ajout du nouveau panel
         }
+    }
+
+    public void rebuildProgramsEditPanel() {
+        EditScenarScreen that = this;
+        if (this.programsEditPanel != null) {
+            this.programsEditPanel.clear();
+        } else {
+            this.programsEditPanel = new Table();
+            this.programsEditPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
+        }
+
+        Label titleLabel = new Label("Programs", SkinUtil.getLabelSkin(120, 30));
+        this.programsEditPanel.add(titleLabel).colspan(3).row();
+        Table buttonsRow = new Table();
+        ButtonWrapper buttonReinfProgram = new ButtonWrapper("Reinf", 0, 0, 80, 30);
+        ButtonWrapper buttonSupplyProgram = new ButtonWrapper("Supply", 0, 0, 80, 30);
+        ButtonWrapper buttonUnitReinfProgram = new ButtonWrapper("Units", 0, 0, 80, 30);
+
+        buttonReinfProgram.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                that.programEditMode = ProgramTypeModeEnum.REINF;
+                that.rebuildSelectedOpponentEditPanel();
+            }
+        });
+        buttonReinfProgram.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getReinfHexesSource().isEmpty());
+
+        buttonSupplyProgram.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                that.programEditMode = ProgramTypeModeEnum.RESUPP;
+                that.rebuildSelectedOpponentEditPanel();
+            }
+        });
+        buttonSupplyProgram.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getSupplyHexesSource().isEmpty());
+
+        buttonUnitReinfProgram.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                that.programEditMode = ProgramTypeModeEnum.UNIT_REINF;
+                that.rebuildSelectedOpponentEditPanel();
+            }
+        });
+        buttonUnitReinfProgram.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getReinfHexesSource().isEmpty());
+
+        buttonsRow.add(buttonUnitReinfProgram.getButton()).spaceRight(10);
+        buttonsRow.add(buttonSupplyProgram.getButton()).spaceRight(10);
+        buttonsRow.add(buttonReinfProgram.getButton()).row();
+
+        this.programsEditPanel.add(buttonsRow).colspan(3).spaceTop(20).row();
+
+        if(this.programEditMode != ProgramTypeModeEnum.NO_ACTION) {
+            switch (this.programEditMode) {
+                case UNIT_REINF:
+                    Table unitReinfProgramEditPanel = new Table();
+                    Label unitReinfLabel = new Label("Unit Reinforcement Program", SkinUtil.getLabelSkin(190, 30));
+                    unitReinfProgramEditPanel.add(unitReinfLabel).colspan(2).row();
+                    this.programsEditPanel.add(unitReinfProgramEditPanel).spaceTop(20).colspan(3).row();
+                    // construire un panel pour les champs d'un UnitReinfElement
+                    Table UnitReinfFielsLabel = this.createUnitReinfProgramEditPanel();
+                    this.programsEditPanel.add(UnitReinfFielsLabel).spaceTop(20).colspan(3).row();
+                    break;
+                case RESUPP:
+                    Table supplyProgramEditPanel = new Table();
+                    Label supplyLabel = new Label("Supply Program", SkinUtil.getLabelSkin(120, 30));
+                    supplyProgramEditPanel.add(supplyLabel).colspan(2).row();
+                    this.programsEditPanel.add(supplyProgramEditPanel).spaceTop(20).colspan(3).row();
+                    // construire un panel pour les champs d'un supplyElement
+
+                    break;
+                case REINF:
+                    Table reinfProgramEditPanel = new Table();
+                    Label reinfLabel = new Label("Reinforcement Program", SkinUtil.getLabelSkin(160, 30));
+                    reinfProgramEditPanel.add(reinfLabel).colspan(2).row();
+                    this.programsEditPanel.add(reinfProgramEditPanel).spaceTop(20).colspan(3).row();
+                    // construire un panel pour les champs d'un reinfElement
+                    break;
+            }
+        }
+    }
+
+    private Table createUnitReinfProgramEditPanel() {
+        Table panel = new Table();
+        EditScenarScreen that = this;
+        Label dayNumberLabel = new Label("Day number : 1", SkinUtil.getLabelSkin(120, 30));
+
+        Slider dayNumberSlider = new Slider(1f, this.editScenarService.getScenario().getDuration(), 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+
+        dayNumberSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                dayNumberLabel.setText("Day number : " + (int) dayNumberSlider.getValue());
+            }
+        });
+
+        panel.add(dayNumberLabel);
+        panel.add(dayNumberSlider).row();
+
+        Label infEngReinfLabel = new Label("Inf /  Eng : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider infEngReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+
+        infEngReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                infEngReinfLabel.setText("Inf / Eng : " + (int) infEngReinfSlider.getValue());
+            }
+        });
+
+        panel.add(infEngReinfLabel);
+        panel.add(infEngReinfSlider).row();
+
+        Label artiReinfLabel = new Label("Arti : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider artiReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+
+        artiReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                artiReinfLabel.setText("Arti : " + (int) artiReinfSlider.getValue());
+            }
+        });
+
+        panel.add(artiReinfLabel);
+        panel.add(artiReinfSlider).row();
+
+        Label atAaReinfLabel = new Label("AT / AA : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider atAaReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+
+        atAaReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                atAaReinfLabel.setText("AT / AA : " + (int) atAaReinfSlider.getValue());
+            }
+        });
+        panel.add(atAaReinfLabel);
+        panel.add(atAaReinfSlider).row();
+
+        Label tankReinfLabel = new Label("Tank : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider tankReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        tankReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                tankReinfLabel.setText("Tank : " + (int) tankReinfSlider.getValue());
+            }
+        });
+        panel.add(tankReinfLabel);
+        panel.add(tankReinfSlider).row();
+
+        Label hqReinfLabel = new Label("HQ : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider hqReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        hqReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hqReinfLabel.setText("HQ : " + (int) hqReinfSlider.getValue());
+            }
+        });
+        panel.add(hqReinfLabel);
+        panel.add(hqReinfSlider).row();
+
+        Label paraReinfLabel = new Label("Para : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider paraReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        paraReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                paraReinfLabel.setText("Para : " + (int) paraReinfSlider.getValue());
+            }
+        });
+        panel.add(paraReinfLabel);
+        panel.add(paraReinfSlider).row();
+
+        Label marineReinfLabel = new Label("Marine : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider marineReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        marineReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                marineReinfLabel.setText("Marine : " + (int) marineReinfSlider.getValue());
+            }
+        });
+        panel.add(marineReinfLabel);
+        panel.add(marineReinfSlider).row();
+
+        Label mountainReinfLabel = new Label("Mountain : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider mountainReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        mountainReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                mountainReinfLabel.setText("Mountain : " + (int) mountainReinfSlider.getValue());
+            }
+        });
+        panel.add(mountainReinfLabel);
+        panel.add(mountainReinfSlider).row();
+
+        // TODO : ajouter selection du unitReinfSource (Hexagon)
+        // TODO : créer 'DTO' pour reinfHexagon qui contient l'indice et l'hexagon ?
+        SelectBox<SourceHexagon> unitReinfSourceSelector = new SelectBox<>(SkinUtil.getSelectorSkin(200, 30));
+
+        Set<SourceHexagon> hexSet = this.editScenarService.getSelectedOpponent().getReinfHexesSource();
+        SourceHexagon[] items = hexSet.toArray(new SourceHexagon[hexSet.size()]);
+        unitReinfSourceSelector.setItems(items);
+
+        panel.add(unitReinfSourceSelector).spaceTop(20).colspan(2).row();
+        //unitReinfSourceSelector.setSelected(CountryEnum.NO_COUNTRY);
+        //unitReinfSourceSelector.setItems(this.editScenarService.getSelectedOpponent().getReinfHexesSource());
+
+        ButtonWrapper addButton = new ButtonWrapper("Add", 0, 0, 120, 30);
+        // TODO : disable le button qd ts les champs (2e à 9e) sont à 0 -> ajouter aussi dans les listeners des sliders ci-dessus
+        addButton.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                int dayNumber = (int) dayNumberSlider.getValue();
+                int infEngReinf = (int) infEngReinfSlider.getValue();
+                int artiReinf = (int) artiReinfSlider.getValue();
+                int atAaReinf = (int) atAaReinfSlider.getValue();
+                int tankReinf = (int) tankReinfSlider.getValue();
+                int hqReinf = (int) hqReinfSlider.getValue();
+                int paraReinf = (int) paraReinfSlider.getValue();
+                int marineReinf = (int) marineReinfSlider.getValue();
+                int mountainReinf = (int) mountainReinfSlider.getValue();
+                SourceHexagon sourceHexagon = unitReinfSourceSelector.getSelected();
+
+                boolean isFormOk = !(infEngReinf == 0 && artiReinf == 0 && atAaReinf == 0 && tankReinf == 0 && hqReinf == 0 && paraReinf == 0 && marineReinf == 0 && mountainReinf == 0);
+
+                if(isFormOk) {
+                    UnitReinfElement newUnitReinfElement = new UnitReinfElement(dayNumber, infEngReinf, artiReinf, atAaReinf, tankReinf, hqReinf, paraReinf, marineReinf, mountainReinf, sourceHexagon);
+                    // TODO :: vérifier si le jour est libre
+                    that.editScenarService.getSelectedOpponent().getUnitReinProgram().add(newUnitReinfElement);
+                    //LogUtil.logInfo("UnitReinfElement size : " + that.editScenarService.getSelectedOpponent().getUnitReinProgram().size);
+                    that.rebuildSelectedOpponentEditPanel();
+                }
+            }
+        });
+
+        panel.add(addButton.getButton()).colspan(3).spaceTop(20).row();
+        Table unitReinfListContainer = new Table();
+        if(that.editScenarService.getSelectedOpponent().getUnitReinProgram().size > 0) {
+
+            //Label testLabel = new Label("Test", SkinUtil.getLabelSkin(100, 30));
+            //unitReinfListContainer.add(testLabel).colspan(3).row();
+            this.editScenarService.getSelectedOpponent().getUnitReinProgram().sort((a,b) -> Integer.compare(a.getDayNumber(), b.getDayNumber()));
+            for (UnitReinfElement element : this.editScenarService.getSelectedOpponent().getUnitReinProgram()) {
+                int sum = element.getInfEngReinf() + element.getArtiReinf() + element.getAtAaReinf() + element.getTankReinf() + element.getHqReinf() + element.getParaReinf() + element.getMarineReinf() + element.getMountainReinf();
+                Label rowLabel = new Label("Day : " + element.getDayNumber() + " / sum : " + sum + " / source : " + element.getUnitReinfSource().getRank(), SkinUtil.getLabelSkin(100, 30));
+
+                unitReinfListContainer.add(rowLabel).colspan(3).row();
+            }
+        }
+        panel.add(unitReinfListContainer).spaceTop(20).colspan(3).row();
+        return panel;
     }
 
     private void loadRootGroupFromFile() {
@@ -1287,18 +1561,6 @@ public class EditScenarScreen implements Screen {
         }
         return toReturn;
     }
-
-/*
-    private Table createOpponentsSidesListPanel() {
-        Table panel = new Table();
-        panel.padTop(20);
-        panel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
-        System.out.println("sides count : " + this.editScenarService.getScenario().getSidesCount());
-        Label titleLabel =  new Label("Sides : " + this.editScenarService.getScenario().getSidesCount(), SkinUtil.getLabelSkin(100, 30));
-        panel.add(titleLabel);
-        return panel;
-    }
- */
 
     private Table createRightLoadMapPanel() {
         Table panel = new Table();
@@ -1713,13 +1975,27 @@ public class EditScenarScreen implements Screen {
                              */
                             //boolean isHexInEdges = this.screen.editScenarService.getScenario().getMap().isHexInEdges(iAbs, jAbs);
                             if(isHexInEdges && this.screen.editScenarService.getSelectedOpponent().getBorderHexesOwned().contains(clickedHex)) {
+
+
+                                SourceHexagon clickedSource = new SourceHexagon(clickedHex, this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().size() + 1);
                                 //LogUtil.logInfo("Click in edges !!");
-                                if (!this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().contains(clickedHex)) {
-                                    this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().add(clickedHex);
+                                boolean isClickedHexInReinfHexesSource = this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().stream().anyMatch(s -> s.getHexagon().equals(clickedHex));
+                                if (!isClickedHexInReinfHexesSource) {
+                                    LogUtil.logInfo("pas dans le set -> add");
+                                    this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().add(clickedSource);
                                     //LogUtil.logInfo("getReinfHexesSource size : " + this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().size());
                                 }
                                 else {
-                                    this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().remove(clickedHex);
+                                    LogUtil.logInfo("dans le set -> remove");
+                                    SourceHexagon oldSourceHexagon = this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().stream().filter(s -> s.getHexagon().equals(clickedHex)).findFirst().orElse(null);
+                                    if(oldSourceHexagon != null) {
+                                        LogUtil.logInfo("hex trouvé");
+                                        LogUtil.logInfo("ancienne taille : " + this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().size());
+                                        //this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().remove(oldSourceHexagon);
+                                        this.screen.editScenarService.getSelectedOpponent().removeReinfHexesSourceSafe(oldSourceHexagon);
+                                        this.screen.editScenarService.getSelectedOpponent().generateReinfHexesSourceRanks();
+                                        LogUtil.logInfo("nouvelle taille : " + this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().size());
+                                   }
                                 }
                             }
                             this.screen.redrawMap();

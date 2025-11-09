@@ -24,12 +24,12 @@ public class Opponent {
     private UnitGroup landArmyGroup = null;
     private AirplaneSquadronGroup airArmyGroup = null;
     private Set<Hexagon> supplyHexesSource = new LinkedHashSet<>();
-    private Set<Hexagon> reinfHexesSource = new LinkedHashSet<>();
-    private OrderedSet<ReinfElement> reinfProgram = new OrderedSet<>();
-    private OrderedSet<UnitReinfElement> unitReinProgram = new OrderedSet<>();
-    private OrderedSet<SupplyElement> supplyProgram = new OrderedSet<>();
+    // TODO créer DTO pour SourceHexagon ??
+    private Set<SourceHexagon> reinfHexesSource = new LinkedHashSet<>();
     private Set<Hexagon> borderHexesOwned = new LinkedHashSet<>();
-    //private OrderedSet<Hexagon> ownedHexes = new OrderedSet<>();
+    private Array<ReinfElement> reinfProgram = new Array<>();
+    private Array<UnitReinfElement> unitReinProgram = new Array<>();
+    private Array<SupplyElement> supplyProgram = new Array<>();
     private SupplyElement initialRootSupplyStock = new SupplyElement();
     private float supplyRatio = 0f;
     private float reinfRatio = 0f;
@@ -47,10 +47,10 @@ public class Opponent {
         UnitGroup landArmyGroup,
         AirplaneSquadronGroup airArmyGroup,
         Set<Hexagon> supplyHexesSource,
-        Set<Hexagon> reinfHexesSource,
-        OrderedSet<ReinfElement> reinfProgram,
-        OrderedSet<UnitReinfElement> unitReinProgram,
-        OrderedSet<SupplyElement> supplyProgram,
+        Set<SourceHexagon> reinfHexesSource,
+        Array<ReinfElement> reinfProgram,
+        Array<UnitReinfElement> unitReinProgram,
+        Array<SupplyElement> supplyProgram,
         // TODO : utiliser List?
         //OrderedSet<Hexagon> ownedBorderHexes,
         Set<Hexagon> borderHexesOwned,
@@ -84,6 +84,24 @@ public class Opponent {
         return this.getDeployedUnits().stream().anyMatch((OnBoardUnit u) ->
             u.equals(onBoardUnit)
         );
+    }
+
+    public void generateReinfHexesSourceRanks() {
+        int cpt = 0;
+        for(SourceHexagon sourceHexagon : reinfHexesSource) {
+            cpt++;
+            sourceHexagon.setRank(cpt);
+        }
+    }
+
+    public void removeReinfHexesSourceSafe(SourceHexagon sourceHexagon) {
+        Set<SourceHexagon> newSet = new LinkedHashSet<>();
+        for(SourceHexagon s : this.reinfHexesSource) {
+            if(!s.getHexagon().equals(sourceHexagon.getHexagon())) {
+                newSet.add(s);
+            }
+        }
+        this.reinfHexesSource = newSet;
     }
 
     public int getId() {
@@ -142,35 +160,35 @@ public class Opponent {
         this.supplyHexesSource = supplyHexesSource;
     }
 
-    public Set<Hexagon> getReinfHexesSource() {
+    public Set<SourceHexagon> getReinfHexesSource() {
         return reinfHexesSource;
     }
 
-    public void setReinfHexesSource(Set<Hexagon> reinfHexesSource) {
+    public void setReinfHexesSource(Set<SourceHexagon> reinfHexesSource) {
         this.reinfHexesSource = reinfHexesSource;
     }
 
-    public OrderedSet<ReinfElement> getReinfProgram() {
+    public Array<ReinfElement> getReinfProgram() {
         return reinfProgram;
     }
 
-    public void setReinfProgram(OrderedSet<ReinfElement> reinfProgram) {
+    public void setReinfProgram(Array<ReinfElement> reinfProgram) {
         this.reinfProgram = reinfProgram;
     }
 
-    public OrderedSet<UnitReinfElement> getUnitReinProgram() {
+    public Array<UnitReinfElement> getUnitReinProgram() {
         return unitReinProgram;
     }
 
-    public void setUnitReinProgram(OrderedSet<UnitReinfElement> unitReinProgram) {
+    public void setUnitReinProgram(Array<UnitReinfElement> unitReinProgram) {
         this.unitReinProgram = unitReinProgram;
     }
 
-    public OrderedSet<SupplyElement> getSupplyProgram() {
+    public Array<SupplyElement> getSupplyProgram() {
         return supplyProgram;
     }
 
-    public void setSupplyProgram(OrderedSet<SupplyElement> supplyProgram) {
+    public void setSupplyProgram(Array<SupplyElement> supplyProgram) {
         this.supplyProgram = supplyProgram;
     }
 
