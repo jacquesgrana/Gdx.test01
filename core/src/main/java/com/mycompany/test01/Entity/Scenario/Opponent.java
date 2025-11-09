@@ -86,15 +86,37 @@ public class Opponent {
         );
     }
 
-    // TODO factoriser !!!
+    public void generateSourceHexesRanks(Set<SourceHexagon> sourceHexagons) {
+        int cpt = 0;
+        for(SourceHexagon sourceHexagon : sourceHexagons) {
+            cpt++;
+            sourceHexagon.setRank(cpt);
+        }
+    }
+
+    public Set<SourceHexagon> getSourceHexagonsAfterRemove(SourceHexagon sourceHexagon, Set<SourceHexagon> sourceHexagons) {
+        Set<SourceHexagon> newSet = new LinkedHashSet<>();
+        for(SourceHexagon s : sourceHexagons) {
+            if(!s.getHexagon().equals(sourceHexagon.getHexagon())) {
+                newSet.add(s);
+            }
+        }
+        return newSet;
+    }
+
+    // TODO factoriser 1 !!!
+    /*
     public void generateReinfHexesSourceRanks() {
         int cpt = 0;
         for(SourceHexagon sourceHexagon : reinfHexesSource) {
             cpt++;
             sourceHexagon.setRank(cpt);
         }
-    }
+    }*/
 
+
+    // TODO factoriser 2 !!!
+    /*
     public void removeReinfHexesSourceSafe(SourceHexagon sourceHexagon) {
         Set<SourceHexagon> newSet = new LinkedHashSet<>();
         for(SourceHexagon s : this.reinfHexesSource) {
@@ -104,7 +126,11 @@ public class Opponent {
         }
         this.reinfHexesSource = newSet;
     }
+     */
 
+
+    // TODO factoriser 1 !!!
+    /*
     public void generateSupplyHexesSourceRanks() {
         int cpt = 0;
         for(SourceHexagon sourceHexagon : supplyHexesSource) {
@@ -112,7 +138,10 @@ public class Opponent {
             sourceHexagon.setRank(cpt);
         }
     }
+    */
 
+    // TODO factoriser 2 !!!
+    /*
     public void removeSupplyHexesSourceSafe(SourceHexagon sourceHexagon) {
         Set<SourceHexagon> newSet = new LinkedHashSet<>();
         for(SourceHexagon s : this.supplyHexesSource) {
@@ -122,6 +151,7 @@ public class Opponent {
         }
         this.supplyHexesSource = newSet;
     }
+     */
 
     public int getId() {
         return id;

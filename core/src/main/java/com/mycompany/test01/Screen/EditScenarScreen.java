@@ -1363,6 +1363,8 @@ public class EditScenarScreen implements Screen {
                     reinfProgramEditPanel.add(reinfLabel).colspan(2).row();
                     this.programsEditPanel.add(reinfProgramEditPanel).spaceTop(20).colspan(3).row();
                     // construire un panel pour les champs d'un reinfElement
+                    Table reinfEditPanel = this.createReinfProgramEditPanel();
+                    this.programsEditPanel.add(reinfEditPanel).spaceTop(20).colspan(3).row();
                     break;
             }
         }
@@ -1498,6 +1500,32 @@ public class EditScenarScreen implements Screen {
         }
         panel.add(unitSupplyListContainer).spaceTop(20).colspan(3).row();
 
+        return panel;
+    }
+
+    private Table createReinfProgramEditPanel() {
+        Table panel = new Table();
+        EditScenarScreen that = this;
+        Label dayNumberLabel = new Label("Day number : 1", SkinUtil.getLabelSkin(120, 30));
+        Slider dayNumberSlider = new Slider(1f, this.editScenarService.getScenario().getDuration(), 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+
+        dayNumberSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                dayNumberLabel.setText("Day number : " + (int) dayNumberSlider.getValue());
+            }
+        });
+
+        panel.add(dayNumberLabel);
+        panel.add(dayNumberSlider).row();
+
+        ButtonWrapper loadGroupButton = new ButtonWrapper("Load Group", 0, 0, 120, 30);
+
+        panel.add(loadGroupButton.getButton()).colspan(3).spaceTop(20).row();
+
+        ButtonWrapper addButton = new ButtonWrapper("Add", 0, 0, 120, 30);
+
+        panel.add(addButton.getButton()).colspan(3).spaceTop(20).row();
         return panel;
     }
 
@@ -2141,8 +2169,10 @@ public class EditScenarScreen implements Screen {
                                         //LogUtil.logInfo("hex trouvé");
                                         //LogUtil.logInfo("ancienne taille : " + this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().size());
                                         //this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().remove(oldSourceHexagon);
-                                        this.screen.editScenarService.getSelectedOpponent().removeReinfHexesSourceSafe(oldSourceHexagon);
-                                        this.screen.editScenarService.getSelectedOpponent().generateReinfHexesSourceRanks();
+
+                                        this.screen.editScenarService.getSelectedOpponent().setReinfHexesSource(this.screen.editScenarService.getSelectedOpponent().getSourceHexagonsAfterRemove(oldSourceHexagon, this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource()));
+                                        //this.screen.editScenarService.getSelectedOpponent().removeReinfHexesSourceSafe(oldSourceHexagon);
+                                        this.screen.editScenarService.getSelectedOpponent().generateSourceHexesRanks(this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource());
                                         //LogUtil.logInfo("nouvelle taille : " + this.screen.editScenarService.getSelectedOpponent().getReinfHexesSource().size());
                                    }
                                 }
@@ -2166,8 +2196,9 @@ public class EditScenarScreen implements Screen {
                                     //this.screen.editScenarService.getSelectedOpponent().getSupplyHexesSource().remove(clickedSource);
                                     SourceHexagon oldSourceHexagon = this.screen.editScenarService.getSelectedOpponent().getSupplyHexesSource().stream().filter(s -> s.getHexagon().equals(clickedHex)).findFirst().orElse(null);
                                     if(oldSourceHexagon != null) {
-                                        this.screen.editScenarService.getSelectedOpponent().removeSupplyHexesSourceSafe(oldSourceHexagon);
-                                        this.screen.editScenarService.getSelectedOpponent().generateSupplyHexesSourceRanks();
+                                        this.screen.editScenarService.getSelectedOpponent().setSupplyHexesSource(this.screen.editScenarService.getSelectedOpponent().getSourceHexagonsAfterRemove(oldSourceHexagon, this.screen.editScenarService.getSelectedOpponent().getSupplyHexesSource()));
+                                        //this.screen.editScenarService.getSelectedOpponent().removeSupplyHexesSourceSafe(oldSourceHexagon);
+                                        this.screen.editScenarService.getSelectedOpponent().generateSourceHexesRanks(this.screen.editScenarService.getSelectedOpponent().getSupplyHexesSource());
                                     }
                                 }
                             }
