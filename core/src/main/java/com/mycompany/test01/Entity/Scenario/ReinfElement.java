@@ -11,7 +11,7 @@ public class ReinfElement {
     private int dayNumber = 1;
     private OrderedSet<UnitElement> landUnits = new OrderedSet<>();
     private OrderedSet<AirplaneSquadronElementInterface> airUnits = new OrderedSet<>();
-    private Hexagon reinfHex = null;
+    private SourceHexagon reinfHex = null;
 
     public ReinfElement() {
     }
@@ -20,7 +20,7 @@ public class ReinfElement {
         int dayNumber,
         OrderedSet<UnitElement> landUnits,
         OrderedSet<AirplaneSquadronElementInterface> airUnits,
-        Hexagon reinfHex
+        SourceHexagon reinfHex
     ) {
         this.dayNumber = dayNumber;
         this.landUnits = landUnits;
@@ -64,11 +64,11 @@ public class ReinfElement {
         this.airUnits = airUnits;
     }
 
-    public Hexagon getReinfHex() {
+    public SourceHexagon getReinfHex() {
         return reinfHex;
     }
 
-    public void setReinfHex(Hexagon reinfHex) {
+    public void setReinfHex(SourceHexagon reinfHex) {
         this.reinfHex = reinfHex;
     }
 }

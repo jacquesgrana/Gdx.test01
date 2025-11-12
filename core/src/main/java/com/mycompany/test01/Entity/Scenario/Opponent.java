@@ -1,13 +1,10 @@
 package com.mycompany.test01.Entity.Scenario;
 
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Common.OnBoardUnit;
 import com.mycompany.test01.Entity.Airplane.Abstract.AirplaneSquadronGroup;
 import com.mycompany.test01.Entity.Map.Hexagon;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
-import com.mycompany.test01.Entity.Unit.Group.ArmyGroup;
-import com.mycompany.test01.Entity.Unit.Group.FrontGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 import com.mycompany.test01.Interface.unit.ElementInterface;

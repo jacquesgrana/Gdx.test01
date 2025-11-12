@@ -33,12 +33,12 @@ import com.mycompany.test01.Library.HexPathfinderCalculator;
 import com.mycompany.test01.Main;
 import com.mycompany.test01.Observable.EditScenarLoadMapObservable;
 import com.mycompany.test01.Observable.ToastObservable;
+import com.mycompany.test01.Observable.UnitReinfGroupObservable;
 import com.mycompany.test01.Observable.UnitRootGroupObservable;
 import com.mycompany.test01.Service.ArmyFileService;
 import com.mycompany.test01.Service.EditScenarService;
 import com.mycompany.test01.Service.ScenarFileService;
 import com.mycompany.test01.Util.*;
-import jdk.jpackage.internal.Log;
 
 import java.util.*;
 import java.util.List;
@@ -61,6 +61,7 @@ public class EditScenarScreen implements Screen {
     private final ToastObservable toastObservable;
     private final EditScenarLoadMapObservable editScenarLoadMapObservable;
     private final UnitRootGroupObservable unitRootGroupObservable;
+    private final UnitReinfGroupObservable unitReinfGroupObservable;
 
     private final ScenarFileService scenarFileService;
     private final ArmyFileService armyFileService;
@@ -96,12 +97,18 @@ public class EditScenarScreen implements Screen {
 
     private Image landArmyGroupIcon = null;
     public Image selectedUnitIcon= null;
+    public Image selectedReinfLandGroupIcon = null;
+    public Image selectedReinfAirGroupIcon = null;
 
     private boolean isLandUnitsTreeOpen = false;
     private boolean isScenarPresent = false;
     private boolean isObjectivesPanelOpen = false;
     private boolean isStartDatePanelOpen = false;
     private boolean isProgramsEditPanelOpen = false;
+    boolean isReinfLandGroupLoaded = false;
+    boolean isReinfLandGroupTreeOpen = false;
+    boolean isReinfAirGroupLoaded = false;
+    boolean isReinfAirGroupTreeOpen = false;
 
     private ProgramTypeModeEnum programEditMode = ProgramTypeModeEnum.NO_ACTION;
 
@@ -127,6 +134,7 @@ public class EditScenarScreen implements Screen {
         this.toastObservable = ToastObservable.getInstance();
         this.editScenarLoadMapObservable = EditScenarLoadMapObservable.getInstance();
         this.unitRootGroupObservable = UnitRootGroupObservable.getInstance();
+        this.unitReinfGroupObservable = UnitReinfGroupObservable.getInstance();
         this.subscribeToObservables();
 
         this.screenInputAdapter = new EditScenarScreen.EditScenarScreenInputAdapter(this);
@@ -1506,6 +1514,8 @@ public class EditScenarScreen implements Screen {
     private Table createReinfProgramEditPanel() {
         Table panel = new Table();
         EditScenarScreen that = this;
+        //boolean isGroupLoaded = false;
+        //boolean isTreeGroupOpen = false;
         Label dayNumberLabel = new Label("Day number : 1", SkinUtil.getLabelSkin(120, 30));
         Slider dayNumberSlider = new Slider(1f, this.editScenarService.getScenario().getDuration(), 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
 
@@ -1517,11 +1527,42 @@ public class EditScenarScreen implements Screen {
         });
 
         panel.add(dayNumberLabel);
-        panel.add(dayNumberSlider).row();
+        panel.add(dayNumberSlider).spaceLeft(20).row();
 
-        ButtonWrapper loadGroupButton = new ButtonWrapper("Load Group", 0, 0, 120, 30);
+        ButtonWrapper loadLandGroupButton = new ButtonWrapper("Load Land Group", 0, 0, 120, 30);
 
-        panel.add(loadGroupButton.getButton()).colspan(3).spaceTop(20).row();
+        loadLandGroupButton.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                that.loadReinfArmyGroupFromFile();
+            }
+        });
+
+        panel.add(loadLandGroupButton.getButton()).spaceTop(20);
+
+        ButtonWrapper loadAirGroupButton = new ButtonWrapper("Load Air Group", 0, 0, 120, 30);
+
+        panel.add(loadAirGroupButton.getButton()).spaceTop(20).row();
+
+        // if isGroupLoaded -> afficher l'icone du groupe qui reagit au clic en ouvrant le tree de son contenu
+        if(isReinfLandGroupLoaded || isReinfAirGroupLoaded) {
+            Table conContainer = new Table();
+
+            if(isReinfLandGroupLoaded && !isReinfAirGroupLoaded) {
+                conContainer.add(selectedReinfLandGroupIcon).width(80).height(80).colspan(2).row();
+            }
+
+            if(!isReinfLandGroupLoaded && isReinfAirGroupLoaded) {
+                conContainer.add(selectedReinfAirGroupIcon).width(80).height(80).colspan(2).row();
+            }
+
+            if(isReinfLandGroupLoaded && isReinfAirGroupLoaded) {
+                conContainer.add(selectedReinfLandGroupIcon).width(80).height(80);
+                conContainer.add(selectedReinfAirGroupIcon).width(80).height(80).row();
+            }
+
+            panel.add(conContainer).colspan(2).spaceTop(20).row();
+        }
 
         ButtonWrapper addButton = new ButtonWrapper("Add", 0, 0, 120, 30);
 
@@ -1722,12 +1763,33 @@ public class EditScenarScreen implements Screen {
         this.armyFileService.openLoadArmyRootFileChooser("EDIT_SCENAR_SCREEN");
     }
 
+    private void loadReinfArmyGroupFromFile() {
+        this.armyFileService.openLoadArmyGroupFileChooser("EDIT_SCENAR_SCREEN");
+    }
+
     private Texture getLandArmyGroupTextureFromOpponent(Opponent selectedOpponent) {
         Texture toReturn = GraphicUtil.getEmptyTexture();
         if(this.editScenarService.getSelectedOpponent().getCountry() != CountryEnum.NO_COUNTRY) {
             try {
                 if(editScenarService.getSelectedOpponent().getLandArmyGroup() != null) {
                     toReturn = GraphicUtil.getCounterTextureFromUnit((ElementInterface) editScenarService.getSelectedOpponent().getLandArmyGroup());
+                }
+            }
+            catch (Exception e) {
+                LogUtil.logError("Texture Error", e);
+                //e.printStackTrace();
+            }
+
+        }
+        return toReturn;
+    }
+
+    private Texture getReinfGroupTextureFromGroup(UnitGroup unit) {
+        Texture toReturn = GraphicUtil.getEmptyTexture();
+        if(this.editScenarService.getSelectedOpponent().getCountry() != CountryEnum.NO_COUNTRY) {
+            try {
+                if(editScenarService.getSelectedReinfLandGroup() != null) {
+                    toReturn = GraphicUtil.getCounterTextureFromUnit((ElementInterface) unit);
                 }
             }
             catch (Exception e) {
@@ -1916,11 +1978,32 @@ public class EditScenarScreen implements Screen {
             unitRootGroupObservable.subscribe(new UnitGroupObserver() {
                 @Override
                 public void update(UnitGroup newValue) {
-                    EditScenarScreen.this.updateRootFromObservable(newValue);
+                    that.updateRootFromObservable(newValue);
                     that.rebuildSelectedOpponentEditPanel();
                 }
             });
         }
+
+        if(this.unitReinfGroupObservable != null) {
+            unitReinfGroupObservable.subscribe(new UnitGroupObserver() {
+                @Override
+                public void update(UnitGroup newValue) {
+                    //that.updateRootFromObservable(newValue);
+                    that.updateReinfGroupFromObservale(newValue);
+                    that.rebuildSelectedOpponentEditPanel();
+                }
+            });
+        }
+    }
+
+    public void updateReinfGroupFromObservale(UnitGroup newValue) {
+        LogUtil.logInfo("retour observable : Group : name : " + newValue.getName());
+        // TODO : set booleen a true et construire l'icone du reinfGroup
+        this.isReinfLandGroupLoaded = true;
+        this.selectedReinfLandGroupIcon = new Image(this.getReinfGroupTextureFromGroup(newValue));
+        this.selectedReinfLandGroupIcon.setWidth(80);
+        this.selectedReinfLandGroupIcon.setHeight(80);
+
     }
 
     public void updateRootFromObservable(UnitGroup newValue) {

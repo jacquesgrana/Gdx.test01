@@ -8,6 +8,7 @@ import com.mycompany.test01.Config.FileConfig;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.FileChooserListener.EditScenarMapFileChooserListener;
 import com.mycompany.test01.Interface.common.FileChooserInterface;
+import com.mycompany.test01.Util.FileUtil;
 
 public class ScenarFileService {
     private static ScenarFileService instance = null;
@@ -30,23 +31,24 @@ public class ScenarFileService {
     }
 
     public void openLoadMapFileChooser() {
-        checkOrInitDirs();
+        FileUtil.checkOrInitDirs();
         EditScenarMapFileChooserListener fileChooserlistener = new EditScenarMapFileChooserListener();
         fileChooser.openLoadFileChooser(fileChooserlistener, FileConfig.MAP_FILE_PATH);
     }
 
     public void openSaveMapFileChooser() {
-        checkOrInitDirs();
+        FileUtil.checkOrInitDirs();
         EditScenarMapFileChooserListener fileChooserlistener = new EditScenarMapFileChooserListener();
         fileChooser.openSaveFileChooser(fileChooserlistener, FileConfig.MAP_FILE_PATH);
     }
 
+    /*
     private void checkOrInitDirs() {
         FileHandle dataDir = Gdx.files.local(FileConfig.GAME_DATA_FILE_PATH);
         if(!dataDir.exists()) dataDir.mkdirs();
         FileHandle mapDir = Gdx.files.local(FileConfig.MAP_FILE_PATH);
         if(!mapDir.exists()) mapDir.mkdirs();
-    }
+    }*/
 
     public void saveMapData(MapData data, String filePath) { //GameData data, String filePath
         FileHandle file = Gdx.files.absolute(filePath);

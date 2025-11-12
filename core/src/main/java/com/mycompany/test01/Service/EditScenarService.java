@@ -1,12 +1,11 @@
 package com.mycompany.test01.Service;
 
-import com.badlogic.gdx.utils.Array;
-import com.mycompany.test01.Common.OnBoardUnit;
-import com.mycompany.test01.Common.ScenarUnitNode;
 import com.mycompany.test01.Config.ScenarConfig;
 import com.mycompany.test01.Entity.Scenario.MapObjective;
 import com.mycompany.test01.Entity.Scenario.Opponent;
 import com.mycompany.test01.Entity.Scenario.Scenario;
+import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.Entity.Unit.Group.ArmyGroup;
 import com.mycompany.test01.Interface.unit.ElementInterface;
 
 public class EditScenarService {
@@ -21,6 +20,8 @@ public class EditScenarService {
     private ElementInterface selectedUnit = null;
 
     private MapObjective selectedObjective = null;
+
+    private UnitGroup selectedReinfLandGroup = null;
 
     //private ScenarUnitNode selectedTreeNode;
 
@@ -81,6 +82,14 @@ public class EditScenarService {
 
     public void setSelectedObjective(MapObjective selectedObjective) {
         this.selectedObjective = selectedObjective;
+    }
+
+    public UnitGroup getSelectedReinfLandGroup() {
+        return selectedReinfLandGroup;
+    }
+
+    public void setSelectedReinfLandGroup(UnitGroup selectedReinfLandGroup) {
+        this.selectedReinfLandGroup = selectedReinfLandGroup;
     }
 
     /*

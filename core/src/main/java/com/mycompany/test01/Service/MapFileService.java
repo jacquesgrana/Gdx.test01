@@ -12,6 +12,7 @@ import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.FileChooserListener.DesktopMapFileChooserListener;
 import com.mycompany.test01.Entity.Map.MapData;
 import com.mycompany.test01.Interface.common.FileChooserInterface;
+import com.mycompany.test01.Util.FileUtil;
 import com.mycompany.test01.Util.LogUtil;
 
 import java.util.Arrays;
@@ -37,23 +38,25 @@ public class MapFileService {
     }
 
     public void openLoadMapFileChooser() {
-        checkOrInitDirs();
+        FileUtil.checkOrInitDirs();
         DesktopMapFileChooserListener fileChooserlistener = new DesktopMapFileChooserListener();
         fileChooser.openLoadFileChooser(fileChooserlistener, FileConfig.MAP_FILE_PATH);
     }
 
     public void openSaveMapFileChooser() {
-        checkOrInitDirs();
+        FileUtil.checkOrInitDirs();
         DesktopMapFileChooserListener fileChooserlistener = new DesktopMapFileChooserListener();
         fileChooser.openSaveFileChooser(fileChooserlistener, FileConfig.MAP_FILE_PATH);
     }
 
+    /*
     private void checkOrInitDirs() {
         FileHandle dataDir = Gdx.files.local(FileConfig.GAME_DATA_FILE_PATH);
         if(!dataDir.exists()) dataDir.mkdirs();
         FileHandle mapDir = Gdx.files.local(FileConfig.MAP_FILE_PATH);
         if(!mapDir.exists()) mapDir.mkdirs();
     }
+    */
 
     public void saveMapData(MapData data, String filePath) { //GameData data, String filePath
         FileHandle file = Gdx.files.absolute(filePath);

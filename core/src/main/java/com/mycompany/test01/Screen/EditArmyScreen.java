@@ -1221,7 +1221,7 @@ public class EditArmyScreen implements Screen, InputProcessor { //, Observer<Uni
     }
 
     private void loadArmyGroupFromFile() {
-        armyFileService.openLoadArmyGroupFileChooser();
+        armyFileService.openLoadArmyGroupFileChooser("EDIT_ARMY_SCREEN");
     }
 
     private void subscribeToObservables() {

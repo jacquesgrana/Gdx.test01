@@ -7,9 +7,11 @@ import com.mycompany.test01.FileChooserListener.DesktopArmyGroupFileChooserListe
 import com.mycompany.test01.FileChooserListener.DesktopArmyRootFileChooserListener;
 import com.mycompany.test01.Common.DesktopFileChooser;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
+import com.mycompany.test01.FileChooserListener.DesktopScenarArmyGroupFileChooserListener;
 import com.mycompany.test01.FileChooserListener.DesktopScenarArmyRootFileChooserListener;
 import com.mycompany.test01.Interface.common.FileChooserInterface;
 import com.mycompany.test01.Serializer.UnitElementSerializer;
+import com.mycompany.test01.Util.FileUtil;
 
 import static com.mycompany.test01.Config.FileConfig.*;
 //import games.spooky.gdx.nativefilechooser.NativeFileChooser;
@@ -49,7 +51,7 @@ public class ArmyFileService {
     }
 
     public void openLoadArmyRootFileChooser(String mode) {
-        checkOrInitDirs();
+        FileUtil.checkOrInitDirs();
         switch (mode) {
             case "EDIT_ARMY_SCREEN":
                 DesktopArmyRootFileChooserListener ArmyFileChooserlistener = new DesktopArmyRootFileChooserListener();
@@ -64,23 +66,33 @@ public class ArmyFileService {
     }
 
     public void openSaveArmyRootFileChooser() {
-        checkOrInitDirs();
+        FileUtil.checkOrInitDirs();
         DesktopArmyRootFileChooserListener fileChooserlistener = new DesktopArmyRootFileChooserListener();
         fileChooser.openSaveFileChooser(fileChooserlistener, ARMY_FILE_PATH);
     }
 
-    public void openLoadArmyGroupFileChooser() {
-        checkOrInitDirs();
-        DesktopArmyGroupFileChooserListener fileChooserlistener = new DesktopArmyGroupFileChooserListener();
-        fileChooser.openLoadFileChooser(fileChooserlistener, GROUP_FILE_PATH);
+    public void openLoadArmyGroupFileChooser(String mode) {
+        FileUtil.checkOrInitDirs();
+        switch (mode) {
+            case "EDIT_ARMY_SCREEN":
+                DesktopArmyGroupFileChooserListener fileChooserlistener = new DesktopArmyGroupFileChooserListener();
+                fileChooser.openLoadFileChooser(fileChooserlistener, GROUP_FILE_PATH);
+                break;
+            case "EDIT_SCENAR_SCREEN":
+                DesktopScenarArmyGroupFileChooserListener ArmyGroupFileChooserListener = new DesktopScenarArmyGroupFileChooserListener();
+                fileChooser.openLoadFileChooser(ArmyGroupFileChooserListener, GROUP_FILE_PATH);
+                break;
+        }
+
     }
 
     public void openSaveArmyGroupFileChooser() {
-        checkOrInitDirs();
+        FileUtil.checkOrInitDirs();
         DesktopArmyGroupFileChooserListener fileChooserlistener = new DesktopArmyGroupFileChooserListener();
         fileChooser.openSaveFileChooser(fileChooserlistener, GROUP_FILE_PATH);
     }
 
+    /*
     private void checkOrInitDirs() {
         FileHandle dataDir = Gdx.files.local(GAME_DATA_FILE_PATH);
         if(!dataDir.exists()) dataDir.mkdirs();
@@ -89,6 +101,8 @@ public class ArmyFileService {
         FileHandle groupDir = Gdx.files.local(GROUP_FILE_PATH);
         if(!groupDir.exists()) groupDir.mkdirs();
     }
+
+     */
 
     public void saveArmyRootData(String filePath) { //GameData data, String filePath
         //FileHandle file = Gdx.files.local(MAP_FILE_PATH + fileName + ".json");
