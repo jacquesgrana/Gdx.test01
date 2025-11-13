@@ -41,13 +41,11 @@ public class DesktopScenarArmyGroupFileChooserListener implements FileChooserLis
                 UnitGroup newGroup = armyFileService.loadArmyData(file.path());
                 if(newGroup.getCountry().equals(editScenarService.getSelectedOpponent().getCountry())) {
                   editScenarService.setSelectedReinfLandGroup(newGroup);
-                  // TODO appeler observable ReinfUnitGroupObservable
                     Toast toast = new Toast("Group Loaded", ColorStyleEnum.SUCCESS);
                     this.toastObservable.setObserved(toast);
                     this.toastObservable.notifyObservers();
                     this.unitReinfGroupObservable.setObserved(newGroup);
                     this.unitReinfGroupObservable.notifyObservers();
-
                 }
 
                 /*

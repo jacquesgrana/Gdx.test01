@@ -88,6 +88,8 @@ public class EditScenarScreen implements Screen {
 
     private Table programsEditPanel;
 
+    private Table reinfGroupUnitTreePanel;
+
     private Label scenarMapBrushSizeLabel;
     public Label editModeLabel;
 
@@ -99,6 +101,8 @@ public class EditScenarScreen implements Screen {
     public Image selectedUnitIcon= null;
     public Image selectedReinfLandGroupIcon = null;
     public Image selectedReinfAirGroupIcon = null;
+
+
 
     private boolean isLandUnitsTreeOpen = false;
     private boolean isScenarPresent = false;
@@ -855,6 +859,30 @@ public class EditScenarScreen implements Screen {
 
         }
     }
+
+    private void rebuildReinfGroupUnitsTreePanel() {
+        if (this.reinfGroupUnitTreePanel != null) {
+            this.reinfGroupUnitTreePanel.clear();
+        } else {
+            this.reinfGroupUnitTreePanel = new Table();
+            this.reinfGroupUnitTreePanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorLight));
+        }
+        if(isReinfLandGroupTreeOpen) {
+            Label titleLabel = new Label("Group Tree :", SkinUtil.getLabelSkin(120, 30));
+            this.reinfGroupUnitTreePanel.add(titleLabel).colspan(2).row();
+            Tree<ScenarReinfLandUnitNode, String> reinfLandUnitsTree = new Tree<>(SkinUtil.getUnitTreeSkin());
+            ScenarReinfLandUnitNode rootNode = GraphicUtil.createScenarReinfTreeFromGroup(this.editScenarService.getSelectedReinfLandGroup(), this);
+            reinfLandUnitsTree.add(rootNode);
+            reinfLandUnitsTree.expandAll();
+            ScrollPane treeScrollPane = new ScrollPane(reinfLandUnitsTree, SkinUtil.getScrollPaneSkin(280, 600));
+            this.reinfGroupUnitTreePanel.add(treeScrollPane).padTop(20).width(280).colspan(3).row();
+            this.reinfGroupUnitTreePanel.invalidateHierarchy();
+        }
+
+        //reinfGroupUnitTreePanel
+
+
+    }
 //selectedObjective
     private void rebuildLandUnitsTreePanel() {
         //this.landUnitsTreePanel = new Table();
@@ -870,18 +898,6 @@ public class EditScenarScreen implements Screen {
             //Label titleLabel = new Label("Land Units Tree :", SkinUtil.getLabelSkin(160, 30));
             //this.landUnitsTreePanel.add(titleLabel).padTop(20).width(160).row();
             Tree<ScenarUnitNode, String> landUnitsTree = new Tree<>(SkinUtil.getUnitTreeSkin());
-
-            // TODO : vérifier que ça sert à qqchose
-            /*
-            landUnitsTree.setPadding(10);
-            landUnitsTree.setIndentSpacing(30);
-            landUnitsTree.setIconSpacing(10, 20);
-            landUnitsTree.setPosition(100, Gdx.graphics.getHeight() - 100f, 1);
-            //float rectWidth = (Gdx.graphics.getWidth() - (3 + 1) * 50f) / 3;
-            //float rectHeight = Gdx.graphics.getHeight() - 150f;
-            landUnitsTree.setBounds(0f, -20f, 300, 800);
-
-             */
 
             ScenarUnitNode rootNode = GraphicUtil.createScenarTreeFromGroup(this.editScenarService.getSelectedOpponent().getLandArmyGroup(), this);
             landUnitsTree.add(rootNode);
@@ -1529,6 +1545,17 @@ public class EditScenarScreen implements Screen {
         panel.add(dayNumberLabel);
         panel.add(dayNumberSlider).spaceLeft(20).row();
 
+        Label sourceLabel = new Label("Source : ", SkinUtil.getLabelSkin(120, 30));
+        panel.add(sourceLabel).spaceTop(20).align(Align.left);
+        SelectBox<SourceHexagon> unitReinfSourceSelector = new SelectBox<>(SkinUtil.getSelectorSkin(80, 30));
+
+        Set<SourceHexagon> hexSet = this.editScenarService.getSelectedOpponent().getReinfHexesSource();
+        SourceHexagon[] items = hexSet.toArray(new SourceHexagon[0]);
+        unitReinfSourceSelector.setItems(items);
+
+        panel.add(unitReinfSourceSelector).spaceLeft(20).spaceTop(20).colspan(2).align(Align.left).row();
+
+
         ButtonWrapper loadLandGroupButton = new ButtonWrapper("Load Land Group", 0, 0, 120, 30);
 
         loadLandGroupButton.getButton().addListener(new ChangeListener() {
@@ -1560,6 +1587,22 @@ public class EditScenarScreen implements Screen {
                 conContainer.add(selectedReinfLandGroupIcon).width(80).height(80);
                 conContainer.add(selectedReinfAirGroupIcon).width(80).height(80).row();
             }
+
+            if(isReinfLandGroupLoaded) {
+                this.selectedReinfLandGroupIcon.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        LogUtil.logInfo("click reinf army group icon");
+                        that.isReinfLandGroupTreeOpen = !that.isReinfLandGroupTreeOpen;
+                        //if(that.isReinfLandGroupTreeOpen) {
+                            that.rebuildReinfGroupUnitsTreePanel();
+
+                        //}
+                        that.rebuildSelectedOpponentEditPanel();
+                    }
+                });
+            }
+            conContainer.add(that.reinfGroupUnitTreePanel).spaceTop(20).colspan(2).row();
 
             panel.add(conContainer).colspan(2).spaceTop(20).row();
         }

@@ -41,7 +41,8 @@ public class Toast extends Table {
         this.message = message;
         this.mode = mode;
         // Choisir le nom du Drawable de fond basé sur le mode
-        String backgroundDrawableName;
+        //String backgroundDrawableName = this.mode.getBackgroundDrawableName();
+        /*
         if (ColorStyleEnum.SUCCESS.equals(this.mode)) {
             backgroundDrawableName = "toast-background-success";
         } else if (ColorStyleEnum.DANGER.equals(this.mode)) {
@@ -53,9 +54,10 @@ public class Toast extends Table {
         } else {
             backgroundDrawableName = "toast-background-default"; // Cas par défaut
         }
+         */
 
         // Appliquer le fond à la Table (le Toast lui-même)
-        this.setBackground(skin.getDrawable(backgroundDrawableName));
+        this.setBackground(skin.getDrawable(this.mode.getBackgroundDrawableName()));
 
         // Créer le Label en utilisant le style "default" du skin
         Label messageLabel = new Label(this.message, skin, "default");

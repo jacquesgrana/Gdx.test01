@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mycompany.test01.Common.OnBoardUnit;
+import com.mycompany.test01.Common.ScenarReinfLandUnitNode;
 import com.mycompany.test01.Common.ScenarUnitNode;
 import com.mycompany.test01.Common.UnitNode;
 import com.mycompany.test01.Entity.Map.Cliff;
@@ -596,6 +597,45 @@ public class GraphicUtil {
         pixmap.dispose();
 
         return texture;
+    }
+
+    public static ScenarReinfLandUnitNode createScenarReinfTreeFromGroup(UnitGroup group, Screen screen) {
+        EditScenarScreen that = (EditScenarScreen) screen;
+
+        // Créer un nœud pour le groupe actuel
+        ScenarReinfLandUnitNode groupNode = new ScenarReinfLandUnitNode(group);
+
+        // Parcourir les unités du groupe
+        for (ElementInterface element : group.getUnits()) {
+
+            if (element instanceof UnitGroup) {
+                // Si c'est un sous-groupe, appel récursif
+                ScenarReinfLandUnitNode childGroupNode = createScenarReinfTreeFromGroup((UnitGroup) element, screen);
+                groupNode.add(childGroupNode); // Ajouter le sous-groupe au nœud actuel
+                // ajouter listener
+                /*
+                childGroupNode.getActor().addListener(new ClickListener() {
+                    public void clicked (InputEvent event, float x, float y) {
+                    }
+                });
+                 */
+
+            }
+            else if (element instanceof Unit) {
+                // Si c'est une unité, créer un nœud simple
+                ScenarReinfLandUnitNode unitNode = new ScenarReinfLandUnitNode((Unit) element);
+                groupNode.add(unitNode); // Ajouter l'unité au nœud actuel
+                // ajouter listener
+                /*
+                unitNode.getActor().addListener(new ClickListener() {
+                    public void clicked (InputEvent event, float x, float y) {
+                        //System.out.println("click on unit");
+                    }
+                });
+                 */
+            }
+        }
+        return groupNode;
     }
 
     public static ScenarUnitNode createScenarTreeFromGroup(UnitGroup group, Screen screen) {
