@@ -600,7 +600,7 @@ public class GraphicUtil {
     }
 
     public static ScenarReinfLandUnitNode createScenarReinfTreeFromGroup(UnitGroup group, Screen screen) {
-        EditScenarScreen that = (EditScenarScreen) screen;
+        //EditScenarScreen that = (EditScenarScreen) screen;
 
         // Créer un nœud pour le groupe actuel
         ScenarReinfLandUnitNode groupNode = new ScenarReinfLandUnitNode(group);

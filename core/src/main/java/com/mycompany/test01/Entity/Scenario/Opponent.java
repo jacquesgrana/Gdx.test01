@@ -1,6 +1,7 @@
 package com.mycompany.test01.Entity.Scenario;
 
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Common.OnBoardUnit;
 import com.mycompany.test01.Entity.Airplane.Abstract.AirplaneSquadronGroup;
 import com.mycompany.test01.Entity.Map.Hexagon;
@@ -8,6 +9,7 @@ import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Enum.CountryEnum;
 import com.mycompany.test01.Enum.OpponentSideEnum;
 import com.mycompany.test01.Interface.unit.ElementInterface;
+import com.mycompany.test01.Util.UnitUtil;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -99,6 +101,60 @@ public class Opponent {
             }
         }
         return newSet;
+    }
+
+    public boolean isNewGroupUnitsNotPresentInLandUnits(UnitGroup newGroup) {
+        if(this.landArmyGroup != null) {
+            Array<ElementInterface> landUnits = collectUnitsFromGroup(this.landArmyGroup);
+            if(!landUnits.isEmpty()) {
+                Array<ElementInterface> newUnits = collectUnitsFromGroup(newGroup);
+                for (ElementInterface landUnit : landUnits) {
+                    for(ElementInterface newUnit : newUnits) {
+                        if(UnitUtil.isUnitsSimilar(landUnit, newUnit)) return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isNewGroupUnitsNotPresentInReinf(UnitGroup newGroup) {
+        if(this.getReinfProgram().size > 0) {
+            Array<ElementInterface> newUnits = collectUnitsFromGroup(newGroup);
+            for (ReinfElement element : this.getReinfProgram()) {
+                Array<ElementInterface> unitProgramList = collectUnitsFromGroup(element.getLandGroup());
+                for(ElementInterface unit : unitProgramList) {
+                    if(UnitUtil.isUnitsSimilar(newGroup, unit)) return false;
+                    for(ElementInterface newUnit : newUnits) {
+                        if(UnitUtil.isUnitsSimilar(newUnit, unit)) return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private Array<ElementInterface> collectUnitsFromGroup(ElementInterface unit) {
+        Array<ElementInterface> toReturn = new Array<>();
+        toReturn.add(unit); // Ajouter le groupe root
+
+        if(unit instanceof UnitGroup) {
+            UnitGroup group = (UnitGroup) unit;
+            OrderedSet<ElementInterface> units = group.getUnits(); // ou group.units si public
+
+            for(ElementInterface element : units) {
+                // Récursion sur chaque élément
+                Array<ElementInterface> subUnits = collectUnitsFromGroup(element);
+
+                for(ElementInterface subUnit : subUnits) {
+                    if(!toReturn.contains(subUnit, false)) {
+                        toReturn.add(subUnit);
+                    }
+                }
+            }
+        }
+
+        return toReturn;
     }
 
     // TODO factoriser 1 !!!

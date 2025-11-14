@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.*;
 import com.mycompany.test01.Config.MapConfig;
@@ -878,10 +879,6 @@ public class EditScenarScreen implements Screen {
             this.reinfGroupUnitTreePanel.add(treeScrollPane).padTop(20).width(280).colspan(3).row();
             this.reinfGroupUnitTreePanel.invalidateHierarchy();
         }
-
-        //reinfGroupUnitTreePanel
-
-
     }
 //selectedObjective
     private void rebuildLandUnitsTreePanel() {
@@ -1595,7 +1592,7 @@ public class EditScenarScreen implements Screen {
                         LogUtil.logInfo("click reinf army group icon");
                         that.isReinfLandGroupTreeOpen = !that.isReinfLandGroupTreeOpen;
                         //if(that.isReinfLandGroupTreeOpen) {
-                            that.rebuildReinfGroupUnitsTreePanel();
+                        that.rebuildReinfGroupUnitsTreePanel();
 
                         //}
                         that.rebuildSelectedOpponentEditPanel();
@@ -1609,7 +1606,53 @@ public class EditScenarScreen implements Screen {
 
         ButtonWrapper addButton = new ButtonWrapper("Add", 0, 0, 120, 30);
 
+        addButton.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                int dayNumber = (int) dayNumberSlider.getValue();
+                SourceHexagon sourceHexagon = unitReinfSourceSelector.getSelected();
+                UnitGroup group = that.editScenarService.getSelectedReinfLandGroup();
+                ReinfElement newReinfElement = new ReinfElement(dayNumber, group, new OrderedSet<>(), sourceHexagon);
+                // TODO :: vérifier si le jour est libre
+                that.editScenarService.getSelectedOpponent().getReinfProgram().add(newReinfElement);
+                that.editScenarService.setSelectedReinfLandGroup(null);
+                that.isReinfLandGroupLoaded = false;
+                that.rebuildSelectedOpponentEditPanel();
+            }
+        });
+
         panel.add(addButton.getButton()).colspan(3).spaceTop(20).row();
+
+        Table unitReinfListContainer = new Table();
+
+        if(this.editScenarService.getSelectedOpponent().getReinfProgram().size > 0) {
+            this.editScenarService.getSelectedOpponent().getReinfProgram().sort((a,b) -> Integer.compare(a.getDayNumber(), b.getDayNumber()));
+            for(ReinfElement element : this.editScenarService.getSelectedOpponent().getReinfProgram()) {
+                Table elementContainer = new Table();
+                Label rowOneLabel = new Label("Day : " + element.getDayNumber() + " / source : " + element.getReinfHex().getRank(), SkinUtil.getLabelSkin(160, 40));
+                elementContainer.add(rowOneLabel).colspan(1).align(Align.left).spaceRight(20);
+
+                Image unitGroupImage = new Image(GraphicUtil.getCounterTextureFromUnit((ElementInterface) element.getLandGroup()));
+                unitGroupImage.setWidth(40);
+                unitGroupImage.setHeight(40);
+
+                elementContainer.add(unitGroupImage).width(40).height(40).align(Align.left);
+
+                ButtonWrapper removeButton = new ButtonWrapper("X", 0, 0, 40, 40);
+                removeButton.getButton().addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+                        that.editScenarService.getSelectedOpponent().getReinfProgram().removeValue(element, false);
+                        that.rebuildSelectedOpponentEditPanel();
+                    }
+                });
+                elementContainer.add(removeButton.getButton()).align(Align.right).row();
+                unitReinfListContainer.add(elementContainer).spaceTop(10).colspan(3).row();
+            }
+
+        }
+
+        panel.add(unitReinfListContainer).spaceTop(20).colspan(3).row();
         return panel;
     }
 
@@ -2041,7 +2084,7 @@ public class EditScenarScreen implements Screen {
 
     public void updateReinfGroupFromObservale(UnitGroup newValue) {
         LogUtil.logInfo("retour observable : Group : name : " + newValue.getName());
-        // TODO : set booleen a true et construire l'icone du reinfGroup
+        // TODO : corriger nom méthode
         this.isReinfLandGroupLoaded = true;
         this.selectedReinfLandGroupIcon = new Image(this.getReinfGroupTextureFromGroup(newValue));
         this.selectedReinfLandGroupIcon.setWidth(80);

@@ -39,14 +39,27 @@ public class DesktopScenarArmyGroupFileChooserListener implements FileChooserLis
 
             try {
                 UnitGroup newGroup = armyFileService.loadArmyData(file.path());
-                if(newGroup.getCountry().equals(editScenarService.getSelectedOpponent().getCountry())) {
-                  editScenarService.setSelectedReinfLandGroup(newGroup);
-                    Toast toast = new Toast("Group Loaded", ColorStyleEnum.SUCCESS);
+
+                boolean isNotInReinfProgram = editScenarService.getSelectedOpponent().isNewGroupUnitsNotPresentInReinf(newGroup);
+                boolean isNotInLandUnits = editScenarService.getSelectedOpponent().isNewGroupUnitsNotPresentInLandUnits(newGroup);
+
+                if(isNotInReinfProgram && isNotInLandUnits) {
+                    if(newGroup.getCountry().equals(editScenarService.getSelectedOpponent().getCountry())) {
+                        editScenarService.setSelectedReinfLandGroup(newGroup);
+                        Toast toast = new Toast("Group Loaded", ColorStyleEnum.SUCCESS);
+                        this.toastObservable.setObserved(toast);
+                        this.toastObservable.notifyObservers();
+                        this.unitReinfGroupObservable.setObserved(newGroup);
+                        this.unitReinfGroupObservable.notifyObservers();
+                    }
+                }
+                else {
+                    Toast toast = new Toast("Group Not New", ColorStyleEnum.WARNING);
                     this.toastObservable.setObserved(toast);
                     this.toastObservable.notifyObservers();
-                    this.unitReinfGroupObservable.setObserved(newGroup);
-                    this.unitReinfGroupObservable.notifyObservers();
                 }
+                // une verification pour les deployedUnits de opponent
+
 
                 /*
                 UnitGroup selectedGroup = (UnitGroup) editArmyService.getSelectedUnit();

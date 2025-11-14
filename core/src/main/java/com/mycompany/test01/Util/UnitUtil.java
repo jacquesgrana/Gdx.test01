@@ -12,6 +12,7 @@ import com.mycompany.test01.Interface.unit.ElementInterface;
 import com.mycompany.test01.Interface.unit.UnitFactoryInterface;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 public class UnitUtil {
@@ -578,6 +579,17 @@ public class UnitUtil {
             }
         });
         parent.setUnits(newUnits);
+    }
+
+    public static boolean isUnitsSimilar(ElementInterface a, ElementInterface b) {
+        return a.getCountry() == b.getCountry()
+            && a.getType() == b.getType()
+            && Objects.equals(a.getName(), b.getName())
+            && Objects.equals(a.getAcronym(), b.getAcronym())
+            && a.isCompany() == b.isCompany()
+            && a.isMotorised() == b.isMotorised()
+            && a.isElite() == b.isElite()
+            && a.isPara() == b.isPara();
     }
 
     public static void printGroup(UnitGroup group) {
