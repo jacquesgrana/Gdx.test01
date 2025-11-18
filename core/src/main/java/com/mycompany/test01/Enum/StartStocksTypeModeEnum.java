@@ -1,8 +1,7 @@
 package com.mycompany.test01.Enum;
 
 public enum StartStocksTypeModeEnum {
-    REINF ("Reinforcement"),
-    RESUPP ("Resupply"),
+    SUPPLY ("Resupply"),
     UNIT_REINF ("Unit Reinforcement"),
     NO_ACTION ("No Action");
 

@@ -23,13 +23,13 @@ public class Opponent {
     private UnitGroup landArmyGroup = null;
     private AirplaneSquadronGroup airArmyGroup = null;
     private Set<SourceHexagon> supplyHexesSource = new LinkedHashSet<>();
-    // TODO créer DTO pour SourceHexagon ??
     private Set<SourceHexagon> reinfHexesSource = new LinkedHashSet<>();
     private Set<Hexagon> borderHexesOwned = new LinkedHashSet<>();
     private Array<ReinfElement> reinfProgram = new Array<>();
     private Array<UnitReinfElement> unitReinProgram = new Array<>();
     private Array<SupplyElement> supplyProgram = new Array<>();
-    private SupplyElement initialRootSupplyStock = new SupplyElement();
+    private SupplyElement initialRootSupplyStock = null;
+    private UnitReinfElement initialRootUnitReinfStock = null;
     private float supplyRatio = 0f;
     private float reinfRatio = 0f;
     private Set<OnBoardUnit> deployedUnits = new HashSet<>();
@@ -342,6 +342,14 @@ public class Opponent {
 
     public void setDeployedUnits(Set<OnBoardUnit> deployedUnits) {
         this.deployedUnits = deployedUnits;
+    }
+
+    public UnitReinfElement getInitialRootUnitReinfStock() {
+        return initialRootUnitReinfStock;
+    }
+
+    public void setInitialRootUnitReinfStock(UnitReinfElement initialRootUnitReinfStock) {
+        this.initialRootUnitReinfStock = initialRootUnitReinfStock;
     }
 
     @Override

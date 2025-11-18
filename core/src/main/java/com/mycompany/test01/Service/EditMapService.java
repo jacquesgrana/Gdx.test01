@@ -11,6 +11,8 @@ import com.mycompany.test01.Enum.*;
 import com.mycompany.test01.Util.GraphicUtil;
 import com.mycompany.test01.Util.LogUtil;
 
+import java.util.Arrays;
+
 public class EditMapService {
     private static EditMapService instance = null;
 
@@ -83,11 +85,24 @@ public class EditMapService {
             Array<Hexagon> row = new Array<Hexagon>(this.getMap().getLimitJ());
             for (int j = 0; j < this.getMap().getLimitJ(); j++) {
 
-
-                Hexagon hexagon = new Hexagon(i, j,
+                RiverCategory[] rivers = new RiverCategory[6];
+                Arrays.fill(rivers, RiverCategory.NO_RIVER);
+                Cliff[] cliffs = new Cliff[6];
+                for(int k=0; k<6; k++) {
+                    cliffs[k] = new Cliff();
+                }
+                Hexagon hexagon = new Hexagon(
+                    i,
+                    j,
                     HexagonCategory.GRASS,
                     FortificationCategory.NO_FORTIFICATION,
-                    CountryEnum.NO_COUNTRY);
+                    new RoadEdges(),
+                    rivers,
+                    new BridgeEdges(),
+                    cliffs,
+                    CountryEnum.NO_COUNTRY,
+                    new HexUnits(),
+                    new DevastationRatio());
                 // Créer un nouvel objet de type Hexagon
                 row.add(hexagon);
             }

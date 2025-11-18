@@ -230,7 +230,22 @@ public class Map {
         for (int i = 0; i < limitI; i++) {
             Array<Hexagon> row = new Array<Hexagon>(limitJ);
             for (int j = 0; j < limitJ; j++) {
-                row.add(mapData.getDataTab()[i][j]);
+                Hexagon newHex = new Hexagon(
+                    mapData.getDataTab()[i][j].getX(),
+                    mapData.getDataTab()[i][j].getY(),
+                    mapData.getDataTab()[i][j].getCategory(),
+                    mapData.getDataTab()[i][j].getFortification(),
+                    mapData.getDataTab()[i][j].getRoads(),
+                    mapData.getDataTab()[i][j].getRivers(),
+                    mapData.getDataTab()[i][j].getBridges(),
+                    mapData.getDataTab()[i][j].getCliffs(),
+                    mapData.getDataTab()[i][j].getOwnerCountry(),
+                    mapData.getDataTab()[i][j].getUnits(),
+                    mapData.getDataTab()[i][j].getDevastation() == null ? new DevastationRatio() : mapData.getDataTab()[i][j].getDevastation()
+                );
+
+                //mapData.getDataTab()[i][j].getDevastation().setRatio(0.0f);
+                row.add(newHex);
             }
             this.getHexesArray().add(row);
         }

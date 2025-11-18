@@ -21,6 +21,7 @@ public class Hexagon {
     private Cliff[] cliffs;
     private CountryEnum ownerCountry;
     private HexUnits units;
+    private DevastationRatio devastation;
 
     //private EditScenarService editScenarService = EditScenarService.getInstance();
 
@@ -29,21 +30,26 @@ public class Hexagon {
         //editScenarService = EditScenarService.getInstance();
     }
 
-    public Hexagon(int x, int y, HexagonCategory category, FortificationCategory fortification, CountryEnum ownerCountry) {
+    public Hexagon(int x, int y, HexagonCategory category, FortificationCategory fortification, RoadEdges roads, RiverCategory[] rivers, BridgeEdges bridges, Cliff[] cliffs, CountryEnum ownerCountry, HexUnits units, DevastationRatio devastation) {
         this.x = x;
         this.y = y;
         this.category = category;
         this.fortification = fortification;
-        this.roads = new RoadEdges();
-        this.rivers = new RiverCategory[6];
-        Arrays.fill(this.rivers, RiverCategory.NO_RIVER);
-        this.bridges = new BridgeEdges();
+        this.roads = roads;
+        this.rivers = rivers;
+        //Arrays.fill(this.rivers, RiverCategory.NO_RIVER);
+        this.bridges = bridges;
+        /*
         this.cliffs = new Cliff[6];
         for(int i=0; i<6; i++) {
             this.cliffs[i] = new Cliff();
         }
+
+         */
+        this.cliffs = cliffs;
         this.ownerCountry = ownerCountry;
-        this.units = new HexUnits();
+        this.units = units;
+        this.devastation = devastation;
         //editScenarService = EditScenarService.getInstance();
     }
 
@@ -126,6 +132,14 @@ public class Hexagon {
 
     public void setUnits(HexUnits units) {
         this.units = units;
+    }
+
+    public DevastationRatio getDevastation() {
+        return devastation;
+    }
+
+    public void setDevastation(DevastationRatio devastation) {
+        this.devastation = devastation;
     }
 
     @Override

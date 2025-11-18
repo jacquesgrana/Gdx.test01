@@ -4,12 +4,14 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.mycompany.test01.Entity.Unit.Abstract.UnitGroup;
 import com.mycompany.test01.Interface.airplane.AirplaneSquadronElementInterface;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class ReinfElement {
     private int dayNumber = 1;
     private UnitGroup landGroup = null;
-    private OrderedSet<AirplaneSquadronElementInterface> airUnits = new OrderedSet<>();
+    private Set<AirplaneSquadronElementInterface> airUnits = new HashSet<>();
     private SourceHexagon reinfHex = null;
 
     public ReinfElement() {
@@ -18,7 +20,7 @@ public class ReinfElement {
     public ReinfElement(
         int dayNumber,
         UnitGroup landGroup,
-        OrderedSet<AirplaneSquadronElementInterface> airUnits,
+        Set<AirplaneSquadronElementInterface> airUnits,
         SourceHexagon reinfHex
     ) {
         this.dayNumber = dayNumber;
@@ -55,11 +57,11 @@ public class ReinfElement {
         this.landGroup = landGroup;
     }
 
-    public OrderedSet<AirplaneSquadronElementInterface> getAirUnits() {
+    public Set<AirplaneSquadronElementInterface> getAirUnits() {
         return airUnits;
     }
 
-    public void setAirUnits(OrderedSet<AirplaneSquadronElementInterface> airUnits) {
+    public void setAirUnits(Set<AirplaneSquadronElementInterface> airUnits) {
         this.airUnits = airUnits;
     }
 

@@ -89,6 +89,8 @@ public class EditScenarScreen implements Screen {
 
     private Table programsEditPanel;
 
+    private Table startStocksEditPanel;
+
     private Table reinfGroupUnitTreePanel;
 
     private Label scenarMapBrushSizeLabel;
@@ -110,12 +112,14 @@ public class EditScenarScreen implements Screen {
     private boolean isObjectivesPanelOpen = false;
     private boolean isStartDatePanelOpen = false;
     private boolean isProgramsEditPanelOpen = false;
+    private boolean isStartStocksPanelOpen = false;
     boolean isReinfLandGroupLoaded = false;
     boolean isReinfLandGroupTreeOpen = false;
     boolean isReinfAirGroupLoaded = false;
     boolean isReinfAirGroupTreeOpen = false;
 
     private ProgramTypeModeEnum programEditMode = ProgramTypeModeEnum.NO_ACTION;
+    private StartStocksTypeModeEnum startStocksEditMode = StartStocksTypeModeEnum.NO_ACTION;
 
     private Hexagon pathStart, pathEnd;
     private List<Hexagon> path;
@@ -818,7 +822,7 @@ public class EditScenarScreen implements Screen {
 
             if(!that.editScenarService.getScenario().getObjectives().isEmpty()) {
                 Table objectivesListContainer = new Table();
-               for(MapObjective obj : that.editScenarService.getScenario().getObjectives()) {
+                for(MapObjective obj : that.editScenarService.getScenario().getObjectives()) {
                 Table row = new Table();
                 Label rowContent = new Label(obj.getName() + " / " + obj.getAcronym() + " / " + obj.getCaptureReward() + " / " + obj.getDailyCaptureReward() + " / " + obj.getEndGameReward(), SkinUtil.getLabelSkin(280, 30));
                 row.add(rowContent);
@@ -854,8 +858,7 @@ public class EditScenarScreen implements Screen {
                row.add(deleteButton.getButton()).row();
                objectivesListContainer.add(row).colspan(2).spaceTop(10).row();
                }
-
-                this.objectivesEditPanel.add(objectivesListContainer).spaceTop(20).colspan(2).row();
+               this.objectivesEditPanel.add(objectivesListContainer).spaceTop(20).colspan(2).row();
             }
 
         }
@@ -962,10 +965,9 @@ public class EditScenarScreen implements Screen {
             countryOneSelector.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    // Pas de cast nécessaire : on utilise directement countryOneSelector
                     CountryEnum selectedCountry = countryOneSelector.getSelected();
                     that.editScenarService.getScenario().getOpponents()[finalI].setCountry(selectedCountry);
-                    that.editScenarService.getScenario().getOpponents()[finalI].setName("Opponent " + (finalI+1));
+                    that.editScenarService.getScenario().getOpponents()[finalI].setName("Opponent_" + (finalI+1));
 
                     //System.out.println("Country chosen for side: " + that.editScenarService.getScenario().getSides()[finalI] + " : " + selectedCountry);
                     //System.out.println("country's side : " + that.editScenarService.getScenario().getOpponents()[finalI].getSide().toString());
@@ -1281,7 +1283,6 @@ public class EditScenarScreen implements Screen {
             this.rebuildLandUnitsTreePanel();
             this.selectedOpponentEditPanel.add(this.landUnitsTreePanel).width(240).pad(20).colspan(2).row();
 
-            // TODO ajouter bouton pour les programmes
             ButtonWrapper programsButton = new ButtonWrapper("Programs", 0, 0, 120, 30);
             //LogUtil.logInfo("selected opponent : " + this.editScenarService.getSelectedOpponent());
             programsButton.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
@@ -1294,7 +1295,22 @@ public class EditScenarScreen implements Screen {
                 }
             });
 
-            this.selectedOpponentEditPanel.add(programsButton.getButton()).spaceTop(20).colspan(2).row();
+            this.selectedOpponentEditPanel.add(programsButton.getButton()).spaceTop(20);
+
+            // TODO ajouter bouton pour les données initiales
+            ButtonWrapper startStocksButton = new ButtonWrapper("Start Stocks", 0, 0, 120, 30);
+
+            startStocksButton.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    that.isStartStocksPanelOpen = !that.isStartStocksPanelOpen;
+                    that.startStocksEditMode = StartStocksTypeModeEnum.NO_ACTION;
+                    that.rebuildSelectedOpponentEditPanel();
+                }
+            });
+
+            this.selectedOpponentEditPanel.add(startStocksButton.getButton()).spaceTop(20).colspan(1).row();
+
 
             // rebuild du nouveau panel
             if(isProgramsEditPanelOpen) {
@@ -1304,6 +1320,69 @@ public class EditScenarScreen implements Screen {
 
 
             // ajout du nouveau panel
+            if(isStartStocksPanelOpen) {
+                this.rebuildStartStocksEditPanel();
+                this.selectedOpponentEditPanel.add(this.startStocksEditPanel).spaceTop(20).colspan(2).row();
+            }
+        }
+    }
+
+    public void rebuildStartStocksEditPanel() {
+        EditScenarScreen that = this;
+        if (this.startStocksEditPanel != null) {
+            this.startStocksEditPanel.clear();
+        } else {
+            this.startStocksEditPanel = new Table();
+            this.startStocksEditPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
+        }
+        Label titleLabel = new Label("Start Stocks", SkinUtil.getLabelSkin(120, 30));
+        this.startStocksEditPanel.add(titleLabel).colspan(2).row();
+
+        ButtonWrapper buttonReinfProgram = new ButtonWrapper("Reinf Points", 0, 0, 120, 30);
+        ButtonWrapper buttonSupplyProgram = new ButtonWrapper("Supply Stocks", 0, 0, 120, 30);
+
+        buttonReinfProgram.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                that.startStocksEditMode = StartStocksTypeModeEnum.UNIT_REINF;
+                that.rebuildSelectedOpponentEditPanel();
+            }
+        });
+
+        buttonSupplyProgram.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                that.startStocksEditMode = StartStocksTypeModeEnum.SUPPLY;
+                that.rebuildSelectedOpponentEditPanel();
+            }
+        });
+        Table buttonsRow = new Table();
+
+        buttonsRow.add(buttonSupplyProgram.getButton()).spaceRight(10);
+        buttonsRow.add(buttonReinfProgram.getButton()).row();
+
+        this.startStocksEditPanel.add(buttonsRow).colspan(3).spaceTop(20).row();
+
+        if(this.startStocksEditMode != StartStocksTypeModeEnum.NO_ACTION) {
+            switch (this.startStocksEditMode) {
+                case UNIT_REINF:
+                    Table unitReinfStartStocksEditPanel = new Table();
+                    Label unitReinfLabel = new Label("Unit Reinforcement Stock", SkinUtil.getLabelSkin(200, 30));
+                    unitReinfStartStocksEditPanel.add(unitReinfLabel).colspan(2).row();
+                    this.startStocksEditPanel.add(unitReinfStartStocksEditPanel).spaceTop(20).colspan(3).row();
+                    Table unitReinfEditPanel = this.createUnitReinfStockEditPanel();
+                    this.startStocksEditPanel.add(unitReinfEditPanel).spaceTop(20).colspan(3).row();
+                    break;
+                case SUPPLY:
+                    Table supplyStartStocksEditPanel = new Table();
+                    Label supplyLabel = new Label("Supply Stock", SkinUtil.getLabelSkin(200, 30));
+                    supplyStartStocksEditPanel.add(supplyLabel).colspan(2).row();
+                    this.startStocksEditPanel.add(supplyStartStocksEditPanel).spaceTop(20).colspan(3).row();
+                    //createSupplyStockEditPanel
+                    Table unitSupplyEditPanel = this.createSupplyStockEditPanel();
+                    this.startStocksEditPanel.add(unitSupplyEditPanel).spaceTop(20).colspan(3).row();
+                    break;
+            }
         }
     }
 
@@ -1493,8 +1572,9 @@ public class EditScenarScreen implements Screen {
             //Label testLabel = new Label("Test", SkinUtil.getLabelSkin(100, 30));
             //unitReinfListContainer.add(testLabel).colspan(3).row();
             this.editScenarService.getSelectedOpponent().getSupplyProgram().sort((a,b) -> Integer.compare(a.getDayNumber(), b.getDayNumber()));
+            Table elementContainer = new Table();
             for (SupplyElement element : this.editScenarService.getSelectedOpponent().getSupplyProgram()) {
-                Table elementContainer = new Table();
+
                 int sum = element.getFuelStock() + element.getAmmoStock() + element.getFoodStock() + element.getMedecineStock();
                 Label rowOneLabel = new Label("Day : " + element.getDayNumber() + " / sum : " + sum + " / source : " + element.getSupplySource().getRank(), SkinUtil.getLabelSkin(230, 30));
                 elementContainer.add(rowOneLabel).colspan(3).align(Align.left).row();
@@ -1515,9 +1595,9 @@ public class EditScenarScreen implements Screen {
                 });
                 elementContainer.add(removeButton.getButton()).colspan(3).align(Align.right).row();
 
-                unitSupplyListContainer.add(elementContainer).spaceTop(10).colspan(3).row();
-            }
 
+            }
+            unitSupplyListContainer.add(elementContainer).spaceTop(10).colspan(3).row();
         }
         panel.add(unitSupplyListContainer).spaceTop(20).colspan(3).row();
 
@@ -1612,7 +1692,7 @@ public class EditScenarScreen implements Screen {
                 int dayNumber = (int) dayNumberSlider.getValue();
                 SourceHexagon sourceHexagon = unitReinfSourceSelector.getSelected();
                 UnitGroup group = that.editScenarService.getSelectedReinfLandGroup();
-                ReinfElement newReinfElement = new ReinfElement(dayNumber, group, new OrderedSet<>(), sourceHexagon);
+                ReinfElement newReinfElement = new ReinfElement(dayNumber, group, new HashSet<>(), sourceHexagon);
                 // TODO :: vérifier si le jour est libre
                 that.editScenarService.getSelectedOpponent().getReinfProgram().add(newReinfElement);
                 that.editScenarService.setSelectedReinfLandGroup(null);
@@ -1627,8 +1707,8 @@ public class EditScenarScreen implements Screen {
 
         if(this.editScenarService.getSelectedOpponent().getReinfProgram().size > 0) {
             this.editScenarService.getSelectedOpponent().getReinfProgram().sort((a,b) -> Integer.compare(a.getDayNumber(), b.getDayNumber()));
+            Table elementContainer = new Table();
             for(ReinfElement element : this.editScenarService.getSelectedOpponent().getReinfProgram()) {
-                Table elementContainer = new Table();
                 Label rowOneLabel = new Label("Day : " + element.getDayNumber() + " / source : " + element.getReinfHex().getRank(), SkinUtil.getLabelSkin(160, 40));
                 elementContainer.add(rowOneLabel).colspan(1).align(Align.left).spaceRight(20);
 
@@ -1647,12 +1727,237 @@ public class EditScenarScreen implements Screen {
                     }
                 });
                 elementContainer.add(removeButton.getButton()).align(Align.right).row();
-                unitReinfListContainer.add(elementContainer).spaceTop(10).colspan(3).row();
             }
-
+            unitReinfListContainer.add(elementContainer).spaceTop(10).colspan(3).row();
         }
 
         panel.add(unitReinfListContainer).spaceTop(20).colspan(3).row();
+        return panel;
+    }
+
+    private Table createSupplyStockEditPanel() {
+        Table panel = new Table();
+        EditScenarScreen that= this;
+        Label fuelStockLabel = new Label("Fuel : 0", SkinUtil.getLabelSkin(140, 30));
+        Slider fuelStockSlider = new Slider(0f, 10000f, 100f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        fuelStockSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                fuelStockLabel.setText("Fuel : " + (int) fuelStockSlider.getValue());
+            }
+        });
+        panel.add(fuelStockLabel);
+        panel.add(fuelStockSlider).row();
+
+        Label ammoStockLabel = new Label("Ammo : 0", SkinUtil.getLabelSkin(140, 30));
+        Slider ammoStockSlider = new Slider(0f, 10000f, 100f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        ammoStockSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                ammoStockLabel.setText("Ammo : " + (int) ammoStockSlider.getValue());
+            }
+        });
+        panel.add(ammoStockLabel);
+        panel.add(ammoStockSlider).row();
+
+        Label foodStockLabel = new Label("Food : 0", SkinUtil.getLabelSkin(140, 30));
+        Slider foodStockSlider = new Slider(0f, 10000f, 100f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        foodStockSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                foodStockLabel.setText("Food : " + (int) foodStockSlider.getValue());
+            }
+        });
+        panel.add(foodStockLabel);
+        panel.add(foodStockSlider).row();
+
+        Label medecineStockLabel = new Label("Medecine : 0", SkinUtil.getLabelSkin(140, 30));
+        Slider medecineStockSlider = new Slider(0f, 10000f, 100f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        medecineStockSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                medecineStockLabel.setText("Medecine : " + (int) medecineStockSlider.getValue());
+            }
+        });
+        panel.add(medecineStockLabel);
+        panel.add(medecineStockSlider).row();
+
+        ButtonWrapper validateButton = new ButtonWrapper("Validate", 0, 0, 120, 30);
+        validateButton.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                int fuelStock = (int) fuelStockSlider.getValue();
+                int ammoStock = (int) ammoStockSlider.getValue();
+                int foodStock = (int) foodStockSlider.getValue();
+                int medecineStock = (int) medecineStockSlider.getValue();
+
+                boolean isFormOk = !(fuelStock == 0 && ammoStock == 0 && foodStock == 0 && medecineStock == 0);
+
+                if(isFormOk) {
+                    SupplyElement newUnitSupplyElement = new SupplyElement(0, fuelStock, ammoStock, foodStock, medecineStock, null);
+                    that.editScenarService.getSelectedOpponent().setInitialRootSupplyStock(newUnitSupplyElement);
+                    that.rebuildSelectedOpponentEditPanel();
+                }
+            }
+        });
+
+        panel.add(validateButton.getButton()).colspan(3).spaceTop(20).row();
+
+        // TODO ajouter affichage des valeurs en cours de initialRootSupplyStock
+        SupplyElement element = this.editScenarService.getSelectedOpponent().getInitialRootSupplyStock();
+
+        if(element != null) {
+            Table rowContainer = new Table();
+            Label rowTwoLabel = new Label("Fuel : " + element.getFuelStock() + " / Ammunition : " + element.getAmmoStock(), SkinUtil.getLabelSkin(260, 30));
+            rowContainer.add(rowTwoLabel).colspan(3).align(Align.left).row();
+
+            Label rowThreeLabel = new Label("Food : " + element.getFoodStock() + " / Medecine : " + element.getMedecineStock(), SkinUtil.getLabelSkin(260, 30));
+            rowContainer.add(rowThreeLabel).colspan(3).align(Align.left).row();
+
+            panel.add(rowContainer).spaceTop(20).colspan(3).row();
+        }
+        return panel;
+    }
+
+    private Table createUnitReinfStockEditPanel() {
+        Table panel = new Table();
+        EditScenarScreen that= this;
+        Label infEngReinfLabel = new Label("Inf /  Eng : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider infEngReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        infEngReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                infEngReinfLabel.setText("Inf / Eng : " + (int) infEngReinfSlider.getValue());
+            }
+        });
+        panel.add(infEngReinfLabel);
+        panel.add(infEngReinfSlider).row();
+
+        Label artiReinfLabel = new Label("Arti : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider artiReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+
+        artiReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                artiReinfLabel.setText("Arti : " + (int) artiReinfSlider.getValue());
+            }
+        });
+
+        panel.add(artiReinfLabel);
+        panel.add(artiReinfSlider).row();
+
+        Label atAaReinfLabel = new Label("AT / AA : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider atAaReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+
+        atAaReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                atAaReinfLabel.setText("AT / AA : " + (int) atAaReinfSlider.getValue());
+            }
+        });
+        panel.add(atAaReinfLabel);
+        panel.add(atAaReinfSlider).row();
+
+        Label tankReinfLabel = new Label("Tank : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider tankReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        tankReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                tankReinfLabel.setText("Tank : " + (int) tankReinfSlider.getValue());
+            }
+        });
+        panel.add(tankReinfLabel);
+        panel.add(tankReinfSlider).row();
+
+        Label hqReinfLabel = new Label("HQ : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider hqReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        hqReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hqReinfLabel.setText("HQ : " + (int) hqReinfSlider.getValue());
+            }
+        });
+        panel.add(hqReinfLabel);
+        panel.add(hqReinfSlider).row();
+
+        Label paraReinfLabel = new Label("Para : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider paraReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        paraReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                paraReinfLabel.setText("Para : " + (int) paraReinfSlider.getValue());
+            }
+        });
+        panel.add(paraReinfLabel);
+        panel.add(paraReinfSlider).row();
+
+        Label marineReinfLabel = new Label("Marine : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider marineReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        marineReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                marineReinfLabel.setText("Marine : " + (int) marineReinfSlider.getValue());
+            }
+        });
+        panel.add(marineReinfLabel);
+        panel.add(marineReinfSlider).row();
+
+        Label mountainReinfLabel = new Label("Mountain : 0", SkinUtil.getLabelSkin(120, 30));
+        Slider mountainReinfSlider = new Slider(0f, 100f, 1f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        mountainReinfSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                mountainReinfLabel.setText("Mountain : " + (int) mountainReinfSlider.getValue());
+            }
+        });
+        panel.add(mountainReinfLabel);
+        panel.add(mountainReinfSlider).row();
+
+        ButtonWrapper validateButton = new ButtonWrapper("Validate", 0, 0, 120, 30);
+        validateButton.getButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                int infEngReinf = (int) infEngReinfSlider.getValue();
+                int artiReinf = (int) artiReinfSlider.getValue();
+                int atAaReinf = (int) atAaReinfSlider.getValue();
+                int tankReinf = (int) tankReinfSlider.getValue();
+                int hqReinf = (int) hqReinfSlider.getValue();
+                int paraReinf = (int) paraReinfSlider.getValue();
+                int marineReinf = (int) marineReinfSlider.getValue();
+                int mountainReinf = (int) mountainReinfSlider.getValue();
+
+                boolean isFormOk = !(infEngReinf == 0 && artiReinf == 0 && atAaReinf == 0 && tankReinf == 0 && hqReinf == 0 && paraReinf == 0 && marineReinf == 0 && mountainReinf == 0);
+
+                if(isFormOk) {
+                    UnitReinfElement newUnitReinfElement = new UnitReinfElement(0, infEngReinf, artiReinf, atAaReinf, tankReinf, hqReinf, paraReinf, marineReinf, mountainReinf, null);
+                    that.editScenarService.getSelectedOpponent().setInitialRootUnitReinfStock(newUnitReinfElement);
+                    //LogUtil.logInfo("startReinfStock : " + that.editScenarService.getSelectedOpponent().getInitialRootUnitReinfStock().toString());
+                    that.rebuildSelectedOpponentEditPanel();
+                }
+            }
+        });
+
+        panel.add(validateButton.getButton()).colspan(3).spaceTop(20).row();
+
+        // TODO ajouter affichage des valeurs en cours de initialRootUnitReinfStock
+
+        UnitReinfElement element = this.editScenarService.getSelectedOpponent().getInitialRootUnitReinfStock();
+
+        if(element != null) {
+            Table rowContainer = new Table();
+            Label rowTwoLabel = new Label("Inf + Eng : " + element.getInfEngReinf() + " / Arti : " + element.getArtiReinf() + " / AT + AA : " + element.getAtAaReinf(), SkinUtil.getLabelSkin(260, 30));
+            rowContainer.add(rowTwoLabel).colspan(3).align(Align.left).row();
+
+            Label rowThreeLabel = new Label("Tank : " + element.getTankReinf() + " / Hq : " + element.getHqReinf() + " / Para : " + element.getParaReinf(), SkinUtil.getLabelSkin(260, 30));
+            rowContainer.add(rowThreeLabel).colspan(3).align(Align.left).row();
+
+            Label rowFoourLabel = new Label("Marine : " + element.getMarineReinf() + " / Mountain : " + element.getMountainReinf(), SkinUtil.getLabelSkin(220, 30));
+            rowContainer.add(rowFoourLabel).colspan(3).align(Align.left).row();
+
+            panel.add(rowContainer).spaceTop(20).colspan(3).row();
+        }
+
+
         return panel;
     }
 
@@ -1811,8 +2116,8 @@ public class EditScenarScreen implements Screen {
             //Label testLabel = new Label("Test", SkinUtil.getLabelSkin(100, 30));
             //unitReinfListContainer.add(testLabel).colspan(3).row();
             this.editScenarService.getSelectedOpponent().getUnitReinProgram().sort((a,b) -> Integer.compare(a.getDayNumber(), b.getDayNumber()));
+            Table elementContainer = new Table();
             for (UnitReinfElement element : this.editScenarService.getSelectedOpponent().getUnitReinProgram()) {
-                Table elementContainer = new Table();
                 int sum = element.getInfEngReinf() + element.getArtiReinf() + element.getAtAaReinf() + element.getTankReinf() + element.getHqReinf() + element.getParaReinf() + element.getMarineReinf() + element.getMountainReinf();
                 Label rowOneLabel = new Label("Day : " + element.getDayNumber() + " / sum : " + sum + " / source : " + element.getUnitReinfSource().getRank(), SkinUtil.getLabelSkin(230, 30));
                 elementContainer.add(rowOneLabel).colspan(3).align(Align.left).row();
@@ -1836,9 +2141,8 @@ public class EditScenarScreen implements Screen {
                   }
                 });
                 elementContainer.add(removeButton.getButton()).colspan(3).align(Align.right).row();
-                unitReinfListContainer.add(elementContainer).spaceTop(10).colspan(3).row();
             }
-
+            unitReinfListContainer.add(elementContainer).spaceTop(10).colspan(3).row();
         }
         panel.add(unitReinfListContainer).spaceTop(20).colspan(3).row();
         return panel;
