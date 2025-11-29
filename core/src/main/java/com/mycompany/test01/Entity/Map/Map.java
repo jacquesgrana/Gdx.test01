@@ -239,8 +239,8 @@ public class Map {
                     mapData.getDataTab()[i][j].getRivers(),
                     mapData.getDataTab()[i][j].getBridges(),
                     mapData.getDataTab()[i][j].getCliffs(),
-                    mapData.getDataTab()[i][j].getOwnerCountry(),
-                    mapData.getDataTab()[i][j].getUnits(),
+                    mapData.getDataTab()[i][j].getOwnerCountry() == null ? CountryEnum.NO_COUNTRY : mapData.getDataTab()[i][j].getOwnerCountry(),
+                    mapData.getDataTab()[i][j].getUnits() == null ? new HexUnits() : mapData.getDataTab()[i][j].getUnits(),
                     mapData.getDataTab()[i][j].getDevastation() == null ? new DevastationRatio() : mapData.getDataTab()[i][j].getDevastation()
                 );
 

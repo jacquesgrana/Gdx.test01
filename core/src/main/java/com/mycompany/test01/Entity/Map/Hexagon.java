@@ -44,7 +44,6 @@ public class Hexagon {
         for(int i=0; i<6; i++) {
             this.cliffs[i] = new Cliff();
         }
-
          */
         this.cliffs = cliffs;
         this.ownerCountry = ownerCountry;

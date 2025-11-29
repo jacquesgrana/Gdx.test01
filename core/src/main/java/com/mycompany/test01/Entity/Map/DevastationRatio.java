@@ -1,13 +1,15 @@
 package com.mycompany.test01.Entity.Map;
 
+import com.mycompany.test01.Config.MapConfig;
+
 public class DevastationRatio {
-    private float ratio = 0.0f;
+    private float ratio = MapConfig.MIN_DEVASTATION_RATIO;
 
     public DevastationRatio() {
     }
 
     public DevastationRatio(float ratio) {
-        this.ratio = ratio;
+        setRatio(ratio);
     }
 
     public float getRatio() {
@@ -15,6 +17,6 @@ public class DevastationRatio {
     }
 
     public void setRatio(float ratio) {
-        this.ratio = ratio > 1.0f ? 1.0f : Math.max(ratio, 0.0f);
+        this.ratio = ratio > MapConfig.MAX_DEVASTATION_RATIO ? MapConfig.MAX_DEVASTATION_RATIO : Math.max(ratio, MapConfig.MIN_DEVASTATION_RATIO);
     }
 }

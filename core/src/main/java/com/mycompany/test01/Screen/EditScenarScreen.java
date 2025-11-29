@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mycompany.test01.Common.*;
 import com.mycompany.test01.Config.MapConfig;
@@ -91,6 +90,8 @@ public class EditScenarScreen implements Screen {
 
     private Table startStocksEditPanel;
 
+    private Table coefsEditPanel;
+
     private Table reinfGroupUnitTreePanel;
 
     private Label scenarMapBrushSizeLabel;
@@ -113,6 +114,7 @@ public class EditScenarScreen implements Screen {
     private boolean isStartDatePanelOpen = false;
     private boolean isProgramsEditPanelOpen = false;
     private boolean isStartStocksPanelOpen = false;
+    private boolean isCoefsPanelOpen = false;
     boolean isReinfLandGroupLoaded = false;
     boolean isReinfLandGroupTreeOpen = false;
     boolean isReinfAirGroupLoaded = false;
@@ -1141,7 +1143,6 @@ public class EditScenarScreen implements Screen {
 
             buttonEdgesHexes.getButton().setDisabled(this.editScenarService.getSelectedOpponent().getCountry() == CountryEnum.NO_COUNTRY);
 
-            // TODO : ajouter change listener
             buttonEdgesHexes.getButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
@@ -1291,6 +1292,10 @@ public class EditScenarScreen implements Screen {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     that.isProgramsEditPanelOpen = !that.isProgramsEditPanelOpen;
+                    if (that.isProgramsEditPanelOpen) {
+                        that.isStartStocksPanelOpen = false;
+                        that.isCoefsPanelOpen = false;
+                    }
                     that.rebuildSelectedOpponentEditPanel();
                 }
             });
@@ -1304,6 +1309,10 @@ public class EditScenarScreen implements Screen {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     that.isStartStocksPanelOpen = !that.isStartStocksPanelOpen;
+                    if (that.isStartStocksPanelOpen) {
+                        that.isProgramsEditPanelOpen = false;
+                        that.isCoefsPanelOpen = false;
+                    }
                     that.startStocksEditMode = StartStocksTypeModeEnum.NO_ACTION;
                     that.rebuildSelectedOpponentEditPanel();
                 }
@@ -1311,6 +1320,31 @@ public class EditScenarScreen implements Screen {
 
             this.selectedOpponentEditPanel.add(startStocksButton.getButton()).spaceTop(20).colspan(1).row();
 
+            ButtonWrapper coefsButton = new ButtonWrapper("Reinf/Resup Coefs", 0, 0, 160, 30);
+
+            coefsButton.getButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    that.isCoefsPanelOpen = !that.isCoefsPanelOpen;
+                    if (that.isCoefsPanelOpen) {
+                        that.isStartStocksPanelOpen = false;
+                        that.isProgramsEditPanelOpen = false;
+                    }
+                    that.rebuildSelectedOpponentEditPanel();
+                    /*
+                    that.isStartStocksPanelOpen = !that.isStartStocksPanelOpen;
+                    if (that.isStartStocksPanelOpen) that.isProgramsEditPanelOpen = false;
+                    that.startStocksEditMode = StartStocksTypeModeEnum.NO_ACTION;
+                    that.rebuildSelectedOpponentEditPanel();
+
+                     */
+                }
+            });
+
+            this.selectedOpponentEditPanel.add(coefsButton.getButton()).spaceTop(20).colspan(2).row();
+
+
+            // TODO ajouter bouton pour les coefs de reinf/resupp supplyRatio reinfRatio
 
             // rebuild du nouveau panel
             if(isProgramsEditPanelOpen) {
@@ -1324,8 +1358,66 @@ public class EditScenarScreen implements Screen {
                 this.rebuildStartStocksEditPanel();
                 this.selectedOpponentEditPanel.add(this.startStocksEditPanel).spaceTop(20).colspan(2).row();
             }
+
+            if(isCoefsPanelOpen) {
+                this.rebuildCoefsEditPanel();
+                this.selectedOpponentEditPanel.add(this.coefsEditPanel).spaceTop(20).colspan(2).row();
+            }
         }
     }
+
+    private void rebuildCoefsEditPanel() {
+        EditScenarScreen that = this;
+        if (this.coefsEditPanel != null) {
+            this.coefsEditPanel.clear();
+        } else {
+            this.coefsEditPanel = new Table();
+            this.coefsEditPanel.setBackground(this.getPanelTexture(GraphicUtil.backgroundColorMedium));
+        }
+        Label titleLabel = new Label("Reinf/Resup Coefs", SkinUtil.getLabelSkin(120, 30));
+        this.coefsEditPanel.add(titleLabel).colspan(2).row();
+
+        Label reinfRatioLabel = new Label("Reinf : " + this.editScenarService.getSelectedOpponent().getReinfRatio(), SkinUtil.getLabelSkin(140, 30));
+        this.coefsEditPanel.add(reinfRatioLabel).spaceTop(20);
+        Slider reinfRatioSlider = new Slider(0.25f, 3.0f, 0.05f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        reinfRatioSlider.setValue(this.editScenarService.getSelectedOpponent().getReinfRatio());
+        reinfRatioSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                reinfRatioLabel.setText("Reinf : " + reinfRatioSlider.getValue());
+                that.editScenarService.getSelectedOpponent().setReinfRatio(reinfRatioSlider.getValue());
+            }
+        });
+        this.coefsEditPanel.add(reinfRatioSlider).spaceTop(20).row();
+
+        Label resupRatioLabel = new Label("Resup : " + this.editScenarService.getSelectedOpponent().getSupplyRatio(), SkinUtil.getLabelSkin(140, 30));
+        this.coefsEditPanel.add(resupRatioLabel);
+        Slider resupRatioSlider = new Slider(0.25f, 3.0f, 0.05f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        resupRatioSlider.setValue(this.editScenarService.getSelectedOpponent().getSupplyRatio());
+
+        resupRatioSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                resupRatioLabel.setText("Resup : " + resupRatioSlider.getValue());
+                that.editScenarService.getSelectedOpponent().setSupplyRatio(resupRatioSlider.getValue());
+            }
+        });
+        this.coefsEditPanel.add(resupRatioSlider).row();
+    }
+
+    /*
+    // supplyRatio reinfRatio
+    Label fuelStockLabel = new Label("Fuel : 0", SkinUtil.getLabelSkin(140, 30));
+        Slider fuelStockSlider = new Slider(0f, 10000f, 100f, false, SkinUtil.getSliderSkin(160, 30, 20));
+        fuelStockSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                fuelStockLabel.setText("Fuel : " + (int) fuelStockSlider.getValue());
+            }
+        });
+        panel.add(fuelStockLabel);
+        panel.add(fuelStockSlider).row();
+     */
 
     public void rebuildStartStocksEditPanel() {
         EditScenarScreen that = this;

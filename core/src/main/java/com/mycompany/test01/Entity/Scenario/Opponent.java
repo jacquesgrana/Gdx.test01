@@ -30,8 +30,8 @@ public class Opponent {
     private Array<SupplyElement> supplyProgram = new Array<>();
     private SupplyElement initialRootSupplyStock = null;
     private UnitReinfElement initialRootUnitReinfStock = null;
-    private float supplyRatio = 0f;
-    private float reinfRatio = 0f;
+    private float supplyRatio = 1.0f;
+    private float reinfRatio = 1.0f;
     private Set<OnBoardUnit> deployedUnits = new HashSet<>();
 
 
